@@ -1,0 +1,19 @@
+.modal {
+  @include position(fixed, 0, 0, 0, 0);
+  @include dims(100vw, 100vh);
+  background-color: rgb(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: z-index("modal");
+
+  .iconClose {
+    @include position(absolute, desktop-vw(50px), desktop-vw(50px), auto, auto);
+    @include dims(desktop-vw(50px));
+    color: var(--laurens-lace);
+
+    @include mobile {
+      @include dims(mobile-vw(30px));
+    }
+  }
+}

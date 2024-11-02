@@ -1,0 +1,10 @@
+.img {
+  @include dims(100%);
+  display: block;
+  /* opacity: 0; */
+  /* transition: 300ms opacity ease; */
+
+  /* &.visible {
+    opacity: 1;
+  } */
+}

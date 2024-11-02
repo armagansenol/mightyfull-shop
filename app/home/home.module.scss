@@ -1,0 +1,494 @@
+.intro {
+  background-color: rgb(0, 130, 228);
+  border-radius: desktop-vw(20px);
+  margin: 0 desktop-vw(20px);
+  padding: desktop-vw(50px) desktop-vw(60px);
+  padding-bottom: desktop-vw(100px);
+  position: relative;
+
+  @include mobile {
+    border-radius: mobile-vw(20px);
+    margin: 0 mobile-vw(8px);
+    margin-bottom: mobile-vw(30px);
+    padding: mobile-vw(30px) mobile-vw(8px);
+  }
+
+  .text {
+    > h1 {
+      color: var(--sugar-milk);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(80px);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: desktop-vw(10px);
+
+      @include mobile {
+        font-size: mobile-vw(50px);
+        line-height: 1;
+        margin-bottom: mobile-vw(30px);
+        text-align: center;
+      }
+    }
+
+    > p {
+      color: var(--sugar-milk);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(24px);
+      font-style: italic;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: desktop-vw(40px);
+      z-index: 10;
+
+      @include mobile {
+        font-size: mobile-vw(24px);
+        line-height: 1.5;
+        margin-bottom: 0;
+        text-align: center;
+      }
+    }
+
+    .might {
+      position: relative;
+
+      //   &:before {
+      //     content: "";
+      //     @include position(absolute, 50%, auto, auto, 50%);
+      //     transform: translate(-50%, -40%);
+      //     @include dims(115%);
+      //     background: url("../../public/img/might.svg");
+      //     background-size: contain;
+      //     background-repeat: no-repeat;
+      //     z-index: 5;
+      //   }
+    }
+
+    .best {
+      position: relative;
+
+      //   &:before {
+      //     content: "";
+      //     @include position(absolute, auto, auto, desktop-vw(-85px), 50%);
+      //     transform: translateX(-50%);
+      //     @include dims(100%);
+      //     background: url("../../public/img/best.svg");
+      //     background-size: contain;
+      //     background-repeat: no-repeat;
+      //     z-index: 5;
+      //   }
+    }
+  }
+
+  .imgC {
+    @include dims(auto, desktop-vw(550px));
+    margin-top: desktop-vw(-50px);
+
+    @include mobile {
+      @include dims(100%, auto);
+    }
+  }
+
+  .bg {
+    @include position(absolute, auto, auto, 0, 50%);
+    @include dims(desktop-vw(1700px), desktop-vw(400px));
+    transform: translate(-50%, desktop-vw(250px));
+    z-index: 100;
+
+    @include mobile {
+      @include dims(mobile-vw(800px), mobile-vw(200px));
+      transform: translate(-50%, mobile-vw(150px));
+    }
+  }
+}
+
+.marquee {
+  @include dims(100%, auto);
+  background-color: var(--cherry-blush);
+  border-bottom: 1px solid var(--nova-pink);
+  border-top: 1px solid var(--nova-pink);
+  color: var(--nova-pink);
+  padding: desktop-vw(16px) 0;
+  position: relative;
+  z-index: 100;
+
+  @include mobile {
+    padding: mobile-vw(16px) 0;
+  }
+
+  .marqueeItem {
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(24px);
+    font-style: italic;
+    font-weight: 800;
+    margin: 0 desktop-vw(50px);
+
+    @include mobile {
+      font-size: mobile-vw(24px);
+      margin: 0 mobile-vw(25px);
+    }
+  }
+
+  .imgC {
+    @include dims(desktop-vw(44px));
+
+    @include mobile {
+      @include dims(mobile-vw(44px));
+    }
+  }
+}
+
+.cookies {
+  padding: desktop-vw(100px) 0;
+  padding-bottom: desktop-vw(150px);
+  position: relative;
+  z-index: 100;
+
+  @include mobile {
+    margin-bottom: mobile-vw(30px);
+    padding: mobile-vw(50px) mobile-vw(16px);
+  }
+
+  > h2 {
+    @include dims(desktop-vw(610px), auto);
+    color: var(--nova-pink);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(60px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: desktop-vw(10px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(auto);
+      font-size: mobile-vw(60px);
+      margin-bottom: mobile-vw(10px);
+    }
+  }
+
+  > p {
+    color: var(--nova-pink);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    margin-bottom: desktop-vw(40px);
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+      margin-bottom: mobile-vw(50px);
+    }
+  }
+
+  .card {
+    @include dims(auto);
+
+    @include mobile {
+      @include dims(100vw, auto);
+    }
+  }
+
+  .flavorsMobile {
+    @include dims(100vw, auto);
+  }
+}
+
+.pros {
+  background-color: var(--blue-ruin);
+  font-family: var(--font-poppins);
+  position: relative;
+  text-align: center;
+
+  @include mobile {
+    padding: mobile-vw(50px) mobile-vw(16px);
+  }
+
+  > div {
+    background-color: var(--sugar-milk);
+    border-radius: desktop-vw(64px);
+    padding: desktop-vw(150px) desktop-vw(120px);
+    padding-top: desktop-vw(50px);
+  }
+
+  .heading {
+    @include dims(desktop-vw(710px), auto);
+    color: var(--fuchsia-nebula);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(60px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: desktop-vw(80px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(auto);
+      font-size: mobile-vw(45px);
+      line-height: 1.1;
+      margin-bottom: mobile-vw(50px);
+    }
+  }
+
+  .imgC {
+    @include position(absolute, desktop-vw(100px), desktop-vw(100px), auto, auto);
+    @include dims(desktop-vw(380px));
+    flex-shrink: 0;
+    position: relative;
+
+    @include mobile {
+      @include dims(mobile-vw(320px));
+    }
+
+    .stickerC {
+      @include position(absolute, auto, 0, 0, auto);
+      @include dims(desktop-vw(160px));
+      transform: translate(25%, 25%);
+
+      @include mobile {
+        @include dims(mobile-vw(140px));
+        transform: translate(15%, 25%);
+      }
+    }
+  }
+
+  .title {
+    color: var(--sugar-milk);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(24px);
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: desktop-vw(20px);
+    position: relative;
+    text-align: center;
+
+    .bg {
+      @include position(absolute, 50%, auto, auto, 50%);
+      @include dims(160%);
+      transform: translate(-50%, -50%);
+      z-index: -1;
+
+      @include mobile {
+        @include dims(mobile-vw(175px), mobile-vw(41px));
+      }
+
+      &.lg {
+        @include dims(205%);
+      }
+    }
+
+    @include mobile {
+      font-size: mobile-vw(24px);
+      margin-bottom: mobile-vw(16px);
+    }
+  }
+
+  .desc {
+    color: var(--fuchsia-nebula);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+    }
+  }
+
+  .bg {
+    @include position(absolute, 0, auto, auto, 50%);
+    @include dims(120vw, desktop-vw(450px));
+    transform: translate(-50%, -30%);
+    z-index: -1;
+
+    @include mobile {
+      @include dims(300vw, mobile-vw(150px));
+    }
+  }
+}
+
+.theStory {
+  background-color: var(--blue-ruin);
+  color: var(--blue-ruin);
+  position: relative;
+
+  @include mobile {
+    border-radius: mobile-vw(20px);
+    margin: 0 mobile-vw(8px);
+    padding: 0 mobile-vw(16px);
+    padding-top: mobile-vw(50px);
+  }
+
+  > div {
+    background-color: var(--sugar-milk);
+    border-radius: desktop-vw(64px);
+    padding: desktop-vw(150px) desktop-vw(120px);
+    padding-top: desktop-vw(250px);
+  }
+
+  .stickerC {
+    @include position(absolute, auto, 0, desktop-vw(-100px), auto);
+    @include dims(desktop-vw(350px));
+    transform: translate(50%, 25%);
+
+    @include mobile {
+      @include position(absolute, auto, 0, mobile-vw(0px), auto);
+      @include dims(mobile-vw(160px));
+      transform: translate(30%, 40%);
+    }
+  }
+
+  .iconC {
+    @include dims(desktop-vw(120px), auto);
+    margin-top: desktop-vw(-100px);
+
+    @include mobile {
+      @include dims(mobile-vw(60px), auto);
+      margin-top: mobile-vw(-100px);
+    }
+  }
+
+  .title {
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(80px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: desktop-vw(60px);
+    position: relative;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(80px);
+      margin-bottom: mobile-vw(60px);
+    }
+
+    .bg {
+      @include position(absolute, 50%, auto, auto, 50%);
+      @include dims(desktop-vw(850px));
+      transform: translate(-50%, -48%);
+      z-index: 10;
+
+      @include mobile {
+        @include dims(mobile-vw(450px));
+      }
+
+      .transform {
+        animation: rotate 160s linear infinite;
+      }
+    }
+
+    > span {
+      display: block;
+      position: relative;
+      z-index: 20;
+
+      &:nth-child(1) {
+        font-size: desktop-vw(40px);
+        margin-right: desktop-vw(150px);
+
+        @include mobile {
+          font-size: mobile-vw(20px);
+          margin-right: mobile-vw(100px);
+        }
+      }
+
+      &:nth-child(2) {
+        font-size: desktop-vw(80px);
+
+        @include mobile {
+          font-size: mobile-vw(40px);
+        }
+      }
+
+      &:nth-child(3) {
+        font-size: desktop-vw(70px);
+        margin-left: desktop-vw(100px);
+
+        @include mobile {
+          font-size: mobile-vw(35px);
+          margin-left: mobile-vw(60px);
+        }
+      }
+    }
+  }
+
+  .desc {
+    @include dims(desktop-vw(740px), auto);
+    margin-bottom: desktop-vw(50px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(mobile-vw(320px), auto);
+      margin-bottom: mobile-vw(30px);
+    }
+  }
+
+  .p {
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(20px);
+    font-weight: 400;
+    line-height: 1.5;
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+      line-height: 1.5;
+      text-align: center;
+    }
+  }
+}
+
+.testimonials {
+  border-top: 5px solid var(--blue-ruin);
+
+  .sliderC {
+    @include dims(desktop-vw(650px), auto);
+    margin-bottom: desktop-vw(250px);
+
+    @include mobile {
+      @include dims(100%, auto);
+      margin-bottom: unset;
+      margin: mobile-vw(50px) 0;
+    }
+  }
+
+  .item {
+    @include dims(100%);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .quote {
+    @include dims(desktop-vw(450px), auto);
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(24px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: desktop-vw(30px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(mobile-vw(300px), auto);
+      font-size: mobile-vw(16px);
+      font-weight: 500;
+      line-height: 1.5;
+      margin-bottom: mobile-vw(30px);
+    }
+  }
+
+  .author {
+    @include dims(desktop-vw(450px), auto);
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+
+    @include mobile {
+      @include dims(mobile-vw(300px), auto);
+      font-size: mobile-vw(14px);
+      line-height: 1.5;
+    }
+  }
+}

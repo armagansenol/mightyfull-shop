@@ -1,0 +1,306 @@
+.intro {
+  background-color: var(--blue-ruin);
+  border-radius: desktop-vw(20px);
+  color: var(--sugar-milk);
+  margin: 0 desktop-vw(20px);
+  padding: 0 desktop-vw(40px);
+  padding-top: desktop-vw(190px);
+  position: relative;
+
+  @include mobile {
+    border-radius: mobile-vw(20px);
+    margin: 0 mobile-vw(8px);
+    padding: 0 mobile-vw(16px);
+    padding-top: mobile-vw(50px);
+  }
+
+  .stickerC {
+    @include position(absolute, auto, 0, desktop-vw(-100px), auto);
+    @include dims(desktop-vw(350px));
+    transform: translate(50%, 25%);
+
+    @include mobile {
+      @include position(absolute, auto, 0, mobile-vw(0px), auto);
+      @include dims(mobile-vw(160px));
+      transform: translate(30%, 40%);
+    }
+  }
+
+  .iconC {
+    @include dims(desktop-vw(120px), auto);
+    margin-top: desktop-vw(-100px);
+
+    @include mobile {
+      @include dims(mobile-vw(60px), auto);
+      margin-top: mobile-vw(-100px);
+    }
+  }
+
+  .title {
+    color: var(--sugar-milk);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(80px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: desktop-vw(60px);
+    position: relative;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(80px);
+      margin-bottom: mobile-vw(60px);
+    }
+
+    .bg {
+      @include position(absolute, 50%, auto, auto, 50%);
+      @include dims(desktop-vw(850px));
+      transform: translate(-50%, -48%);
+      z-index: 10;
+
+      @include mobile {
+        @include dims(mobile-vw(450px));
+      }
+
+      .transform {
+        animation: rotate 160s linear infinite;
+      }
+    }
+
+    > span {
+      display: block;
+      position: relative;
+      z-index: 20;
+
+      &:nth-child(1) {
+        font-size: desktop-vw(40px);
+        margin-right: desktop-vw(150px);
+
+        @include mobile {
+          font-size: mobile-vw(20px);
+          margin-right: mobile-vw(100px);
+        }
+      }
+
+      &:nth-child(2) {
+        font-size: desktop-vw(80px);
+
+        @include mobile {
+          font-size: mobile-vw(40px);
+        }
+      }
+
+      &:nth-child(3) {
+        font-size: desktop-vw(70px);
+        margin-left: desktop-vw(100px);
+
+        @include mobile {
+          font-size: mobile-vw(35px);
+          margin-left: mobile-vw(60px);
+        }
+      }
+    }
+  }
+
+  .desc {
+    @include dims(desktop-vw(740px), auto);
+    margin-bottom: desktop-vw(50px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(mobile-vw(320px), auto);
+      margin-bottom: mobile-vw(30px);
+    }
+  }
+
+  .p {
+    color: var(--sugar-milk);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(20px);
+    font-weight: 400;
+    line-height: 1.5;
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+      line-height: 1.5;
+      text-align: center;
+    }
+  }
+
+  .bottom {
+    margin-right: desktop-vw(50px);
+
+    @include mobile {
+      margin-right: 0;
+    }
+
+    .imgC {
+      @include dims(auto, desktop-vw(550px));
+      border-radius: desktop-vw(30px);
+      overflow: hidden;
+
+      @include mobile {
+        @include dims(auto);
+        border-radius: mobile-vw(10px);
+      }
+    }
+
+    .textC {
+      margin-bottom: desktop-vw(100px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(100px);
+      }
+    }
+  }
+}
+
+.differences {
+  padding: desktop-vw(80px) desktop-vw(80px);
+
+  @include mobile {
+    padding: mobile-vw(80px) mobile-vw(16px);
+  }
+
+  > h2 {
+    @include dims(desktop-vw(600px), auto);
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(60px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: desktop-vw(40px);
+
+    @include mobile {
+      @include dims(auto);
+      font-size: mobile-vw(45px);
+      margin-bottom: mobile-vw(30px);
+      text-align: center;
+    }
+  }
+
+  .p {
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: desktop-vw(40px);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include mobile {
+      font-size: mobile-vw(18px);
+      margin-bottom: mobile-vw(40px);
+      text-align: center;
+    }
+  }
+}
+
+.mission {
+  border-bottom: 5px solid var(--blue-ruin);
+  border-top: 5px solid var(--blue-ruin);
+
+  .text {
+    padding: desktop-vw(130px) desktop-vw(90px) desktop-vw(130px) desktop-vw(80px);
+
+    @include mobile {
+      padding: mobile-vw(50px) mobile-vw(16px);
+    }
+
+    > h2 {
+      color: var(--blue-ruin);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(60px);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: desktop-vw(30px);
+
+      @include mobile {
+        font-size: mobile-vw(50px);
+        margin-bottom: mobile-vw(30px);
+        text-align: center;
+      }
+    }
+
+    > p {
+      color: var(--blue-ruin);
+      font-family: var(--font-poppins);
+      font-size: desktop-vw(18px);
+      font-weight: 400;
+      line-height: 1.5;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @include mobile {
+        font-size: mobile-vw(18px);
+        line-height: 1.5;
+        margin-bottom: mobile-vw(30px);
+        text-align: center;
+      }
+    }
+  }
+}
+
+.whatsNext {
+  margin-bottom: desktop-vw(300px);
+
+  @include mobile {
+    margin-bottom: mobile-vw(30px);
+  }
+
+  .titleC {
+    border-bottom: 5px solid var(--blue-ruin);
+    margin-bottom: desktop-vw(40px);
+    padding: desktop-vw(50px) 0;
+
+    @include mobile {
+      margin-bottom: mobile-vw(40px);
+      padding: mobile-vw(30px) 0;
+    }
+
+    h2 {
+      color: var(--blue-ruin);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(60px);
+      font-weight: 700;
+      line-height: 1;
+
+      @include mobile {
+        font-size: mobile-vw(40px);
+        line-height: 1.15;
+        text-align: center;
+      }
+    }
+  }
+
+  > p {
+    @include dims(desktop-vw(800px), auto);
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: desktop-vw(40px);
+    text-align: center;
+
+    @include mobile {
+      @include dims(mobile-vw(330px), auto);
+      font-size: mobile-vw(18px);
+      line-height: 1.5;
+      margin-bottom: mobile-vw(30px);
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

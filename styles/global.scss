@@ -1,0 +1,121 @@
+@import "./_reset.scss";
+@import "./_fonts.scss";
+@import "./_colors.scss";
+@import "./_easings.scss";
+@import "./_functions.scss";
+// @import './_layout.scss';
+@import "./_utils.scss";
+// @import "./_themes.scss";
+/* @import "./_scroll.scss"; */
+
+:root {
+  --header-height: #{desktop-vw(80px)};
+  --page-padding-top: #{desktop-vw(50px)};
+
+  --layout-spacing-x: #{desktop-vw(160px)};
+
+  --font-bomstad-display: BomstadDisplay;
+
+  @include mobile {
+    --header-height: #{mobile-vw(70px)};
+    --page-padding-top: #{mobile-vw(30px)};
+  }
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  pointer-events: auto;
+  // scrollbar-width: thin;
+  // @extend .noSelect;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: var(--sugar-milk);
+  line-height: 1;
+  min-height: 100vh;
+}
+
+main {
+  min-height: calc(100vh - var(--header-height));
+}
+
+a,
+button,
+input,
+label,
+textarea,
+select {
+  color: inherit;
+  cursor: pointer;
+}
+
+*::selection {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+input {
+  @extend .remove-autofill-styles;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: default;
+}
+
+sup {
+  font-size: xx-small;
+  vertical-align: super;
+}
+
+// Be sure markers on top
+.gsap-marker-end,
+.gsap-marker-start,
+.gsap-marker-scroller-end,
+.gsap-marker-scroller-start {
+  z-index: z-index("gsap-markers") !important;
+}
+
+.input-required {
+  // box-shadow: var(--error) 0px 0px 0px 1px;
+  color: var(--error) !important;
+  transition: 200ms all ease;
+
+  * {
+    color: var(--error) !important;
+    transition: 200ms all ease;
+  }
+}
+
+.inherit-dims {
+  height: inherit;
+  width: inherit;
+}
+
+.cursor-none {
+  cursor: none;
+
+  * {
+    cursor: none;
+  }
+}
+
+.text-highlight {
+  color: var(--white);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding-right: 0.1ch;
+
+  @include mobile {
+    font-size: 1em;
+    font-weight: 500;
+    padding-right: unset;
+  }
+}

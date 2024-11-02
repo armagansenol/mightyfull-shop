@@ -1,0 +1,13 @@
+.video {
+  @include dims(100%);
+  display: block;
+  object-fit: cover;
+  z-index: -1;
+
+  //   opacity: 0;
+  //   transition: 300ms opacity ease;
+
+  //   &.visible {
+  //     opacity: 1;
+  //   }
+}

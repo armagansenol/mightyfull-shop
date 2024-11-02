@@ -1,0 +1,24 @@
+.followUs {
+  .title {
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(60px);
+    font-weight: 700;
+    padding: desktop-vw(30px) desktop-vw(80px);
+  }
+
+  .social {
+    padding: desktop-vw(50px) desktop-vw(80px);
+  }
+
+  .iconC {
+    @include dims(desktop-vw(50px));
+  }
+
+  .imgC {
+    @include dims(desktop-vw(350px), desktop-vw(240px));
+    border-radius: desktop-vw(8px);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+}

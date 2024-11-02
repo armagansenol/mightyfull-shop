@@ -1,0 +1,104 @@
+.header {
+  --padding-x: #{desktop-vw(40px)};
+  background-color: var(--sugar-milk);
+  padding: var(--padding-x);
+  position: relative;
+  z-index: z-index("header");
+  @include position(fixed, 0, 0, auto, 0);
+
+  @include mobile {
+    margin: 0 mobile-vw(16px);
+    padding: mobile-vw(16px) 0;
+  }
+
+  &:after {
+    content: "";
+    @include position(absolute, 100%, auto, 0, 50%);
+    @include dims(calc(100vw - var(--padding-x) * 2), 1px);
+    background-color: var(--primary);
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .logoC {
+    @include position(absolute, 50%, auto, auto, 50%);
+    @include dims(desktop-vw(244px), auto);
+    transform: translate(-50%, -50%);
+
+    @include mobile {
+      @include position(relative, auto, auto, auto, auto);
+      @include dims(mobile-vw(120px), auto);
+      transform: none;
+      z-index: 200;
+    }
+  }
+
+  .trigger {
+    @include mobile {
+      @include dims(mobile-vw(24px));
+      z-index: 200;
+
+      &.active {
+        color: var(--laurens-lace);
+      }
+    }
+  }
+
+  .navC {
+    @include mobile {
+      @include position(fixed, 0, 0, 0, 0);
+      background-color: var(--sugar-milk);
+      gap: mobile-vw(10px);
+      opacity: 0;
+      padding: mobile-vw(16px);
+      pointer-events: none;
+      transition: 400ms opacity ease;
+      z-index: 100;
+
+      &.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+
+  .navItem {
+    color: var(--primary);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(20px);
+    font-weight: 700;
+    transition: 200ms all ease;
+
+    @include mobile {
+      color: var(--laurens-lace);
+      font-size: mobile-vw(20px);
+    }
+
+    &.border {
+      border: 1px solid var(--prmiary);
+      padding: desktop-vw(2px) desktop-vw(20px);
+      border-radius: desktop-vw(20px);
+
+      @include mobile {
+        padding: mobile-vw(2px) mobile-vw(20px);
+        border-radius: mobile-vw(20px);
+      }
+
+      @include hover {
+        &:hover {
+          background-color: var(--blue-ruin);
+          color: var(--sugar-milk);
+        }
+      }
+    }
+  }
+
+  .navigationMenu {
+    @include position(absolute, 100%, 0, auto, 0);
+    background-color: var(--sugar-milk);
+
+    .categories {
+      padding: var(--padding-x);
+    }
+  }
+}

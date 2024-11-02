@@ -1,0 +1,106 @@
+@use "sass:math";
+@import "./_variables.scss";
+
+// Breakpoint
+@mixin mobile {
+  @media (max-width: #{$mobile-breakpoint}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet-breakpoint}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$mobile-breakpoint}) {
+    @content;
+  }
+}
+
+@function mobile-vw($pixels, $base-vw: $mobile-width) {
+  @return math.div($pixels * 100vw, $base-vw);
+}
+
+@function mobile-vh($pixels, $base-vh: $mobile-height) {
+  @return math.div($pixels * 100vh, $base-vh);
+}
+
+@function desktop-vw($pixels, $base-vw: $desktop-width) {
+  @return math.div($pixels * 100vw, $base-vw);
+}
+
+@function desktop-vh($pixels, $base-vh: $desktop-height) {
+  @return math.div($pixels * 100vh, $base-vh);
+}
+
+@function columns($columns) {
+  @return calc((#{$columns} * var(--layout-column-width)) + ((#{$columns} - 1) * var(--layout-columns-gap)));
+}
+
+@mixin outline($color) {
+  outline: 2px solid $color;
+  outline-offset: -2px;
+}
+
+@mixin hover {
+  @media (hover: hover) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin dims($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin position($position, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+// z-index
+$z-indexes: (
+  "preloader",
+  "gsap-markers",
+  "cursor",
+  "privacy-popup",
+  "modal-content",
+  "modal",
+  "sticky",
+  "error",
+  "navigation",
+  "hamburger",
+  "menu",
+  "menu-bg",
+  "navigation-mobile",
+  "header",
+  "loading-screen",
+  "logo",
+  "img",
+  "main",
+  "language-select",
+  "footer-overlay",
+  "footer",
+  "bg"
+);
+
+@function z-index($name) {
+  @if index($z-indexes, $name) {
+    @return ((length($z-indexes) - index($z-indexes, $name)) * 1000) + 100;
+  } @else {
+    @warn 'There is no item "#{$name}" in this list; choose one of: #{$z-indexes}';
+    @return null;
+  }
+}

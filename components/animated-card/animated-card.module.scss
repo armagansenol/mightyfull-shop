@@ -1,0 +1,80 @@
+.animatedCard {
+  @include dims(100%, desktop-vw(300px));
+  border-radius: desktop-vw(10px);
+  overflow: hidden;
+  position: relative;
+
+  @include mobile {
+    @include dims(auto);
+    overflow: auto;
+  }
+
+  .bg {
+    @include position(absolute, 0, 0, 0, 0);
+    background-color: #fffaf3;
+    z-index: 10;
+
+    @include mobile {
+      display: none;
+    }
+  }
+
+  .package {
+    @include dims(inherit);
+    position: relative;
+    z-index: 20;
+
+    @include mobile {
+      @include dims(auto);
+    }
+
+    .imgC {
+      @include dims(100%, auto);
+
+      @include mobile {
+        @include dims(mobile-vw(240px));
+      }
+    }
+  }
+
+  .cookie {
+    @include dims(inherit);
+    padding-top: desktop-vw(40px);
+    position: relative;
+    z-index: 20;
+
+    @include mobile {
+      @include dims(auto);
+      padding-top: mobile-vw(16px);
+    }
+
+    .text {
+      color: var(--fuchsia-nebula);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(50px);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: desktop-vw(30px);
+      text-align: center;
+      transform: translateY(200%) scale(0.7);
+      z-index: 20;
+
+      @include mobile {
+        @include dims(mobile-vw(320px), auto);
+        font-size: mobile-vw(30px);
+        margin-bottom: unset;
+        transform: unset;
+      }
+    }
+
+    .imgC {
+      @include dims(desktop-vw(280px));
+      transform: scale(1.5);
+      z-index: 30;
+
+      @include mobile {
+        display: none;
+      }
+    }
+  }
+}
