@@ -1,9 +1,16 @@
+"use client"
+
 import NextLink, { LinkProps as NextLinkProps } from "next/link"
+import { useRouter } from "next/navigation"
 import React, { forwardRef, useMemo } from "react"
 
 interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">, NextLinkProps {
   ariaLabel?: string
   children: React.ReactNode
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
@@ -38,10 +45,26 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
     )
   }
 
+  const router = useRouter()
+
+  const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    const body = document.querySelector("body")
+
+    body?.classList.add("page-transition")
+
+    await sleep(500)
+    router.push(href.toString())
+    await sleep(500)
+
+    body?.classList.remove("page-transition")
+  }
+
   return (
     <NextLink
       href={href}
       passHref={isAnchor}
+      onClick={handleTransition}
       scroll={scroll}
       aria-label={ariaLabel}
       className={className}

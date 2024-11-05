@@ -36,6 +36,13 @@ body {
   background-color: var(--sugar-milk);
   line-height: 1;
   min-height: 100vh;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  transition-duration: 400ms;
+}
+
+.page-transition {
+  opacity: 0;
 }
 
 a,
