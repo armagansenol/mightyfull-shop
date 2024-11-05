@@ -1,16 +1,13 @@
 import { SanityColorTheme } from "@/lib/context/theme"
 import { SanityAssetImage } from "@/lib/sanity"
+import { PortableTextBlock } from "@portabletext/react"
 import { Seo } from "@shopify/hydrogen-react/storefront-api-types"
 import { ImageAsset } from "sanity"
 
 export interface AnimatedCardProps {
   id: string
-  imgCookie: {
-    url: string
-  }
-  imgPackage: {
-    url: string
-  }
+  imgCookie: SanityAssetImage
+  imgPackage: SanityAssetImage
   product: {
     shopifySlug: string
     shopifyTitle: string
@@ -46,7 +43,7 @@ export interface ProductDetail {
   titleProxy: string
   images: ImageAsset[]
   description: string
-  specs: any[]
+  specs: ProductSpec[]
   store: StoreDetails
   seo: Seo
   product: ShopifyProduct
@@ -103,4 +100,9 @@ export interface FeatureHighlightQueryResult {
   featureHighlight: {
     items: FeatureHighLightCard[]
   }
+}
+
+export interface ProductSpec {
+  title: string
+  description: PortableTextBlock
 }
