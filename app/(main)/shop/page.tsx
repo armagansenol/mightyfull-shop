@@ -20,13 +20,14 @@ export default async function Page() {
         {cards.map((item) => {
           return (
             <div className={cn(s.card, "flex flex-col space-y-12")} key={item.id}>
-              <Link href={`/shop/${item.product.shopifySlug}`}>
+              <Link href={`/shop/${item.product.shopifySlug}`} prefetch={true}>
                 <AnimatedCard {...item} />
               </Link>
               <div className="flex flex-col items-stretch space-y-2">
                 <Link
                   href={`/shop/${item.product.shopifySlug}`}
                   className={cn(s.button, "cursor-pointer flex items-center justify-center")}
+                  prefetch={true}
                 >
                   <span>SHOP NOW</span>
                 </Link>

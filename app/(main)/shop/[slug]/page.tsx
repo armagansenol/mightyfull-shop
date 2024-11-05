@@ -14,7 +14,7 @@ import { sanityClient } from "lib/sanity/client"
 import { SanityProductPage } from "lib/sanity/types"
 import { AnimatedCardProps } from "types"
 import Images from "./components/images"
-import FollowUs from "components/follow-us/FollowUs"
+import FollowUs from "@/components/follow-us/FollowUs"
 import { LAYOUT_QUERY } from "lib/queries/sanity/layout"
 import { LayoutQueryResponse } from "types/layout"
 import { getProductReviews } from "lib/queries/okendo"
@@ -102,7 +102,7 @@ export default async function Product({ params }: ProductPageProps) {
               {filtered.map((item) => {
                 return (
                   <div className={cx(s.card, "flex flex-col space-y-12")} key={item.id}>
-                    <Link href={`/shop/${item.product.shopifySlug}`}>
+                    <Link href={`/shop/${item.product.shopifySlug}`} prefetch={true}>
                       <AnimatedCard {...item} />
                     </Link>
                     <div className="flex flex-col items-stretch space-y-2">
