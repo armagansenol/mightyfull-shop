@@ -109,6 +109,7 @@ export default async function Product({ params }: ProductPageProps) {
                       <Link
                         href={`/shop/${item.product.shopifySlug}`}
                         className={cx(s.button, "cursor-pointer flex items-center justify-center")}
+                        prefetch={true}
                       >
                         <span>SHOP NOW</span>
                       </Link>
