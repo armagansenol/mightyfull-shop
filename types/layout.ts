@@ -1,7 +1,7 @@
-import { ProductCollection, ShopMenu } from "./index"
+import { SanityAssetImage } from "@/lib/sanity"
+import { ProductCollection } from "./index"
 // Import types from any existing portable text definitions
 import type { PortableTextBlock } from "@portabletext/types"
-import { SanityAssetImage } from "lib/sanity"
 
 // Define the base types
 type SeoSettings = {

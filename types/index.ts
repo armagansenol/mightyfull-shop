@@ -1,3 +1,5 @@
+import { SanityColorTheme } from "@/lib/context/theme"
+import { SanityAssetImage } from "@/lib/sanity"
 import { Seo } from "@shopify/hydrogen-react/storefront-api-types"
 import { ImageAsset } from "sanity"
 
@@ -74,4 +76,31 @@ export interface ProductCollection {
   _id: string
   title: string
   items: ProductCard[]
+}
+
+interface ProductItem {
+  _id: string
+  image: SanityAssetImage
+  title: string
+  slug: string
+}
+
+export interface ProductHighlightQueryResult {
+  productHighlight: {
+    items: ProductItem[]
+  }
+}
+
+export interface FeatureHighLightCard {
+  _key: string
+  title: string
+  description: string
+  icon: SanityAssetImage
+  colorTheme: SanityColorTheme
+}
+
+export interface FeatureHighlightQueryResult {
+  featureHighlight: {
+    items: FeatureHighLightCard[]
+  }
 }

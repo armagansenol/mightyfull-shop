@@ -3,13 +3,8 @@
 import useSmoothScroll from "hooks/use-smooth-scroll"
 import { ReactNode } from "react"
 
-type Props = {
-  children: ReactNode
-}
-
-const SmoothLayout = ({ children }: Props) => {
+const SmoothLayout = ({ children }: { children: ReactNode }) => {
   useSmoothScroll()
-
   return <>{children}</>
 }
 

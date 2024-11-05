@@ -18,17 +18,36 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { primaryColor, secondaryColor } = useTheme()
-  const { lenis } = useLenisStore()
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
+  const { lenis } = useLenisStore()
+  const [hidden, setHidden] = useState(false)
+
+  console.log("header", props)
 
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start()
   }, [hamburgerOpen, lenis])
 
+  useEffect(() => {
+    lenis?.on("scroll", () => {
+      if (lenis.velocity > 0) {
+        if (!hidden) {
+          setHidden(true)
+        }
+      } else {
+        if (hidden) {
+          setHidden(false)
+        }
+      }
+    })
+  }, [hidden, lenis])
+
   return (
     <>
       <header
-        className={cn(s.header, "flex items-center justify-between tablet:justify-stretch")}
+        className={cn(s.header, "flex items-center justify-between tablet:justify-stretch", {
+          [s.hidden]: hidden,
+        })}
         style={{ "--primary": primaryColor, "--secondary": secondaryColor } as React.CSSProperties}
       >
         <Link href="/" className={cn(s.logoC, "cursor-pointer")}>

@@ -9,7 +9,6 @@ import { CustomerReviews } from "components/customer-reviews"
 import { Purchase } from "components/purchase"
 import { ThemeUpdater } from "components/theme-updater"
 import { Link } from "components/utility/link"
-import { ANIMATED_CARDS_QUERY } from "lib/queries/sanity/animatedCards"
 import { PRODUCT_PAGE_QUERY } from "lib/queries/sanity/productPage"
 import { sanityClient } from "lib/sanity/client"
 import { SanityProductPage } from "lib/sanity/types"
@@ -19,6 +18,7 @@ import FollowUs from "components/follow-us/FollowUs"
 import { LAYOUT_QUERY } from "lib/queries/sanity/layout"
 import { LayoutQueryResponse } from "types/layout"
 import { getProductReviews } from "lib/queries/okendo"
+import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 
 interface ProductPageProps {
   params: {

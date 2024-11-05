@@ -68,7 +68,7 @@ const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!
 
 import { createStorefrontApiClient } from "@shopify/storefront-api-client"
 import { getProductsQuery } from "./queries/product"
-import { Collection, Connection, Image, ShopifyCollection, ShopifyProduct } from "./types"
+import { Connection, Image, ShopifyProduct } from "./types"
 
 const client = createStorefrontApiClient({
   storeDomain: clientDomain,
@@ -76,32 +76,32 @@ const client = createStorefrontApiClient({
   privateAccessToken: key,
 })
 
-const reshapeCollection = (collection: ShopifyCollection): Collection | undefined => {
-  if (!collection) {
-    return undefined
-  }
+// const reshapeCollection = (collection: ShopifyCollection): Collection | undefined => {
+//   if (!collection) {
+//     return undefined
+//   }
 
-  return {
-    ...collection,
-    path: `/search/${collection.handle}`,
-  }
-}
+//   return {
+//     ...collection,
+//     path: `/search/${collection.handle}`,
+//   }
+// }
 
-const reshapeCollections = (collections: ShopifyCollection[]) => {
-  const reshapedCollections = []
+// const reshapeCollections = (collections: ShopifyCollection[]) => {
+//   const reshapedCollections = []
 
-  for (const collection of collections) {
-    if (collection) {
-      const reshapedCollection = reshapeCollection(collection)
+//   for (const collection of collections) {
+//     if (collection) {
+//       const reshapedCollection = reshapeCollection(collection)
 
-      if (reshapedCollection) {
-        reshapedCollections.push(reshapedCollection)
-      }
-    }
-  }
+//       if (reshapedCollection) {
+//         reshapedCollections.push(reshapedCollection)
+//       }
+//     }
+//   }
 
-  return reshapedCollections
-}
+//   return reshapedCollections
+// }
 
 const reshapeImages = (images: Connection<Image>, productTitle: string) => {
   const flattened = removeEdgesAndNodes(images)

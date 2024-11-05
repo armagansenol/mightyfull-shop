@@ -5,7 +5,7 @@ import s from "./embla.module.scss"
 import { EmblaOptionsType } from "embla-carousel"
 import AutoScroll from "embla-carousel-auto-scroll"
 import useEmblaCarousel from "embla-carousel-react"
-import React, { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useEffect } from "react"
 
 type PropType = {
   children: ReactNode | ReactNode[]
@@ -14,17 +14,17 @@ type PropType = {
 
 export default function AutoScrollCarousel({ children, options }: PropType) {
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [AutoScroll({ playOnInit: true })])
-  const [isPlaying, setIsPlaying] = useState(false)
+  // const [isPlaying, setIsPlaying] = useState(false)
 
   useEffect(() => {
     const autoScroll = emblaApi?.plugins()?.autoScroll
     if (!autoScroll) return
 
-    setIsPlaying(autoScroll.isPlaying())
-    emblaApi
-      .on("autoScroll:play", () => setIsPlaying(true))
-      .on("autoScroll:stop", () => setIsPlaying(false))
-      .on("reInit", () => setIsPlaying(autoScroll.isPlaying()))
+    // setIsPlaying(autoScroll.isPlaying())
+    // emblaApi
+    //   .on("autoScroll:play", () => setIsPlaying(true))
+    //   .on("autoScroll:stop", () => setIsPlaying(false))
+    //   .on("reInit", () => setIsPlaying(autoScroll.isPlaying()))
   }, [emblaApi])
 
   const slides = React.Children.toArray(children)

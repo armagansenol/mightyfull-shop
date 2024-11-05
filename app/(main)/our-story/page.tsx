@@ -2,8 +2,8 @@ import s from "./our-story.module.scss"
 
 import cx from "clsx"
 
-import { IconLeftArm, IconRightArm } from "components/icons"
-import { Img } from "components/utility/img"
+import { IconLeftArm, IconRightArm } from "@/components/icons"
+import { Img } from "@/components/utility/img"
 
 export default function Page() {
   return (

@@ -1,10 +1,14 @@
 .intro {
-  background-color: rgb(0, 130, 228);
-  border-radius: desktop-vw(20px);
-  margin: 0 desktop-vw(20px);
+  @include dims(auto, calc(100vh - var(--header-height)));
+  max-height: desktop-vw(700px);
+  background: linear-gradient(to bottom, var(--blue-ruin), var(--columbia-blue));
   padding: desktop-vw(50px) desktop-vw(60px);
   padding-bottom: desktop-vw(100px);
   position: relative;
+
+  @include tablet {
+    @include dims(auto, desktop-vw(700px));
+  }
 
   @include mobile {
     border-radius: mobile-vw(20px);
@@ -192,121 +196,8 @@
   }
 }
 
-.pros {
-  background-color: var(--blue-ruin);
-  font-family: var(--font-poppins);
-  position: relative;
-  text-align: center;
-
-  @include mobile {
-    padding: mobile-vw(50px) mobile-vw(16px);
-  }
-
-  > div {
-    background-color: var(--sugar-milk);
-    border-radius: desktop-vw(64px);
-    padding: desktop-vw(150px) desktop-vw(120px);
-    padding-top: desktop-vw(50px);
-  }
-
-  .heading {
-    @include dims(desktop-vw(710px), auto);
-    color: var(--fuchsia-nebula);
-    font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(60px);
-    font-weight: 900;
-    line-height: 1;
-    margin-bottom: desktop-vw(80px);
-    text-align: center;
-
-    @include mobile {
-      @include dims(auto);
-      font-size: mobile-vw(45px);
-      line-height: 1.1;
-      margin-bottom: mobile-vw(50px);
-    }
-  }
-
-  .imgC {
-    @include position(absolute, desktop-vw(100px), desktop-vw(100px), auto, auto);
-    @include dims(desktop-vw(380px));
-    flex-shrink: 0;
-    position: relative;
-
-    @include mobile {
-      @include dims(mobile-vw(320px));
-    }
-
-    .stickerC {
-      @include position(absolute, auto, 0, 0, auto);
-      @include dims(desktop-vw(160px));
-      transform: translate(25%, 25%);
-
-      @include mobile {
-        @include dims(mobile-vw(140px));
-        transform: translate(15%, 25%);
-      }
-    }
-  }
-
-  .title {
-    color: var(--sugar-milk);
-    font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(24px);
-    font-weight: 500;
-    line-height: 1;
-    margin-bottom: desktop-vw(20px);
-    position: relative;
-    text-align: center;
-
-    .bg {
-      @include position(absolute, 50%, auto, auto, 50%);
-      @include dims(160%);
-      transform: translate(-50%, -50%);
-      z-index: -1;
-
-      @include mobile {
-        @include dims(mobile-vw(175px), mobile-vw(41px));
-      }
-
-      &.lg {
-        @include dims(205%);
-      }
-    }
-
-    @include mobile {
-      font-size: mobile-vw(24px);
-      margin-bottom: mobile-vw(16px);
-    }
-  }
-
-  .desc {
-    color: var(--fuchsia-nebula);
-    font-family: var(--font-poppins);
-    font-size: desktop-vw(18px);
-    font-weight: 400;
-    line-height: 1.5;
-    text-align: center;
-
-    @include mobile {
-      font-size: mobile-vw(18px);
-    }
-  }
-
-  .bg {
-    @include position(absolute, 0, auto, auto, 50%);
-    @include dims(120vw, desktop-vw(450px));
-    transform: translate(-50%, -30%);
-    z-index: -1;
-
-    @include mobile {
-      @include dims(300vw, mobile-vw(150px));
-    }
-  }
-}
-
 .theStory {
-  background-color: var(--blue-ruin);
+  border-radius: desktop-vw(60px);
   color: var(--blue-ruin);
   position: relative;
 
@@ -322,18 +213,6 @@
     border-radius: desktop-vw(64px);
     padding: desktop-vw(150px) desktop-vw(120px);
     padding-top: desktop-vw(250px);
-  }
-
-  .stickerC {
-    @include position(absolute, auto, 0, desktop-vw(-100px), auto);
-    @include dims(desktop-vw(350px));
-    transform: translate(50%, 25%);
-
-    @include mobile {
-      @include position(absolute, auto, 0, mobile-vw(0px), auto);
-      @include dims(mobile-vw(160px));
-      transform: translate(30%, 40%);
-    }
   }
 
   .iconC {

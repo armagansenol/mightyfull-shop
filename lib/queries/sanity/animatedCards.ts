@@ -9,8 +9,7 @@ export const ANIMATED_CARDS_QUERY = groq`
     },
   imgPackage {
       ${IMAGE}
-    }
-  ,
+    },
   product->{
     _id,
     "shopifySlug": store.slug.current,

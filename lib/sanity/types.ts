@@ -1,7 +1,6 @@
 import type { PortableTextBlock } from "@portabletext/types"
 import type { Image, ImageAsset } from "@sanity/types"
 import { SanityColorTheme } from "lib/context/theme"
-import { ProductWithNodes } from "types/shopify"
 
 export interface SanityAssetImage extends Image {
   _type: "image"
@@ -32,7 +31,6 @@ export type SanityCollection = {
   _id: string
   colorTheme: SanityColorTheme
   gid: string
-  hero?: SanityHeroPage
   slug?: string
   title: string
   vector?: string
@@ -41,7 +39,6 @@ export type SanityCollection = {
 export type SanityCollectionPage = {
   _id: string
   colorTheme: SanityColorTheme
-  hero?: SanityHeroCollection
   modules: (SanityModuleImage | SanityModuleInstagram)[]
   seo: SanitySeo
   slug?: string
@@ -78,34 +75,6 @@ export interface SanityCustomProductOptionSize extends SanityCustomProductOption
     title: string
     width: number
   }[]
-}
-
-export type SanityHero = SanityHeroCollection | SanityHeroHome | SanityHeroPage
-
-export type SanityHeroCollection = {
-  content?: SanityImageWithProductHotspots | SanityProductWithVariant
-  description?: string
-  title?: string
-  data?: ProductWithNodes[] | ProductWithNodes
-}
-
-export type SanityHeroHome = {
-  content?: SanityImageWithProductHotspots | SanityProductWithVariant
-  link?: SanityLink
-  title?: string
-  data?: ProductWithNodes[] | ProductWithNodes
-}
-
-export type SanityHeroPage = {
-  content?: SanityImageWithProductHotspots | SanityProductWithVariant
-  title?: string
-  data?: ProductWithNodes[] | ProductWithNodes
-}
-
-export type SanityHomePage = {
-  hero?: SanityHeroHome
-  modules: (SanityModuleImage | SanityModuleInstagram)[]
-  seo: SanitySeo
 }
 
 export type SanityImageWithProductHotspots = {
@@ -276,7 +245,6 @@ export type SanityNotFoundPage = {
 export type SanityPage = {
   body: PortableTextBlock[]
   colorTheme?: SanityColorTheme
-  hero?: SanityHeroPage
   seo: SanitySeo
   title: string
 }

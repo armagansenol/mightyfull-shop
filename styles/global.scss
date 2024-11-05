@@ -11,9 +11,7 @@
 :root {
   --header-height: #{desktop-vw(80px)};
   --page-padding-top: #{desktop-vw(50px)};
-
   --layout-spacing-x: #{desktop-vw(160px)};
-
   --font-bomstad-display: BomstadDisplay;
 
   @include mobile {
@@ -38,10 +36,6 @@ body {
   background-color: var(--sugar-milk);
   line-height: 1;
   min-height: 100vh;
-}
-
-main {
-  min-height: calc(100vh - var(--header-height));
 }
 
 a,

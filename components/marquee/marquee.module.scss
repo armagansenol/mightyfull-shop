@@ -1,0 +1,75 @@
+.marquee {
+  --duration: 20s;
+  display: flex;
+  overflow: hidden;
+  will-change: transform;
+
+  @include reduced-motion {
+    --duration: #{50s} !important;
+  }
+
+  @include mobile {
+    .inner {
+      animation: marquee-inverted calc(var(--duration) / 100) linear infinite;
+    }
+  }
+
+  .inner {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee var(--duration) linear infinite;
+    animation-play-state: var(--animation-status);
+  }
+
+  &.inverted {
+    .inner {
+      animation: marquee-inverted var(--duration) linear infinite;
+      animation-play-state: var(--animation-status);
+    }
+  }
+
+  &.reset {
+    .inner {
+      animation: marquee-reset 400ms linear forwards;
+      animation-play-state: var(--animation-status);
+    }
+  }
+
+  // @include hover {
+  //   &:hover {
+  //     .inner {
+  //       animation-play-state: paused;
+  //     }
+  //   }
+  // }
+
+  @keyframes marquee {
+    0% {
+      transform: translate3d(calc(var(--offset) * -1), 0, 0);
+    }
+
+    100% {
+      transform: translate3d(calc(-100% - var(--offset)), 0, 0);
+    }
+  }
+
+  @keyframes marquee-inverted {
+    0% {
+      transform: translate3d(calc(-100% - var(--offset)), 0, 0);
+    }
+
+    100% {
+      transform: translate3d(calc(var(--offset) * -1), 0, 0);
+    }
+  }
+
+  @keyframes marquee-reset {
+    0% {
+      transform: translate3d(calc(-100% - var(--offset)), 0, 0);
+    }
+
+    100% {
+      transform: translate3d(50px, 0, 0);
+    }
+  }
+}

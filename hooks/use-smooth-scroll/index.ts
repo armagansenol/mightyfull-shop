@@ -1,12 +1,21 @@
 import Lenis from "lenis"
 import { useLenisStore } from "lib/store/lenis"
-import { useRef } from "react"
+import { usePathname } from "next/navigation"
+import { useEffect, useRef } from "react"
 import { useIsomorphicLayoutEffect } from "usehooks-ts"
 
 const useSmoothScroll = () => {
   // const [lenis, setLenis] = useState<Lenis | null>()
   const { lenis, setLenis, isStopped, reset, setReset } = useLenisStore()
   const reqIdRef = useRef<ReturnType<typeof requestAnimationFrame>>()
+
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const url = `${pathname}`
+    console.log(`Route changed to: ${url}`)
+    lenis?.scrollTo(0, { immediate: true })
+  }, [pathname, lenis])
 
   useIsomorphicLayoutEffect(() => {
     const animate = (time: DOMHighResTimeStamp) => {

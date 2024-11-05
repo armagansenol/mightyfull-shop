@@ -14,9 +14,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-2xl font-bold">Customer Reviews</CardTitle>
-        <Button variant="secondary" className="bg-blue-500 text-white hover:bg-blue-400">
-          WRITE A REVIEW
-        </Button>
+        <Button>WRITE A REVIEW</Button>
       </CardHeader>
       <CardContent className="space-y-6">
         {props.reviews.length >= 0 && (
@@ -45,9 +43,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
             ))}
           </>
         )}
-        <Button variant="ghost" className="w-full text-white hover:bg-blue-500">
-          Load More
-        </Button>
+        <Button>Load More</Button>
       </CardContent>
     </Card>
   )

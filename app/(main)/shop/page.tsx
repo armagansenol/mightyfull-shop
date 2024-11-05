@@ -4,7 +4,7 @@ import cx from "clsx"
 import Link from "next/link"
 
 import { AnimatedCard } from "components/animated-card"
-import { ANIMATED_CARDS_QUERY } from "lib/queries/sanity/animatedCards"
+import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { sanityClient } from "lib/sanity/client"
 import { AnimatedCardProps } from "types"
 
