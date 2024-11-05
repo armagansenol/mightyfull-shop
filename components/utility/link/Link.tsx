@@ -17,6 +17,21 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
   { href, children, className, scroll = false, ariaLabel = "go to page", ...props },
   ref
 ) => {
+  const router = useRouter()
+
+  const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    const body = document.querySelector("body")
+
+    body?.classList.add("page-transition")
+
+    await sleep(500)
+    router.push(href.toString())
+    await sleep(500)
+
+    body?.classList.remove("page-transition")
+  }
+
   const isProtocol = useMemo(
     () => typeof href === "string" && (href.startsWith("mailto:") || href.startsWith("tel:")),
     [href]
@@ -43,21 +58,6 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
         {children}
       </a>
     )
-  }
-
-  const router = useRouter()
-
-  const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    const body = document.querySelector("body")
-
-    body?.classList.add("page-transition")
-
-    await sleep(500)
-    router.push(href.toString())
-    await sleep(500)
-
-    body?.classList.remove("page-transition")
   }
 
   return (
