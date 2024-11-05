@@ -28,6 +28,7 @@ interface ProductPageProps {
 
 export default async function Product({ params }: ProductPageProps) {
   const { slug } = params
+
   const product = await sanityClient.fetch<SanityProductPage>(PRODUCT_PAGE_QUERY, { slug })
   console.log("product", product)
 
@@ -35,43 +36,12 @@ export default async function Product({ params }: ProductPageProps) {
   const layout = await sanityClient.fetch<LayoutQueryResponse>(LAYOUT_QUERY)
 
   const filtered = cards.filter((it) => {
-    console.log("it", it.product.shopifySlug)
-    console.log("p", product)
-
     return it.product.shopifySlug !== product.slug
   })
   console.log("cards", cards)
 
   const reviews = await getProductReviews("8519377223832")
   console.log("reviews", reviews.data)
-
-  // const mockFollowUsData = {
-  //   socialMedia: [
-  //     {
-  //       icon: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45", // Example icon URL from Unsplash
-  //       url: "https://facebook.com/yourprofile",
-  //     },
-  //     {
-  //       icon: "https://images.unsplash.com/photo-1568605114967-8130f3a36994", // Example icon URL from Unsplash
-  //       url: "https://twitter.com/yourprofile",
-  //     },
-  //     {
-  //       icon: "https://images.unsplash.com/photo-1496347646636-ea47f7d6a5d8", // Example icon URL from Unsplash
-  //       url: "https://instagram.com/yourprofile",
-  //     },
-  //   ],
-  //   images: [
-  //     "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759",
-  //     "https://images.unsplash.com/photo-1532009324734-20a7a5813719",
-  //     "https://images.unsplash.com/photo-1524429656589-6633a470097c",
-  //     "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759",
-  //     "https://images.unsplash.com/photo-1532009324734-20a7a5813719",
-  //     "https://images.unsplash.com/photo-1524429656589-6633a470097c",
-  //     "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759",
-  //     "https://images.unsplash.com/photo-1532009324734-20a7a5813719",
-  //     "https://images.unsplash.com/photo-1524429656589-6633a470097c",
-  //   ],
-  // }
 
   return (
     <>
@@ -133,13 +103,7 @@ export default async function Product({ params }: ProductPageProps) {
                 return (
                   <div className={cx(s.card, "flex flex-col space-y-12")} key={item.id}>
                     <Link href={`/shop/${item.product.shopifySlug}`}>
-                      <AnimatedCard
-                        imgCookie={item.imgCookie.url}
-                        imgPackage={item.imgPackage.url}
-                        text={item.product.shopifyTitle}
-                        textColor={item.product.colorTheme?.text.hex}
-                        bgColor={item.product.colorTheme?.background.hex}
-                      />
+                      <AnimatedCard {...item} />
                     </Link>
                     <div className="flex flex-col items-stretch space-y-2">
                       <Link
