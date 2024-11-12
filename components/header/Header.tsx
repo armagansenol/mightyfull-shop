@@ -24,6 +24,8 @@ export default function Header(props: HeaderProps) {
   const [hidden, setHidden] = useState(false)
   const { items, setIsOpen } = useCartStore()
 
+  console.log(props)
+
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start()
   }, [hamburgerOpen, lenis])
