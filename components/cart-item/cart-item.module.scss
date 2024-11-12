@@ -1,0 +1,34 @@
+.cartItem {
+  .title {
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(18px);
+    font-weight: 900;
+    margin-bottom: desktop-vw(16px);
+  }
+
+  .price {
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+  }
+
+  .remove {
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(12px);
+    font-weight: 400;
+  }
+
+  .quantity {
+    border: 1px solid var(--blue-ruin);
+    color: var(--blue-ruin);
+    border-radius: desktop-vw(4px);
+    margin-bottom: desktop-vw(8px);
+  }
+
+  .imgC {
+    @include dims(desktop-vw(130px));
+  }
+}

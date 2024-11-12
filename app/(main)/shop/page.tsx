@@ -2,11 +2,11 @@ import s from "./shop.module.scss"
 
 import cn from "clsx"
 
-import { AnimatedCard } from "components/animated-card"
-import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
-import { sanityClient } from "lib/sanity/client"
-import { AnimatedCardProps } from "types"
+import { AnimatedCard } from "@/components/animated-card"
 import { Link } from "@/components/utility/link"
+import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
+import { sanityClient } from "@/lib/sanity/client"
+import { AnimatedCardProps } from "types"
 
 export default async function Page() {
   const cards = await sanityClient.fetch<AnimatedCardProps[]>(ANIMATED_CARDS_QUERY)

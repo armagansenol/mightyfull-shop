@@ -12,8 +12,8 @@
     padding-top: mobile-vw(50px);
   }
 
-  .stickerC {
-    @include position(absolute, auto, 0, desktop-vw(-100px), auto);
+  .cookieC {
+    @include position(absolute, auto, desktop-vw(100px), desktop-vw(-100px), auto);
     @include dims(desktop-vw(350px));
     transform: translate(50%, 25%);
 
@@ -152,8 +152,13 @@
   }
 }
 
+.fullImgC {
+  @include dims(100%, desktop-vw(550px));
+}
+
 .differences {
-  padding: desktop-vw(80px) desktop-vw(80px);
+  padding: desktop-vw(40px) desktop-vw(80px);
+  padding-bottom: desktop-vw(120px);
 
   @include mobile {
     padding: mobile-vw(80px) mobile-vw(16px);
@@ -201,7 +206,7 @@
   border-top: 5px solid var(--blue-ruin);
 
   .text {
-    padding: desktop-vw(130px) desktop-vw(90px) desktop-vw(130px) desktop-vw(80px);
+    padding: desktop-vw(100px) desktop-vw(90px) desktop-vw(100px) desktop-vw(80px);
 
     @include mobile {
       padding: mobile-vw(50px) mobile-vw(16px);
@@ -244,7 +249,7 @@
 }
 
 .whatsNext {
-  margin-bottom: desktop-vw(300px);
+  margin-bottom: desktop-vw(200px);
 
   @include mobile {
     margin-bottom: mobile-vw(30px);
@@ -253,7 +258,7 @@
   .titleC {
     border-bottom: 5px solid var(--blue-ruin);
     margin-bottom: desktop-vw(40px);
-    padding: desktop-vw(50px) 0;
+    padding: desktop-vw(40px) 0;
 
     @include mobile {
       margin-bottom: mobile-vw(40px);

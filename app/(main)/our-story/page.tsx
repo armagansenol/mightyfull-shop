@@ -56,9 +56,18 @@ export default function Page() {
             </p>
           </div>
         </div>
-        <div className={s.stickerC}>
-          <Img className="object-contain" src="/img/c-pb-jelly-choco-chip.png" height={500} width={500} alt="Cookie" />
+        <div className={s.cookieC}>
+          <Img className="object-contain" src="/img/c-pb-choco-oatie.png" height={500} width={500} alt="Cookie" />
         </div>
+      </section>
+      <section className={s.fullImgC}>
+        <Img
+          className="object-cover"
+          src="/img/portrait-image-of-a-beautiful-young-asian-woman.jpg"
+          height={2000}
+          width={2000}
+          alt="Portrait of a beautiful young Asian woman."
+        />
       </section>
       <section className={s.differences}>
         <h2>The Mightyfull Difference</h2>

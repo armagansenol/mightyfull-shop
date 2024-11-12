@@ -1,4 +1,4 @@
-import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_VERSION, TAGS } from "lib/constants"
+import { SHOPIFY_GRAPHQL_API_VERSION, TAGS } from "lib/constants"
 import { ensureStartsWith } from "lib/utils"
 import { revalidateTag } from "next/cache"
 import { headers } from "next/headers"
@@ -10,67 +10,13 @@ const clientDomain = process.env.SHOPIFY_STORE_DOMAIN
 const apiVersion = SHOPIFY_GRAPHQL_API_VERSION
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!
 
-// export async function shopifyFetch<T>({
-//   cache = "force-cache",
-//   headers,
-//   query,
-//   tags,
-//   variables,
-// }: {
-//   cache?: RequestCache
-//   headers?: HeadersInit
-//   query: string
-//   tags?: string[]
-//   variables?: ExtractVariables<T>
-// }): Promise<{ status: number; body: T } | never> {
-//   try {
-//     const result = await fetch(endpoint, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "X-Shopify-Storefront-Access-Token": key,
-//         ...headers,
-//       },
-//       body: JSON.stringify({
-//         ...(query && { query }),
-//         ...(variables && { variables }),
-//       }),
-//       cache,
-//       ...(tags && { next: { tags } }),
-//     })
-
-//     const body = await result.json()
-
-//     if (body.errors) {
-//       throw body.errors[0]
-//     }
-
-//     return {
-//       status: result.status,
-//       body,
-//     }
-//   } catch (e) {
-//     if (isShopifyError(e)) {
-//       throw {
-//         cause: e.cause?.toString() || "unknown",
-//         status: e.status || 500,
-//         message: e.message,
-//         query,
-//       }
-//     }
-
-//     throw {
-//       error: e,
-//       query,
-//     }
-//   }
-// }
-
+import { ProductDetail } from "@/types"
 import { createStorefrontApiClient } from "@shopify/storefront-api-client"
-import { getProductsQuery } from "./queries/product"
-import { Connection, Image, ShopifyProduct } from "./types"
+import { createCartMutation } from "./mutations/cart"
+import { getProductQuery, getProductsQuery } from "./queries/product"
+import { ShopifyCreateCartOperation } from "./types"
 
-const client = createStorefrontApiClient({
+export const shopifyClient = createStorefrontApiClient({
   storeDomain: clientDomain,
   apiVersion,
   privateAccessToken: key,
@@ -103,60 +49,83 @@ const client = createStorefrontApiClient({
 //   return reshapedCollections
 // }
 
-const reshapeImages = (images: Connection<Image>, productTitle: string) => {
-  const flattened = removeEdgesAndNodes(images)
+// const reshapeImages = (images: Connection<Image>, productTitle: string) => {
+//   const flattened = removeEdgesAndNodes(images)
 
-  return flattened.map((image) => {
-    const filename = image.url.match(/.*\/(.*)\..*/)?.[1]
-    return {
-      ...image,
-      altText: image.altText || `${productTitle} - ${filename}`,
-    }
+//   return flattened.map((image) => {
+//     const filename = image.url.match(/.*\/(.*)\..*/)?.[1]
+//     return {
+//       ...image,
+//       altText: image.altText || `${productTitle} - ${filename}`,
+//     }
+//   })
+// }
+
+// const removeEdgesAndNodes = <T>(array: Connection<T>): T[] => {
+//   return array.edges.map((edge) => edge?.node)
+// }
+
+// const reshapeProduct = (product: ShopifyProduct, filterHiddenProducts: boolean = true) => {
+//   if (!product || (filterHiddenProducts && product.tags.includes(HIDDEN_PRODUCT_TAG))) {
+//     return undefined
+//   }
+
+//   const { images, variants, ...rest } = product
+
+//   return {
+//     ...rest,
+//     images: reshapeImages(images, product.title),
+//     variants: removeEdgesAndNodes(variants),
+//   }
+// }
+
+// const reshapeProducts = (products: ShopifyProduct[]) => {
+//   const reshapedProducts = []
+
+//   for (const product of products) {
+//     if (product) {
+//       const reshapedProduct = reshapeProduct(product)
+
+//       if (reshapedProduct) {
+//         reshapedProducts.push(reshapedProduct)
+//       }
+//     }
+//   }
+
+//   return reshapedProducts
+// }
+
+export async function getProduct() {
+  const a = await shopifyClient.request<{ product: ProductDetail }>(getProductQuery, {
+    variables: {
+      handle: "chocolate-chip",
+    },
   })
-}
-
-const removeEdgesAndNodes = <T>(array: Connection<T>): T[] => {
-  return array.edges.map((edge) => edge?.node)
-}
-
-const reshapeProduct = (product: ShopifyProduct, filterHiddenProducts: boolean = true) => {
-  if (!product || (filterHiddenProducts && product.tags.includes(HIDDEN_PRODUCT_TAG))) {
-    return undefined
-  }
-
-  const { images, variants, ...rest } = product
-
-  return {
-    ...rest,
-    images: reshapeImages(images, product.title),
-    variants: removeEdgesAndNodes(variants),
-  }
-}
-
-const reshapeProducts = (products: ShopifyProduct[]) => {
-  const reshapedProducts = []
-
-  for (const product of products) {
-    if (product) {
-      const reshapedProduct = reshapeProduct(product)
-
-      if (reshapedProduct) {
-        reshapedProducts.push(reshapedProduct)
-      }
-    }
-  }
-
-  return reshapedProducts
+  return a
 }
 
 export async function getProducts() {
-  const a = await client.request(getProductsQuery, {
+  const a = await shopifyClient.request(getProductsQuery, {
     variables: {
       handle: "products",
     },
   })
-  return reshapeProducts(removeEdgesAndNodes(a.data.products))
+  return a
 }
+
+export async function createCart() {
+  const res = await shopifyClient.request<ShopifyCreateCartOperation>(createCartMutation)
+  return res.data
+}
+
+// export async function getProductSellingPlans() {
+//   const a = await shopifyClient.request(getProductSellingPlansQuery, {
+//     variables: {
+//       id: "gid://shopify/Product/8519377223832",
+//     },
+//   })
+//   return a
+// }
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
 export async function revalidate(req: NextRequest): Promise<NextResponse> {

@@ -2,23 +2,23 @@ import s from "./productPage.module.scss"
 
 import cx from "clsx"
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "components/ui/accordion"
+import { FollowUs } from "@/components/follow-us"
+import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
+import { getProduct } from "@/lib/shopify"
 import { PortableText } from "@portabletext/react"
 import { AnimatedCard } from "components/animated-card"
 import { CustomerReviews } from "components/customer-reviews"
-import { Purchase } from "components/purchase"
 import { ThemeUpdater } from "components/theme-updater"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "components/ui/accordion"
 import { Link } from "components/utility/link"
+import { getProductReviews } from "lib/queries/okendo"
+import { LAYOUT_QUERY } from "lib/queries/sanity/layout"
 import { PRODUCT_PAGE_QUERY } from "lib/queries/sanity/productPage"
 import { sanityClient } from "lib/sanity/client"
 import { SanityProductPage } from "lib/sanity/types"
 import { AnimatedCardProps } from "types"
-import Images from "./components/images"
-import FollowUs from "@/components/follow-us/FollowUs"
-import { LAYOUT_QUERY } from "lib/queries/sanity/layout"
 import { LayoutQueryResponse } from "types/layout"
-import { getProductReviews } from "lib/queries/okendo"
-import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
+import Images from "./components/images"
 
 interface ProductPageProps {
   params: {
@@ -30,21 +30,19 @@ export default async function Product({ params }: ProductPageProps) {
   const { slug } = params
 
   const product = await sanityClient.fetch<SanityProductPage>(PRODUCT_PAGE_QUERY, { slug })
-  console.log("product", product)
-
   const cards = await sanityClient.fetch<AnimatedCardProps[]>(ANIMATED_CARDS_QUERY)
   const layout = await sanityClient.fetch<LayoutQueryResponse>(LAYOUT_QUERY)
-
   const filtered = cards.filter((it) => {
     return it.product.shopifySlug !== product.slug
   })
-  console.log("cards", cards)
-
   const reviews = await getProductReviews("8519377223832")
-  console.log("reviews", reviews.data)
+  const { data, errors } = await getProduct()
+
+  console.log("shopifyProduct", data, errors)
 
   return (
     <>
+      {JSON.stringify(data?.product.sellingPlanGroups)}
       {product.colorTheme && <ThemeUpdater {...product.colorTheme} />}
       <div
         className={cx(s.productPage, "pt-20")}
@@ -62,7 +60,12 @@ export default async function Product({ params }: ProductPageProps) {
           <div className={cx(s.info, "col-span-6 pr-20")}>
             <h1 className={s.productTitle}>{product.title}</h1>
             <p className={s.productDescription}>{product.description}</p>
-            <Purchase />
+            {/* <Purchase
+              subscriptionTitle={data?.product.sellingPlanGroups.nodes[0].name as string}
+              subscriptionOptions={
+                data?.product.sellingPlanGroups.nodes[0].sellingPlans.nodes.map((option) => option) as SellingPlan[]
+              }
+            /> */}
           </div>
         </section>
 

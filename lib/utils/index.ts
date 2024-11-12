@@ -1,6 +1,8 @@
 import { MouseEvent } from "react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { ReadonlyURLSearchParams } from "next/navigation"
+import { Connection } from "../shopify/types"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -74,8 +76,6 @@ export function stopPropagation(e: MouseEvent) {
   e.stopPropagation()
 }
 
-import { ReadonlyURLSearchParams } from "next/navigation"
-
 export const createUrl = (pathname: string, params: URLSearchParams | ReadonlyURLSearchParams) => {
   const paramsString = params.toString()
   const queryString = `${paramsString.length ? "?" : ""}${paramsString}`
@@ -109,4 +109,8 @@ export const validateEnvironmentVariables = () => {
       "Your `SHOPIFY_STORE_DOMAIN` environment variable includes brackets (ie. `[` and / or `]`). Your site will not work with them there. Please remove them."
     )
   }
+}
+
+export const removeEdgesAndNodes = <T>(array: Connection<T>): T[] => {
+  return array.edges.map((edge) => edge?.node)
 }

@@ -3,19 +3,17 @@
 import s from "./animated-card.module.scss"
 
 import cx from "clsx"
-
-import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { useRef } from "react"
 import ScrollTrigger from "gsap/dist/ScrollTrigger"
-import { Img } from "components/utility/img"
+import { useRef } from "react"
+import { useGSAP } from "@gsap/react"
+
 import { AnimatedCardProps } from "@/types"
+import { Img } from "@/components/utility/img"
 
 export default function AnimatedCard(props: AnimatedCardProps) {
   const ref = useRef(null)
   const tl = useRef<gsap.core.Timeline | null>(null)
-
-  console.log(props.product.colorTheme.text)
 
   const { contextSafe } = useGSAP(
     () => {

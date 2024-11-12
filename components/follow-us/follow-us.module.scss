@@ -9,6 +9,10 @@
 
   .social {
     padding: desktop-vw(50px) desktop-vw(80px);
+
+    * {
+      fill: var(--blue-ruin);
+    }
   }
 
   .iconC {
