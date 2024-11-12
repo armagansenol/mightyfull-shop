@@ -1,0 +1,47 @@
+.default {
+  background-color: var(--sugar-milk);
+  border: 1px solid var(--blue-ruin);
+  color: var(--blue-ruin);
+  display: inline-flex;
+  font-family: var(--font-bomstad-display);
+  font-weight: 900;
+  line-height: 1;
+  transition: 200ms all ease;
+
+  @include hover {
+    &:hover {
+      background-color: var(--blue-ruin);
+      border: 1px solid var(--sugar-milk);
+      color: var(--sugar-milk);
+    }
+  }
+}
+
+.ghost {
+  background-color: transparent;
+  border: 1px solid var(--blue-ruin);
+  color: var(--blue-ruin);
+  display: inline-flex;
+  font-family: var(--font-bomstad-display);
+  font-weight: 900;
+  line-height: 1;
+  transition: 200ms all ease;
+
+  @include hover {
+    &:hover {
+      background-color: var(--blue-ruin);
+      border: 1px solid var(--sugar-milk);
+      color: var(--sugar-milk);
+    }
+  }
+}
+
+.defaultSize {
+  font-size: desktop-vw(24px);
+  padding: desktop-vw(20px) desktop-vw(40px);
+
+  @include mobile {
+    font-size: mobile-vw(20px);
+    padding: mobile-vw(16px) mobile-vw(32px);
+  }
+}

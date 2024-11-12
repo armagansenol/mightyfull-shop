@@ -6,6 +6,7 @@ import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons"
 import cn from "clsx"
 import { useEffect, useState } from "react"
 
+import { useCartStore } from "@/lib/store/cart"
 import { IconLogo } from "components/icons"
 import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
@@ -21,8 +22,7 @@ export default function Header(props: HeaderProps) {
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
   const { lenis } = useLenisStore()
   const [hidden, setHidden] = useState(false)
-
-  console.log("header", props)
+  const { items, setIsOpen } = useCartStore()
 
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start()
@@ -30,6 +30,7 @@ export default function Header(props: HeaderProps) {
 
   useEffect(() => {
     lenis?.on("scroll", () => {
+      if (lenis.scroll < 150) return
       if (lenis.velocity > 0) {
         if (!hidden) {
           setHidden(true)
@@ -78,6 +79,15 @@ export default function Header(props: HeaderProps) {
           <div className={cn(s.nav, "flex flex-col tablet:flex-row items-center justify-between space-x-20")}>
             <div className={cn(s.navItem)}>
               <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
+            </div>
+            <div
+              className={cn(
+                s.nav,
+                "flex flex-col tablet:flex-row items-center justify-between space-x-20 cursor-pointer"
+              )}
+              onClick={() => setIsOpen(true)}
+            >
+              <div className={cn(s.navItem)}>{`CART (${items.length})`}</div>
             </div>
           </div>
         </nav>

@@ -1,3 +1,4 @@
+import Cart from "@/components/cart/Cart"
 import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { SmoothLayout } from "@/layouts/smooth"
@@ -27,12 +28,13 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   const layoutData = await getLayoutData()
 
   return (
-    <div className={`flex min-h-screen flex-col items-stretch justify-between ${poppins.variable}`}>
+    <div className={`flex min-h-screen flex-col items-stretch justify-between ${poppins.variable} overflow-hidden`}>
       <Header shopMenu={layoutData.shopMenu} />
       <SmoothLayout>
-        <main className="mt-[var(--header-height)]">{children}</main>
+        <main className="mt-[var(--header-height)] overflow-hidden">{children}</main>
       </SmoothLayout>
       <Footer socialLinks={layoutData.socialLinks} />
+      <Cart />
     </div>
   )
 }

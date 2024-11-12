@@ -1,0 +1,42 @@
+.productHighlightCarousel {
+  @include dims(100vw, auto);
+  overflow: hidden;
+
+  .slide {
+    @include dims(100vw, auto);
+    flex-shrink: 0;
+
+    .imgC {
+      @include dims(mobile-vw(250px));
+    }
+  }
+}
+
+.nextButton,
+.prevButton {
+  @include dims(mobile-vw(24px));
+  z-index: 10;
+
+  @include mobile {
+    @include dims(mobile-vw(24px));
+  }
+}
+.nextButton {
+  @include position(absolute, 50%, 0, auto, auto);
+  transform: translateY(-50%);
+
+  @include mobile {
+    right: mobile-vw(16px);
+  }
+}
+.prevButton {
+  @include position(absolute, 50%, auto, auto, 0);
+  transform: translateY(-50%);
+
+  @include mobile {
+    left: mobile-vw(16px);
+  }
+}
+.emblaButtonDisabled {
+  opacity: 0.3;
+}

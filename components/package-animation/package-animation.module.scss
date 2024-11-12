@@ -1,0 +1,80 @@
+.packageAnimation {
+  margin-bottom: desktop-vw(-200px);
+  margin-top: desktop-vw(100px);
+  padding: 0 desktop-vw(50px);
+  pointer-events: none;
+
+  @include mobile {
+    margin-bottom: mobile-vw(-100px);
+    margin-top: mobile-vw(50px);
+    padding: 0 mobile-vw(20px);
+  }
+
+  .animatedCard {
+    @include dims(var(--dims));
+    position: relative;
+    transform-origin: center;
+
+    &:nth-child(1),
+    &:nth-child(3) {
+      --dims: #{desktop-vw(500px)};
+      margin-top: desktop-vw(220px);
+
+      @include mobile {
+        --dims: #{mobile-vw(100px)};
+        margin-top: mobile-vw(150px);
+      }
+
+      .package {
+        transform: translate(-50%, calc(-50% + desktop-vw(200px)));
+
+        @include mobile {
+          transform: translate(-50%, calc(-50% + mobile-vw(100px)));
+        }
+      }
+
+      .cookie {
+        transform: translate(-50%, calc(-50% - desktop-vw(150px)));
+
+        @include mobile {
+          transform: translate(-50%, calc(-50% - mobile-vw(75px)));
+        }
+      }
+    }
+
+    &:nth-child(2) {
+      --dims: #{desktop-vw(670px)};
+
+      @include mobile {
+        --dims: #{mobile-vw(170px)};
+      }
+
+      .package {
+        transform: translate(-50%, calc(-50% + desktop-vw(250px)));
+
+        @include mobile {
+          transform: translate(-50%, calc(-50% + mobile-vw(125px)));
+        }
+      }
+
+      .cookie {
+        transform: translate(-50%, calc(-50% - desktop-vw(300px)));
+
+        @include mobile {
+          transform: translate(-50%, calc(-50% - mobile-vw(150px)));
+        }
+      }
+    }
+
+    .package {
+      @include position(absolute, 50%, auto, auto, 50%);
+      @include dims(var(--dims));
+      z-index: 10;
+    }
+
+    .cookie {
+      @include position(absolute, 50%, auto, auto, 50%);
+      @include dims(calc(var(--dims) * 0.7));
+    }
+  }
+}

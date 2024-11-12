@@ -2,13 +2,19 @@
   background-color: var(--blue-ruin);
   color: var(--sugar-milk);
   padding: desktop-vw(60px);
+  padding-top: 0;
   position: relative;
   z-index: z-index("footer");
 
   @include mobile {
-    margin-top: mobile-vw(200px);
-    padding: 0 mobile-vw(16px);
-    padding-top: mobile-vw(30px);
+    padding: mobile-vw(60px) mobile-vw(16px);
+  }
+
+  .cloud {
+    @include position(absolute, desktop-vw(50px), 0, auto, 0);
+    @include dims(100%, desktop-vw(150px));
+    transform: translateY(-100%);
+    z-index: -1;
   }
 
   .actions {
@@ -35,7 +41,6 @@
       font-size: desktop-vw(18px);
       font-weight: 400;
       line-height: 1.3;
-      margin-bottom: desktop-vw(40px);
 
       @include mobile {
         @include dims(auto);
@@ -46,25 +51,29 @@
       }
     }
 
+    .subscribe {
+      margin-bottom: desktop-vw(60px);
+
+      @include mobile {
+        margin-bottom: mobile-vw(60px);
+      }
+    }
+  }
+
+  .nav {
+    margin-right: desktop-vw(125px);
+
     .navItem {
       color: var(--sugar-milk);
       font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(22px);
-      font-weight: 700;
+      font-size: desktop-vw(18px);
+      font-weight: 500;
       line-height: 1.1;
 
       @include mobile {
         font-size: mobile-vw(22px);
         line-height: 1.2;
         text-align: center;
-      }
-    }
-
-    .subscribe {
-      margin-bottom: desktop-vw(60px);
-
-      @include mobile {
-        margin-bottom: mobile-vw(60px);
       }
     }
   }
@@ -134,8 +143,12 @@
     color: var(--sugar-milk);
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(18px);
-    font-weight: 700;
+    font-weight: 500;
     padding: desktop-vw(40px) 0;
+
+    * {
+      fill: var(--sugar-milk);
+    }
 
     @include mobile {
       font-size: mobile-vw(16px);
@@ -186,6 +199,61 @@
     @include mobile {
       @include dims(mobile-vw(700px), mobile-vw(100px));
       transform: translate(-50%, mobile-vw(-150px));
+    }
+  }
+
+  .cookie {
+    pointer-events: none;
+    z-index: 100;
+
+    &.cookie1 {
+      @include position(absolute, desktop-vw(-100px), auto, auto, desktop-vw(50px));
+      @include dims(desktop-vw(100px));
+
+      @include mobile {
+        @include position(absolute, mobile-vw(50px), auto, auto, mobile-vw(20px));
+        @include dims(mobile-vw(50px));
+      }
+    }
+
+    &.cookie2 {
+      @include position(absolute, desktop-vw(-125px), auto, auto, desktop-vw(800px));
+      @include dims(desktop-vw(120px));
+
+      @include mobile {
+        @include position(absolute, mobile-vw(300px), auto, auto, mobile-vw(300px));
+        @include dims(mobile-vw(50px));
+      }
+    }
+
+    &.cookie3 {
+      @include position(absolute, desktop-vw(0px), desktop-vw(300px), auto, auto);
+      @include dims(desktop-vw(94px));
+
+      @include mobile {
+        @include position(absolute, mobile-vw(40px), auto, auto, mobile-vw(310px));
+        @include dims(mobile-vw(50px));
+      }
+    }
+
+    &.cookie4 {
+      @include position(absolute, desktop-vw(-75px), desktop-vw(-100px), auto, auto);
+      @include dims(desktop-vw(260px));
+
+      @include mobile {
+        @include position(absolute, mobile-vw(0px), desktop-vw(50px), auto, auto);
+        @include dims(mobile-vw(40px));
+      }
+    }
+
+    &.cookie5 {
+      @include position(absolute, desktop-vw(50px), auto, auto, desktop-vw(750px));
+      @include dims(desktop-vw(100px));
+
+      @include mobile {
+        @include position(absolute, mobile-vw(180px), auto, auto, mobile-vw(300px));
+        @include dims(mobile-vw(10px));
+      }
     }
   }
 }

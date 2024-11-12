@@ -1,7 +1,7 @@
 "use client"
 
+import cn from "clsx"
 import NextLink, { LinkProps as NextLinkProps } from "next/link"
-import { useRouter } from "next/navigation"
 import React, { forwardRef, useMemo } from "react"
 
 interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">, NextLinkProps {
@@ -9,28 +9,28 @@ interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 
   children: React.ReactNode
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
+// function sleep(ms: number): Promise<void> {
+//   return new Promise((resolve) => setTimeout(resolve, ms))
+// }
 
 const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
   { href, children, className, scroll = false, ariaLabel = "go to page", ...props },
   ref
 ) => {
-  const router = useRouter()
+  // const router = useRouter()
 
-  const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
-    const body = document.querySelector("body")
+  // const handleTransition = async (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  //   e.preventDefault()
+  //   const body = document.querySelector("body")
 
-    body?.classList.add("page-transition")
+  //   body?.classList.add("page-transition")
 
-    await sleep(500)
-    router.push(href.toString())
-    await sleep(500)
+  //   await sleep(500)
+  //   router.push(href.toString())
+  //   await sleep(500)
 
-    body?.classList.remove("page-transition")
-  }
+  //   body?.classList.remove("page-transition")
+  // }
 
   const isProtocol = useMemo(
     () => typeof href === "string" && (href.startsWith("mailto:") || href.startsWith("tel:")),
@@ -64,10 +64,10 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
     <NextLink
       href={href}
       passHref={isAnchor}
-      onClick={handleTransition}
+      // onClick={handleTransition}
       scroll={scroll}
       aria-label={ariaLabel}
-      className={className}
+      className={cn("cursor-pointer", className)}
       ref={ref}
       {...props}
     >

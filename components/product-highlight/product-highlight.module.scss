@@ -2,6 +2,23 @@
   @include dims(100vw, 100vh);
   overflow: hidden;
 
+  @include tablet {
+    @include dims(100vw, desktop-vw(700px));
+  }
+
+  @include mobile {
+    @include dims(auto);
+  }
+
+  .panel {
+    @include dims(desktop-vw(700px), auto);
+    flex-shrink: 0;
+
+    &:first-child {
+      margin-left: desktop-vw(350px);
+    }
+  }
+
   .text {
     margin-bottom: desktop-vw(70px);
     margin-top: desktop-vw(-75px);
@@ -38,10 +55,6 @@
         font-size: mobile-vw(18px);
       }
     }
-  }
-
-  .items {
-    margin-left: calc(50vw - desktop-vw(200px));
   }
 
   .item {

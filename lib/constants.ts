@@ -41,27 +41,37 @@ export const routes = {
   home: {
     ariaLabel: "Homepage",
     name: "home",
-    path: "",
+    url: "",
     ui: "Home",
     seo: {
       title: "MIGHTYFULL",
       description: "This might be the best cookie ever!",
     },
   },
-  about: {
-    ariaLabel: "About",
-    name: "about",
-    path: "about",
-    ui: "About",
+  ourStory: {
+    ariaLabel: "Our Story",
+    name: "our-story",
+    url: "our-story",
+    ui: "Our Story",
     seo: {
-      title: "About | MIGHTYFULL",
+      title: "Our Story | MIGHTYFULL",
+      description: "This might be the best cookie ever!",
+    },
+  },
+  shop: {
+    ariaLabel: "Shop",
+    name: "shop",
+    url: "shop",
+    ui: "Shop",
+    seo: {
+      title: "Shop | MIGHTYFULL",
       description: "This might be the best cookie ever!",
     },
   },
   notFound: {
     ariaLabel: "Not Found",
     name: "not-found",
-    path: "not-found",
+    url: "not-found",
     ui: "Not found",
     seo: {
       title: "404 Not Found",

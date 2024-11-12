@@ -1,21 +1,19 @@
 .header {
-  @include dims(auto, desktop-vw(90px));
-  --padding-x: #{desktop-vw(40px)};
-  background-color: var(--sugar-milk);
-  padding: 0 var(--padding-x);
-  position: relative;
-  z-index: z-index("header");
   @include position(fixed, 0, 0, auto, 0);
-
+  @include dims(auto, var(--header-height));
+  --padding-x: #{desktop-vw(40px)};
+  background: var(--sugar-milk);
+  border-bottom: 1px solid var(--blue-ruin);
+  padding: 0 var(--padding-x);
   transition: 400ms all ease;
+  z-index: z-index("header");
 
   &.hidden {
     transform: translateY(-100%);
   }
 
   @include mobile {
-    margin: 0 mobile-vw(16px);
-    padding: mobile-vw(16px) 0;
+    --padding-x: #{mobile-vw(16px)};
   }
 
   // &:after {
@@ -41,6 +39,7 @@
   }
 
   .trigger {
+    color: var(--blue-ruin);
     @include mobile {
       @include dims(mobile-vw(24px));
       z-index: 200;

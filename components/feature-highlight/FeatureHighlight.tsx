@@ -1,24 +1,32 @@
-import { FeatureHighLightCard } from "@/types"
-import cn from "clsx"
-import { IconProtein8 } from "../icons"
 import s from "./feature-highlight.module.scss"
-import { Img } from "../utility/img"
+
+import cn from "clsx"
+
+import { IconProtein8 } from "@/components/icons"
+import { Parallax } from "@/components/parallax"
+import { Img } from "@/components/utility/img"
+import { FeatureHighLightCard } from "@/types"
+
+import flyingCookie from "@/public/img/flying-cookie.png"
 
 export interface FeatureHighlightProps {
   items: FeatureHighLightCard[]
 }
 
 export default function FeatureHighlight(props: FeatureHighlightProps) {
-  console.log("aa", props.items)
-
   return (
-    <section className={cn(s.featureHighlight, "flex flex-col items-center py-20 pb-80 bg-[var(--sugar-milk)]")}>
+    <section
+      className={cn(
+        s.featureHighlight,
+        "flex flex-col items-center py-10 tablet:py-20 pb-32 tablet:pb-96 bg-[var(--sugar-milk)]"
+      )}
+    >
       <h2 className={s.heading}>What Makes Mightyfull Truly Mighty?</h2>
-      <div className="grid grid-cols-2 gap-14">
-        {props.items.map((item, i) => {
+      <div className="flex flex-col items-center tablet:grid grid-cols-2 gap-14">
+        {props.items.map((item) => {
           return (
             <div
-              className={cn(s.card, `flex flex-col items-start justify-start -z-${i}`)}
+              className={cn(s.card, `flex flex-col items-start justify-start`)}
               key={item._key}
               style={
                 {
@@ -38,6 +46,34 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
       </div>
       <div className={s.stickerC}>
         <IconProtein8 />
+      </div>
+      <div className={cn(s.cookie, s.cookie1)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain rotate-180" src={"/img/c1.png"} height={200} width={200} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie2)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-6" src={"/img/c2.png"} height={200} width={200} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie3)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-12" src={"/img/c3.png"} height={200} width={200} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie4)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-12" src={"/img/c4.png"} height={200} width={200} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie5)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain rotate-6" src={"/img/c5.png"} height={200} width={200} />
+        </Parallax>
+      </div>
+      <div className={s.flyingCookie}>
+        <Img alt="Flying Cookie with a Cape" className="object-contain -rotate-12" src={flyingCookie} />
       </div>
     </section>
   )

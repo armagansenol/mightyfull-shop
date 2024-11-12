@@ -56,8 +56,8 @@ select {
 }
 
 *::selection {
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--blue-ruin);
+  color: var(--sugar-milk);
 }
 
 input {
@@ -119,4 +119,15 @@ sup {
     font-weight: 500;
     padding-right: unset;
   }
+}
+
+.buttonStyle {
+  @include dims(desktop-vw(220px), desktop-vw(65px));
+  border: 1px solid var(--blue-ruin);
+  border-radius: desktop-vw(8px);
+  color: var(--blue-ruin);
+  flex-shrink: 0;
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(24px);
+  font-weight: 900;
 }

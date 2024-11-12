@@ -1,12 +1,18 @@
 import s from "./footer.module.scss"
 
-import cx from "clsx"
+import cn from "clsx"
 
-import { socialIcons } from "components/icons"
-import { Link } from "components/utility/link"
-import { routes } from "lib/constants"
+import { IconCloud, socialIcons } from "@/components/icons"
+import { Parallax } from "@/components/parallax"
+import { Img } from "@/components/utility/img"
+import { Link } from "@/components/utility/link"
 import { SocialMedia } from "types"
 import { SocialLink } from "types/layout"
+
+import c1 from "@/public/img/c1.png"
+import c3 from "@/public/img/c3.png"
+import c4 from "@/public/img/c4.png"
+import c5 from "@/public/img/c5.png"
 
 interface FooterProps {
   socialLinks: SocialLink[]
@@ -16,32 +22,38 @@ export default function Footer(props: FooterProps) {
   console.log("footer props", props.socialLinks)
 
   return (
-    <footer className={cx(s.footer, "flex flex-col items-stretch justify-center")}>
-      <div className="flex flex-col-reverse tablet:grid grid-cols-12">
-        <div className={cx(s.actions, "col-span-6")}>
+    <footer className={cn(s.footer, "flex flex-col items-stretch justify-center")}>
+      <div className={s.cloud}>
+        <IconCloud fill="var(--blue-ruin)" />
+      </div>
+      <div className="flex items-end justify-between">
+        <div className={cn(s.actions, "col-span-6")}>
           <h6>
             Stay mighty. <br />
             Stay full.
           </h6>
           <p>Be the first to know about new products, brand uptades, exclusive events, and more!</p>
-          <nav className="flex flex-col gap-10 tablet:gap-5">
-            <Link href={`/${routes.about.path}`} className={s.navItem}>
-              About Us
-            </Link>
-            <Link href="mailto:kamola@mightyfull.com" className={s.navItem}>
-              Contact Us
-            </Link>
-          </nav>
         </div>
+        <nav className={cn(s.nav, "flex flex-col gap-10 tablet:gap-5")}>
+          <Link href={`/shop`} className={s.navItem}>
+            Shop
+          </Link>
+          <Link href={`/our-story`} className={s.navItem}>
+            Our Story
+          </Link>
+          <Link href="mailto:kamola@mightyfull.com" className={s.navItem}>
+            Contact Us
+          </Link>
+        </nav>
       </div>
       <div
-        className={cx(
+        className={cn(
           s.copyright,
-          "flex flex-col items-center tablet:flex-row tablet:items-start justify-between gap-10 tablet:gap-20"
+          "flex flex-col items-center tablet:flex-row tablet:items-center justify-between gap-10 tablet:gap-20"
         )}
       >
         <span className={s.c}>©2024 Mightyfull</span>
-        <div className={cx(s.social, "flex items-center space-x-4")}>
+        <div className={cn(s.social, "flex items-center space-x-4")}>
           {props.socialLinks.map((item, i) => {
             return (
               <Link className={"w-8 h-8"} href={item.url} key={i}>
@@ -52,10 +64,35 @@ export default function Footer(props: FooterProps) {
         </div>
         <span className="ml-0 tablet:ml-auto">
           Made by{" "}
-          <Link className={cx(s.signature, "underline")} href="https://justdesignfx.com">
+          <Link className={cn(s.signature, "underline")} href="https://justdesignfx.com">
             JUST DESIGN FX
           </Link>
         </span>
+      </div>
+      <div className={cn(s.cookie, s.cookie1)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain rotate-[190deg]" src={c1} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie2)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-6" src={c3} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie3)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-12" src={c3} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie4)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain -rotate-6" src={c4} />
+        </Parallax>
+      </div>
+      <div className={cn(s.cookie, s.cookie5)}>
+        <Parallax>
+          <Img alt="Cookie Crumb" className="object-contain rotate-6" src={c5} />
+        </Parallax>
       </div>
     </footer>
   )

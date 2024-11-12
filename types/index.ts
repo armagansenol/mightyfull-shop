@@ -47,6 +47,7 @@ export interface ProductDetail {
   store: StoreDetails
   seo: Seo
   product: ShopifyProduct
+  sellingPlanGroups: SellingPlanGroups
 }
 
 export interface Theme {
@@ -56,7 +57,6 @@ export interface Theme {
 
 export enum SocialMedia {
   tiktok = "tiktok",
-  linkedin = "linkedin",
   facebook = "facebook",
   instagram = "instagram",
   x = "x",
@@ -105,4 +105,80 @@ export interface FeatureHighlightQueryResult {
 export interface ProductSpec {
   title: string
   description: PortableTextBlock
+}
+
+export interface Testimonial {
+  _id: string
+  title: string
+  description: string
+}
+
+type SellingPlanGroups = {
+  nodes: SellingPlanGroup[]
+}
+
+type SellingPlanGroup = {
+  name: string
+  options: SellingPlanOption[]
+  sellingPlans: SellingPlans
+}
+
+type SellingPlanOption = {
+  name: string
+  values: string[]
+}
+
+type SellingPlans = {
+  nodes: SellingPlan[]
+}
+
+type SellingPlan = {
+  name: string
+}
+
+export interface CartItem {
+  id: string
+  name: string
+  price: number
+  originalPrice?: number
+  image: string
+  quantity: number
+  subscriptionOffer?: {
+    text: string
+    discount: number
+  }
+  deliveryOffer?: {
+    text: string
+    discount: number
+  }
+}
+
+export type CartLineItem = {
+  id: string
+  quantity: number
+  cost: {
+    totalAmount: {
+      amount: string
+      currencyCode: string
+    }
+  }
+  merchandise: {
+    id: string
+    title: string
+    selectedOptions: {
+      name: string
+      value: string
+    }[]
+    product: Product
+  }
+}
+
+// Define `Product` type if not already defined
+type Product = {
+  // Add relevant fields for the product
+  // Example:
+  id: string
+  title: string
+  handle: string
+  // Additional fields as necessary
 }
