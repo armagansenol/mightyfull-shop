@@ -1,7 +1,8 @@
 import { SanityColorTheme } from "@/lib/context/theme"
 import { SanityAssetImage } from "@/lib/sanity"
 import { PortableTextBlock } from "@portabletext/react"
-import { Seo } from "@shopify/hydrogen-react/storefront-api-types"
+import { ConnectionGenericForDoc } from "@shopify/hydrogen-react/flatten-connection"
+import { Image, ProductVariant, Seo } from "@shopify/hydrogen-react/storefront-api-types"
 import { ImageAsset } from "sanity"
 
 export interface AnimatedCardProps {
@@ -48,6 +49,11 @@ export interface ProductDetail {
   seo: Seo
   product: ShopifyProduct
   sellingPlanGroups: SellingPlanGroups
+  variants: {
+    nodes: {
+      price: ProductVariant["price"]
+    }[]
+  }
 }
 
 export interface Theme {
@@ -80,6 +86,7 @@ interface ProductItem {
   image: SanityAssetImage
   title: string
   slug: string
+  colorTheme: SanityColorTheme
 }
 
 export interface ProductHighlightQueryResult {
@@ -136,21 +143,30 @@ type SellingPlan = {
   name: string
 }
 
-export interface CartItem {
+export interface CartItemData {
+  id: string
+  // name: string
+  // price: number
+  // originalPrice?: number
+  // image: string
+  quantity: number
+  // subscriptionOffer?: {
+  //   text: string
+  //   discount: number
+  // }
+  // deliveryOffer?: {
+  //   text: string
+  //   discount: number
+  // }
+}
+
+export interface CartItemCard {
   id: string
   name: string
   price: number
-  originalPrice?: number
-  image: string
+  // originalPrice?: number
+  image: SanityAssetImage
   quantity: number
-  subscriptionOffer?: {
-    text: string
-    discount: number
-  }
-  deliveryOffer?: {
-    text: string
-    discount: number
-  }
 }
 
 export type CartLineItem = {
@@ -181,4 +197,15 @@ type Product = {
   title: string
   handle: string
   // Additional fields as necessary
+}
+
+export interface CartProductNode {
+  id: string
+  title: string
+  featuredImage: Image
+  variants: {
+    nodes: {
+      price: ProductVariant["price"]
+    }[]
+  }
 }

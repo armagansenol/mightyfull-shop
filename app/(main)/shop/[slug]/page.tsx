@@ -3,6 +3,7 @@ import s from "./productPage.module.scss"
 import cx from "clsx"
 
 import { FollowUs } from "@/components/follow-us"
+import { Purchase } from "@/components/purchase"
 import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { getProduct } from "@/lib/shopify"
 import { PortableText } from "@portabletext/react"
@@ -19,6 +20,7 @@ import { SanityProductPage } from "lib/sanity/types"
 import { AnimatedCardProps } from "types"
 import { LayoutQueryResponse } from "types/layout"
 import Images from "./components/images"
+import { MoneyV2 } from "@shopify/hydrogen-react/storefront-api-types"
 
 interface ProductPageProps {
   params: {
@@ -36,13 +38,15 @@ export default async function Product({ params }: ProductPageProps) {
     return it.product.shopifySlug !== product.slug
   })
   const reviews = await getProductReviews("8519377223832")
-  const { data, errors } = await getProduct()
+  const { data, errors } = await getProduct(product.slug ?? "")
 
-  console.log("shopifyProduct", data, errors)
+  console.log(errors)
+
+  console.log("product", data?.product)
 
   return (
     <>
-      {JSON.stringify(data?.product.sellingPlanGroups)}
+      {/* {JSON.stringify(data?.product.sellingPlanGroups)} */}
       {product.colorTheme && <ThemeUpdater {...product.colorTheme} />}
       <div
         className={cx(s.productPage, "pt-20")}
@@ -60,15 +64,9 @@ export default async function Product({ params }: ProductPageProps) {
           <div className={cx(s.info, "col-span-6 pr-20")}>
             <h1 className={s.productTitle}>{product.title}</h1>
             <p className={s.productDescription}>{product.description}</p>
-            {/* <Purchase
-              subscriptionTitle={data?.product.sellingPlanGroups.nodes[0].name as string}
-              subscriptionOptions={
-                data?.product.sellingPlanGroups.nodes[0].sellingPlans.nodes.map((option) => option) as SellingPlan[]
-              }
-            /> */}
+            <Purchase productId={product.gid} price={data?.product.variants.nodes[0].price as MoneyV2} />
           </div>
         </section>
-
         {product.specs.length > 0 && (
           <section className={cx(s.specs, "grid grid-cols-12")}>
             <div className="col-span-5 col-start-2">
@@ -96,7 +94,6 @@ export default async function Product({ params }: ProductPageProps) {
             <CustomerReviews reviews={reviews.data} />
           </section>
         )}
-
         <section className={s.relatedProducts}>
           <section className={cx(s.products, "flex flex-col items-center")}>
             <h2>Impossible to Choose Just One!</h2>

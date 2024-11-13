@@ -1,9 +1,9 @@
 .header {
   @include position(fixed, 0, 0, auto, 0);
   @include dims(auto, var(--header-height));
-  --padding-x: #{desktop-vw(40px)};
+  --padding-x: #{desktop-vw(80px)};
   background: var(--sugar-milk);
-  border-bottom: 1px solid var(--blue-ruin);
+  border-bottom: 1px solid var(--primary);
   padding: 0 var(--padding-x);
   transition: 400ms all ease;
   z-index: z-index("header");
@@ -73,6 +73,7 @@
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(20px);
     font-weight: 700;
+    position: relative;
     transition: 200ms all ease;
 
     @include mobile {
@@ -80,22 +81,20 @@
       font-size: mobile-vw(20px);
     }
 
-    &.border {
-      border: 1px solid var(--prmiary);
-      padding: desktop-vw(2px) desktop-vw(20px);
-      border-radius: desktop-vw(20px);
+    .iconC {
+      @include dims(desktop-vw(36px));
+    }
 
-      @include mobile {
-        padding: mobile-vw(2px) mobile-vw(20px);
-        border-radius: mobile-vw(20px);
-      }
-
-      @include hover {
-        &:hover {
-          background-color: var(--blue-ruin);
-          color: var(--sugar-milk);
-        }
-      }
+    .amount {
+      @include position(absolute, auto, auto, 0, 0);
+      @include dims(desktop-vw(22px));
+      background-color: var(--secondary);
+      color: var(--primary);
+      font-family: var(--font-poppins);
+      font-size: desktop-vw(15px);
+      font-weight: 700;
+      line-height: 1;
+      transform: translate(-25%, 25%);
     }
   }
 

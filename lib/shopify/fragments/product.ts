@@ -3,6 +3,14 @@ const productFragment = /* GraphQL */ `
     id
     handle
     title
+    variants(first: 1) {
+      nodes {
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
     sellingPlanGroups(first: 10) {
       nodes {
         appName

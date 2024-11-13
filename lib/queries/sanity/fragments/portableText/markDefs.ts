@@ -1,8 +1,7 @@
-import groq from "groq";
+import groq from "groq"
 
-import { LINK_EXTERNAL } from "../linkExternal";
-import { LINK_INTERNAL } from "../linkInternal";
-import { PRODUCT_WITH_VARIANT } from "../productWithVariant";
+import { LINK_EXTERNAL } from "../linkExternal"
+import { LINK_INTERNAL } from "../linkInternal"
 
 export const MARK_DEFS = groq`
 	...,
@@ -11,14 +10,5 @@ export const MARK_DEFS = groq`
 	},
 	(_type == 'annotationLinkInternal') => {
 	${LINK_INTERNAL}
-	},
-	(_type == 'annotationProduct') => {
-	  linkAction,
-	  productWithVariant {
-	    ...${PRODUCT_WITH_VARIANT}
-	  },
-	  (linkAction != 'link') => {
-	    quantity
-	  }
-  },
-`;
+	}
+`

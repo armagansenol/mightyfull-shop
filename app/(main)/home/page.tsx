@@ -59,9 +59,13 @@ export default async function HomePage() {
         <div className="col-span-6">
           <div className={s.imgC}>
             <video className="w-full h-full" autoPlay loop playsInline muted>
-              {/* <source src="/video/intro-test.webm" /> */}
-              {/* <source src="/video/intro-test.mov" /> */}
+              <source src="/video/mighty.webm" />
+              <source src="/video/mighty-1.mov" />
             </video>
+            {/* <video className="w-full h-full" autoPlay loop playsInline muted>
+              <source src="/video/mighty-bottom.webm" />
+              <source src="/video/mighty-bottom.mov" />
+            </video> */}
           </div>
         </div>
         <div className={s.cloud}>

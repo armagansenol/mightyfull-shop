@@ -11,6 +11,7 @@ export const PRODUCT_PAGE = groq`
   "available": !store.isDeleted && store.status == 'active',
   "title": store.title,
   "featuredImage": store.featuredImage,
+  "price": store.price,
   images[] {
     ${IMAGE}
   },
@@ -29,4 +30,5 @@ export const PRODUCT_PAGE = groq`
   ${SEO_SHOPIFY},
   "slug": store.slug.current,
   ${SHARED_TEXT},
+
 `

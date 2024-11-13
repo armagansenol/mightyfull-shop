@@ -12,18 +12,20 @@ const buttonVariants = cva(
       variant: {
         link: "underline-offset-4 hover:underline",
         primary: "bg-white text-blue-600 hover:bg-gray-100",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         default: s.default,
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: s.ghost,
+        naked: s.naked,
+        themed: s.themed,
       },
       size: {
         default: s.defaultSize,
+        slim: "py-4 w-full rounded-lg",
         sm: "h-8 px-3 text-xs",
         lg: "h-10 px-8",
         icon: "h-9 w-9",
-        shop: "h-[35px] px-6 py-2 text-base font-semibold tracking-wide",
       },
     },
     defaultVariants: {

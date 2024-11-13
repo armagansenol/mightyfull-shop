@@ -1,12 +1,11 @@
-import groq from "groq";
+import groq from "groq"
 
-import { MODULE_ACCORDION } from "./modules/accordion";
-import { MODULE_CALLOUT } from "./modules/callout";
-import { MODULE_CALL_TO_ACTION } from "./modules/callToAction";
-import { MODULE_COLLECTION } from "./modules/collection";
-import { MODULE_IMAGE } from "./modules/image";
-import { MODULE_INSTAGRAM } from "./modules/instagram";
-import { MODULE_PRODUCT } from "./modules/product";
+import { MODULE_ACCORDION } from "./modules/accordion"
+import { MODULE_CALLOUT } from "./modules/callout"
+import { MODULE_COLLECTION } from "./modules/collection"
+import { MODULE_IMAGE } from "./modules/image"
+import { MODULE_INSTAGRAM } from "./modules/instagram"
+import { MODULE_PRODUCT } from "./modules/product"
 
 export const MODULES = groq`
   _key,
@@ -16,9 +15,6 @@ export const MODULES = groq`
   },
   (_type == "module.callout") => {
     ${MODULE_CALLOUT}
-  },
-  (_type == 'module.callToAction') => {
-    ${MODULE_CALL_TO_ACTION}
   },
   (_type == "module.collection") => {
     ${MODULE_COLLECTION}
@@ -32,4 +28,4 @@ export const MODULES = groq`
   (_type == "module.product") => {
     ${MODULE_PRODUCT}
   },
-`;
+`

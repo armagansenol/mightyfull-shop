@@ -7,7 +7,7 @@ import cn from "clsx"
 import { useEffect, useState } from "react"
 
 import { useCartStore } from "@/lib/store/cart"
-import { IconLogo } from "components/icons"
+import { IconCookieCart, IconLogo } from "components/icons"
 import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
@@ -89,7 +89,12 @@ export default function Header(props: HeaderProps) {
               )}
               onClick={() => setIsOpen(true)}
             >
-              <div className={cn(s.navItem)}>{`CART (${items.length})`}</div>
+              <div className={cn(s.navItem)}>
+                <div className={s.iconC}>
+                  <IconCookieCart fill="var(--primary)" />
+                </div>
+                <div className={cn(s.amount, "flex items-center justify-center rounded-full")}>{items.length}</div>
+              </div>
             </div>
           </div>
         </nav>

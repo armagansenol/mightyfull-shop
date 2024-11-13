@@ -1,33 +1,8 @@
-.addToCart {
-  .label {
-    color: var(--text-color);
-    display: block;
-    font-family: var(--font-poppins);
-    font-size: desktop-vw(14px);
-    font-weight: 600;
-    margin-bottom: desktop-vw(8px);
-  }
-
-  .quantity {
-    @include dims(desktop-vw(160px), auto);
-    border: 1px solid var(--text-color);
-    border-radius: desktop-vw(8px);
-    color: var(--text-color);
-    font-family: var(--font-poppins);
-    font-size: desktop-vw(14px);
-    font-weight: 600;
-
-    .action {
-      @include dims(desktop-vw(48px));
-    }
-  }
-
-  .button {
-    @include dims(desktop-vw(48px));
-    background-color: var(--text-color);
-    color: var(--sugar-milk);
-    font-family: var(--font-poppins);
-    font-size: desktop-vw(16px);
-    font-weight: 500;
-  }
+.quantity {
+  border: 1px solid var(--text-color);
+  border-radius: desktop-vw(8px);
+  color: var(--text-color);
+  font-family: var(--font-poppins);
+  font-size: desktop-vw(14px);
+  font-weight: 600;
 }

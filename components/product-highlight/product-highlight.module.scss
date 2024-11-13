@@ -1,6 +1,8 @@
 .productHighlight {
   @include dims(100vw, 100vh);
+  background-color: var(--bg-color);
   overflow: hidden;
+  transition: 400ms all ease;
 
   @include tablet {
     @include dims(100vw, desktop-vw(700px));
@@ -20,7 +22,7 @@
   }
 
   .text {
-    margin-bottom: desktop-vw(70px);
+    margin-bottom: desktop-vw(50px);
     margin-top: desktop-vw(-75px);
 
     @include mobile {

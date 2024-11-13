@@ -1,6 +1,8 @@
 import "styles/global.scss"
 import "styles/tailwind-initial.css"
 
+import { Providers } from "@/components/providers"
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -8,7 +10,9 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

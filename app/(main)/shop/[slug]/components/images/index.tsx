@@ -26,7 +26,7 @@ export default function Images(props: ImagesProps) {
               key={i}
               onClick={() => setCurrentItem(i)}
             >
-              <Img className="object-contain" src={item.url} height={500} width={500} alt="Product Visual" />
+              <Img className="object-contain" src={item.url} height={500} width={500} alt="Product Visual" priority />
             </div>
           )
         })}
@@ -39,6 +39,7 @@ export default function Images(props: ImagesProps) {
             height={500}
             width={500}
             alt="Product Visual"
+            priority
           />
         </div>
       </div>

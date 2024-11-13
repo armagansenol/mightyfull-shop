@@ -219,13 +219,6 @@ export type SanityModuleProduct = {
   productWithVariant: SanityProductWithVariant
 }
 
-export type SanityModuleProducts = {
-  _key?: string
-  _type: "module.products"
-  layout?: "card" | "pill"
-  modules: SanityModuleProduct[]
-}
-
 export type SanityModuleTaggedProducts = {
   _key?: string
   _type: "module.taggedProducts"

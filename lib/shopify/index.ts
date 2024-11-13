@@ -95,10 +95,10 @@ export const shopifyClient = createStorefrontApiClient({
 //   return reshapedProducts
 // }
 
-export async function getProduct() {
+export async function getProduct(handle: string) {
   const a = await shopifyClient.request<{ product: ProductDetail }>(getProductQuery, {
     variables: {
-      handle: "chocolate-chip",
+      handle,
     },
   })
   return a

@@ -1,6 +1,7 @@
 .purchaseOptions {
   .title {
     color: var(--text-color);
+    display: block;
     font-family: var(--font-poppins);
     font-size: desktop-vw(14px);
     font-weight: 600;

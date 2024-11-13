@@ -2,62 +2,92 @@
 
 import s from "./purchase.module.scss"
 
-import cx from "clsx"
+import cn from "clsx"
+import { useState } from "react"
 
-import { Label } from "components/ui/label"
-import { RadioGroup, RadioGroupItem } from "components/ui/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "components/ui/select"
-import { AddToCart } from "components/add-to-cart"
-import { usePurchaseStore } from "lib/store/purchase"
+import { QuantityProvider } from "@/lib/context/quantity"
+import { useCartStore } from "@/lib/store/cart"
+import { ProductVariant } from "@shopify/hydrogen-react/storefront-api-types"
+import { AddToCart } from "../add-to-cart"
+import { Button } from "../ui/button"
+import { Label } from "../ui/label"
 
-export default function PurchaseOptions() {
-  const { purchaseType, deliveryInterval, setPurchaseType, setDeliveryInterval } = usePurchaseStore()
-  const basePrice = 12.99
+// type PurchaseType = "one-time" | "subscribe"
+
+interface PurchaseOptionsProps {
+  productId: string
+  price: ProductVariant["price"]
+}
+
+export default function PurchaseOptions(props: PurchaseOptionsProps) {
+  const [quantity, setQuantity] = useState(1)
+  const { addItem } = useCartStore()
+
+  console.log("price", props.price)
 
   return (
-    <div className={s.purchaseOptions}>
-      <p className={s.title}>PURCHASE OPTIONS</p>
-      <div className={cx(s.purchase, "rounded-lg")}>
-        <div className="space-y-6">
-          <div className={s.border}>
+    <QuantityProvider>
+      <div className={s.purchaseOptions}>
+        <Label className={s.title}>PURCHASE OPTIONS</Label>
+        <div className={cn(s.purchase, "rounded-lg")}>
+          <div className="space-y-6">
+            {/* <div className={s.border}>
             <RadioGroup
               className="space-y-10"
               value={purchaseType}
               onValueChange={(value: "one-time" | "subscribe") => setPurchaseType(value)}
             >
               <div className="space-y-6">
-                <div className={cx(s.purchaseOption, "flex items-center space-x-2")}>
+                <div className={cn(s.purchaseOption, "flex items-center space-x-2")}>
                   <RadioGroupItem className={s.checkbox} value="one-time" id="one-time" />
                   <Label htmlFor="one-time">One-time purchase</Label>
                 </div>
-
-                <div className={cx(s.purchaseOption, "flex items-center space-x-2")}>
+                <div className={cn(s.purchaseOption, "flex items-center space-x-2")}>
                   <RadioGroupItem className={s.checkbox} value="subscribe" id="subscribe" />
-                  <Label htmlFor="subscribe">Subscribe - 10% off</Label>
+                  <Label htmlFor="subscribe">{props.subscriptionTitle}</Label>
                 </div>
               </div>
-
-              <div className={cx(s.subscriptionOptions, { [s.active]: purchaseType === "subscribe" })}>
-                <p className="text-sm mb-2">DELIVER EVERY</p>
+              <div className={cn(s.subscriptionOptions, { [s.active]: purchaseType === "subscribe" })}>
+                <p className="mb-2">DELIVER EVERY</p>
                 <Select
                   value={deliveryInterval}
                   onValueChange={(value: "2 Weeks" | "1 Month" | "2 Months") => setDeliveryInterval(value)}
                 >
                   <SelectTrigger className={s.selectTrigger}>
-                    <SelectValue placeholder="Select interval" />
+                    <SelectValue placeholder={"Select"} />
                   </SelectTrigger>
                   <SelectContent className="text-[var(--blue-ruin)] text-md w-full">
-                    <SelectItem value="2 Weeks">2 Weeks</SelectItem>
-                    <SelectItem value="1 Month">1 Month</SelectItem>
-                    <SelectItem value="2 Months">2 Months</SelectItem>
+                    {props.subscriptionOptions.map((option, i) => {
+                      return (
+                        <SelectItem value={option.id} key={i}>
+                          {option.name}
+                        </SelectItem>
+                      )
+                    })}
                   </SelectContent>
                 </Select>
               </div>
             </RadioGroup>
+          </div> */}
           </div>
-          <AddToCart productName="Chocolate Chip" basePrice={basePrice} />
+        </div>
+        <Label className={cn(s.title)}>QUANTITY</Label>
+        <div className="grid grid-cols-12 gap-4 justify-items-stretch">
+          <div className="col-span-4">
+            <AddToCart quantity={quantity} setQuantity={setQuantity} />
+          </div>
+          <div className="col-span-8">
+            <Button variant="themed" size="slim" onClick={() => addItem({ id: props.productId, quantity })}>
+              ADD TO CART{" "}
+              {quantity > 0 && (
+                <>
+                  ({quantity * parseFloat(props.price.amount)} {props.price.currencyCode})
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </QuantityProvider>
   )
 }

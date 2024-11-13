@@ -1,0 +1,40 @@
+$background-color: #222;
+$text-color: #ddd;
+$heading-color: white;
+$code-background: #fff;
+$code-color: #222;
+
+.box {
+  width: 100px;
+  height: 80px;
+  text-align: center;
+  line-height: 80px;
+  background-color: white;
+  border-radius: 8px;
+  color: $code-color;
+  font-weight: 700;
+  margin-left: 20px;
+  will-change: transform;
+
+  &.active {
+    background-color: orange;
+    border: 2px solid white;
+  }
+}
+
+.container {
+  width: 500vw;
+  height: 100vh;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.panel {
+  height: 100vh;
+  width: 100vw;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -36,6 +36,34 @@
   }
 }
 
+.themed {
+  background-color: var(--text-color);
+  border: 1px solid var(--text-color);
+  color: var(--sugar-milk);
+  display: inline-flex;
+  font-family: var(--font-bomstad-display);
+  font-weight: 600;
+  line-height: 1;
+  transition: 200ms all ease;
+
+  @include hover {
+    &:hover {
+      background-color: var(--bg-color);
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+    }
+  }
+}
+
+.naked {
+  background-color: transparent;
+  display: inline-flex;
+  font-family: var(--font-bomstad-display);
+  font-weight: 900;
+  line-height: 1;
+  transition: 200ms all ease;
+}
+
 .defaultSize {
   font-size: desktop-vw(24px);
   padding: desktop-vw(20px) desktop-vw(40px);

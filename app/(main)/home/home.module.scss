@@ -115,7 +115,6 @@
 
   .imgC {
     @include dims(auto, desktop-vw(550px));
-    margin-top: desktop-vw(-50px);
 
     @include mobile {
       @include dims(100%, mobile-vw(350px));

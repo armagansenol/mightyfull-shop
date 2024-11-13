@@ -32,7 +32,7 @@ export const PRODUCT_VARIANT_FIELDS = `
       handle
     }
   }
-`;
+`
 
 export const PRODUCT_FIELDS = `
   fragment ProductFields on Product {
@@ -45,7 +45,7 @@ export const PRODUCT_FIELDS = `
     title
     vendor
   }
-`;
+`
 
 export const PRODUCT_QUERY = `#graphql
   ${PRODUCT_FIELDS}
@@ -88,7 +88,7 @@ export const PRODUCT_QUERY = `#graphql
       }
     }
   }
-`;
+`
 
 export const PRODUCTS_AND_VARIANTS = `#graphql
   ${PRODUCT_FIELDS}
@@ -111,7 +111,7 @@ export const PRODUCTS_AND_VARIANTS = `#graphql
       }
     }
   }
-`;
+`
 
 export const PRODUCT_AND_VARIANT = `#graphql
   ${PRODUCT_FIELDS}
@@ -132,7 +132,7 @@ export const PRODUCT_AND_VARIANT = `#graphql
       }
     }
   }
-`;
+`
 
 export const PRODUCTS_AND_COLLECTIONS = `#graphql
   ${PRODUCT_FIELDS}
@@ -160,7 +160,7 @@ export const PRODUCTS_AND_COLLECTIONS = `#graphql
       }
     }
   }
-`;
+`
 
 export const VARIANTS_QUERY = `#graphql
   ${PRODUCT_VARIANT_FIELDS}
@@ -178,7 +178,7 @@ export const VARIANTS_QUERY = `#graphql
       }
     }
   }
-`;
+`
 
 export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   ${PRODUCT_FIELDS}
@@ -198,4 +198,29 @@ export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       }
     }
   }
-`;
+`
+
+export const CART_PRODUCTS = `#graphql
+  query GetProductsByIds($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Product {
+        id
+        title
+        featuredImage {
+           url
+           width
+           height
+           altText
+        }
+        variants(first: 1) {
+        nodes {
+          price {
+            amount
+            currencyCode
+          }
+        }
+       }
+      }
+    }
+  }
+`

@@ -1,10 +1,11 @@
-import { CartItem } from "@/types"
+import { CartItemData } from "@/types"
+
 import { create } from "zustand"
 
 interface CartStore {
-  items: CartItem[]
+  items: CartItemData[]
   isOpen: boolean
-  addItem: (item: CartItem) => void
+  addItem: (item: CartItemData) => void
   removeItem: (id: string) => void
   updateQuantity: (id: string, quantity: number) => void
   setIsOpen: (isOpen: boolean) => void
@@ -13,65 +14,47 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set) => ({
   items: [
-    {
-      id: "1",
-      name: "Chocolate Chip",
-      price: 12.99,
-      image: "/img/p-choco-chip.png",
-      quantity: 1,
-      subscriptionOffer: {
-        text: "Upgrade to Subscription and Save 10%",
-        discount: 0.1,
-      },
-    },
-    {
-      id: "2",
-      name: "P&B Jelly Chocolate Chip",
-      price: 11.79,
-      originalPrice: 12.99,
-      image: "/img/p-choco-chip.png",
-      quantity: 1,
-      deliveryOffer: {
-        text: "Deliver Every 2 Weeks, 10% off",
-        discount: 0.1,
-      },
-    },
-    {
-      id: "3",
-      name: "Chocolate Chip",
-      price: 12.99,
-      image: "/img/p-choco-chip.png",
-      quantity: 1,
-      subscriptionOffer: {
-        text: "Upgrade to Subscription and Save 10%",
-        discount: 0.1,
-      },
-    },
-    {
-      id: "4",
-      name: "P&B Jelly Chocolate Chip",
-      price: 11.79,
-      originalPrice: 12.99,
-      image: "/img/p-choco-chip.png",
-      quantity: 1,
-      deliveryOffer: {
-        text: "Deliver Every 2 Weeks, 10% off",
-        discount: 0.1,
-      },
-    },
+    // {
+    //   id: "gid://shopify/Product/8519377223832",
+    //   quantity: 1,
+    // },
+    // {
+    //   id: "gid://shopify/Product/8518330613912",
+    //   quantity: 1,
+    // },
   ],
   isOpen: false,
-  addItem: (item) =>
-    set((state) => ({
-      items: [...state.items, item],
-    })),
+  addItem: (newItem) =>
+    set((state) => {
+      const existingItem = state.items.find((item) => item.id === newItem.id)
+      // If the item already exists, update its quantity
+      if (existingItem) {
+        return {
+          items: state.items.map((item) =>
+            item.id === newItem.id ? { ...item, quantity: item.quantity + newItem.quantity } : item
+          ),
+        }
+      }
+      // Otherwise, add the new item
+      return {
+        items: [...state.items, newItem],
+      }
+    }),
   removeItem: (id) =>
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
     })),
   updateQuantity: (id, quantity) =>
     set((state) => ({
-      items: state.items.map((item) => (item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item)),
+      items: state.items.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item)),
+    })),
+  increaseQuantity: (id: string) =>
+    set((state) => ({
+      items: state.items.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)),
+    })),
+  decreaseQuantity: (id: string) =>
+    set((state) => ({
+      items: state.items.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item)),
     })),
   setIsOpen: (isOpen) => set({ isOpen }),
   clearCart: () => set({ items: [] }),

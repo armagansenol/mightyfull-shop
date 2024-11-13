@@ -2,74 +2,43 @@
 
 import s from "./cart-item.module.scss"
 
-import { Minus, Plus } from "lucide-react"
-import cn from "clsx"
-
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Img } from "@/components/utility/img"
+import { useCartStore } from "@/lib/store/cart"
+import { CartProductNode } from "@/types"
+import { useEffect, useState } from "react"
+import { AddToCart } from "../add-to-cart"
 
-interface CartItemProps {
-  id: string
-  name: string
-  price: number
-  image: string
-  defaultQuantity?: number
-  onQuantityChange: (quantity: number) => void
-  onRemove: () => void
-}
+export default function CartItem({ id, title, featuredImage, variants }: CartProductNode) {
+  const { items, removeItem, updateQuantity } = useCartStore()
+  const q = items.find((item) => item.id === id)?.quantity as number
+  const [quantity, setQuantity] = useState(q)
 
-export default function CartItem({
-  id,
-  name,
-  price,
-  image,
-  defaultQuantity = 1,
-  onQuantityChange,
-  onRemove,
-}: CartItemProps) {
-  const handleQuantityChange = (value: string) => {
-    const newQuantity = parseInt(value, 10)
-    if (!isNaN(newQuantity) && newQuantity >= 0) {
-      onQuantityChange(newQuantity)
-    }
-
-    console.log(id)
-  }
+  useEffect(() => {
+    updateQuantity(id, quantity)
+  }, [id, quantity, updateQuantity])
 
   return (
     <div className={s.cartItem}>
       <div className="flex items-start gap-4">
         <div className={s.imgC}>
-          <Img src={image} alt={name} fill className="object-cover" height="500" width="500" />
+          <Img
+            src={featuredImage.url}
+            alt={featuredImage.altText as string}
+            className="object-cover"
+            height={featuredImage.height as number}
+            width={featuredImage.width as number}
+          />
         </div>
+
         <div className="flex-1">
-          <h3 className={s.title}>{name}</h3>
+          <h3 className={s.title}>{title}</h3>
           <div className="flex items-center justify-between">
-            <div className={cn(s.quantity, "flex items-center justify-between")}>
-              <Button
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => onQuantityChange(Math.max(0, defaultQuantity - 1))}
-              >
-                <Minus className="w-4 h-4" />
-                <span className="sr-only">Decrease quantity</span>
-              </Button>
-              <Input
-                className="w-12 text-center"
-                type="number"
-                min="0"
-                value={defaultQuantity}
-                onChange={(e) => handleQuantityChange(e.target.value)}
-              />
-              <Button size="icon" className="h-8 w-8" onClick={() => onQuantityChange(defaultQuantity + 1)}>
-                <Plus className="w-4 h-4" />
-                <span className="sr-only">Increase quantity</span>
-              </Button>
+            <AddToCart quantity={q} setQuantity={setQuantity} />
+            <div className={s.price}>
+              {variants.nodes[0].price.amount} {variants.nodes[0].price.currencyCode}
             </div>
-            <div className={s.price}>{price.toFixed(2)}$</div>
           </div>
-          <button onClick={onRemove} className={s.remove}>
+          <button className={s.remove} onClick={() => removeItem(id)}>
             Remove
           </button>
         </div>
