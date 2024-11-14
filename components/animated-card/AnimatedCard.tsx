@@ -90,7 +90,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
             height={500}
             width={500}
             alt="Cookie Package"
-            blurDataURL={props.imgPackage.blurDataURL}
+            priority
           />
         </div>
       </div>
