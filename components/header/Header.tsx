@@ -89,7 +89,7 @@ export default function Header(props: HeaderProps) {
               )}
               onClick={() => setIsOpen(true)}
             >
-              <div className={cn(s.navItem)}>
+              <div className={cn(s.navItem, { [s.disabled]: items.length <= 0 })}>
                 <div className={s.iconC}>
                   <IconCookieCart fill="var(--primary)" />
                 </div>

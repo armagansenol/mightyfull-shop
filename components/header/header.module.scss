@@ -74,15 +74,28 @@
     font-size: desktop-vw(20px);
     font-weight: 700;
     position: relative;
-    transition: 200ms all ease;
+    transition: 300ms all ease;
 
     @include mobile {
       color: var(--laurens-lace);
       font-size: mobile-vw(20px);
     }
 
+    &.disabled {
+      opacity: 0.3;
+      pointer-events: none;
+      filter: grayscale(1);
+    }
+
     .iconC {
-      @include dims(desktop-vw(36px));
+      @include dims(desktop-vw(35px));
+      transition: 300ms transform var(--ease-out-expo);
+
+      @include hover {
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
     }
 
     .amount {

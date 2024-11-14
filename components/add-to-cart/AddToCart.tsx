@@ -14,7 +14,7 @@ interface AddToCartProps {
 
 export default function AddToCart(props: AddToCartProps) {
   return (
-    <div className={cn(s.quantity, "grid grid-cols-12")}>
+    <div className={cn(s.quantity, "grid grid-cols-12 h-full")}>
       <Button
         variant="naked"
         size="icon"

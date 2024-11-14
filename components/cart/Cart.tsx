@@ -47,28 +47,25 @@ export default function Cart() {
         </Button>
       </div>
       <div className="flex h-[700px] flex-col gap-8 mt-auto">
-        <ScrollableBox className="flex-1">
-          <div className="flex flex-col gap-8">
-            <>
-              {isLoading ? (
-                <>LOADING</>
-              ) : (
-                <>
-                  {data?.nodes.map((item) => (
-                    <div key={item.id}>
-                      <CartItem
-                        id={item.id}
-                        title={item.title}
-                        featuredImage={item.featuredImage}
-                        variants={item.variants}
-                      />
-                    </div>
-                  ))}
-                </>
-              )}
-            </>
-          </div>
-        </ScrollableBox>
+        {isLoading ? (
+          <div className="w-full h-full flex items-center justify-center">LOADING</div>
+        ) : (
+          <ScrollableBox className="flex-1">
+            <div className="flex flex-col gap-8">
+              {data?.nodes.map((item) => (
+                <div key={item.id}>
+                  <CartItem
+                    id={item.id}
+                    title={item.title}
+                    featuredImage={item.featuredImage}
+                    variants={item.variants}
+                  />
+                </div>
+              ))}
+            </div>
+          </ScrollableBox>
+        )}
+
         <div className="mt-auto space-y-4">
           <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
             CHECKOUT
