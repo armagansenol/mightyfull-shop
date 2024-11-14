@@ -7,7 +7,7 @@ import { Parallax } from "@/components/parallax"
 import { Img } from "@/components/utility/img"
 import { FeatureHighLightCard } from "@/types"
 
-import flyingCookie from "@/public/img/flying-cookie.png"
+// import flyingCookie from "@/public/img/flying-cookie.png"
 
 export interface FeatureHighlightProps {
   items: FeatureHighLightCard[]
@@ -73,7 +73,11 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
         </Parallax>
       </div>
       <div className={s.flyingCookie}>
-        <Img alt="Flying Cookie with a Cape" className="object-contain -rotate-12" src={flyingCookie} />
+        {/* <Img alt="Flying Cookie with a Cape" className="object-contain -rotate-12" src={flyingCookie} /> */}
+        <video className="w-full h-full -rotate-12" autoPlay loop playsInline muted>
+          <source src="/video/mighty-bottom.webm" />
+          <source src="/video/mighty-bottom.mov" />
+        </video>
       </div>
     </section>
   )
