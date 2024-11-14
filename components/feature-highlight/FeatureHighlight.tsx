@@ -75,8 +75,8 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
       <div className={s.flyingCookie}>
         {/* <Img alt="Flying Cookie with a Cape" className="object-contain -rotate-12" src={flyingCookie} /> */}
         <video className="w-full h-full -rotate-12" autoPlay loop playsInline muted>
-          <source src="/video/mighty-bottom.webm" />
-          <source src="/video/mighty-bottom.mov" />
+          <source src="/video/mighty-bottom.mov" type="video/mp4; codecs=hvc1" />
+          <source src="/video/mighty-bottom.webm" type="video/webm" />
         </video>
       </div>
     </section>
