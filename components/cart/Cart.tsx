@@ -13,10 +13,9 @@ import { Link } from "@/components/utility/link"
 import { ScrollableBox } from "@/components/utility/scrollable-box"
 import { useCartStore } from "@/lib/store/cart"
 import { useLenisStore } from "@/lib/store/lenis"
-import { CartItemData, CartProductNode } from "@/types"
+import { CartProductNode } from "@/types"
 
 import s from "./cart.module.scss"
-import { CartItem } from "@/lib/shopify/types"
 
 export default function Cart() {
   const { items, isOpen, setIsOpen } = useCartStore()
