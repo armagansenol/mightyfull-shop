@@ -10,7 +10,7 @@ const clientDomain = process.env.SHOPIFY_STORE_DOMAIN
 const apiVersion = SHOPIFY_GRAPHQL_API_VERSION
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!
 
-import { ProductDetail } from "@/types"
+import { CartItemData, ProductDetail } from "@/types"
 import { createStorefrontApiClient } from "@shopify/storefront-api-client"
 import { createCartMutation } from "./mutations/cart"
 import { getProductQuery, getProductsQuery } from "./queries/product"
@@ -113,8 +113,10 @@ export async function getProducts() {
   return a
 }
 
-export async function createCart() {
-  const res = await shopifyClient.request<ShopifyCreateCartOperation>(createCartMutation)
+export async function createCart(lines: CartItemData[]) {
+  const res = await shopifyClient.request<ShopifyCreateCartOperation>(createCartMutation, {
+    variables: { lineItems: lines },
+  })
   return res.data
 }
 

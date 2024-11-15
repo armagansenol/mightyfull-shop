@@ -1,6 +1,7 @@
 .cartItem {
   .title {
     color: var(--blue-ruin);
+    display: block;
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(18px);
     font-weight: 900;
@@ -11,7 +12,7 @@
     color: var(--blue-ruin);
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(18px);
-    font-weight: 400;
+    font-weight: 500;
   }
 
   .remove {
@@ -24,7 +25,7 @@
   .quantity {
     border: 1px solid var(--blue-ruin);
     color: var(--blue-ruin);
-    border-radius: desktop-vw(4px);
+    border-radius: desktop-vw(8px);
     margin-bottom: desktop-vw(8px);
   }
 

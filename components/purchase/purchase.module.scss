@@ -38,7 +38,9 @@
     }
 
     .selectTrigger {
-      @include dims(desktop-vw(160px), desktop-vw(50px));
+      @include dims(desktop-vw(320px), desktop-vw(50px));
+      border: 1px solid var(--bg-color);
+      border-radius: desktop-vw(8px);
       color: var(--text-color);
       font-family: var(--font-poppins);
       font-size: desktop-vw(16px);
@@ -58,4 +60,11 @@
       color: var(--sugar-milk);
     }
   }
+}
+
+.deliveryIntervalSelectContent {
+  color: var(--text-color);
+  font-family: var(--font-poppins);
+  font-size: desktop-vw(16px);
+  font-weight: 100;
 }

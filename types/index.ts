@@ -1,8 +1,7 @@
 import { SanityColorTheme } from "@/lib/context/theme"
 import { SanityAssetImage } from "@/lib/sanity"
 import { PortableTextBlock } from "@portabletext/react"
-import { ConnectionGenericForDoc } from "@shopify/hydrogen-react/flatten-connection"
-import { Image, ProductVariant, Seo } from "@shopify/hydrogen-react/storefront-api-types"
+import { Image, ProductVariant, SellingPlanGroup, Seo } from "@shopify/hydrogen-react/storefront-api-types"
 import { ImageAsset } from "sanity"
 
 export interface AnimatedCardProps {
@@ -40,6 +39,7 @@ interface ShopifyProduct {
 
 export interface ProductDetail {
   _id: string
+  availableForSale: boolean
   hidden: string
   titleProxy: string
   images: ImageAsset[]
@@ -51,6 +51,9 @@ export interface ProductDetail {
   sellingPlanGroups: SellingPlanGroups
   variants: {
     nodes: {
+      id: string
+      availableForSale: boolean
+      quantityAvailable: number
       price: ProductVariant["price"]
     }[]
   }
@@ -124,11 +127,11 @@ type SellingPlanGroups = {
   nodes: SellingPlanGroup[]
 }
 
-type SellingPlanGroup = {
-  name: string
-  options: SellingPlanOption[]
-  sellingPlans: SellingPlans
-}
+// type SellingPlanGroup = {
+//   name: string
+//   options: SellingPlanOption[]
+//   sellingPlans: SellingPlans
+// }
 
 type SellingPlanOption = {
   name: string
@@ -145,11 +148,13 @@ type SellingPlan = {
 
 export interface CartItemData {
   id: string
+  sellingPlanId?: string
   // name: string
   // price: number
   // originalPrice?: number
   // image: string
   quantity: number
+
   // subscriptionOffer?: {
   //   text: string
   //   discount: number
@@ -201,11 +206,24 @@ type Product = {
 
 export interface CartProductNode {
   id: string
+  sellingPlanId?: string
+  handle: string
   title: string
   featuredImage: Image
   variants: {
     nodes: {
+      id: string
       price: ProductVariant["price"]
     }[]
   }
+}
+
+export enum PurchaseOption {
+  oneTime = "ONE_TIME",
+  subscription = "SUBSCRIPTION",
+}
+
+export enum DeliveryInterval {
+  thhreeMonth = "THREE_MONTH",
+  sixMonth = "SIX_MONTH",
 }

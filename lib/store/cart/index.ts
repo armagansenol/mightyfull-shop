@@ -6,23 +6,14 @@ interface CartStore {
   items: CartItemData[]
   isOpen: boolean
   addItem: (item: CartItemData) => void
-  removeItem: (id: string) => void
-  updateQuantity: (id: string, quantity: number) => void
+  removeItem: (gid: string) => void
+  updateQuantity: (gid: string, quantity: number) => void
   setIsOpen: (isOpen: boolean) => void
   clearCart: () => void
 }
 
 export const useCartStore = create<CartStore>((set) => ({
-  items: [
-    // {
-    //   id: "gid://shopify/Product/8519377223832",
-    //   quantity: 1,
-    // },
-    // {
-    //   id: "gid://shopify/Product/8518330613912",
-    //   quantity: 1,
-    // },
-  ],
+  items: [],
   isOpen: false,
   addItem: (newItem) =>
     set((state) => {
@@ -44,17 +35,19 @@ export const useCartStore = create<CartStore>((set) => ({
     set((state) => ({
       items: state.items.filter((item) => item.id !== id),
     })),
-  updateQuantity: (id, quantity) =>
+  updateQuantity: (gid, quantity) =>
     set((state) => ({
-      items: state.items.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item)),
+      items: state.items.map((item) => (item.id === gid ? { ...item, quantity: Math.max(1, quantity) } : item)),
     })),
-  increaseQuantity: (id: string) =>
+  increaseQuantity: (gid: string) =>
     set((state) => ({
-      items: state.items.map((item) => (item.id === id ? { ...item, quantity: item.quantity + 1 } : item)),
+      items: state.items.map((item) => (item.id === gid ? { ...item, quantity: item.quantity + 1 } : item)),
     })),
-  decreaseQuantity: (id: string) =>
+  decreaseQuantity: (gid: string) =>
     set((state) => ({
-      items: state.items.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item)),
+      items: state.items.map((item) =>
+        item.id === gid ? { ...item, quantity: Math.max(1, item.quantity - 1) } : item
+      ),
     })),
   setIsOpen: (isOpen) => set({ isOpen }),
   clearCart: () => set({ items: [] }),

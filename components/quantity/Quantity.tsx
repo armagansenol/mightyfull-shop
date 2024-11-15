@@ -1,23 +1,23 @@
 "use client"
 
-import s from "./add-to-cart.module.scss"
+import s from "./quantity.module.scss"
 
 import cn from "clsx"
 import { Minus, Plus } from "lucide-react"
 
-import { Button } from "components/ui/button"
+import { Button } from "@/components/ui/button"
 
-interface AddToCartProps {
+interface QuantityProps {
   quantity: number
   setQuantity: (val: number) => void
 }
 
-export default function AddToCart(props: AddToCartProps) {
+export default function Quantity(props: QuantityProps) {
   return (
     <div className={cn(s.quantity, "grid grid-cols-12 h-full")}>
       <Button
         variant="naked"
-        size="icon"
+        size="slim"
         className={cn(s.action, "col-span-4 p-2")}
         onClick={() => props.setQuantity(props.quantity - 1)}
         disabled={props.quantity <= 1}

@@ -4,17 +4,9 @@
   background-color: var(--sugar-milk);
   border-left: desktop-vw(4px) solid var(--blue-ruin);
   padding: desktop-vw(40px);
-  z-index: z-index("cart");
   transform: translateX(100%);
   transition: 800ms all var(--ease-out-expo);
-
-  //   &::before {
-  //     content: "";
-  //     @include position(fixed, 0, 0, 0, 0);
-  //     background-color: red;
-  //     opacity: 0;
-  //     pointer-events: none;
-  //   }
+  z-index: z-index("cart");
 
   &.open {
     transform: translateX(0);
@@ -25,10 +17,33 @@
     }
   }
 
+  .cartItems {
+    transition: 400ms opacity ease;
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
   .title {
     color: var(--blue-ruin);
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(32px);
     font-weight: 900;
+  }
+}
+
+.backdrop {
+  @include position(fixed, 0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: 400ms all ease;
+  z-index: z-index("cart-backdrop");
+
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
   }
 }

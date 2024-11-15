@@ -206,6 +206,7 @@ export const CART_PRODUCTS = `#graphql
       ... on Product {
         id
         title
+        handle
         featuredImage {
            url
            width
@@ -214,6 +215,7 @@ export const CART_PRODUCTS = `#graphql
         }
         variants(first: 1) {
         nodes {
+          id
           price {
             amount
             currencyCode

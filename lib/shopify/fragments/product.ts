@@ -3,26 +3,18 @@ const productFragment = /* GraphQL */ `
     id
     handle
     title
-    variants(first: 1) {
-      nodes {
-        price {
-          amount
-          currencyCode
-        }
-      }
-    }
+    availableForSale
     sellingPlanGroups(first: 10) {
       nodes {
-        appName
         name
+        options {
+          name
+          values
+        }
         sellingPlans(first: 10) {
           nodes {
             id
             name
-            options {
-              value
-              name
-            }
             priceAdjustments {
               adjustmentValue {
                 ... on SellingPlanPercentagePriceAdjustment {
@@ -43,6 +35,17 @@ const productFragment = /* GraphQL */ `
               }
             }
           }
+        }
+      }
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        quantityAvailable
+        price {
+          amount
+          currencyCode
         }
       }
     }
