@@ -2,7 +2,7 @@
 
 import s from "./purchase.module.scss"
 
-import { ProductVariant, SellingPlan, SellingPlanGroup } from "@shopify/hydrogen-react/storefront-api-types"
+import { ProductVariant, SellingPlanGroup } from "@shopify/hydrogen-react/storefront-api-types"
 import cn from "clsx"
 import { useState } from "react"
 
