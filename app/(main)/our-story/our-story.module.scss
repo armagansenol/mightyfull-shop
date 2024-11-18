@@ -6,10 +6,8 @@
   position: relative;
 
   @include mobile {
-    border-radius: mobile-vw(20px);
-    margin: 0 mobile-vw(8px);
     padding: 0 mobile-vw(16px);
-    padding-top: mobile-vw(50px);
+    padding-top: mobile-vw(100px);
   }
 
   .cookieC {
@@ -154,6 +152,10 @@
 
 .fullImgC {
   @include dims(100%, desktop-vw(550px));
+
+  @include mobile {
+    @include dims(100%, mobile-vw(300px));
+  }
 }
 
 .differences {
@@ -161,7 +163,7 @@
   padding-bottom: desktop-vw(120px);
 
   @include mobile {
-    padding: mobile-vw(80px) mobile-vw(16px);
+    padding: mobile-vw(50px) mobile-vw(16px);
   }
 
   > h2 {
@@ -204,6 +206,10 @@
 .mission {
   border-bottom: 5px solid var(--blue-ruin);
   border-top: 5px solid var(--blue-ruin);
+
+  @include mobile {
+    border-top: none;
+  }
 
   .text {
     padding: desktop-vw(100px) desktop-vw(90px) desktop-vw(100px) desktop-vw(80px);
@@ -252,7 +258,7 @@
   margin-bottom: desktop-vw(200px);
 
   @include mobile {
-    margin-bottom: mobile-vw(30px);
+    margin-bottom: mobile-vw(50px);
   }
 
   .titleC {

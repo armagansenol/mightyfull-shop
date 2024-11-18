@@ -13,6 +13,7 @@ import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
 import { ProductCollection } from "types"
 import { routes } from "@/lib/constants"
+import { usePathname } from "next/navigation"
 
 interface HeaderProps {
   shopMenu: ProductCollection[]
@@ -24,6 +25,11 @@ export default function Header(props: HeaderProps) {
   const { lenis } = useLenisStore()
   const [hidden, setHidden] = useState(false)
   const { items, setIsOpen } = useCartStore()
+  const pathname = usePathname()
+
+  useEffect(() => {
+    setHamburgerOpen(false)
+  }, [pathname, setIsOpen])
 
   console.log(props)
 
