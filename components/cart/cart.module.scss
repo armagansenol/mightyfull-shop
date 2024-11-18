@@ -31,6 +31,16 @@
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(32px);
     font-weight: 900;
+
+    @include mobile {
+      font-size: mobile-vw(28px);
+    }
+  }
+
+  @include mobile {
+    @include dims(100vw, auto);
+    padding: mobile-vw(20px);
+    border-left: mobile-vw(2px) solid var(--blue-ruin);
   }
 }
 
@@ -45,5 +55,9 @@
   &.open {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  @include mobile {
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }

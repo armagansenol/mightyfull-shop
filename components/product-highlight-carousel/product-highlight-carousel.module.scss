@@ -6,8 +6,62 @@
     @include dims(100vw, auto);
     flex-shrink: 0;
 
-    .imgC {
-      @include dims(mobile-vw(250px));
+    .card {
+      @include dims(mobile-vw(250px), mobile-vw(300px));
+      @include outline(red);
+    }
+
+    .button {
+      @include dims(mobile-vw(240px), mobile-vw(40px));
+      color: var(--sugar-milk);
+      font-size: mobile-vw(14px);
+      font-weight: 900;
+      position: relative;
+      transition: 300ms all ease;
+
+      span {
+        transition: 200ms all ease;
+      }
+
+      &::before {
+        content: "";
+        @include position(absolute, 0, 0, 0, 0);
+        background-color: var(--blue-ruin);
+        border-radius: mobile-vw(8px);
+        transition: 200ms all ease;
+        z-index: -1;
+      }
+
+      &:nth-child(2) {
+        color: var(--blue-ruin);
+
+        &::before {
+          content: "";
+          background-color: transparent;
+          color: var(--blue-ruin);
+          border: 1px solid var(--blue-ruin);
+        }
+
+        @include hover {
+          &:hover {
+            span {
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+
+      @include hover {
+        &:hover {
+          color: var(--blue-ruin);
+
+          &::before {
+            background-color: transparent;
+            color: var(--blue-ruin);
+            border: 1px solid var(--blue-ruin);
+          }
+        }
+      }
     }
   }
 }

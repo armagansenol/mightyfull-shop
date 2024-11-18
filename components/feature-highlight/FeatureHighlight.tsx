@@ -18,7 +18,7 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
     <section
       className={cn(
         s.featureHighlight,
-        "flex flex-col items-center py-10 tablet:py-20 pb-32 tablet:pb-96 bg-[var(--sugar-milk)]"
+        "flex flex-col items-center py-10 tablet:py-20 pb-96 tablet:pb-96 bg-[var(--sugar-milk)]"
       )}
     >
       <h2 className={s.heading}>What Makes Mightyfull Truly Mighty?</h2>
@@ -74,7 +74,14 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
       </div>
       <div className={s.flyingCookie}>
         {/* <Img alt="Flying Cookie with a Cape" className="object-contain -rotate-12" src={flyingCookie} /> */}
-        <video className="w-full h-full -rotate-12" autoPlay loop playsInline muted>
+        <video
+          className="w-full h-full -rotate-12"
+          autoPlay
+          loop
+          playsInline
+          muted
+          style={{ rotate: "rotateZ(180deg)" }}
+        >
           <source src="/video/mighty-bottom.mov" type="video/mp4; codecs=hvc1" />
           <source src="/video/mighty-bottom.webm" type="video/webm" />
         </video>

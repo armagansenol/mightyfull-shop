@@ -46,7 +46,7 @@
         @include dims(auto);
         font-size: mobile-vw(18px);
         line-height: 1.5;
-        margin-bottom: mobile-vw(20px);
+        margin-bottom: mobile-vw(50px);
         text-align: center;
       }
     }
@@ -62,6 +62,10 @@
 
   .nav {
     margin-right: desktop-vw(125px);
+
+    @include mobile {
+      margin-right: 0;
+    }
 
     .navItem {
       color: var(--sugar-milk);
@@ -211,8 +215,8 @@
       @include dims(desktop-vw(100px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(50px), auto, auto, mobile-vw(20px));
-        @include dims(mobile-vw(50px));
+        @include position(absolute, mobile-vw(50px), auto, auto, mobile-vw(10px));
+        @include dims(mobile-vw(40px));
       }
     }
 
@@ -222,7 +226,7 @@
 
       @include mobile {
         @include position(absolute, mobile-vw(300px), auto, auto, mobile-vw(300px));
-        @include dims(mobile-vw(50px));
+        @include dims(mobile-vw(40px));
       }
     }
 
@@ -231,7 +235,7 @@
       @include dims(desktop-vw(94px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(40px), auto, auto, mobile-vw(310px));
+        @include position(absolute, mobile-vw(510px), auto, auto, mobile-vw(310px));
         @include dims(mobile-vw(50px));
       }
     }
@@ -241,8 +245,8 @@
       @include dims(desktop-vw(260px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(0px), desktop-vw(50px), auto, auto);
-        @include dims(mobile-vw(40px));
+        @include position(absolute, mobile-vw(20px), desktop-vw(-20px), auto, auto);
+        @include dims(mobile-vw(60px));
       }
     }
 
@@ -251,8 +255,8 @@
       @include dims(desktop-vw(100px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(180px), auto, auto, mobile-vw(300px));
-        @include dims(mobile-vw(10px));
+        @include position(absolute, mobile-vw(480px), auto, auto, mobile-vw(10px));
+        @include dims(mobile-vw(40px));
       }
     }
   }

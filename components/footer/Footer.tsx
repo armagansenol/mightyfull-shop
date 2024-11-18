@@ -26,7 +26,7 @@ export default function Footer(props: FooterProps) {
       <div className={s.cloud}>
         <IconCloud fill="var(--blue-ruin)" />
       </div>
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col tablet:flex-row items-center tablet:items-end justify-between">
         <div className={cn(s.actions, "col-span-6")}>
           <h6>
             Stay mighty. <br />
@@ -81,7 +81,7 @@ export default function Footer(props: FooterProps) {
       </div>
       <div className={cn(s.cookie, s.cookie3)}>
         <Parallax>
-          <Img alt="Cookie Crumb" className="object-contain -rotate-12" src={c3} />
+          <Img alt="Cookie Crumb" className="object-contain -rotate-90" src={c3} />
         </Parallax>
       </div>
       <div className={cn(s.cookie, s.cookie4)}>

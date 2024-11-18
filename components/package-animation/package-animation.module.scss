@@ -7,7 +7,7 @@
   @include mobile {
     margin-bottom: mobile-vw(-100px);
     margin-top: mobile-vw(50px);
-    padding: 0 mobile-vw(20px);
+    padding: 0 mobile-vw(6px);
   }
 
   .animatedCard {
@@ -21,15 +21,15 @@
       margin-top: desktop-vw(220px);
 
       @include mobile {
-        --dims: #{mobile-vw(100px)};
-        margin-top: mobile-vw(150px);
+        --dims: #{mobile-vw(130px)};
+        margin-top: mobile-vw(120px);
       }
 
       .package {
         transform: translate(-50%, calc(-50% + desktop-vw(200px)));
 
         @include mobile {
-          transform: translate(-50%, calc(-50% + mobile-vw(100px)));
+          transform: translate(-50%, calc(-50% + mobile-vw(10px)));
         }
       }
 
@@ -53,7 +53,7 @@
         transform: translate(-50%, calc(-50% + desktop-vw(250px)));
 
         @include mobile {
-          transform: translate(-50%, calc(-50% + mobile-vw(125px)));
+          transform: translate(-50%, calc(-50% + mobile-vw(50px)));
         }
       }
 
@@ -61,7 +61,7 @@
         transform: translate(-50%, calc(-50% - desktop-vw(300px)));
 
         @include mobile {
-          transform: translate(-50%, calc(-50% - mobile-vw(150px)));
+          transform: translate(-50%, calc(-50% - mobile-vw(100px)));
         }
       }
     }
@@ -75,6 +75,10 @@
     .cookie {
       @include position(absolute, 50%, auto, auto, 50%);
       @include dims(calc(var(--dims) * 0.7));
+
+      @include mobile {
+        @include dims(calc(var(--dims) * 0.75));
+      }
     }
   }
 }

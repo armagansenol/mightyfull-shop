@@ -1,5 +1,5 @@
 .animatedCard {
-  @include dims(100%, desktop-vw(300px));
+  @include dims(100%, desktop-vw(270px));
   border-radius: desktop-vw(10px);
   overflow: hidden;
   position: relative;

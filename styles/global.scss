@@ -15,7 +15,7 @@
   --font-bomstad-display: BomstadDisplay;
 
   @include mobile {
-    --header-height: #{mobile-vw(70px)};
+    --header-height: #{mobile-vw(60px)};
     --page-padding-top: #{mobile-vw(30px)};
   }
 }

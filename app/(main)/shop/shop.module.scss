@@ -31,12 +31,10 @@
     font-family: var(--font-poppins);
     font-size: desktop-vw(18px);
     font-weight: 400;
-    margin-bottom: desktop-vw(50px);
     text-align: center;
 
     @include mobile {
       font-size: mobile-vw(18px);
-      margin-bottom: mobile-vw(50px);
     }
   }
 
@@ -51,7 +49,7 @@
       color: var(--sugar-milk);
       font-size: desktop-vw(14px);
       font-weight: 900;
-      padding: desktop-vw(10px) 0;
+      padding: desktop-vw(8px) 0;
       position: relative;
       transition: 300ms all ease;
 
@@ -99,9 +97,5 @@
         }
       }
     }
-  }
-
-  .flavorsMobile {
-    @include dims(100vw, auto);
   }
 }

@@ -12,6 +12,7 @@ import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
 import { ProductCollection } from "types"
+import { routes } from "@/lib/constants"
 
 interface HeaderProps {
   shopMenu: ProductCollection[]
@@ -45,6 +46,15 @@ export default function Header(props: HeaderProps) {
     })
   }, [hidden, lenis])
 
+  const cartCookieIcon = (
+    <div className={cn(s.navItem, { [s.disabled]: items.length <= 0 })} onClick={() => setIsOpen(true)}>
+      <div className={s.iconC}>
+        <IconCookieCart fill="var(--primary)" />
+      </div>
+      <div className={cn(s.amount, "flex items-center justify-center rounded-full")}>{items.length}</div>
+    </div>
+  )
+
   return (
     <>
       <header
@@ -57,45 +67,38 @@ export default function Header(props: HeaderProps) {
           <IconLogo primary={primaryColor} secondary={secondaryColor} />
         </Link>
 
-        <div
-          className={cn(s.trigger, "block tablet:hidden", { [s.active]: hamburgerOpen })}
-          onClick={() => setHamburgerOpen((prev) => !prev)}
-        >
-          {hamburgerOpen ? <Cross1Icon className="w-full h-full" /> : <HamburgerMenuIcon className="w-full h-full" />}
+        <div className="flex items-center gap-5">
+          <div className="block tablet:hidden">{cartCookieIcon}</div>
+          <div
+            className={cn(s.trigger, "block tablet:hidden", { [s.active]: hamburgerOpen })}
+            onClick={() => setHamburgerOpen((prev) => !prev)}
+          >
+            {hamburgerOpen ? <Cross1Icon className="w-full h-full" /> : <HamburgerMenuIcon className="w-full h-full" />}
+          </div>
         </div>
 
         <nav
-          className={cn(s.navC, "flex items-center justify-between flex-1", {
-            [s.active]: hamburgerOpen,
-          })}
+          className={cn(
+            s.navC,
+            "flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-5 tablet:gap-0",
+            {
+              [s.active]: hamburgerOpen,
+            }
+          )}
         >
-          <div className={cn(s.nav, "flex flex-col tablet:flex-row items-center justify-between space-x-20")}>
+          <div className={cn(s.nav, "flex flex-col tablet:flex-row items-center justify-between gap-5 tablet:gap-20")}>
             <div className={s.navItem}>
-              <Link href={`/${"shop"}`}>Shop</Link>
+              <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
             </div>
             <div className={s.navItem}>
-              <Link href={`/${"our-story"}`}>Our Story</Link>
+              <Link href={`/${routes.ourStory.url}`}>{routes.ourStory.ui}</Link>
             </div>
           </div>
-
-          <div className={cn(s.nav, "flex flex-col tablet:flex-row items-center justify-between space-x-20")}>
+          <div className={cn(s.nav, "flex flex-col tablet:flex-row items-center justify-between gap-20")}>
             <div className={cn(s.navItem)}>
               <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
             </div>
-            <div
-              className={cn(
-                s.nav,
-                "flex flex-col tablet:flex-row items-center justify-between space-x-20 cursor-pointer"
-              )}
-              onClick={() => setIsOpen(true)}
-            >
-              <div className={cn(s.navItem, { [s.disabled]: items.length <= 0 })}>
-                <div className={s.iconC}>
-                  <IconCookieCart fill="var(--primary)" />
-                </div>
-                <div className={cn(s.amount, "flex items-center justify-center rounded-full")}>{items.length}</div>
-              </div>
-            </div>
+            <div className="hidden tablet:block">{cartCookieIcon}</div>
           </div>
         </nav>
       </header>

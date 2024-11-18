@@ -2,52 +2,45 @@ import s from "./home.module.scss"
 
 import cn from "clsx"
 
+import { AnimatedCard } from "@/components/animated-card"
 import { FadeInOutCarousel } from "@/components/fade-in-out-carousel"
 import { FeatureHighlight } from "@/components/feature-highlight"
 import { IconCloud2, IconLeftArm, IconRightArm } from "@/components/icons"
 import { Marquee } from "@/components/marquee"
 import { PackageAnimation } from "@/components/package-animation"
 import { Parallax } from "@/components/parallax"
-import { ProductHighlight } from "@/components/product-highlight"
+import { ProductHighlightCarousel } from "@/components/product-highlight-carousel"
 import { Button } from "@/components/ui/button"
 import { Img } from "@/components/utility/img"
 import { Link } from "@/components/utility/link"
-import { ProductHighlightCarousel } from "@/components/product-highlight-carousel"
-
 import { routes } from "@/lib/constants"
+import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { FEATURE_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/featureHighlightQuery"
 import { PRODUCT_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/productHighlight"
 import { TESTIMONIALS_QUERY } from "@/lib/queries/sanity/testimonials"
 import { sanityClient } from "@/lib/sanity/client"
-
-import { FeatureHighlightQueryResult, ProductHighlightQueryResult, Testimonial } from "@/types"
+import { AnimatedCardProps, FeatureHighlightQueryResult, ProductHighlightQueryResult, Testimonial } from "@/types"
 
 export default async function HomePage() {
-  // const homePageData = await sanityClient.fetch(HOME_PAGE_QUERY)
-  // const sanityProducts = await sanityClient.fetch(PRODUCTS_QUERY)
-  // const animatedCards = await sanityClient.fetch(ANIMATED_CARDS_QUERY)
-  // const settings = await sanityClient.fetch(LAYOUT_QUERY)
   const { productHighlight } = await sanityClient.fetch<ProductHighlightQueryResult>(PRODUCT_HIGHLIGHT_QUERY)
   const { featureHighlight } = await sanityClient.fetch<FeatureHighlightQueryResult>(FEATURE_HIGHLIGHT_QUERY)
   const testimonials = await sanityClient.fetch<Testimonial[]>(TESTIMONIALS_QUERY)
-
-  // const test = await getProduct()
-  // console.log("test", test.data.product.sellingPlanGroups)
-
-  // console.log("homepage", homePageData)
-  // console.log("sanity products", sanityProducts)
-  // console.log("cards", animatedCards)
-  // console.log("settings", settings)
-  // console.log("ph", productHighlight)
-  // console.log("fh", featureHighlight)
-  // console.log("testimonials", testimonials)
+  const cards = await sanityClient.fetch<AnimatedCardProps[]>(ANIMATED_CARDS_QUERY)
 
   return (
     <>
       <section className={cn(s.intro, "flex flex-col items-stretch tablet:grid grid-cols-12")}>
         <div className={cn(s.text, "col-span-6 flex flex-col items-center tablet:items-start justify-center")}>
           <h1>
-            This <span className={s.might}>might</span> be the <span className={s.best}>best cookie</span> ever!
+            This{" "}
+            <span className={s.might}>
+              <span>might</span>
+            </span>{" "}
+            be the{" "}
+            <span className={s.best}>
+              <span>best cookie</span>
+            </span>{" "}
+            ever!
           </h1>
           <p>Meet our mightyfull flavors.</p>
           <Button asChild>
@@ -88,11 +81,39 @@ export default async function HomePage() {
       </section>
       {productHighlight.items.length > 0 && (
         <section className={cn(s.highlights, "py-10 tablet:py-20")}>
+          {/* MOBILE */}
           <div className="block tablet:hidden">
-            <ProductHighlightCarousel items={productHighlight.items} options={{ loop: true }} />
+            <ProductHighlightCarousel items={cards} options={{ loop: true }} />
           </div>
+          {/* DESKTOP */}
           <div className="hidden tablet:block">
-            <ProductHighlight items={productHighlight.items} />
+            <section className={cn(s.shop, "flex flex-col items-center")}>
+              <h2>Impossible to Choose Just One!</h2>
+              <p>Can’t decide? Try them all and discover your new favorite!</p>
+              <div className="grid grid-cols-4 gap-12 mt-20 flex-shrink-0">
+                {cards.map((item) => {
+                  return (
+                    <div className={cn(s.card, "flex flex-col gap-10")} key={item.id}>
+                      <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                        <AnimatedCard {...item} />
+                      </Link>
+                      <div className="flex flex-col items-stretch space-y-2">
+                        <Link
+                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
+                          className={cn(s.button, "cursor-pointer flex items-center justify-center")}
+                          prefetch={true}
+                        >
+                          <span>SHOP NOW</span>
+                        </Link>
+                        <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
+                          <span>ADD TO CART</span>
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
           </div>
         </section>
       )}
@@ -104,7 +125,7 @@ export default async function HomePage() {
       <div className="relative bg-[var(--blue-ruin)] p-2 tablet:p-5 overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0 h-2 tablet:h-5 bg-[var(--blue-ruin)] z-50"></div>
         <section
-          className={cn(s.theStory, "flex flex-col items-stretch p-5 pt-20 tablet:pt-60 bg-[var(--sugar-milk)]")}
+          className={cn(s.theStory, "flex flex-col items-stretch p-5 pt-24 tablet:pt-60 bg-[var(--sugar-milk)]")}
         >
           <div className={cn("flex flex-col items-center flex-1")}>
             <div className={cn(s.titleC, "flex items-center gap-3")}>

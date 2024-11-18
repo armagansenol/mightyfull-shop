@@ -87,9 +87,9 @@ export default function AnimatedCard(props: AnimatedCardProps) {
           <Img
             className="object-contain"
             src={props.imgPackage.url}
-            height={500}
-            width={500}
-            alt="Cookie Package"
+            height={props.imgPackage.height}
+            width={props.imgPackage.width}
+            alt="Picture of a Cookie Package"
             priority
           />
         </div>
@@ -99,7 +99,13 @@ export default function AnimatedCard(props: AnimatedCardProps) {
           {props.product.shopifyTitle}
         </div>
         <div className={cx(s.imgC, "img-cookie")}>
-          <Img className="object-contain" src={props.imgCookie.url} height={500} width={500} alt="Cookie" />
+          <Img
+            className="object-contain"
+            src={props.imgCookie.url}
+            height={props.imgCookie.height}
+            width={props.imgCookie.width}
+            alt="Picture of a Cookie"
+          />
         </div>
       </div>
     </div>
