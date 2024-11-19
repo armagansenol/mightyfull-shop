@@ -28,7 +28,7 @@
   }
 
   .stickerC {
-    @include position(absolute, desktop-vw(50px), desktop-vw(150px), auto, auto);
+    @include position(absolute, desktop-vw(100px), desktop-vw(150px), auto, auto);
     @include dims(desktop-vw(380px));
     transform: translate(25%, 25%);
 
@@ -36,6 +36,27 @@
       @include position(absolute, mobile-vw(130px), mobile-vw(16px), auto, auto);
       @include dims(mobile-vw(180px));
       transform: translate(15%, 25%);
+    }
+  }
+
+  .cardC {
+    &:nth-child(4n + 2),
+    &:nth-child(4n + 3) {
+      transform: rotate(8deg);
+
+      @include mobile {
+        transform: rotate(-8deg);
+      }
+    }
+
+    &:nth-child(2n) {
+      margin-top: desktop-vw(200px);
+
+      @include mobile {
+        margin-top: 0;
+        transform: rotate(8deg);
+        z-index: 10;
+      }
     }
   }
 
@@ -56,25 +77,6 @@
       margin-bottom: desktop-vw(-200px);
       padding: mobile-vw(30px) mobile-vw(20px);
       padding-bottom: mobile-vw(100px);
-    }
-
-    &:nth-child(4n + 2),
-    &:nth-child(4n + 3) {
-      transform: rotate(8deg);
-
-      @include mobile {
-        transform: rotate(-8deg);
-      }
-    }
-
-    &:nth-child(2n) {
-      margin-top: desktop-vw(200px);
-
-      @include mobile {
-        margin-top: 0;
-        transform: rotate(8deg);
-        z-index: 10;
-      }
     }
 
     .title {

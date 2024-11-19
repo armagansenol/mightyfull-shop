@@ -2,12 +2,11 @@ import s from "./feature-highlight.module.scss"
 
 import cn from "clsx"
 
+import { FadeIn } from "@/components/fade-in"
 import { IconProtein8 } from "@/components/icons"
 import { Parallax } from "@/components/parallax"
 import { Img } from "@/components/utility/img"
 import { FeatureHighLightCard } from "@/types"
-
-// import flyingCookie from "@/public/img/flying-cookie.png"
 
 export interface FeatureHighlightProps {
   items: FeatureHighLightCard[]
@@ -25,27 +24,32 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
       <div className="flex flex-col items-center tablet:grid grid-cols-2 gap-14">
         {props.items.map((item) => {
           return (
-            <div
-              className={cn(s.card, `flex flex-col items-start justify-start`)}
-              key={item._key}
-              style={
-                {
-                  "--text-color": `${item.colorTheme?.text}`,
-                  "--bg-color": `${item.colorTheme?.background}`,
-                } as React.CSSProperties
-              }
-            >
-              <p className={s.title}>{item.title}</p>
-              <p className={s.desc}>{item.description}</p>
-              <div className={s.iconC}>
-                <Img src={item.icon.url} height={200} width={200} alt="alt-text" />
-              </div>
+            <div className={s.cardC} key={item._key}>
+              <FadeIn>
+                <div
+                  className={cn(s.card, `flex flex-col items-start justify-start`)}
+                  style={
+                    {
+                      "--text-color": `${item.colorTheme?.text}`,
+                      "--bg-color": `${item.colorTheme?.background}`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <p className={s.title}>{item.title}</p>
+                  <p className={s.desc}>{item.description}</p>
+                  <div className={s.iconC}>
+                    <Img src={item.icon.url} height={200} width={200} alt="alt-text" />
+                  </div>
+                </div>
+              </FadeIn>
             </div>
           )
         })}
       </div>
       <div className={s.stickerC}>
-        <IconProtein8 />
+        <Parallax speed={0.25}>
+          <IconProtein8 />
+        </Parallax>
       </div>
       <div className={cn(s.cookie, s.cookie1)}>
         <Parallax>
