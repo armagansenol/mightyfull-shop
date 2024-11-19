@@ -13,18 +13,11 @@ type PropType = {
 }
 
 export default function AutoScrollCarousel({ children, options }: PropType) {
-  const [emblaRef, emblaApi] = useEmblaCarousel(options, [AutoScroll({ playOnInit: true })])
-  // const [isPlaying, setIsPlaying] = useState(false)
+  const [emblaRef, emblaApi] = useEmblaCarousel(options, [AutoScroll({ playOnInit: true, speed: 0.65 })])
 
   useEffect(() => {
     const autoScroll = emblaApi?.plugins()?.autoScroll
     if (!autoScroll) return
-
-    // setIsPlaying(autoScroll.isPlaying())
-    // emblaApi
-    //   .on("autoScroll:play", () => setIsPlaying(true))
-    //   .on("autoScroll:stop", () => setIsPlaying(false))
-    //   .on("reInit", () => setIsPlaying(autoScroll.isPlaying()))
   }, [emblaApi])
 
   const slides = React.Children.toArray(children)
