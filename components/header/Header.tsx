@@ -13,14 +13,16 @@ import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
 import { usePathname } from "next/navigation"
+import { ProductCollection } from "@/types"
 
-// interface HeaderProps {
-//   shopMenu: ProductCollection[]
-// }
+interface HeaderProps {
+  shopMenu: ProductCollection[]
+}
 
-export default function Header() {
+export default function Header(props: HeaderProps) {
+  console.log(props)
 
-// props: HeaderProps
+  // props: HeaderProps
   const { primaryColor, secondaryColor } = useTheme()
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
   const { lenis } = useLenisStore()
