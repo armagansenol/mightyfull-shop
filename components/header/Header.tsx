@@ -23,7 +23,7 @@ export default function Header(props: HeaderProps) {
   console.log(props)
 
   // props: HeaderProps
-  const { primaryColor, secondaryColor } = useTheme()
+  const { primaryColor, secondaryColor, tertiaryColor } = useTheme()
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
   const { lenis } = useLenisStore()
   const [hidden, setHidden] = useState(false)
@@ -71,7 +71,7 @@ export default function Header(props: HeaderProps) {
         style={{ "--primary": primaryColor, "--secondary": secondaryColor } as React.CSSProperties}
       >
         <Link href="/" className={cn(s.logoC, "cursor-pointer")}>
-          <IconLogo primary={primaryColor} secondary={secondaryColor} />
+          <IconLogo primary={primaryColor} secondary={secondaryColor} tertiary={tertiaryColor} />
         </Link>
 
         <div className="flex items-center gap-5">

@@ -1,4 +1,3 @@
-import { SanityColorTheme } from "@/lib/context/theme"
 import { SanityAssetImage } from "@/lib/sanity"
 import { PortableTextBlock } from "@portabletext/react"
 import { Image, ProductVariant, SellingPlanGroup, Seo } from "@shopify/hydrogen-react/storefront-api-types"
@@ -133,19 +132,6 @@ type SellingPlanGroups = {
 //   sellingPlans: SellingPlans
 // }
 
-type SellingPlanOption = {
-  name: string
-  values: string[]
-}
-
-type SellingPlans = {
-  nodes: SellingPlan[]
-}
-
-type SellingPlan = {
-  name: string
-}
-
 export interface CartItemData {
   id: string
   sellingPlanId?: string
@@ -226,4 +212,10 @@ export enum PurchaseOption {
 export enum DeliveryInterval {
   thhreeMonth = "THREE_MONTH",
   sixMonth = "SIX_MONTH",
+}
+
+export type SanityColorTheme = {
+  background: string
+  text: string
+  tertiary: string
 }
