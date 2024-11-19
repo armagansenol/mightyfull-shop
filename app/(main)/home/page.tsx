@@ -33,8 +33,6 @@ export default async function HomePage() {
   const testimonials = await sanityFetch<Testimonial[]>({ query: TESTIMONIALS_QUERY, tags: ["testmonials"] })
   const cards = await sanityFetch<AnimatedCardProps[]>({ query: ANIMATED_CARDS_QUERY, tags: ["animatedCards"] })
 
-  console.log("fh", featureHighlight)
-
   return (
     <>
       <section className={cn(s.intro, "flex flex-col items-stretch tablet:grid grid-cols-12")}>

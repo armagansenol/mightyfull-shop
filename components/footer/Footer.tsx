@@ -19,8 +19,6 @@ interface FooterProps {
 }
 
 export default function Footer(props: FooterProps) {
-  console.log("footer props", props.socialLinks)
-
   return (
     <footer className={cn(s.footer, "flex flex-col items-stretch justify-center")}>
       <div className={s.cloud}>

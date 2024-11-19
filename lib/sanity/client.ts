@@ -2,9 +2,10 @@ import { createClient, QueryParams } from "@sanity/client"
 
 export const config = {
   projectId: process.env.SANITY_PROJECT_ID,
-  dataset: process.env.SANITY_DATASET || "production",
+  dataset: "production",
   apiVersion: "2023-10-23",
-  useCdn: process.env.NODE_ENV === "production",
+  // set CDN to live API in development mode
+  useCdn: process.env.NODE_ENV === "development" ? true : false,
 }
 
 export const client = createClient(config)
@@ -19,7 +20,7 @@ export async function sanityFetch<QueryResponse>({
   tags: string[]
 }): Promise<QueryResponse> {
   return client.fetch<QueryResponse>(query, qParams, {
-    cache: "force-cache",
+    cache: process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
     next: { tags },
   })
 }

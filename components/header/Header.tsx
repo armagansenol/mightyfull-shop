@@ -6,20 +6,21 @@ import { Cross1Icon, HamburgerMenuIcon } from "@radix-ui/react-icons"
 import cn from "clsx"
 import { useEffect, useState } from "react"
 
+import { routes } from "@/lib/constants"
 import { useCartStore } from "@/lib/store/cart"
 import { IconCookieCart, IconLogo } from "components/icons"
 import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
-import { ProductCollection } from "types"
-import { routes } from "@/lib/constants"
 import { usePathname } from "next/navigation"
 
-interface HeaderProps {
-  shopMenu: ProductCollection[]
-}
+// interface HeaderProps {
+//   shopMenu: ProductCollection[]
+// }
 
-export default function Header(props: HeaderProps) {
+export default function Header() {
+
+// props: HeaderProps
   const { primaryColor, secondaryColor } = useTheme()
   const [hamburgerOpen, setHamburgerOpen] = useState(false)
   const { lenis } = useLenisStore()
@@ -30,8 +31,6 @@ export default function Header(props: HeaderProps) {
   useEffect(() => {
     setHamburgerOpen(false)
   }, [pathname, setIsOpen])
-
-  console.log(props)
 
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start()
