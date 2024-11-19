@@ -1,6 +1,4 @@
-import { createClient } from "@sanity/client"
-
-console.log(process.env.SANITY_PROJECT_ID)
+import { createClient, QueryParams } from "@sanity/client"
 
 export const config = {
   projectId: process.env.SANITY_PROJECT_ID,
@@ -9,4 +7,19 @@ export const config = {
   useCdn: process.env.NODE_ENV === "production",
 }
 
-export const sanityClient = createClient(config)
+export const client = createClient(config)
+
+export async function sanityFetch<QueryResponse>({
+  query,
+  qParams = {},
+  tags,
+}: {
+  query: string
+  qParams?: QueryParams
+  tags: string[]
+}): Promise<QueryResponse> {
+  return client.fetch<QueryResponse>(query, qParams, {
+    cache: "force-cache",
+    next: { tags },
+  })
+}

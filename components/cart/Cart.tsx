@@ -46,6 +46,10 @@ export default function Cart() {
     enabled: !!cartLines && cartLines.length > 0,
   })
 
+  useEffect(() => {
+    console.log("cartCreateData", cartCreateData)
+  }, [cartCreateData])
+
   const cartOpen = isOpen && cartLines && cartLines.length > 0
   const checkoutUrl = cartCreateData?.cartCreate.cart.checkoutUrl
 

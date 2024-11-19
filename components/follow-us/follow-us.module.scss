@@ -1,28 +1,45 @@
-.followUs {
-  .title {
-    color: var(--blue-ruin);
-    font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(60px);
-    font-weight: 700;
-    padding: desktop-vw(30px) desktop-vw(80px);
+.title {
+  color: var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(60px);
+  font-weight: 700;
+  line-height: 1;
+  padding: desktop-vw(30px) desktop-vw(80px);
+
+  @include mobile {
+    font-size: mobile-vw(40px);
+    padding: mobile-vw(20px) mobile-vw(16px);
+  }
+}
+
+.social {
+  padding: desktop-vw(50px) desktop-vw(80px);
+
+  @include mobile {
+    padding: mobile-vw(16px);
   }
 
-  .social {
-    padding: desktop-vw(50px) desktop-vw(80px);
-
-    * {
-      fill: var(--blue-ruin);
-    }
+  * {
+    fill: var(--blue-ruin);
   }
+}
 
-  .iconC {
-    @include dims(desktop-vw(50px));
+.iconC {
+  @include dims(desktop-vw(50px));
+
+  @include mobile {
+    @include dims(mobile-vw(40px));
   }
+}
 
-  .imgC {
-    @include dims(desktop-vw(350px), desktop-vw(240px));
-    border-radius: desktop-vw(8px);
-    overflow: hidden;
-    flex-shrink: 0;
+.imgC {
+  @include dims(desktop-vw(350px), desktop-vw(240px));
+  border-radius: desktop-vw(8px);
+  overflow: hidden;
+  flex-shrink: 0;
+
+  @include mobile {
+    @include dims(mobile-vw(240px), mobile-vw(160px));
+    border-radius: mobile-vw(8px);
   }
 }

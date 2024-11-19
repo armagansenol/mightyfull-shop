@@ -5,11 +5,22 @@
   .intro {
     padding: 0 desktop-vw(80px);
 
+    @include mobile {
+      padding: 0 mobile-vw(16px);
+    }
+
     .productTitle {
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(32px);
       font-weight: 900;
       margin-bottom: desktop-vw(20px);
+
+      @include mobile {
+        font-size: mobile-vw(32px);
+        line-height: 1.25;
+        margin-bottom: mobile-vw(16px);
+        text-align: center;
+      }
     }
 
     .productDescription {
@@ -18,17 +29,48 @@
       font-weight: 400;
       line-height: 1.45;
       margin-bottom: desktop-vw(50px);
+
+      @include mobile {
+        font-size: mobile-vw(15px);
+        margin-bottom: mobile-vw(50px);
+        text-align: center;
+      }
     }
   }
 
   .specs {
     padding: 0 desktop-vw(80px);
 
+    @include mobile {
+      padding: 0 mobile-vw(16px);
+      margin-top: mobile-vw(30px);
+    }
+
     .spec {
+      position: relative;
+
+      &:not(&:last-child) {
+        &::before {
+          content: "";
+          @include position(absolute, auto, 0, 0, 0);
+          @include dims(100%, 1px);
+          background-color: var(--bg-color);
+          border-radius: inherit;
+          opacity: 0.3;
+          transition: 400ms background-color ease;
+          z-index: 5;
+        }
+      }
+
       .title {
         font-family: var(--font-bomstad-display);
         font-size: desktop-vw(32px);
         font-weight: 900;
+
+        @include mobile {
+          font-size: mobile-vw(28px);
+          line-height: 1.25;
+        }
       }
 
       .description {
@@ -36,6 +78,11 @@
         font-size: desktop-vw(14px);
         font-weight: 400;
         line-height: 1.25;
+
+        @include mobile {
+          font-size: mobile-vw(14px);
+          line-height: 1.5;
+        }
       }
     }
   }
@@ -44,114 +91,107 @@
     background-color: var(--text-color);
     color: var(--sugar-milk);
     padding: 0 desktop-vw(80px);
+
+    @include mobile {
+      padding: 0 mobile-vw(16px);
+    }
   }
 
   .relatedProducts {
-    .products {
-      padding: desktop-vw(100px) desktop-vw(80px);
-      padding-bottom: desktop-vw(150px);
-      position: relative;
-      z-index: 100;
+    padding: desktop-vw(50px) desktop-vw(80px);
+    position: relative;
+    z-index: 100;
+
+    @include mobile {
+      margin-bottom: mobile-vw(30px);
+      padding: mobile-vw(50px) mobile-vw(16px);
+    }
+
+    > h2 {
+      @include dims(desktop-vw(610px), auto);
+      color: var(--text-color);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(60px);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: desktop-vw(10px);
+      text-align: center;
 
       @include mobile {
-        margin-bottom: mobile-vw(30px);
-        padding: mobile-vw(50px) mobile-vw(16px);
-      }
-
-      > h2 {
-        @include dims(desktop-vw(610px), auto);
-        color: var(--text-color);
-        font-family: var(--font-bomstad-display);
-        font-size: desktop-vw(60px);
-        font-weight: 900;
-        line-height: 1;
-        margin-bottom: desktop-vw(10px);
-        text-align: center;
-
-        @include mobile {
-          @include dims(auto);
-          font-size: mobile-vw(60px);
-          margin-bottom: mobile-vw(10px);
-        }
-      }
-
-      > p {
-        color: var(--text-color);
-        font-family: var(--font-poppins);
-        font-size: desktop-vw(18px);
-        font-weight: 400;
-        margin-bottom: desktop-vw(100px);
-        text-align: center;
-
-        @include mobile {
-          font-size: mobile-vw(18px);
-          margin-bottom: mobile-vw(50px);
-        }
-      }
-
-      .card {
         @include dims(auto);
+        font-size: mobile-vw(60px);
+        margin-bottom: mobile-vw(10px);
+      }
+    }
 
-        @include mobile {
-          @include dims(100vw, auto);
+    > p {
+      color: var(--text-color);
+      font-family: var(--font-poppins);
+      font-size: desktop-vw(18px);
+      font-weight: 400;
+      margin-bottom: desktop-vw(50px);
+      text-align: center;
+
+      @include mobile {
+        font-size: mobile-vw(18px);
+        margin-bottom: mobile-vw(50px);
+      }
+    }
+
+    .card {
+      @include dims(desktop-vw(280px), desktop-vw(360px));
+
+      .button {
+        color: var(--sugar-milk);
+        font-size: desktop-vw(14px);
+        font-weight: 900;
+        padding: desktop-vw(8px) 0;
+        position: relative;
+        transition: 300ms all ease;
+
+        span {
+          transition: 200ms all ease;
         }
 
-        .button {
-          color: var(--sugar-milk);
-          font-size: desktop-vw(14px);
-          font-weight: 900;
-          padding: desktop-vw(10px) 0;
-          position: relative;
-          transition: 300ms all ease;
+        &::before {
+          content: "";
+          @include position(absolute, 0, 0, 0, 0);
+          background-color: var(--text-color);
+          border-radius: desktop-vw(8px);
+          transition: 200ms all ease;
+          z-index: -1;
+        }
 
-          span {
-            transition: 200ms all ease;
-          }
+        &:nth-child(2) {
+          color: var(--text-color);
 
           &::before {
             content: "";
-            @include position(absolute, 0, 0, 0, 0);
-            background-color: var(--text-color);
-            border-radius: desktop-vw(8px);
-            transition: 200ms all ease;
-            z-index: -1;
-          }
-
-          &:nth-child(2) {
+            background-color: transparent;
             color: var(--text-color);
-
-            &::before {
-              content: "";
-              background-color: transparent;
-              color: var(--text-color);
-              border: 1px solid var(--text-color);
-            }
-
-            @include hover {
-              &:hover {
-                span {
-                  transform: scale(1.2);
-                }
-              }
-            }
+            border: 1px solid var(--text-color);
           }
 
           @include hover {
             &:hover {
-              color: var(--text-color);
-
-              &::before {
-                background-color: transparent;
-                color: var(--text-color);
-                border: 1px solid var(--text-color);
+              span {
+                transform: scale(1.2);
               }
             }
           }
         }
-      }
 
-      .flavorsMobile {
-        @include dims(100vw, auto);
+        @include hover {
+          &:hover {
+            color: var(--text-color);
+
+            &::before {
+              background-color: transparent;
+              color: var(--text-color);
+              border: 1px solid var(--text-color);
+            }
+          }
+        }
       }
     }
   }

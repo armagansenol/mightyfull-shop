@@ -86,7 +86,10 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
                     <SelectTrigger className={s.selectTrigger}>
                       <SelectValue placeholder={"Select"} />
                     </SelectTrigger>
-                    <SelectContent className={cn(s.deliveryIntervalSelectContent, "text-[var(--text-color)]")}>
+                    <SelectContent
+                      data-lenis-prevent
+                      className={cn(s.deliveryIntervalSelectContent, "text-[var(--text-color)]")}
+                    >
                       {sellingPlanOptions.map((option, i) => {
                         return (
                           <SelectItem value={option.value} key={i}>
@@ -103,11 +106,11 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
         </div>
       </div>
       <Label className={cn(s.title)}>QUANTITY</Label>
-      <div className="grid grid-cols-12 gap-4 justify-items-stretch">
+      <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-4 justify-items-stretch">
         <div className="col-span-4">
           <Quantity quantity={quantity} setQuantity={setQuantity} />
         </div>
-        <div className="col-span-8">
+        <div className="w-full col-span-8">
           <Button variant="themed" size="slim" onClick={() => addItem({ id: props.gid, quantity, sellingPlanId })}>
             ADD TO CART{" "}
             {quantity > 0 && (

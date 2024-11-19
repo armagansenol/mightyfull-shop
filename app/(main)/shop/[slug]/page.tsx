@@ -5,8 +5,12 @@ import cn from "clsx"
 
 import { getShopifyProductByHandle } from "@/app/actions/shopify"
 import { FollowUs } from "@/components/follow-us"
+import { ProductHighlightCarousel } from "@/components/product-highlight-carousel"
 import { Purchase } from "@/components/purchase"
+import { Button } from "@/components/ui/button"
+import { routes } from "@/lib/constants"
 import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
+import { sanityFetch } from "@/lib/sanity/client"
 import { PortableText } from "@portabletext/react"
 import { AnimatedCard } from "components/animated-card"
 import { CustomerReviews } from "components/customer-reviews"
@@ -16,13 +20,10 @@ import { Link } from "components/utility/link"
 import { getProductReviews } from "lib/queries/okendo"
 import { LAYOUT_QUERY } from "lib/queries/sanity/layout"
 import { PRODUCT_PAGE_QUERY } from "lib/queries/sanity/productPage"
-import { sanityClient } from "lib/sanity/client"
 import { SanityProductPage } from "lib/sanity/types"
 import { AnimatedCardProps } from "types"
 import { LayoutQueryResponse } from "types/layout"
 import Images from "./components/images"
-import { Button } from "@/components/ui/button"
-import { routes } from "@/lib/constants"
 
 interface ProductPageProps {
   params: {
@@ -31,11 +32,13 @@ interface ProductPageProps {
 }
 
 export default async function Product({ params }: ProductPageProps) {
-  const { slug } = params
-
-  const sanityProduct = await sanityClient.fetch<SanityProductPage>(PRODUCT_PAGE_QUERY, { slug })
-  const layout = await sanityClient.fetch<LayoutQueryResponse>(LAYOUT_QUERY)
-  const animatedCards = await sanityClient.fetch<AnimatedCardProps[]>(ANIMATED_CARDS_QUERY)
+  const sanityProduct = await sanityFetch<SanityProductPage>({
+    query: PRODUCT_PAGE_QUERY,
+    tags: ["productPage"],
+    qParams: { slug: params.slug },
+  })
+  const layout = await sanityFetch<LayoutQueryResponse>({ query: LAYOUT_QUERY, tags: ["layout"] })
+  const animatedCards = await sanityFetch<AnimatedCardProps[]>({ query: ANIMATED_CARDS_QUERY, tags: ["animatedCards"] })
   const relatedProducts = animatedCards.filter((card) => {
     return card.product.shopifySlug !== sanityProduct.slug
   })
@@ -50,10 +53,10 @@ export default async function Product({ params }: ProductPageProps) {
 
   return (
     <>
-      {JSON.stringify(shopifyProduct?.product.sellingPlanGroups.nodes)}
+      {/* {JSON.stringify(shopifyProduct?.product.sellingPlanGroups.nodes)} */}
       {sanityProduct.colorTheme && <ThemeUpdater {...sanityProduct.colorTheme} />}
       <div
-        className={cn(s.productPage, "pt-20")}
+        className={cn(s.productPage, "pt-10 tablet:pt-20 mb-20 tablet:mb-60")}
         style={
           {
             "--text-color": `${sanityProduct.colorTheme?.text}`,
@@ -61,11 +64,16 @@ export default async function Product({ params }: ProductPageProps) {
           } as React.CSSProperties
         }
       >
-        <section className={cn(s.intro, "grid grid-cols-12 gap-0 tablet:gap-20 py-20")}>
+        <section
+          className={cn(
+            s.intro,
+            "flex flex-col items-center tablet:grid grid-cols-12 gap-10 tablet:gap-20 tablet:items-start py-20"
+          )}
+        >
           <div className="col-span-6">
             <Images images={sanityProduct.images} />
           </div>
-          <div className={cn(s.info, "col-span-6 pr-20")}>
+          <div className={cn(s.info, "col-span-6 pr-0 tablet:pr-20")}>
             <h1 className={s.productTitle}>
               {sanityProduct.title} (
               {shopifyProduct?.product.variants.nodes[0].availableForSale ? "available" : "out of stock"}) (
@@ -89,10 +97,10 @@ export default async function Product({ params }: ProductPageProps) {
           </div>
         </section>
         {sanityProduct.specs.length > 0 && (
-          <section className={cn(s.specs, "grid grid-cols-12")}>
-            <div className="col-span-5 col-start-2">
+          <section className={cn(s.specs, "flex flex-col items-center tablet:grid grid-cols-12")}>
+            <div className="w-full tablet:col-span-5 tablet:col-start-2">
               <Accordion
-                className="space-y-10"
+                className="space-y-0 tablet:space-y-10"
                 type="multiple"
                 defaultValue={sanityProduct.specs.map((_, i) => `${i}`)}
               >
@@ -119,35 +127,45 @@ export default async function Product({ params }: ProductPageProps) {
             <CustomerReviews reviews={reviews.data} />
           </section>
         )}
-        <section className={s.relatedProducts}>
-          <section className={cn(s.products, "flex flex-col items-center")}>
-            <h2>Impossible to Choose Just One!</h2>
-            <p>Can’t decide? Try them all and discover your new favorite!</p>
-            <div className={cn(s.flavors, `grid grid-cols-3 grid-rows-1 gap-12 px-48`)}>
-              {relatedProducts.map((item) => {
-                return (
-                  <div className={cn(s.card, "flex flex-col space-y-12")} key={item.id}>
-                    <Link href={`/shop/${item.product.shopifySlug}`} prefetch={true}>
-                      <AnimatedCard {...item} />
-                    </Link>
-                    <div className="flex flex-col items-stretch space-y-2">
-                      <Link
-                        href={`/shop/${item.product.shopifySlug}`}
-                        className={cn(s.button, "cursor-pointer flex items-center justify-center")}
-                        prefetch={true}
-                      >
-                        <span>SHOP NOW</span>
-                      </Link>
-                    </div>
-                  </div>
-                )
-              })}
+        {relatedProducts.length > 0 && (
+          <section className={cn(s.highlights, "py-10 tablet:py-20")}>
+            {/* MOBILE */}
+            <div className="block tablet:hidden">
+              <ProductHighlightCarousel items={relatedProducts} options={{ loop: true }} />
+            </div>
+            {/* DESKTOP */}
+            <div className="hidden tablet:block">
+              <section className={cn(s.relatedProducts, "flex flex-col items-center")}>
+                <h2>Impossible to Choose Just One!</h2>
+                <p>Can’t decide? Try them all and discover your new favorite!</p>
+                <div className="flex items-center justify-center gap-10 px-32">
+                  {relatedProducts.map((item) => {
+                    return (
+                      <div className={cn(s.card, "flex flex-col gap-10 flex-shrink-0")} key={item.id}>
+                        <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                          <AnimatedCard {...item} />
+                        </Link>
+                        <div className="flex flex-col items-stretch space-y-2">
+                          <Link
+                            href={`/${routes.shop.url}/${item.product.shopifySlug}`}
+                            className={cn(s.button, "cursor-pointer flex items-center justify-center")}
+                            prefetch={true}
+                          >
+                            <span>SHOP NOW</span>
+                          </Link>
+                          <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
+                            <span>ADD TO CART</span>
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
             </div>
           </section>
-        </section>
-        <section className="mb-40">
-          <FollowUs socialLinks={layout.socialLinks} images={layout.imageCarousel.map((image) => image.url)} />
-        </section>
+        )}
+        <FollowUs socialLinks={layout.socialLinks} images={layout.imageCarousel.map((image) => image.url)} />
       </div>
     </>
   )

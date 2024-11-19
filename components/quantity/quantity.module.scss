@@ -5,4 +5,9 @@
   font-family: var(--font-poppins);
   font-size: desktop-vw(14px);
   font-weight: 600;
+
+  @include mobile {
+    border-radius: mobile-vw(8px);
+    font-size: mobile-vw(14px);
+  }
 }

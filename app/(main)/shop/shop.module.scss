@@ -48,7 +48,7 @@
     transition: 300ms all ease;
 
     @include mobile {
-      @include dims(mobile-vw(200px), mobile-vw(40px));
+      @include dims(mobile-vw(140px), mobile-vw(40px));
       font-size: mobile-vw(14px);
       padding: mobile-vw(8px) 0;
     }

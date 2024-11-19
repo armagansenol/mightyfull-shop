@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import { Header } from "@/components/header"
 import { SmoothLayout } from "@/layouts/smooth"
 import { LAYOUT_QUERY } from "@/lib/queries/sanity/layout"
-import { sanityClient } from "@/lib/sanity/client"
+import { sanityFetch } from "@/lib/sanity/client"
 import { LayoutQueryResponse } from "@/types/layout"
 import { Metadata } from "next"
 import { Poppins } from "next/font/google"
@@ -21,7 +21,7 @@ const poppins = Poppins({
 })
 
 const getLayoutData = cache(async (): Promise<LayoutQueryResponse> => {
-  return await sanityClient.fetch(LAYOUT_QUERY)
+  return await sanityFetch<LayoutQueryResponse>({ query: LAYOUT_QUERY, tags: ["layout"] })
 })
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {

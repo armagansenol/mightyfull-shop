@@ -51,9 +51,9 @@ export default function ProductHighlightCarousel({ items, options }: ProductHigh
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex touch-pan-y touch-pinch-zoom">
-            {items.map((item) => {
+            {items.map((item, i) => {
               return (
-                <div className={cn(s.slide, "flex flex-col items-center gap-6")} key={item.id}>
+                <div className={cn(s.slide, "flex flex-col items-center gap-6")} key={i}>
                   <Link className={s.card} href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
                     <AnimatedCard {...item} />
                   </Link>

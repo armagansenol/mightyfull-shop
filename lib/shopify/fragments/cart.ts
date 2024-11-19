@@ -42,6 +42,17 @@ const cartFragment = /* GraphQL */ `
               }
             }
           }
+          sellingPlanAllocation {
+            sellingPlan {
+              id
+              name
+              description
+              options {
+                name
+                value
+              }
+            }
+          }
         }
       }
     }

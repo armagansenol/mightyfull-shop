@@ -16,17 +16,17 @@ export interface FollowUsProps {
 
 export default function FollowUs(props: FollowUsProps) {
   return (
-    <div className={s.followUs}>
-      <div className="border-y-[5px] border-solid border-[var(--blue-ruin)] flex items-stretch mb-16">
+    <>
+      <div className="tablet:border-y-[5px] tablet:border-solid tablet:border-[var(--blue-ruin)] flex flex-col tablet:flex-row items-stretch mb-8 tablet:mb-16">
         <p
           className={cn(
             s.title,
-            "border-r-[5px] border-solid border-[var(--blue-ruin)] flex items-center justify-center"
+            "tablet:border-r-[5px] tablet:border-solid tablet:border-[var(--blue-ruin)] flex items-center justify-center"
           )}
         >
           Follow Us
         </p>
-        <div className={cn(s.social, "col-span-9 flex items-center justify-start space-x-8")}>
+        <div className={cn(s.social, "col-span-9 flex items-center justify-center tablet:justify-start gap-8")}>
           {props.socialLinks.map((item, i) => {
             return (
               <Link className={cn(s.iconC, "w-8 h-8")} href={item.url} key={i}>
@@ -45,6 +45,6 @@ export default function FollowUs(props: FollowUsProps) {
           )
         })}
       </AutoScrollCarousel>
-    </div>
+    </>
   )
 }

@@ -15,7 +15,7 @@ export default function Images(props: ImagesProps) {
   const [currentItem, setCurrentItem] = useState(0)
 
   return (
-    <div className="grid grid-cols-12 gap-5">
+    <div className="flex flex-col-reverse items-center tablet:items-start tablet:grid grid-cols-12 gap-5">
       <div
         className={cx(s.images, "col-span-2 flex flex-row tablet:flex-col justify-center tablet:justify-start gap-2")}
       >

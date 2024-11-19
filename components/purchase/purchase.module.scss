@@ -7,21 +7,35 @@
     font-weight: 600;
     line-height: 1.25;
     margin-bottom: desktop-vw(8px);
+
+    @include mobile {
+      font-size: mobile-vw(15px);
+      margin-bottom: mobile-vw(12px);
+      text-align: center;
+    }
   }
 
   .border {
     border: 1px solid var(--text-color);
     border-radius: desktop-vw(12px);
     padding: desktop-vw(20px);
+
+    @include mobile {
+      border-radius: mobile-vw(8px);
+      padding: mobile-vw(16px);
+    }
   }
 
   .purchaseOption {
     > label {
       color: var(--text-color);
       font-family: var(--font-poppins);
-      font-size: desktop-vw(30px);
-      font-weight: 600;
       font-size: desktop-vw(18px);
+      font-weight: 600;
+
+      @include mobile {
+        font-size: mobile-vw(16px);
+      }
     }
   }
 
@@ -32,6 +46,10 @@
     font-weight: 600;
     opacity: 0.3;
     transition: 300ms all ease;
+
+    @include mobile {
+      font-size: mobile-vw(12px);
+    }
 
     &.active {
       opacity: 1;
@@ -46,6 +64,13 @@
       font-size: desktop-vw(16px);
       font-weight: 600;
       padding: 0 desktop-vw(16px);
+
+      @include mobile {
+        @include dims(100%, mobile-vw(40px));
+        border-radius: mobile-vw(6px);
+        font-size: mobile-vw(14px);
+        padding: 0 mobile-vw(12px);
+      }
     }
   }
 
@@ -54,6 +79,11 @@
     padding: desktop-vw(4px);
     border: 1px solid var(--text-color);
     border-radius: 50%;
+
+    @include mobile {
+      @include dims(mobile-vw(16px));
+      padding: mobile-vw(3px);
+    }
 
     &[data-state="checked"] {
       background-color: var(--text-color);
@@ -67,4 +97,8 @@
   font-family: var(--font-poppins);
   font-size: desktop-vw(16px);
   font-weight: 100;
+
+  @include mobile {
+    font-size: mobile-vw(14px);
+  }
 }

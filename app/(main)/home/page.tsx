@@ -18,14 +18,22 @@ import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { FEATURE_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/featureHighlightQuery"
 import { PRODUCT_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/productHighlight"
 import { TESTIMONIALS_QUERY } from "@/lib/queries/sanity/testimonials"
-import { sanityClient } from "@/lib/sanity/client"
 import { AnimatedCardProps, FeatureHighlightQueryResult, ProductHighlightQueryResult, Testimonial } from "@/types"
+import { sanityFetch } from "@/lib/sanity/client"
 
 export default async function HomePage() {
-  const { productHighlight } = await sanityClient.fetch<ProductHighlightQueryResult>(PRODUCT_HIGHLIGHT_QUERY)
-  const { featureHighlight } = await sanityClient.fetch<FeatureHighlightQueryResult>(FEATURE_HIGHLIGHT_QUERY)
-  const testimonials = await sanityClient.fetch<Testimonial[]>(TESTIMONIALS_QUERY)
-  const cards = await sanityClient.fetch<AnimatedCardProps[]>(ANIMATED_CARDS_QUERY)
+  const { productHighlight } = await sanityFetch<ProductHighlightQueryResult>({
+    query: PRODUCT_HIGHLIGHT_QUERY,
+    tags: ["productHighlight"],
+  })
+  const { featureHighlight } = await sanityFetch<FeatureHighlightQueryResult>({
+    query: FEATURE_HIGHLIGHT_QUERY,
+    tags: ["featureHighlight"],
+  })
+  const testimonials = await sanityFetch<Testimonial[]>({ query: TESTIMONIALS_QUERY, tags: ["testmonials"] })
+  const cards = await sanityFetch<AnimatedCardProps[]>({ query: ANIMATED_CARDS_QUERY, tags: ["animatedCards"] })
+
+  console.log("fh", featureHighlight)
 
   return (
     <>
