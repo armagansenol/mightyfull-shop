@@ -11,13 +11,14 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCartStore } from "@/lib/store/cart"
-import { DeliveryInterval, PurchaseOption } from "@/types"
+import { useCartLineStore } from "@/lib/store/cart-lines"
+import { DeliveryInterval, ProductDetail, PurchaseOption } from "@/types"
 
 interface PurchaseOptionsProps {
   gid: string
   price: ProductVariant["price"]
   sp?: SellingPlanGroup
+  product: ProductDetail
 }
 
 export default function PurchaseOptions(props: PurchaseOptionsProps) {
@@ -31,22 +32,54 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
   console.log("sp options", sellingPlanOptions)
 
   const [quantity, setQuantity] = useState(1)
-  const { addItem } = useCartStore()
   const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(PurchaseOption.oneTime)
   const [sellingPlanId, setSellingPlanId] = useState<string>("")
+  const { cartLines, addToCart } = useCartLineStore()
 
-  // const subscriptionOptions = [
-  //   {
-  //     name: DeliveryInterval.sixMonth,
-  //     id: DeliveryInterval.sixMonth,
-  //   },
-  //   {
-  //     name: DeliveryInterval.sixMonth,
-  //     id: DeliveryInterval.sixMonth,
-  //   },
-  // ]
+  console.log("lines", cartLines)
 
-  console.log("sp", props.sp)
+  // const payload = cartLines.map((item) => {
+  //   return {
+  //     merchandiseId: item.merchandiseId,
+  //     quantity: item.quantity,
+  //     sellingPlanId: item.sellingPlanId,
+  //   }
+  // })
+
+  // function useCartCreate() {
+  //   return useMutation({
+  //     mutationFn: createCart,
+  //     onSuccess: (data) => {
+  //       console.log("Cart created successfully:", data)
+  //     },
+  //     onError: (error) => {
+  //       console.error("Failed to create cart:", error)
+  //     },
+  //   })
+  // }
+
+  // const cartCreate = useCartCreate()
+
+  // const handleAddToCart = () => {
+  //   cartCreate.mutate(cartLines)
+  // }
+
+  const handleAddToCart = () => {
+    addToCart({
+      cartId: `${props.product.id}_${purchaseOption}`,
+      merchandiseId: props.product.variants.nodes[0].id,
+      quantity,
+      ...(sellingPlanId && { sellingPlanId }),
+    })
+  }
+
+  // const { data: cartCreateData, isLoading: isCartCreateLoading } = useQuery({
+  //   queryKey: ["cart-create", payload],
+  //   queryFn: () => createCart(payload),
+  //   enabled: !!payload && payload.length > 0,
+  // })
+
+  // console.log("d", cartCreateData)
 
   return (
     <div className={s.purchaseOptions}>
@@ -80,19 +113,16 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
                   <p className="mb-2">DELIVERY INTERVAL</p>
                   <Select
                     defaultValue={sellingPlanOptions[0].value}
-                    value={sellingPlanId}
+                    value={sellingPlanId as string}
                     onValueChange={(value: DeliveryInterval) => setSellingPlanId(value)}
                   >
                     <SelectTrigger className={s.selectTrigger}>
                       <SelectValue placeholder={"Select"} />
                     </SelectTrigger>
-                    <SelectContent
-                      data-lenis-prevent
-                      className={cn(s.deliveryIntervalSelectContent, "text-[var(--text-color)]")}
-                    >
+                    <SelectContent data-lenis-prevent className={s.dsi}>
                       {sellingPlanOptions.map((option, i) => {
                         return (
-                          <SelectItem value={option.value} key={i}>
+                          <SelectItem className={s.item} value={option.value} key={i}>
                             {option.label}
                           </SelectItem>
                         )
@@ -106,20 +136,22 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
         </div>
       </div>
       <Label className={cn(s.title)}>QUANTITY</Label>
-      <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-4 justify-items-stretch">
-        <div className="col-span-4">
-          <Quantity quantity={quantity} setQuantity={setQuantity} />
-        </div>
-        <div className="w-full col-span-8">
-          <Button variant="themed" size="slim" onClick={() => addItem({ id: props.gid, quantity, sellingPlanId })}>
-            ADD TO CART{" "}
-            {quantity > 0 && (
-              <>
-                ({quantity * parseFloat(props.price.amount)} {props.price.currencyCode})
-              </>
-            )}
-          </Button>
-        </div>
+      <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-4 tablet:h-16">
+        <Quantity className="h-12 tablet:h-auto w-36 tablet:col-span-4" quantity={quantity} setQuantity={setQuantity} />
+        <Button
+          className="h-12 tablet:h-auto tablet:col-span-8"
+          onClick={handleAddToCart}
+          variant="highlighted"
+          size="sm"
+          padding="none"
+        >
+          ADD TO CART{" "}
+          {quantity > 0 && (
+            <>
+              ({quantity * parseFloat(props.price.amount)} {props.price.currencyCode})
+            </>
+          )}
+        </Button>
       </div>
     </div>
   )

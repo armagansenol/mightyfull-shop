@@ -26,10 +26,15 @@ export default function FollowUs(props: FollowUsProps) {
         >
           Follow Us
         </p>
-        <div className={cn(s.social, "col-span-9 flex items-center justify-center tablet:justify-start gap-8")}>
+        <div
+          className={cn(
+            s.social,
+            "col-span-9 flex items-center justify-center tablet:justify-start gap-4 tablet:gap-8"
+          )}
+        >
           {props.socialLinks.map((item, i) => {
             return (
-              <Link className={cn(s.iconC, "w-8 h-8")} href={item.url} key={i}>
+              <Link className={cn(s.iconC, "w-8 h-8 cursor-pointer")} href={item.url} key={i}>
                 {socialIcons[item.platform as SocialMedia]}
               </Link>
             )

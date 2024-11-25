@@ -54,7 +54,7 @@ export default function Footer(props: FooterProps) {
         <div className={cn(s.social, "flex items-center space-x-4")}>
           {props.socialLinks.map((item, i) => {
             return (
-              <Link className={"w-8 h-8"} href={item.url} key={i}>
+              <Link className="w-8 h-8 cursor-pointer" href={item.url} key={i}>
                 {socialIcons[item.platform as SocialMedia]}
               </Link>
             )

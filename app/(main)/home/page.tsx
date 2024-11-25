@@ -18,8 +18,8 @@ import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { FEATURE_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/featureHighlightQuery"
 import { PRODUCT_HIGHLIGHT_QUERY } from "@/lib/queries/sanity/productHighlight"
 import { TESTIMONIALS_QUERY } from "@/lib/queries/sanity/testimonials"
-import { AnimatedCardProps, FeatureHighlightQueryResult, ProductHighlightQueryResult, Testimonial } from "@/types"
 import { sanityFetch } from "@/lib/sanity/client"
+import { AnimatedCardProps, FeatureHighlightQueryResult, ProductHighlightQueryResult, Testimonial } from "@/types"
 
 export default async function HomePage() {
   const { productHighlight } = await sanityFetch<ProductHighlightQueryResult>({
@@ -49,7 +49,7 @@ export default async function HomePage() {
             ever!
           </h1>
           <p>Meet our mightyfull flavors.</p>
-          <Button asChild>
+          <Button asChild size="md" padding="fat">
             <Link href={routes.shop.url} prefetch>
               SHOP NOW
             </Link>
@@ -104,16 +104,14 @@ export default async function HomePage() {
                         <AnimatedCard {...item} />
                       </Link>
                       <div className="flex flex-col items-stretch space-y-2">
-                        <Link
-                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                          className={cn(s.button, "cursor-pointer flex items-center justify-center")}
-                          prefetch={true}
-                        >
-                          <span>SHOP NOW</span>
-                        </Link>
-                        <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
-                          <span>ADD TO CART</span>
-                        </button>
+                        <Button asChild variant="highlighted" size="sm" padding="slim">
+                          <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                            SHOP NOW
+                          </Link>
+                        </Button>
+                        <Button variant="default" size="sm" padding="slim">
+                          ADD TO CART
+                        </Button>
                       </div>
                     </div>
                   )
@@ -165,7 +163,7 @@ export default async function HomePage() {
               <br />
               Our journey began with a simple moment in the kitchen.
             </p>
-            <Button variant="ghost" asChild>
+            <Button asChild size="md" padding="fat">
               <Link href={routes.ourStory.url}>READ OUR STORY</Link>
             </Button>
           </div>

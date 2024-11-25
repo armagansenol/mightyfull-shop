@@ -1,17 +1,19 @@
 import s from "./productPage.module.scss"
 
+import { sanityFetch } from "@/lib/sanity/client"
 import { MoneyV2 } from "@shopify/hydrogen-react/storefront-api-types"
 import cn from "clsx"
+import { BellRing } from "lucide-react"
 
 import { getShopifyProductByHandle } from "@/app/actions/shopify"
+import { CustomizedPortableText } from "@/components/customized-portable-text"
 import { FollowUs } from "@/components/follow-us"
+import { IconCloud } from "@/components/icons"
 import { ProductHighlightCarousel } from "@/components/product-highlight-carousel"
 import { Purchase } from "@/components/purchase"
 import { Button } from "@/components/ui/button"
 import { routes } from "@/lib/constants"
 import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
-import { sanityFetch } from "@/lib/sanity/client"
-import { PortableText } from "@portabletext/react"
 import { AnimatedCard } from "components/animated-card"
 import { CustomerReviews } from "components/customer-reviews"
 import { ThemeUpdater } from "components/theme-updater"
@@ -24,6 +26,8 @@ import { SanityProductPage } from "lib/sanity/types"
 import { AnimatedCardProps } from "types"
 import { LayoutQueryResponse } from "types/layout"
 import Images from "./components/images"
+// import { AddToCart } from "@/components/cart-next-commerce/add-to-cart"
+// import { addItem } from "@/components/cart-next-commerce/actions"
 
 interface ProductPageProps {
   params: {
@@ -44,19 +48,25 @@ export default async function Product({ params }: ProductPageProps) {
   })
   const reviews = await getProductReviews("8519377223832")
 
-  const data = await getShopifyProductByHandle(sanityProduct.slug as string)
-  console.log("product page", data)
+  // const data = await getShopifyProductByHandle(sanityProduct.slug as string)
+  // console.log("product page", data)
 
   const { data: shopifyProduct } = await getShopifyProductByHandle(sanityProduct.slug as string)
 
-  console.log("selling plans", shopifyProduct?.product.sellingPlanGroups.nodes)
+  // console.log("selling plans", shopifyProduct?.product.sellingPlanGroups.nodes)
+
+  // async function add() {
+  //   "use server"
+  //   const a = await addItem(shopifyProduct?.product.variants.nodes[0].id)
+  //   console.log("pppp", a)
+  // }
 
   return (
     <>
       {/* {JSON.stringify(shopifyProduct?.product.sellingPlanGroups.nodes)} */}
       {sanityProduct.colorTheme && <ThemeUpdater {...sanityProduct.colorTheme} />}
       <div
-        className={cn(s.productPage, "pt-10 tablet:pt-20 mb-20 tablet:mb-60")}
+        className={cn(s.productPage, "pt-7 tablet:pt-20 mb-20 tablet:mb-60")}
         style={
           {
             "--text-color": `${sanityProduct.colorTheme?.text}`,
@@ -73,46 +83,50 @@ export default async function Product({ params }: ProductPageProps) {
           <div className="col-span-6">
             <Images images={sanityProduct.images} />
           </div>
-          <div className={cn(s.info, "col-span-6 pr-0 tablet:pr-20")}>
-            <h1 className={s.productTitle}>
-              {sanityProduct.title} (
-              {shopifyProduct?.product.variants.nodes[0].availableForSale ? "available" : "out of stock"}) (
-              {shopifyProduct?.product.variants.nodes[0].quantityAvailable})
-            </h1>
-            <p className={s.productDescription}>{sanityProduct.description}</p>
+          <div className="col-span-6 w-full flex flex-col items-center tablet:items-start pr-0 tablet:pr-20">
+            <h1 className={s.productTitle}>{sanityProduct.title}</h1>
+            <p className={s.productPackInfo}>1 PACK (12 COOKIES)</p>
+            <div className={s.productDescription}>
+              <CustomizedPortableText content={sanityProduct.description} />
+            </div>
             {shopifyProduct?.product.availableForSale ? (
-              <Purchase
-                gid={sanityProduct.gid as string}
-                price={shopifyProduct?.product.variants.nodes[0].price as MoneyV2}
-                sp={shopifyProduct.product.sellingPlanGroups.nodes[0]}
-              />
+              <>
+                <Purchase
+                  gid={shopifyProduct.product.id}
+                  price={shopifyProduct?.product.variants.nodes[0].price as MoneyV2}
+                  sp={shopifyProduct.product.sellingPlanGroups.nodes[0]}
+                  product={shopifyProduct.product}
+                />
+                {/* <AddToCart test={add} /> */}
+              </>
             ) : (
-              <div className={cn(s.outOfStock, "flex")}>
-                <div>PRODUCT IS OUT OF STOCK</div>
-                <Button variant="default" size="slim">
-                  <Link href={`${routes.shop.url}`}>SEE OTHER PRODUCTS</Link>
+              <div className="w-full flex flex-col items-stretch">
+                <div className={cn(s.outOfStock, "flex justify-center tablet:justify-start mb-10 tablet:mb-20 py-2")}>
+                  OUT OF STOCK
+                </div>
+                <Button className="flex gap-4" variant="highlighted" size="sm">
+                  <span>
+                    <BellRing />
+                  </span>
+                  <span>NOTIFY ME WHEN BACK IN STOCK</span>
                 </Button>
               </div>
             )}
           </div>
         </section>
         {sanityProduct.specs.length > 0 && (
-          <section className={cn(s.specs, "flex flex-col items-center tablet:grid grid-cols-12")}>
+          <section className={cn(s.specs, "flex flex-col items-center tablet:grid grid-cols-12 my-5 tablet:my-20")}>
             <div className="w-full tablet:col-span-5 tablet:col-start-2">
-              <Accordion
-                className="space-y-0 tablet:space-y-10"
-                type="multiple"
-                defaultValue={sanityProduct.specs.map((_, i) => `${i}`)}
-              >
+              <Accordion type="multiple" defaultValue={sanityProduct.specs.map((_, i) => `${i}`)}>
                 {sanityProduct.specs.map((item, i) => {
                   return (
                     <AccordionItem value={`${i}`} className={s.spec} key={i}>
-                      <AccordionTrigger className="flex items-center justify-between py-10">
+                      <AccordionTrigger className={cn(s.accordionTrigger, "flex items-center justify-between py-10")}>
                         <h3 className={s.title}>{item.title}</h3>
                       </AccordionTrigger>
-                      <AccordionContent>
+                      <AccordionContent className="pb-10">
                         <div className={s.description}>
-                          <PortableText value={item.description} />
+                          <CustomizedPortableText content={item.description} />
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -123,8 +137,14 @@ export default async function Product({ params }: ProductPageProps) {
           </section>
         )}
         {reviews.data && (
-          <section className={s.reviews}>
+          <section className={cn(s.reviews, "my-12 tablet:my-32")}>
+            <div className={s.cloudTop}>
+              <IconCloud fill="var(--text-color)" />
+            </div>
             <CustomerReviews reviews={reviews.data} />
+            <div className={s.cloudBottom}>
+              <IconCloud rotate={180} fill="var(--text-color)" />
+            </div>
           </section>
         )}
         {relatedProducts.length > 0 && (
@@ -145,17 +165,15 @@ export default async function Product({ params }: ProductPageProps) {
                         <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
                           <AnimatedCard {...item} />
                         </Link>
-                        <div className="flex flex-col items-stretch space-y-2">
-                          <Link
-                            href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                            className={cn(s.button, "cursor-pointer flex items-center justify-center")}
-                            prefetch={true}
-                          >
-                            <span>SHOP NOW</span>
-                          </Link>
-                          <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
-                            <span>ADD TO CART</span>
-                          </button>
+                        <div className="flex flex-row tablet:flex-col items-stretch gap-2">
+                          <Button asChild variant="highlighted" size="sm" padding="slim">
+                            <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                              SHOP NOW
+                            </Link>
+                          </Button>
+                          <Button variant="default" size="sm" padding="slim">
+                            ADD TO CART
+                          </Button>
                         </div>
                       </div>
                     )

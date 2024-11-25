@@ -6,31 +6,37 @@ import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-xl whitespace-nowrap focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center rounded-xl whitespace-nowrap focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 tablet:[&_svg]:size-6 [&_svg]:shrink-0 [&>*]:pointer-events-none",
   {
     variants: {
       variant: {
         link: "underline-offset-4 hover:underline",
-        primary: "bg-white text-blue-600 hover:bg-gray-100",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         default: s.default,
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        ghost: s.ghost,
         naked: s.naked,
-        themed: s.themed,
+        inverted: s.inverted,
+        highlighted: s.highlighted,
       },
       size: {
-        default: s.defaultSize,
-        slim: "py-4 w-full rounded-lg",
-        sm: "h-8 px-3 text-xs",
-        lg: "h-10 px-8",
+        sm: s.sm,
+        md: s.md,
+        lg: s.lg,
         icon: "h-9 w-9",
+      },
+      theme: {
+        lean: s.lean,
+        primary: s.primary,
+        secondary: s.secondary,
+      },
+      padding: {
+        fat: "py-4 px-6 tablet:py-5 tablet:px-12 rounded-lg",
+        slim: "py-2 tablet:py-4 w-full rounded-lg",
+        none: "w-full h-full rounded-lg",
+        square: "p-4",
       },
     },
     defaultVariants: {
       variant: "default",
-      size: "default",
+      size: "md",
     },
   }
 )
@@ -42,9 +48,23 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", asChild = false, ...props }, ref) => {
+  ({ className, variant = "default", size = "md", padding = "fat", asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+    return (
+      <Comp
+        className={cn(
+          "cursor-pointer",
+          buttonVariants({
+            variant,
+            size,
+            padding,
+            className,
+          })
+        )}
+        ref={ref}
+        {...props}
+      />
+    )
   }
 )
 Button.displayName = "Button"

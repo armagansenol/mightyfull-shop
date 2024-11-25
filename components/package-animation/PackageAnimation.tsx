@@ -6,50 +6,57 @@ import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap"
 import cn from "clsx"
 
 import { Img } from "@/components/utility/img"
+import { useRef } from "react"
 
 export default function PackageAnimation() {
-  const triggerClass = "gsap-scrolltrigger-c"
+  const ref = useRef(null)
+  // const triggerClass = "gsap-scrolltrigger-c"
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      paused: true,
-    })
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({
+        paused: true,
+      })
 
-    tl.from(
-      ".package",
-      {
-        yPercent: -30,
-        scale: 1.1,
-      },
-      "s"
-    )
-      .from(
-        ".cookie",
+      tl.from(
+        ".package",
         {
-          yPercent: 50,
-          scale: 0.9,
+          yPercent: -30,
+          scale: 1.1,
         },
         "s"
       )
-      .from(
-        ".cookie-slow",
-        {
-          yPercent: 30,
-          scale: 0.8,
-        },
-        "s"
-      )
+        .from(
+          ".cookie",
+          {
+            yPercent: 50,
+            scale: 0.9,
+          },
+          "s"
+        )
+        .from(
+          ".cookie-slow",
+          {
+            yPercent: 30,
+            scale: 0.8,
+          },
+          "s"
+        )
 
-    ScrollTrigger.create({
-      animation: tl,
-      trigger: `.${triggerClass}`,
-      markers: false,
-      scrub: true,
-    })
-  })
+      ScrollTrigger.create({
+        animation: tl,
+        trigger: ref.current,
+        markers: false,
+        scrub: true,
+      })
+    },
+    {
+      scope: ref,
+    }
+  )
 
   return (
-    <div className={cn(s.packageAnimation, triggerClass, "w-full grid grid-cols-3 items-center justify-items-center	")}>
+    <div className={cn(s.packageAnimation, "w-full grid grid-cols-3 items-center justify-items-center	")} ref={ref}>
       <div className={cn(s.animatedCard, "-rotate-6")}>
         <div className={cn(s.package, "package")}>
           <Img

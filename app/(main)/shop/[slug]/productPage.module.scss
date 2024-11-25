@@ -13,12 +13,28 @@
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(32px);
       font-weight: 900;
-      margin-bottom: desktop-vw(20px);
+      line-height: 1;
+      margin-bottom: desktop-vw(10px);
 
       @include mobile {
+        @include dims(mobile-vw(300px), auto);
         font-size: mobile-vw(32px);
         line-height: 1.25;
         margin-bottom: mobile-vw(16px);
+        text-align: center;
+      }
+    }
+
+    .productPackInfo {
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(16px);
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: desktop-vw(30px);
+
+      @include mobile {
+        font-size: mobile-vw(15px);
+        margin-bottom: mobile-vw(30px);
         text-align: center;
       }
     }
@@ -27,13 +43,22 @@
       font-family: var(--font-poppins);
       font-size: desktop-vw(14px);
       font-weight: 400;
-      line-height: 1.45;
       margin-bottom: desktop-vw(50px);
 
       @include mobile {
         font-size: mobile-vw(15px);
-        margin-bottom: mobile-vw(50px);
+        margin-bottom: mobile-vw(30px);
         text-align: center;
+      }
+    }
+
+    .outOfStock {
+      font-size: desktop-vw(16px);
+      font-family: var(--font-bomstad-display);
+      font-weight: 700;
+
+      @include mobile {
+        font-size: mobile-vw(16px);
       }
     }
   }
@@ -43,7 +68,6 @@
 
     @include mobile {
       padding: 0 mobile-vw(16px);
-      margin-top: mobile-vw(30px);
     }
 
     .spec {
@@ -75,14 +99,18 @@
 
       .description {
         font-family: var(--font-poppins);
-        font-size: desktop-vw(14px);
+        font-size: desktop-vw(15px);
         font-weight: 400;
-        line-height: 1.25;
+        line-height: 1.5;
 
         @include mobile {
           font-size: mobile-vw(14px);
           line-height: 1.5;
         }
+      }
+
+      .accordionTrigger {
+        color: var(--text-color);
       }
     }
   }
@@ -91,9 +119,24 @@
     background-color: var(--text-color);
     color: var(--sugar-milk);
     padding: 0 desktop-vw(80px);
+    position: relative;
 
     @include mobile {
       padding: 0 mobile-vw(16px);
+    }
+
+    .cloudTop {
+      @include position(absolute, desktop-vw(50px), 0, auto, 0);
+      @include dims(100%, desktop-vw(150px));
+      transform: translateY(-100%);
+      z-index: 0;
+    }
+
+    .cloudBottom {
+      @include position(absolute, auto, 0, desktop-vw(50px), 0);
+      @include dims(100%, desktop-vw(150px));
+      transform: translateY(100%);
+      z-index: 0;
     }
   }
 
@@ -142,12 +185,19 @@
       @include dims(desktop-vw(280px), desktop-vw(360px));
 
       .button {
+        @include dims(100%, desktop-vw(40px));
         color: var(--sugar-milk);
         font-size: desktop-vw(14px);
         font-weight: 900;
         padding: desktop-vw(8px) 0;
         position: relative;
         transition: 300ms all ease;
+
+        @include mobile {
+          @include dims(mobile-vw(140px), mobile-vw(40px));
+          font-size: mobile-vw(14px);
+          padding: mobile-vw(8px) 0;
+        }
 
         span {
           transition: 200ms all ease;
@@ -156,20 +206,24 @@
         &::before {
           content: "";
           @include position(absolute, 0, 0, 0, 0);
-          background-color: var(--text-color);
+          background-color: var(--blue-ruin);
           border-radius: desktop-vw(8px);
           transition: 200ms all ease;
           z-index: -1;
+
+          @include mobile {
+            border-radius: mobile-vw(8px);
+          }
         }
 
         &:nth-child(2) {
-          color: var(--text-color);
+          color: var(--blue-ruin);
 
           &::before {
             content: "";
             background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--text-color);
+            color: var(--blue-ruin);
+            border: 1px solid var(--blue-ruin);
           }
 
           @include hover {
@@ -183,12 +237,12 @@
 
         @include hover {
           &:hover {
-            color: var(--text-color);
+            color: var(--blue-ruin);
 
             &::before {
               background-color: transparent;
-              color: var(--text-color);
-              border: 1px solid var(--text-color);
+              color: var(--blue-ruin);
+              border: 1px solid var(--blue-ruin);
             }
           }
         }

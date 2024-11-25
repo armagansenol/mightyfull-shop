@@ -28,7 +28,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
           {
             yPercent: -100,
             duration,
-            ease: "back.inOut",
+            ease: "back.inOut(1.7)",
           },
           "s"
         )
@@ -38,7 +38,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
             yPercent: -100,
             duration,
             delay: 0.4,
-            ease: "back.out",
+            ease: "back.out(1.7)",
           },
           "s"
         )
@@ -55,7 +55,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
             scale: 1,
             y: 0,
             duration,
-            ease: "back.inOut",
+            ease: "back.inOut(1.7)",
           },
           "s"
         )
@@ -75,12 +75,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
   const mouseOut = contextSafe(() => tl.current?.reverse())
 
   return (
-    <div
-      ref={ref}
-      className={cx(s.animatedCard, "animated-card", "cursor-pointer")}
-      onMouseEnter={mouseIn}
-      onMouseLeave={mouseOut}
-    >
+    <div ref={ref} className={cx(s.animatedCard, "animated-card")} onMouseEnter={mouseIn} onMouseLeave={mouseOut}>
       <div className={cx(s.bg, "bg")}></div>
       <div className={cx(s.package, "package", "flex flex-col items-center justify-center")}>
         <div className={s.imgC}>

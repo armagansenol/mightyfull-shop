@@ -49,9 +49,10 @@
     }
 
     .text {
+      margin-top: desktop-vw(-10px);
       color: var(--fuchsia-nebula);
       font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(50px);
+      font-size: desktop-vw(40px);
       font-weight: 900;
       line-height: 1;
       margin-bottom: desktop-vw(30px);

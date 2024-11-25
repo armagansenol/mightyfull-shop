@@ -1,4 +1,6 @@
 .purchaseOptions {
+  width: 100%;
+
   .title {
     color: var(--text-color);
     display: block;
@@ -57,7 +59,7 @@
 
     .selectTrigger {
       @include dims(desktop-vw(320px), desktop-vw(50px));
-      border: 1px solid var(--bg-color);
+      border: 1px solid var(--text-color);
       border-radius: desktop-vw(8px);
       color: var(--text-color);
       font-family: var(--font-poppins);
@@ -81,7 +83,7 @@
     border-radius: 50%;
 
     @include mobile {
-      @include dims(mobile-vw(16px));
+      @include dims(mobile-vw(20px));
       padding: mobile-vw(3px);
     }
 
@@ -92,13 +94,27 @@
   }
 }
 
-.deliveryIntervalSelectContent {
-  color: var(--text-color);
-  font-family: var(--font-poppins);
-  font-size: desktop-vw(16px);
-  font-weight: 100;
+.dsi {
+  background-color: var(--sugar-milk);
+  border: 1px solid var(--text-color);
 
-  @include mobile {
-    font-size: mobile-vw(14px);
+  .item {
+    color: var(--text-color);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(16px);
+    font-weight: 500;
+    padding: desktop-vw(12px) desktop-vw(8px);
+    transition: 300ms all ease;
+
+    @include mobile {
+      font-size: mobile-vw(16px);
+      padding: mobile-vw(12px) mobile-vw(8px);
+    }
+
+    @include hover {
+      &:hover {
+        background-color: var(--bg-color);
+      }
+    }
   }
 }

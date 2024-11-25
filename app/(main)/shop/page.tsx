@@ -8,6 +8,7 @@ import { routes } from "@/lib/constants"
 import { ANIMATED_CARDS_QUERY } from "@/lib/queries/sanity/animatedCards"
 import { sanityFetch } from "@/lib/sanity/client"
 import { AnimatedCardProps } from "types"
+import { Button } from "@/components/ui/button"
 
 export default async function ShopPage() {
   const cards = await sanityFetch<AnimatedCardProps[]>({ query: ANIMATED_CARDS_QUERY, tags: ["animatedCards"] })
@@ -28,16 +29,14 @@ export default async function ShopPage() {
                 <AnimatedCard {...item} />
               </Link>
               <div className="flex flex-row tablet:flex-col items-stretch gap-2">
-                <Link
-                  href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                  className={cn(s.button, "cursor-pointer flex items-center justify-center")}
-                  prefetch={true}
-                >
-                  <span>SHOP NOW</span>
-                </Link>
-                <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
-                  <span>ADD TO CART</span>
-                </button>
+                <Button asChild variant="highlighted" size="sm" padding="slim">
+                  <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                    SHOP NOW
+                  </Link>
+                </Button>
+                <Button variant="default" size="sm" padding="slim">
+                  ADD TO CART
+                </Button>
               </div>
             </div>
           )

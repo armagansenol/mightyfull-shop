@@ -1,0 +1,50 @@
+.customerReviews {
+  background-color: var(--text-color);
+  color: var(--sugar-milk);
+  position: relative;
+  z-index: 10;
+
+  .title {
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(32px);
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(36px);
+    }
+  }
+
+  .item {
+    border-bottom: 1px solid var(--sugar-milk);
+
+    &:first-child {
+      border-top: 1px solid var(--sugar-milk);
+    }
+  }
+
+  .author {
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(14px);
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(12px);
+    }
+  }
+
+  .date {
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(14px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(12px);
+    }
+  }
+}

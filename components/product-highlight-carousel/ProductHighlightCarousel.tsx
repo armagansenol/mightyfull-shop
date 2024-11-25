@@ -57,7 +57,7 @@ export default function ProductHighlightCarousel({ items, options }: ProductHigh
                   <Link className={s.card} href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
                     <AnimatedCard {...item} />
                   </Link>
-                  <div className="flex flex-col items-stretch space-y-3">
+                  <div className="flex flex-row tablet:flex-col items-stretch gap-2">
                     <Link
                       href={`/${routes.shop.url}/${item.product.shopifySlug}`}
                       className={cn(s.button, "cursor-pointer flex items-center justify-center")}

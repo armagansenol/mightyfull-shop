@@ -8,16 +8,22 @@
 
     .card {
       @include dims(mobile-vw(250px), mobile-vw(300px));
-      @include outline(red);
     }
 
     .button {
-      @include dims(mobile-vw(240px), mobile-vw(40px));
+      @include dims(100%, desktop-vw(40px));
       color: var(--sugar-milk);
-      font-size: mobile-vw(14px);
+      font-size: desktop-vw(14px);
       font-weight: 900;
+      padding: desktop-vw(8px) 0;
       position: relative;
       transition: 300ms all ease;
+
+      @include mobile {
+        @include dims(mobile-vw(140px), mobile-vw(40px));
+        font-size: mobile-vw(14px);
+        padding: mobile-vw(8px) 0;
+      }
 
       span {
         transition: 200ms all ease;
@@ -27,9 +33,13 @@
         content: "";
         @include position(absolute, 0, 0, 0, 0);
         background-color: var(--blue-ruin);
-        border-radius: mobile-vw(8px);
+        border-radius: desktop-vw(8px);
         transition: 200ms all ease;
         z-index: -1;
+
+        @include mobile {
+          border-radius: mobile-vw(8px);
+        }
       }
 
       &:nth-child(2) {
