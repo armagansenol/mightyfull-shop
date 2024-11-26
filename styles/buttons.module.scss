@@ -1,8 +1,7 @@
 .default {
   background-color: var(--sugar-milk);
-  border: 1px solid var(--blue-ruin);
-  color: var(--blue-ruin);
-  display: inline-flex;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
   font-family: var(--font-bomstad-display);
   font-weight: 900;
   line-height: 1;
@@ -10,18 +9,14 @@
 
   @include hover {
     &:hover {
-      background-color: var(--blue-ruin);
-      border: 1px solid var(--sugar-milk);
+      background-color: var(--text-color);
       color: var(--sugar-milk);
     }
   }
 }
 
-.ghost {
-  background-color: transparent;
-  border: 1px solid var(--blue-ruin);
-  color: var(--blue-ruin);
-  display: inline-flex;
+.inverted {
+  border: 1px solid var(--sugar-milk);
   font-family: var(--font-bomstad-display);
   font-weight: 900;
   line-height: 1;
@@ -29,27 +24,24 @@
 
   @include hover {
     &:hover {
-      background-color: var(--blue-ruin);
-      border: 1px solid var(--sugar-milk);
-      color: var(--sugar-milk);
+      background-color: var(--sugar-milk);
+      color: var(--text-color);
     }
   }
 }
 
-.themed {
+.highlighted {
   background-color: var(--text-color);
   border: 1px solid var(--text-color);
   color: var(--sugar-milk);
-  display: inline-flex;
   font-family: var(--font-bomstad-display);
-  font-weight: 600;
+  font-weight: 900;
   line-height: 1;
   transition: 200ms all ease;
 
   @include hover {
     &:hover {
       background-color: var(--bg-color);
-      border: 1px solid var(--text-color);
       color: var(--text-color);
     }
   }
@@ -61,15 +53,53 @@
   font-family: var(--font-bomstad-display);
   font-weight: 900;
   line-height: 1;
-  transition: 200ms all ease;
 }
 
-.defaultSize {
+// .primary {
+//   background-color: var(--text-color);
+//   color: var(--sugar-milk);
+
+//   @include hover {
+//     &:hover {
+//       background-color: var(--sugar-milk);
+//       color: var(--text-color);
+//     }
+//   }
+// }
+
+// .secondary {
+//   background-color: var(--sugar-milk);
+//   border: 1px solid var(--text-color);
+//   color: var(--text-color);
+
+//   @include hover {
+//     &:hover {
+//       background-color: var(--text-color);
+//       color: var(--sugar-milk);
+//     }
+//   }
+// }
+
+.sm {
+  font-size: desktop-vw(16px);
+
+  @include mobile {
+    font-size: mobile-vw(15px);
+  }
+}
+
+.md {
   font-size: desktop-vw(24px);
-  padding: desktop-vw(20px) desktop-vw(40px);
 
   @include mobile {
     font-size: mobile-vw(20px);
-    padding: mobile-vw(16px) mobile-vw(32px);
+  }
+}
+
+.lg {
+  font-size: desktop-vw(30px);
+
+  @include mobile {
+    font-size: mobile-vw(30px);
   }
 }
