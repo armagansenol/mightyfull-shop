@@ -46,9 +46,18 @@
       margin-bottom: desktop-vw(50px);
 
       @include mobile {
-        font-size: mobile-vw(15px);
+        font-size: mobile-vw(16px);
+        line-height: 2;
         margin-bottom: mobile-vw(30px);
         text-align: center;
+      }
+
+      > p {
+        margin-bottom: desktop-vw(16px);
+
+        @include mobile {
+          margin-bottom: mobile-vw(16px);
+        }
       }
     }
 
