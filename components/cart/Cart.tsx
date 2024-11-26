@@ -2,26 +2,24 @@
 
 import s from "./cart.module.scss"
 
-import { useQuery } from "@tanstack/react-query"
 import cn from "clsx"
 import { X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
-import { createCart } from "@/app/actions/createCart"
 import { Button } from "@/components/ui/button"
 import { ScrollableBox } from "@/components/utility/scrollable-box"
-import { useCartLineStore } from "@/lib/store/cart-lines"
+// import { useCartLineStore } from "@/lib/store/cart-lines"
 
 export default function Cart() {
   const [isOpen, setIsOpen] = useState(true)
-  const { cartLines } = useCartLineStore()
+  // const { cartLines } = useCartLineStore()
 
-  const payload = cartLines.map((item) => {
-    return {
-      merchandiseId: item.merchandiseId,
-      quantity: item.quantity,
-    }
-  })
+  // const payload = cartLines.map((item) => {
+  //   return {
+  //     merchandiseId: item.merchandiseId,
+  //     quantity: item.quantity,
+  //   }
+  // })
 
   // useEffect(() => {
   //   if (payload.length > 0) {
@@ -42,15 +40,15 @@ export default function Cart() {
   //   }
   // }, [payload])
 
-  const { data: cartCreateData } = useQuery({
-    queryKey: ["cart-create", payload],
-    queryFn: () => createCart(payload),
-    enabled: !!payload && payload.length > 0,
-  })
+  // const { data: cartCreateData } = useQuery({
+  //   queryKey: ["cart-create", payload],
+  //   queryFn: () => createCart(payload),
+  //   enabled: !!payload && payload.length > 0,
+  // })
 
-  useEffect(() => {
-    console.log("cart", cartCreateData)
-  }, [cartCreateData])
+  // useEffect(() => {
+  //   console.log("cart", cartCreateData)
+  // }, [cartCreateData])
 
   return (
     <>
