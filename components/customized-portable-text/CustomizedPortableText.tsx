@@ -14,9 +14,6 @@ export default function CustomizedPortableText(props: CustomizedPortableTextProp
       bullet: ({ children }) => <li className="mb-2">{children}</li>,
       number: ({ children }) => <li className="mb-2">{children}</li>,
     },
-    block: {
-      normal: ({ children }) => <p className="leading-relaxed mb-4">{children}</p>,
-    },
   }
 
   return <PortableText value={props.content} components={components} />
