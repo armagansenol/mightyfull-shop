@@ -61,7 +61,6 @@
       z-index: 20;
 
       @include mobile {
-        @include dims(mobile-vw(300px), auto);
         font-size: mobile-vw(30px);
         margin-bottom: unset;
         transform: unset;

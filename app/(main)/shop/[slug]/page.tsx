@@ -61,9 +61,11 @@ export default async function Product({ params }: ProductPageProps) {
   //   console.log("pppp", a)
   // }
 
+  console.log("sanity product", sanityProduct)
+  console.log("shopify product", shopifyProduct)
+
   return (
     <>
-      {/* {JSON.stringify(shopifyProduct?.product.sellingPlanGroups.nodes)} */}
       {sanityProduct.colorTheme && <ThemeUpdater {...sanityProduct.colorTheme} />}
       <div
         className={cn(s.productPage, "pt-7 tablet:pt-20 mb-20 tablet:mb-60")}

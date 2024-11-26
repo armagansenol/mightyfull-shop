@@ -133,9 +133,13 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
       </div>
       <Label className={cn(s.title)}>QUANTITY</Label>
       <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-4 tablet:h-16">
-        <Quantity className="h-12 tablet:h-auto w-36 tablet:col-span-4" quantity={quantity} setQuantity={setQuantity} />
+        <Quantity
+          className="w-48 tablet:w-auto h-12 tablet:h-full tablet:col-span-4"
+          quantity={quantity}
+          setQuantity={setQuantity}
+        />
         <Button
-          className="h-12 tablet:h-auto tablet:col-span-8"
+          className="h-12 tablet:h-full tablet:col-span-8"
           // onClick={handleAddToCart}
           variant="highlighted"
           size="sm"

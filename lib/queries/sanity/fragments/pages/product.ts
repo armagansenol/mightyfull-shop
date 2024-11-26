@@ -12,6 +12,7 @@ export const PRODUCT_PAGE = groq`
   "title": store.title,
   "featuredImage": store.featuredImage,
   "price": store.price,
+  displayTitle,
   images[] {
     ${IMAGE}
   },

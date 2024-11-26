@@ -5,14 +5,15 @@ import s from "./product-highlight-carousel.module.scss"
 import cn from "clsx"
 import { EmblaOptionsType } from "embla-carousel"
 import useEmblaCarousel from "embla-carousel-react"
+import { useCallback, useEffect, useState } from "react"
 
+import { AnimatedCard } from "@/components/animated-card"
 import { IconArrow } from "@/components/icons"
 import { Link } from "@/components/utility/link"
-import { AnimatedCardProps } from "@/types"
-import { AnimatedCard } from "../animated-card"
-import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselButtons"
-import { useCallback, useEffect, useState } from "react"
 import { routes } from "@/lib/constants"
+import { AnimatedCardProps } from "@/types"
+import { NextButton, PrevButton, usePrevNextButtons } from "./EmblaCarouselButtons"
+import { Button } from "../ui/button"
 
 export interface ProductHighlightCarouselProps {
   items: AnimatedCardProps[]
@@ -58,16 +59,14 @@ export default function ProductHighlightCarousel({ items, options }: ProductHigh
                     <AnimatedCard {...item} />
                   </Link>
                   <div className="flex flex-row tablet:flex-col items-stretch gap-2">
-                    <Link
-                      href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                      className={cn(s.button, "cursor-pointer flex items-center justify-center")}
-                      prefetch={true}
-                    >
-                      <span>SHOP NOW</span>
-                    </Link>
-                    <button className={cn(s.button, "cursor-pointer flex items-center justify-center")}>
-                      <span>ADD TO CART</span>
-                    </button>
+                    <Button asChild variant="highlighted" size="sm" padding="slim">
+                      <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
+                        SHOP NOW
+                      </Link>
+                    </Button>
+                    <Button variant="default" size="sm" padding="slim">
+                      ADD TO CART
+                    </Button>
                   </div>
                 </div>
               )

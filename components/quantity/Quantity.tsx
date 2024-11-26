@@ -15,7 +15,7 @@ interface QuantityProps {
 
 export default function Quantity(props: QuantityProps) {
   return (
-    <div className={cn(s.quantity, props.className, "grid grid-cols-12 w-full h-full")}>
+    <div className={cn(s.quantity, "grid grid-cols-12", props.className)}>
       <Button
         variant="naked"
         size="md"

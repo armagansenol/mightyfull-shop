@@ -29,7 +29,7 @@ const buttonVariants = cva(
       },
       padding: {
         fat: "py-4 px-6 tablet:py-5 tablet:px-12 rounded-lg",
-        slim: "py-2 tablet:py-4 w-full rounded-lg",
+        slim: "py-2 px-4 tablet:py-3 tablet:px-none w-full rounded-lg",
         none: "w-full h-full rounded-lg",
         square: "p-4",
       },

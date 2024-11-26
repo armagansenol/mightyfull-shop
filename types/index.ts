@@ -5,9 +5,11 @@ import { ImageAsset } from "sanity"
 
 export interface AnimatedCardProps {
   id: string
+  displayTitle: PortableTextBlock[]
   imgCookie: SanityAssetImage
   imgPackage: SanityAssetImage
   product: {
+    displayTitle: PortableTextBlock[]
     shopifySlug: string
     shopifyTitle: string
     colorTheme: {

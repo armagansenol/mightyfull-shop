@@ -7,7 +7,7 @@
     flex-shrink: 0;
 
     .card {
-      @include dims(mobile-vw(250px), mobile-vw(300px));
+      @include dims(mobile-vw(250px), auto);
     }
 
     .button {

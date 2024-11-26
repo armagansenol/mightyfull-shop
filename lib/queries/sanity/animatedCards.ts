@@ -4,6 +4,7 @@ import { IMAGE } from "./fragments/image"
 export const ANIMATED_CARDS_QUERY = groq`
 *[_type == "animatedCard"] {
   _id,
+  displayTitle,
   imgCookie {
       ${IMAGE}
     },

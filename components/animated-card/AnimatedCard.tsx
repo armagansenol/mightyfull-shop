@@ -10,6 +10,7 @@ import { useGSAP } from "@gsap/react"
 
 import { AnimatedCardProps } from "@/types"
 import { Img } from "@/components/utility/img"
+import { CustomizedPortableText } from "../customized-portable-text"
 
 export default function AnimatedCard(props: AnimatedCardProps) {
   const ref = useRef(null)
@@ -74,6 +75,8 @@ export default function AnimatedCard(props: AnimatedCardProps) {
   const mouseIn = contextSafe(() => tl.current?.play())
   const mouseOut = contextSafe(() => tl.current?.reverse())
 
+  console.log(props.displayTitle)
+
   return (
     <div ref={ref} className={cx(s.animatedCard, "animated-card")} onMouseEnter={mouseIn} onMouseLeave={mouseOut}>
       <div className={cx(s.bg, "bg")}></div>
@@ -91,7 +94,7 @@ export default function AnimatedCard(props: AnimatedCardProps) {
       </div>
       <div className={cx(s.cookie, "cookie", "flex flex-col items-center")}>
         <div className={cx(s.text, "text")} style={{ color: props.product.colorTheme.text.hex }}>
-          {props.product.shopifyTitle}
+          {props.displayTitle.length > 0 && <CustomizedPortableText content={props.displayTitle} />}
         </div>
         <div className={cx(s.imgC, "img-cookie")}>
           <Img
