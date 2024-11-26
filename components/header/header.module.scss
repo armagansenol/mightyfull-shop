@@ -75,12 +75,6 @@
       font-size: mobile-vw(25px);
     }
 
-    &.disabled {
-      opacity: 0.3;
-      pointer-events: none;
-      filter: grayscale(1);
-    }
-
     .iconC {
       @include dims(desktop-vw(35px));
       transition: 300ms transform var(--ease-out-expo);

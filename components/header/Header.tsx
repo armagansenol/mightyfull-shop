@@ -8,12 +8,12 @@ import { useEffect, useState } from "react"
 
 import { routes } from "@/lib/constants"
 import { useCartStore } from "@/lib/store/cart"
+import { ProductCollection } from "@/types"
 import { IconCookieCart, IconLogo } from "components/icons"
 import { Link } from "components/utility/link"
 import { useLenisStore } from "lib/store/lenis"
 import { useTheme } from "lib/store/theme"
 import { usePathname } from "next/navigation"
-import { ProductCollection } from "@/types"
 
 interface HeaderProps {
   shopMenu: ProductCollection[]
@@ -54,7 +54,7 @@ export default function Header(props: HeaderProps) {
   }, [hidden, lenis])
 
   const cartCookieIcon = (
-    <div className={cn(s.navItem, { [s.disabled]: items.length <= 0 })} onClick={() => setIsOpen(true)}>
+    <div className={s.navItem} onClick={() => setIsOpen(true)}>
       <div className={s.iconC}>
         <IconCookieCart fill="var(--primary)" />
       </div>
@@ -106,6 +106,9 @@ export default function Header(props: HeaderProps) {
               <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
             </div>
             <div className="hidden tablet:block">{cartCookieIcon}</div>
+            {/* <div>
+              <CartModal />
+            </div> */}
           </div>
         </nav>
       </header>
