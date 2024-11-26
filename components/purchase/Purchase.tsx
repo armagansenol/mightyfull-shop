@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCartLineStore } from "@/lib/store/cart-lines"
 import { DeliveryInterval, ProductDetail, PurchaseOption } from "@/types"
 
 interface PurchaseOptionsProps {
@@ -34,9 +33,6 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
   const [quantity, setQuantity] = useState(1)
   const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(PurchaseOption.oneTime)
   const [sellingPlanId, setSellingPlanId] = useState<string>("")
-  const { cartLines, addToCart } = useCartLineStore()
-
-  console.log("lines", cartLines)
 
   // const payload = cartLines.map((item) => {
   //   return {
@@ -64,14 +60,14 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
   //   cartCreate.mutate(cartLines)
   // }
 
-  const handleAddToCart = () => {
-    addToCart({
-      cartId: `${props.product.id}_${purchaseOption}`,
-      merchandiseId: props.product.variants.nodes[0].id,
-      quantity,
-      ...(sellingPlanId && { sellingPlanId }),
-    })
-  }
+  // const handleAddToCart = () => {
+  //   addToCart({
+  //     cartId: `${props.product.id}_${purchaseOption}`,
+  //     merchandiseId: props.product.variants.nodes[0].id,
+  //     quantity,
+  //     ...(sellingPlanId && { sellingPlanId }),
+  //   })
+  // }
 
   // const { data: cartCreateData, isLoading: isCartCreateLoading } = useQuery({
   //   queryKey: ["cart-create", payload],
@@ -140,7 +136,7 @@ export default function PurchaseOptions(props: PurchaseOptionsProps) {
         <Quantity className="h-12 tablet:h-auto w-36 tablet:col-span-4" quantity={quantity} setQuantity={setQuantity} />
         <Button
           className="h-12 tablet:h-auto tablet:col-span-8"
-          onClick={handleAddToCart}
+          // onClick={handleAddToCart}
           variant="highlighted"
           size="sm"
           padding="none"
