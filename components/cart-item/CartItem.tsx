@@ -18,6 +18,8 @@ export default function CartItem({ id, title, featuredImage, variants, handle }:
   const [quantity, setQuantity] = useState(q)
 
   useEffect(() => {
+    console.log("id", id)
+
     updateQuantity(id, quantity)
   }, [id, quantity, updateQuantity])
 
@@ -45,7 +47,7 @@ export default function CartItem({ id, title, featuredImage, variants, handle }:
               {variants.nodes[0].price.amount} {variants.nodes[0].price.currencyCode}
             </div>
           </div>
-          <Button variant="naked" size="slim" className={s.remove} onClick={() => removeItem(id)}>
+          <Button variant="naked" className={s.remove} onClick={() => removeItem(id)}>
             Remove
           </Button>
         </div>
