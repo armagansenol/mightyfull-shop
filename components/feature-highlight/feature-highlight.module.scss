@@ -6,6 +6,7 @@
 
   @include mobile {
     border-radius: mobile-vw(16px);
+    padding-bottom: mobile-vw(400px);
   }
 
   .heading {
@@ -33,7 +34,7 @@
     transform: translate(25%, 25%);
 
     @include mobile {
-      @include position(absolute, mobile-vw(130px), mobile-vw(16px), auto, auto);
+      @include position(absolute, mobile-vw(160px), mobile-vw(16px), auto, auto);
       @include dims(mobile-vw(180px));
       transform: translate(15%, 25%);
     }

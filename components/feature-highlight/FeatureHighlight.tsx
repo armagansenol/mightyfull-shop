@@ -17,7 +17,7 @@ export default function FeatureHighlight(props: FeatureHighlightProps) {
     <section
       className={cn(
         s.featureHighlight,
-        "flex flex-col items-center py-10 tablet:py-20 pb-96 tablet:pb-96 bg-[var(--sugar-milk)]"
+        "flex flex-col items-center py-10 tablet:py-20 tablet:pb-96 bg-[var(--sugar-milk)]"
       )}
     >
       <h2 className={s.heading}>What Makes Mightyfull Truly Mighty?</h2>

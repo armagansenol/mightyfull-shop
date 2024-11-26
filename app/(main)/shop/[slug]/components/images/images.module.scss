@@ -7,7 +7,7 @@
   transition: 400ms background-color ease;
 
   @include mobile {
-    @include dims(auto, mobile-vw(80px));
+    @include dims(mobile-vw(80px));
     border-radius: mobile-vw(6px);
     padding: mobile-vw(10px);
   }

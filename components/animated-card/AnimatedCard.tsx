@@ -72,10 +72,14 @@ export default function AnimatedCard(props: AnimatedCardProps) {
     { scope: ref }
   )
 
-  const mouseIn = contextSafe(() => tl.current?.play())
-  const mouseOut = contextSafe(() => tl.current?.reverse())
-
-  console.log(props.displayTitle)
+  const mouseIn = contextSafe(() => {
+    if (ScrollTrigger.isTouch) return
+    tl.current?.play()
+  })
+  const mouseOut = contextSafe(() => {
+    if (ScrollTrigger.isTouch) return
+    tl.current?.reverse()
+  })
 
   return (
     <div ref={ref} className={cx(s.animatedCard, "animated-card")} onMouseEnter={mouseIn} onMouseLeave={mouseOut}>
