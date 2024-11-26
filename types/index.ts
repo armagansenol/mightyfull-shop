@@ -37,7 +37,7 @@ interface ShopifyProduct {
 }
 
 export interface ProductDetail {
-  _id: string
+  id: string
   availableForSale: boolean
   hidden: string
   titleProxy: string
@@ -133,22 +133,10 @@ type SellingPlanGroups = {
 // }
 
 export interface CartItemData {
+  // gid: string
   id: string
   sellingPlanId?: string
-  // name: string
-  // price: number
-  // originalPrice?: number
-  // image: string
   quantity: number
-
-  // subscriptionOffer?: {
-  //   text: string
-  //   discount: number
-  // }
-  // deliveryOffer?: {
-  //   text: string
-  //   discount: number
-  // }
 }
 
 export interface CartItemCard {

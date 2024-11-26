@@ -262,7 +262,7 @@ export type SanityProductWithVariant = {
 export type SanityProductPage = {
   _id: string
   title: string
-  description: string
+  description: PortableTextBlock[]
   available: boolean
   colorTheme?: SanityColorTheme
   customProductOptions?: SanityCustomProductOption[]
