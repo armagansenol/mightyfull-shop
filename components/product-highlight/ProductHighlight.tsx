@@ -127,7 +127,6 @@ export default function ProductHighlight(props: ProductHighlightProps) {
                       color: "var(--text-color)",
                       backgroundColor: "var(--bg-color)",
                     }}
-                    variant="ghost"
                   >
                     SHOP NOW
                   </Button>
