@@ -58,7 +58,9 @@ export default function Header(props: HeaderProps) {
       <div className={s.iconC}>
         <IconCookieCart fill="var(--primary)" />
       </div>
-      <div className={cn(s.amount, "flex items-center justify-center rounded-full")}>{items.length}</div>
+      <div className={cn(s.amount, "flex items-center justify-center rounded-full")}>
+        <span>{items.length}</span>
+      </div>
     </div>
   )
 

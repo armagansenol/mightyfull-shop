@@ -105,6 +105,10 @@
         @include dims(mobile-vw(16px));
         font-size: mobile-vw(12px);
       }
+
+      span {
+        margin-bottom: desktop-vw(-2px);
+      }
     }
   }
 
