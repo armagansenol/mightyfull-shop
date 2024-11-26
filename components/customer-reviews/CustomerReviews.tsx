@@ -20,7 +20,6 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
       }
       return date
     } catch (error) {
-      console.error(`Error parsing date: ${error.message}`)
       throw error
     }
   }
