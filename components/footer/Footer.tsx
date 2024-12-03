@@ -60,9 +60,9 @@ export default function Footer(props: FooterProps) {
             )
           })}
         </div>
-        <span className="ml-0 tablet:ml-auto">
+        <span className={cn(s.signature, "ml-0 tablet:ml-auto")}>
           Made by{" "}
-          <Link className={cn(s.signature, "underline")} href="https://justdesignfx.com">
+          <Link className={cn(s.link, "underline")} href="https://justdesignfx.com">
             JUST DESIGN FX
           </Link>
         </span>

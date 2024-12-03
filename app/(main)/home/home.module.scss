@@ -199,7 +199,7 @@
 
   @include mobile {
     margin-bottom: mobile-vw(30px);
-    padding: mobile-vw(50px) mobile-vw(16px);
+    padding: 0 mobile-vw(16px);
   }
 
   > h2 {
@@ -214,7 +214,7 @@
 
     @include mobile {
       @include dims(auto);
-      font-size: mobile-vw(60px);
+      font-size: mobile-vw(36px);
       margin-bottom: mobile-vw(10px);
     }
   }
@@ -224,7 +224,7 @@
     font-family: var(--font-poppins);
     font-size: desktop-vw(18px);
     font-weight: 400;
-    margin-bottom: desktop-vw(50px);
+    margin-bottom: 0;
     text-align: center;
 
     @include mobile {

@@ -5,7 +5,7 @@ import s from "./product-highlight-carousel.module.scss"
 import cn from "clsx"
 import { EmblaOptionsType } from "embla-carousel"
 import useEmblaCarousel from "embla-carousel-react"
-import { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 
 import { AnimatedCard } from "@/components/animated-card"
 import { IconArrow } from "@/components/icons"
@@ -54,11 +54,14 @@ export default function ProductHighlightCarousel({ items, options }: ProductHigh
           <div className="flex touch-pan-y touch-pinch-zoom">
             {items.map((item, i) => {
               return (
-                <div className={cn(s.slide, "flex flex-col items-center gap-6")} key={i}>
+                <div className={cn(s.slide, "flex flex-col items-center justify-between gap-6")} key={i}>
                   <Link className={s.card} href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
                     <AnimatedCard {...item} />
                   </Link>
-                  <div className="flex flex-row tablet:flex-col items-stretch gap-2">
+                  <div
+                    className="flex flex-row tablet:flex-col items-stretch gap-2"
+                    style={{ "--text-color": `${items[i].product.colorTheme.text.hex}` } as React.CSSProperties}
+                  >
                     <Button asChild variant="highlighted" size="sm" padding="slim">
                       <Link href={`/${routes.shop.url}/${item.product.shopifySlug}`} prefetch={true}>
                         SHOP NOW

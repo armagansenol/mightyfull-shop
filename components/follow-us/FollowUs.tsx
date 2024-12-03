@@ -24,7 +24,7 @@ export default function FollowUs(props: FollowUsProps) {
             "tablet:border-r-[5px] tablet:border-solid tablet:border-[var(--blue-ruin)] flex items-center justify-center"
           )}
         >
-          Follow Us
+          Join Our Family
         </p>
         <div
           className={cn(

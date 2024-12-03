@@ -119,7 +119,7 @@ export default async function Product({ params }: ProductPageProps) {
         {sanityProduct.specs.length > 0 && (
           <section className={cn(s.specs, "flex flex-col items-center tablet:grid grid-cols-12 my-5 tablet:my-20")}>
             <div className="w-full tablet:col-span-5 tablet:col-start-2">
-              <Accordion type="multiple" defaultValue={sanityProduct.specs.map((_, i) => `${i}`)}>
+              <Accordion type="multiple">
                 {sanityProduct.specs.map((item, i) => {
                   return (
                     <AccordionItem value={`${i}`} className={s.spec} key={i}>

@@ -87,15 +87,15 @@ export default async function HomePage() {
       </section>
       {productHighlight.items.length > 0 && (
         <section className={cn(s.highlights, "py-10 tablet:py-20")}>
-          {/* MOBILE */}
-          <div className="block tablet:hidden">
-            <ProductHighlightCarousel items={cards} options={{ loop: true }} />
-          </div>
-          {/* DESKTOP */}
-          <div className="hidden tablet:block">
-            <section className={cn(s.shop, "flex flex-col items-center")}>
-              <h2>Impossible to Choose Just One!</h2>
-              <p>Can’t decide? Try them all and discover your new favorite!</p>
+          <section className={cn(s.shop, "flex flex-col items-center")}>
+            <h2>Impossible to Choose Just One!</h2>
+            <p>Can’t decide? Try them all and discover your new favorite!</p>
+            {/* MOBILE */}
+            <div className="block tablet:hidden">
+              <ProductHighlightCarousel items={cards} options={{ loop: true }} />
+            </div>
+            {/* DESKTOP */}
+            <div className="hidden tablet:block">
               <div className="grid grid-cols-4 gap-12 mt-20 flex-shrink-0">
                 {cards.map((item) => {
                   return (
@@ -117,8 +117,8 @@ export default async function HomePage() {
                   )
                 })}
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         </section>
       )}
       {featureHighlight.items.length > 0 && (
