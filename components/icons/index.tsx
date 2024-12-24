@@ -450,6 +450,19 @@ export const IconX = (props: Props) => {
   )
 }
 
+export const IconStar = (props: Props) => {
+  return (
+    <span className="inherit-dims block" style={{ transform: `rotate(${props.rotate ?? 0}deg)` }}>
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M2.1813 3.85311L9.16147 7.70621L8.91218 0H13.0878L12.7762 7.70621L19.881 3.85311L21.8754 7.33333L14.7705 11L22 14.8531L19.881 18.3955L12.7762 14.1073L13.0878 22H8.91218L9.41076 14.0452L2.1813 18.3955L0.062323 14.8531L7.41643 11.1243L0 7.33333L2.1813 3.85311Z"
+          fill={props.fill}
+        />
+      </svg>
+    </span>
+  )
+}
+
 export const IconCookieCart = (props: Props) => {
   return (
     <span className="inherit-dims block" style={{ transform: `rotate(${props.rotate ?? 0}deg)` }}>
