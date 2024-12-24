@@ -1,5 +1,3 @@
-"use client"
-
 import s from "./quantity.module.scss"
 
 import cn from "clsx"
@@ -17,7 +15,7 @@ export default function Quantity(props: QuantityProps) {
   return (
     <div className={cn(s.quantity, "grid grid-cols-12", props.className)}>
       <Button
-        variant="naked"
+        colorTheme="nakedThemed"
         size="md"
         padding="none"
         className="col-span-4"
@@ -28,7 +26,7 @@ export default function Quantity(props: QuantityProps) {
       </Button>
       <div className="col-span-4 flex items-center justify-center">{props.quantity}</div>
       <Button
-        variant="naked"
+        colorTheme="nakedThemed"
         size="md"
         padding="none"
         className="col-span-4"

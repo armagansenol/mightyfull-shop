@@ -1,6 +1,6 @@
 import s from "./customer-reviews.module.scss"
 
-import cn from "clsx"
+import { cn } from "@/lib/utils"
 import { Star } from "lucide-react"
 import { Review } from "types/okendo"
 
@@ -44,7 +44,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
     <Card className={cn(s.customerReviews, "flex-flex-col items-center")}>
       <CardHeader className="flex flex-col items-center gap-10 px-0 py-16">
         <CardTitle className={s.title}>Customer Reviews</CardTitle>
-        <Button className="mx-auto tablet:ml-auto" variant="inverted" size="sm" padding="fat">
+        <Button className="mx-auto tablet:ml-auto" colorTheme="invertedThemed" size="sm" padding="fat">
           WRITE A REVIEW
         </Button>
       </CardHeader>
@@ -81,7 +81,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
         )}
       </CardContent>
       <CardFooter className="flex items-center justify-center py-10">
-        <Button variant="naked" size="sm">
+        <Button colorTheme="nakedFull" size="sm">
           Load More
         </Button>
       </CardFooter>

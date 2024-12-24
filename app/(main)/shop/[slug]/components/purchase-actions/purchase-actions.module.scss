@@ -1,0 +1,9 @@
+.outOfStock {
+  font-size: desktop-vw(16px);
+  font-family: var(--font-bomstad-display);
+  font-weight: 700;
+
+  @include mobile {
+    font-size: mobile-vw(16px);
+  }
+}

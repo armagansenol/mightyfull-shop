@@ -12,8 +12,6 @@ const buttonVariants = cva(
       variant: {
         link: "underline-offset-4 hover:underline",
         default: s.default,
-        naked: s.naked,
-        inverted: s.inverted,
         highlighted: s.highlighted,
       },
       size: {
@@ -22,16 +20,20 @@ const buttonVariants = cva(
         lg: s.lg,
         icon: "h-9 w-9",
       },
-      theme: {
-        lean: s.lean,
-        primary: s.primary,
-        secondary: s.secondary,
-      },
       padding: {
         fat: "py-4 px-6 tablet:py-5 tablet:px-12 rounded-lg",
         slim: "py-2 px-5 tablet:py-3 tablet:px-none w-full rounded-md tablet:rounded-lg",
         none: "w-full h-full rounded-lg",
         square: "p-4",
+      },
+      colorTheme: {
+        blueRuin: s.blueRuin,
+        themed: s.themed,
+        invertedBlueRuin: s.invertedBlueRuin,
+        invertedThemed: s.invertedThemed,
+        nakedBlueRuin: s.nakedBlueRuin,
+        nakedThemed: s.nakedThemed,
+        nakedFull: s.nakedFull,
       },
     },
     defaultVariants: {
@@ -48,7 +50,10 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "md", padding = "fat", asChild = false, ...props }, ref) => {
+  (
+    { className, variant = "default", size = "md", padding = "fat", colorTheme = "themed", asChild = false, ...props },
+    ref
+  ) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
@@ -58,6 +63,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             variant,
             size,
             padding,
+            colorTheme,
             className,
           })
         )}
