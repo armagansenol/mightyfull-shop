@@ -152,6 +152,7 @@
 
 .fullImgC {
   @include dims(100%, desktop-vw(550px));
+  position: relative;
 
   @include mobile {
     @include dims(100%, mobile-vw(300px));
@@ -204,14 +205,15 @@
 }
 
 .mission {
-  border-bottom: 5px solid var(--blue-ruin);
-  border-top: 5px solid var(--blue-ruin);
+  border-bottom: 5px solid var(--nova-pink);
+  border-top: 5px solid var(--nova-pink);
 
   @include mobile {
     border-top: none;
   }
 
   .text {
+    background-color: var(--cherry-blush);
     padding: desktop-vw(100px) desktop-vw(90px) desktop-vw(100px) desktop-vw(80px);
 
     @include mobile {
@@ -219,7 +221,7 @@
     }
 
     > h2 {
-      color: var(--blue-ruin);
+      color: var(--nova-pink);
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(60px);
       font-weight: 900;
@@ -234,7 +236,7 @@
     }
 
     > p {
-      color: var(--blue-ruin);
+      color: var(--nova-pink);
       font-family: var(--font-poppins);
       font-size: desktop-vw(18px);
       font-weight: 400;
@@ -262,7 +264,7 @@
   }
 
   .titleC {
-    border-bottom: 5px solid var(--blue-ruin);
+    border-bottom: 5px solid var(--nova-pink);
     margin-bottom: desktop-vw(40px);
     padding: desktop-vw(40px) 0;
 
@@ -272,7 +274,7 @@
     }
 
     h2 {
-      color: var(--blue-ruin);
+      color: var(--nova-pink);
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(60px);
       font-weight: 700;
@@ -284,11 +286,15 @@
         text-align: center;
       }
     }
+
+    .iconC {
+      @include dims(desktop-vw(22px), auto);
+    }
   }
 
   > p {
     @include dims(desktop-vw(800px), auto);
-    color: var(--blue-ruin);
+    color: var(--nova-pink);
     font-family: var(--font-poppins);
     font-size: desktop-vw(18px);
     font-weight: 400;

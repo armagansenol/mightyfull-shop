@@ -2,8 +2,9 @@ import s from "./our-story.module.scss"
 
 import cx from "clsx"
 
-import { IconLeftArm, IconRightArm } from "@/components/icons"
+import { IconLeftArm, IconRightArm, IconStar } from "@/components/icons"
 import { Img } from "@/components/utility/img"
+import { Marquee } from "@/components/marquee"
 
 export default function Page() {
   return (
@@ -56,30 +57,24 @@ export default function Page() {
             </p>
           </div>
         </div>
-        <div className={s.cookieC}>
+        <div className={cx(s.cookieC, "z-10")}>
           <Img className="object-contain" src="/img/c-pb-choco-oatie.png" height={500} width={500} alt="Cookie" />
         </div>
       </section>
       <section className={s.fullImgC}>
-        <Img
-          className="object-cover"
-          src="/img/portrait-image-of-a-beautiful-young-asian-woman.jpg"
-          height={2000}
-          width={2000}
-          alt="Portrait of a beautiful young Asian woman."
-        />
+        <Img className="object-cover" src="/img/about.jpg" fill sizes="100vw" alt="Lady holding a cookie" />
       </section>
       <section className={s.differences}>
         <h2>The Mightyfull Difference</h2>
-        <div className="flex flex-col items-center tablet:items-start tablet:grid grid-cols-12 gap-5 tablet:gap-20">
-          <div className="col-span-6">
+        <div className="flex flex-col items-center tablet:items-start tablet:grid grid-cols-2 gap-5 tablet:gap-28">
+          <div>
             <p className={s.p}>
               Mightyfull Cookies are all about flavor, without the fuss. They’re gluten-free, dairy-free, whey-free, and
               soy-free, so you can snack with confidence. These chewy, indulgent cookies deliver everything you crave—no
               artificial junk, just pure deliciousness.
             </p>
           </div>
-          <div className="col-span-6">
+          <div>
             <p className={s.p}>
               With just the right touch of sweetness and a satisfying bite, each cookie is packed with enough protein to
               keep you fueled all day. They’re perfect for anyone who wants to snack smarter without sacrificing taste.
@@ -91,7 +86,7 @@ export default function Page() {
         <div
           className={cx(
             s.text,
-            "col-span-6 border:none tablet:border-r-[5px] tablet:border-r-solid tablet:border-r-[var(--blue-ruin)]"
+            "col-span-6 border:none tablet:border-r-[5px] tablet:border-r-solid tablet:border-r-[var(--nova-pink)]"
           )}
         >
           <h2>Our Mission</h2>
@@ -118,18 +113,24 @@ export default function Page() {
       </section>
       <section className={cx(s.whatsNext, "flex flex-col items-center")}>
         <div className={cx(s.titleC, "w-full flex items-center justify-center")}>
-          <h2>What&apos;s Next for Mightyfull?</h2>
+          <Marquee repeat={4}>
+            <div className="flex items-center gap-20 mr-20">
+              <h2>What&apos;s Next for Mightyfull?</h2>
+              <span className={cx("block", s.iconC)}>
+                <IconStar fill="var(--nova-pink)" />
+              </span>
+            </div>
+          </Marquee>
         </div>
-
         <p>
-          From the very beginning, we’ve wanted Mightyfull to stand for more than just delicious cookies. We believe in
-          filling bellies and fueling potential. That’s why we’re committed to donating a portion of every sale to No
-          Hunger for Kids—because no child should go without a meal, and every kid deserves a full belly to grow strong.
+          We’re committed to growing our community and empowering others. As a women-owned brand, we believe in
+          supporting fellow women entrepreneurs and giving back. As we scale, we plan to partner with small, women-owned
+          businesses to help drive growth and create new opportunities in the industry.
         </p>
         <p>
           <strong>
-            At Mightyfull, we believe in staying mighty and full—whether it’s through our cookies or through our efforts
-            to help those in need.
+            So, the next time you&apos;re looking for a snack that&apos;s free of everything you don&apos;t want and
+            packed with everything you do, remember Mightyfull.
           </strong>
         </p>
       </section>
