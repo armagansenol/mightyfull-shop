@@ -1,27 +1,33 @@
-"use client"
+'use client';
 
-import s from "./cart-item.module.scss"
+import s from './cart-item.module.scss';
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
 
-import { Quantity } from "@/components/quantity"
-import { Button } from "@/components/ui/button"
-import { Img } from "@/components/utility/img"
-import { Link } from "@/components/utility/link"
-import { routes } from "@/lib/constants"
-import { useCartStore } from "@/lib/store/cart"
-import { CartProductNode } from "@/types"
+import { Quantity } from '@/components/quantity';
+import { Button } from '@/components/ui/button';
+import { Img } from '@/components/utility/img';
+import { Link } from '@/components/utility/link';
+import { routes } from '@/lib/constants';
+import { useCartStore } from '@/lib/store/cart';
+import { CartProductNode } from '@/types';
 
-export default function CartItem({ id, title, featuredImage, variants, handle }: CartProductNode) {
-  const { items, removeItem, updateQuantity } = useCartStore()
-  const q = items.find((item) => item.id === id)?.quantity as number
-  const [quantity, setQuantity] = useState(q)
+export default function CartItem({
+  id,
+  title,
+  featuredImage,
+  variants,
+  handle,
+}: CartProductNode) {
+  const { items, removeItem, updateQuantity } = useCartStore();
+  const q = items.find((item) => item.id === id)?.quantity as number;
+  const [quantity, setQuantity] = useState(q);
 
   useEffect(() => {
-    console.log("id", id)
+    console.log('id', id);
 
-    updateQuantity(id, quantity)
-  }, [id, quantity, updateQuantity])
+    updateQuantity(id, quantity);
+  }, [id, quantity, updateQuantity]);
 
   return (
     <div className={s.cartItem}>
@@ -44,14 +50,15 @@ export default function CartItem({ id, title, featuredImage, variants, handle }:
               <Quantity quantity={q} setQuantity={setQuantity} />
             </div>
             <div className={s.price}>
-              {variants.nodes[0].price.amount} {variants.nodes[0].price.currencyCode}
+              {variants.nodes[0].price.amount}{' '}
+              {variants.nodes[0].price.currencyCode}
             </div>
           </div>
-          <Button variant="naked" className={s.remove} onClick={() => removeItem(id)}>
+          <Button className={s.remove} onClick={() => removeItem(id)}>
             Remove
           </Button>
         </div>
       </div>
     </div>
-  )
+  );
 }
