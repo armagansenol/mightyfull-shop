@@ -1,4 +1,5 @@
-const BASE_URL = `https://api.okendo.io/v1/stores/${process.env.NEXT_PUBLIC_OKENDO_USER_ID}`;
+const okendoUserId = process.env.NEXT_PUBLIC_OKENDO_USER_ID;
+const BASE_URL = `https://api.okendo.io/v1/stores/${okendoUserId}`;
 
 type FetchOptions = RequestInit & {
   cache?: RequestCache;
