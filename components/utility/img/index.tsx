@@ -9,6 +9,8 @@ import { useState } from "react"
 const Img = (props: ImageProps) => {
   const {
     alt,
+    fill,
+    sizes,
     className,
     height,
     loading = "eager",
@@ -42,6 +44,8 @@ const Img = (props: ImageProps) => {
       {...(placeholder && { placeholder })}
       {...(height && { height })}
       {...(width && { width })}
+      {...(fill && { fill })}
+      {...(sizes && { sizes })}
     />
   )
 }
