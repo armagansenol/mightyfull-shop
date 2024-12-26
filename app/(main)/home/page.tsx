@@ -1,6 +1,6 @@
 import s from './home.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 
 import { AnimatedCard } from '@/components/animated-card';
 import { FadeInOutCarousel } from '@/components/fade-in-out-carousel';
@@ -14,34 +14,34 @@ import { Button } from '@/components/ui/button';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/queries/sanity/animatedCards';
-import { FEATURE_HIGHLIGHT_QUERY } from '@/lib/queries/sanity/featureHighlightQuery';
-import { PRODUCT_HIGHLIGHT_QUERY } from '@/lib/queries/sanity/productHighlight';
-import { TESTIMONIALS_QUERY } from '@/lib/queries/sanity/testimonials';
+import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
+import { FEATURE_HIGHLIGHT_QUERY } from '@/lib/sanity/featureHighlightQuery';
+import { PRODUCT_HIGHLIGHT_QUERY } from '@/lib/sanity/productHighlight';
+import { TESTIMONIALS_QUERY } from '@/lib/sanity/testimonials';
 import {
   AnimatedCardProps,
   FeatureHighlightQueryResult,
   ProductHighlightQueryResult,
-  Testimonial,
+  Testimonial
 } from '@/types';
 
 export default async function HomePage() {
   const { productHighlight } = await sanityFetch<ProductHighlightQueryResult>({
     query: PRODUCT_HIGHLIGHT_QUERY,
-    tags: ['productHighlight'],
+    tags: ['productHighlight']
   });
   const { featureHighlight } = await sanityFetch<FeatureHighlightQueryResult>({
     query: FEATURE_HIGHLIGHT_QUERY,
-    tags: ['featureHighlight'],
+    tags: ['featureHighlight']
   });
   const testimonials = await sanityFetch<Testimonial[]>({
     query: TESTIMONIALS_QUERY,
-    tags: ['testmonials'],
+    tags: ['testmonials']
   });
   const cards = await sanityFetch<AnimatedCardProps[]>({
     query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards'],
+    tags: ['animatedCards']
   });
 
   return (
@@ -49,13 +49,13 @@ export default async function HomePage() {
       <section
         className={cn(
           s.intro,
-          'flex flex-col items-stretch tablet:grid grid-cols-12',
+          'flex flex-col items-stretch tablet:grid grid-cols-12'
         )}
       >
         <div
           className={cn(
             s.text,
-            'col-span-6 flex flex-col items-center tablet:items-start justify-center',
+            'col-span-6 flex flex-col items-center tablet:items-start justify-center'
           )}
         >
           <h1>
@@ -181,7 +181,7 @@ export default async function HomePage() {
         <section
           className={cn(
             s.theStory,
-            'flex flex-col items-stretch p-5 pt-24 tablet:pt-60 bg-[var(--sugar-milk)]',
+            'flex flex-col items-stretch p-5 pt-24 tablet:pt-60 bg-[var(--sugar-milk)]'
           )}
         >
           <div className={cn('flex flex-col items-center flex-1')}>
@@ -238,7 +238,7 @@ export default async function HomePage() {
       <section
         className={cn(
           s.testimonials,
-          'flex flex-col-reverse tablet:grid grid-cols-12',
+          'flex flex-col-reverse tablet:grid grid-cols-12'
         )}
       >
         <div className="col-span-5">
@@ -260,7 +260,7 @@ export default async function HomePage() {
                   <div
                     className={cn(
                       s.item,
-                      'flex flex-col items-center justify-center',
+                      'flex flex-col items-center justify-center'
                     )}
                     key={item._id}
                   >

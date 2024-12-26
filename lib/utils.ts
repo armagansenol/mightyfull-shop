@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import { Connection } from '../shopify/types';
+import { Connection } from './shopify-test/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,7 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const breakpoints = {
   mobile: 800,
-  tablet: 1024,
+  tablet: 1024
 };
 
 export function lineBreak(text: string) {
@@ -27,7 +27,7 @@ export function truncateString(str: string, num: number) {
 export function capitalize(sentence: string): string {
   const words: string[] = sentence.split(' ');
   const capitalizedWords: string[] = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
   );
   const result: string = capitalizedWords.join(' ');
   return result;
@@ -43,7 +43,7 @@ export function shareOnSocialMedia(baseUrl: string) {
       await navigator.clipboard.writeText(`${baseUrl}${location.pathname}`);
       console.log(
         'Content copied to clipboard',
-        `${baseUrl}${location.pathname}`,
+        `${baseUrl}${location.pathname}`
       );
     } catch (err) {
       console.error('Failed to copy: ', err);
@@ -55,7 +55,7 @@ export function shareOnSocialMedia(baseUrl: string) {
       .share({
         title,
         text,
-        url,
+        url
       })
       .then(() => console.log('Shared!'))
       .catch((err) => console.error(err));
@@ -83,7 +83,7 @@ export function stopPropagation(e: MouseEvent) {
 
 export const createUrl = (
   pathname: string,
-  params: URLSearchParams | ReadonlyURLSearchParams,
+  params: URLSearchParams | ReadonlyURLSearchParams
 ) => {
   const paramsString = params.toString();
   const queryString = `${paramsString.length ? '?' : ''}${paramsString}`;
@@ -99,7 +99,7 @@ export const ensureStartsWith = (stringToCheck: string, startsWith: string) =>
 export const validateEnvironmentVariables = () => {
   const requiredEnvironmentVariables = [
     'SHOPIFY_STORE_DOMAIN',
-    'SHOPIFY_STOREFRONT_ACCESS_TOKEN',
+    'SHOPIFY_STOREFRONT_ACCESS_TOKEN'
   ];
   const missingEnvironmentVariables = [] as string[];
 
@@ -112,8 +112,8 @@ export const validateEnvironmentVariables = () => {
   if (missingEnvironmentVariables.length) {
     throw new Error(
       `The following environment variables are missing. Your site will not work without them. Read more: https://vercel.com/docs/integrations/shopify#configure-environment-variables\n\n${missingEnvironmentVariables.join(
-        '\n',
-      )}\n`,
+        '\n'
+      )}\n`
     );
   }
 
@@ -122,7 +122,7 @@ export const validateEnvironmentVariables = () => {
     process.env.SHOPIFY_STORE_DOMAIN?.includes(']')
   ) {
     throw new Error(
-      'Your `SHOPIFY_STORE_DOMAIN` environment variable includes brackets (ie. `[` and / or `]`). Your site will not work with them there. Please remove them.',
+      'Your `SHOPIFY_STORE_DOMAIN` environment variable includes brackets (ie. `[` and / or `]`). Your site will not work with them there. Please remove them.'
     );
   }
 };
@@ -145,7 +145,7 @@ export function parseISOToDate(isoString: string): Date {
 
 export function formatDate(
   inputDate: Date,
-  thresholdDays: number = 10,
+  thresholdDays: number = 10
 ): string {
   const now = new Date();
   const timeDifference = now.getTime() - inputDate.getTime();

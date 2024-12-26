@@ -6,14 +6,14 @@ import { AnimatedCard } from '@/components/animated-card';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/queries/sanity/animatedCards';
+import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
 import { AnimatedCardProps } from 'types';
 
 export default async function ShopPage() {
   const cards = await sanityFetch<AnimatedCardProps[]>({
     query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards'],
+    tags: ['animatedCards']
   });
   console.log('cards', cards);
 
@@ -27,7 +27,7 @@ export default async function ShopPage() {
             <div
               className={cn(
                 s.card,
-                'flex flex-col items-center tablet:items-stretch gap-5 tablet:gap-10',
+                'flex flex-col items-center tablet:items-stretch gap-5 tablet:gap-10'
               )}
               key={item.id}
             >

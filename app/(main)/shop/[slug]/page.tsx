@@ -1,16 +1,20 @@
 import s from './product-detail-page.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 
-import { getShopifyProductByHandle } from '@/app/actions/shopify';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
+import { ProductImages } from '@/components/product-images';
+import { PurchasePanel } from '@/components/purchase-panel';
 import { Button } from '@/components/ui/button';
 import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/queries/sanity/animatedCards';
+import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
+import { LAYOUT_QUERY } from '@/lib/sanity/layout';
+import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
+import { getProduct } from '@/lib/shopify-test';
 import { AnimatedCard } from 'components/animated-card';
 import { CustomerReviews } from 'components/customer-reviews';
 import { ThemeUpdater } from 'components/theme-updater';
@@ -18,16 +22,12 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
+  AccordionTrigger
 } from 'components/ui/accordion';
 import { Link } from 'components/utility/link';
-import { LAYOUT_QUERY } from 'lib/queries/sanity/layout';
-import { PRODUCT_PAGE_QUERY } from 'lib/queries/sanity/productPage';
 import { SanityProductPage } from 'lib/sanity/types';
 import { AnimatedCardProps } from 'types';
 import { LayoutQueryResponse } from 'types/layout';
-import { ProductImages } from '@/components/product-images';
-import { PurchasePanel } from '@/components/purchase-panel';
 
 interface ProductDetailPageProps {
   params: {
@@ -36,31 +36,28 @@ interface ProductDetailPageProps {
 }
 
 export default async function ProductDetialPage({
-  params,
+  params
 }: ProductDetailPageProps) {
   const sanityProduct = await sanityFetch<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     tags: ['productPage'],
-    qParams: { slug: params.slug },
+    qParams: { slug: params.slug }
   });
   const layout = await sanityFetch<LayoutQueryResponse>({
     query: LAYOUT_QUERY,
-    tags: ['layout'],
+    tags: ['layout']
   });
   const animatedCards = await sanityFetch<AnimatedCardProps[]>({
     query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards'],
+    tags: ['animatedCards']
   });
   const relatedProducts = animatedCards.filter((card) => {
     return card.product.shopifySlug !== sanityProduct.slug;
   });
 
-  const { data: shopifyProduct } = await getShopifyProductByHandle(
-    sanityProduct.slug as string,
-  );
+  const shopifyProduct = await getProduct(params.slug);
 
   console.log('sanity product', sanityProduct);
-  console.log('shopify product', shopifyProduct);
 
   return (
     <>
@@ -72,14 +69,14 @@ export default async function ProductDetialPage({
         style={
           {
             '--text-color': `${sanityProduct.colorTheme?.text}`,
-            '--bg-color': `${sanityProduct.colorTheme?.background}`,
+            '--bg-color': `${sanityProduct.colorTheme?.background}`
           } as React.CSSProperties
         }
       >
         <section
           className={cn(
             s.intro,
-            'flex flex-col items-center tablet:grid grid-cols-11 gap-10 tablet:gap-20 tablet:items-stretch justify-stretch py-20',
+            'flex flex-col items-center tablet:grid grid-cols-11 gap-10 tablet:gap-20 tablet:items-stretch justify-stretch py-20'
           )}
         >
           <div className="col-span-6 space-y-10">
@@ -93,7 +90,7 @@ export default async function ProductDetialPage({
                         <AccordionTrigger
                           className={cn(
                             s.accordionTrigger,
-                            'flex items-center justify-between py-10 w-full',
+                            'flex items-center justify-between py-10 w-full'
                           )}
                         >
                           <h3 className={s.title}>{item.title}</h3>
@@ -119,7 +116,7 @@ export default async function ProductDetialPage({
               <CustomizedPortableText content={sanityProduct.description} />
             </div>
             {shopifyProduct && (
-              <PurchasePanel shopifyProduct={shopifyProduct.product} />
+              <PurchasePanel shopifyProduct={shopifyProduct} />
             )}
           </div>
         </section>
@@ -158,7 +155,7 @@ export default async function ProductDetialPage({
                       <div
                         className={cn(
                           s.card,
-                          'flex flex-col gap-10 flex-shrink-0',
+                          'flex flex-col gap-10 flex-shrink-0'
                         )}
                         key={item.id}
                       >

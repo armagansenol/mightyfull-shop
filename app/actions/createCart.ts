@@ -2,10 +2,10 @@
 
 import { shopifyClient } from "@/lib/shopify"
 import { createCartMutation } from "@/lib/shopify/mutations/cart"
-import { ShopifyCreateCartOperation } from "@/lib/shopify/types"
+import { Cart, CartLineInput } from "@shopify/hydrogen-react/storefront-api-types"
 
-export async function createCart(lines: { merchandiseId: string; quantity: number; sellingPlanId: string }[]) {
-  const res = await shopifyClient.request<ShopifyCreateCartOperation>(createCartMutation, {
+export async function createCart(lines: CartLineInput[]) {
+  const res = await shopifyClient.request<Cart>(createCartMutation, {
     variables: { lineItems: lines },
   })
   return res.data

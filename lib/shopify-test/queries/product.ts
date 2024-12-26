@@ -10,7 +10,11 @@ export const getProductQuery = /* GraphQL */ `
 `;
 
 export const getProductsQuery = /* GraphQL */ `
-  query getProducts($sortKey: ProductSortKeys, $reverse: Boolean, $query: String) {
+  query getProducts(
+    $sortKey: ProductSortKeys
+    $reverse: Boolean
+    $query: String
+  ) {
     products(sortKey: $sortKey, reverse: $reverse, query: $query, first: 100) {
       edges {
         node {
@@ -29,4 +33,12 @@ export const getProductRecommendationsQuery = /* GraphQL */ `
     }
   }
   ${productFragment}
+`;
+
+export const getProductQueryTest = /* GraphQL */ `
+  query getProduct($handle: String!) {
+    product(handle: $handle) {
+      title
+    }
+  }
 `;

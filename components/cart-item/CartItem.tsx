@@ -2,14 +2,10 @@
 
 import s from './cart-item.module.scss';
 
-import { useEffect, useState } from 'react';
-
-import { Quantity } from '@/components/quantity';
-import { Button } from '@/components/ui/button';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import { useCartStore } from '@/lib/store/cart';
+// import { useCartStore } from '@/lib/store/cart';
 import { CartProductNode } from '@/types';
 
 export default function CartItem({
@@ -17,17 +13,19 @@ export default function CartItem({
   title,
   featuredImage,
   variants,
-  handle,
+  handle
 }: CartProductNode) {
-  const { items, removeItem, updateQuantity } = useCartStore();
-  const q = items.find((item) => item.id === id)?.quantity as number;
-  const [quantity, setQuantity] = useState(q);
+  console.log(id, variants);
 
-  useEffect(() => {
-    console.log('id', id);
+  // const { items, removeItem, updateQuantity } = useCartStore();
+  // const q = items.find((item) => item.id === id)?.quantity as number;
+  // const [quantity, setQuantity] = useState(q);
 
-    updateQuantity(id, quantity);
-  }, [id, quantity, updateQuantity]);
+  // useEffect(() => {
+  //   console.log('id', id);
+
+  //   updateQuantity(id, quantity);
+  // }, [id, quantity, updateQuantity]);
 
   return (
     <div className={s.cartItem}>
@@ -45,7 +43,7 @@ export default function CartItem({
           <Link href={`/${routes.shop.url}/${handle}`} className={s.title}>
             {title}
           </Link>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className={s.quantity}>
               <Quantity quantity={q} setQuantity={setQuantity} />
             </div>
@@ -56,7 +54,7 @@ export default function CartItem({
           </div>
           <Button className={s.remove} onClick={() => removeItem(id)}>
             Remove
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>
