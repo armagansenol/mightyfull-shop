@@ -1,4 +1,6 @@
-import s from './productPage.module.scss';
+import s from './product-detail-page.module.scss';
+
+import cn from 'clsx';
 
 import { getShopifyProductByHandle } from '@/app/actions/shopify';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
@@ -9,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { routes } from '@/lib/constants';
 import { ANIMATED_CARDS_QUERY } from '@/lib/queries/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
-import cn from 'clsx';
 import { AnimatedCard } from 'components/animated-card';
 import { CustomerReviews } from 'components/customer-reviews';
 import { ThemeUpdater } from 'components/theme-updater';
@@ -20,22 +21,23 @@ import {
   AccordionTrigger,
 } from 'components/ui/accordion';
 import { Link } from 'components/utility/link';
-import { getProductReviews } from 'lib/queries/okendo';
 import { LAYOUT_QUERY } from 'lib/queries/sanity/layout';
 import { PRODUCT_PAGE_QUERY } from 'lib/queries/sanity/productPage';
 import { SanityProductPage } from 'lib/sanity/types';
 import { AnimatedCardProps } from 'types';
 import { LayoutQueryResponse } from 'types/layout';
-import Images from './components/images';
-import PurchaseActions from './components/purchase-actions';
+import { ProductImages } from '@/components/product-images';
+import { PurchasePanel } from '@/components/purchase-panel';
 
-interface ProductPageProps {
+interface ProductDetailPageProps {
   params: {
     slug: string;
   };
 }
 
-export default async function Product({ params }: ProductPageProps) {
+export default async function ProductDetialPage({
+  params,
+}: ProductDetailPageProps) {
   const sanityProduct = await sanityFetch<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     tags: ['productPage'],
@@ -52,22 +54,10 @@ export default async function Product({ params }: ProductPageProps) {
   const relatedProducts = animatedCards.filter((card) => {
     return card.product.shopifySlug !== sanityProduct.slug;
   });
-  const reviews = await getProductReviews('8519377223832');
-
-  // const data = await getShopifyProductByHandle(sanityProduct.slug as string)
-  // console.log("product page", data)
 
   const { data: shopifyProduct } = await getShopifyProductByHandle(
     sanityProduct.slug as string,
   );
-
-  // console.log("selling plans", shopifyProduct?.product.sellingPlanGroups.nodes)
-
-  // async function add() {
-  //   "use server"
-  //   const a = await addItem(shopifyProduct?.product.variants.nodes[0].id)
-  //   console.log("pppp", a)
-  // }
 
   console.log('sanity product', sanityProduct);
   console.log('shopify product', shopifyProduct);
@@ -93,7 +83,7 @@ export default async function Product({ params }: ProductPageProps) {
           )}
         >
           <div className="col-span-6 space-y-10">
-            <Images images={sanityProduct.images} />
+            <ProductImages images={sanityProduct.images} />
             {sanityProduct.specs.length > 0 && (
               <section className={cn(s.specs, 'grid grid-cols-12 gap-5')}>
                 <Accordion className="col-span-10 col-start-3" type="multiple">
@@ -129,22 +119,20 @@ export default async function Product({ params }: ProductPageProps) {
               <CustomizedPortableText content={sanityProduct.description} />
             </div>
             {shopifyProduct && (
-              <PurchaseActions shopifyProduct={shopifyProduct.product} />
+              <PurchasePanel shopifyProduct={shopifyProduct.product} />
             )}
           </div>
         </section>
         {/* product reviews */}
-        {reviews.data && (
-          <section className={cn(s.reviews, 'my-12 tablet:my-32')}>
-            <div className={s.cloudTop}>
-              <IconCloud fill="var(--text-color)" />
-            </div>
-            <CustomerReviews reviews={reviews.data} />
-            <div className={s.cloudBottom}>
-              <IconCloud rotate={180} fill="var(--text-color)" />
-            </div>
-          </section>
-        )}
+        <section className={cn(s.reviews, 'my-12 tablet:my-32')}>
+          <div className={s.cloudTop}>
+            <IconCloud fill="var(--text-color)" />
+          </div>
+          <CustomerReviews productId={'8519377223832'} />
+          <div className={s.cloudBottom}>
+            <IconCloud rotate={180} fill="var(--text-color)" />
+          </div>
+        </section>
         {/* related products */}
         {relatedProducts.length > 0 && (
           <section className={cn(s.highlights, 'py-10 tablet:py-20')}>

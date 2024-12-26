@@ -1,10 +1,10 @@
-@import "./_reset.scss";
-@import "./_fonts.scss";
-@import "./_colors.scss";
-@import "./_easings.scss";
-@import "./_functions.scss";
+@import './_reset.scss';
+@import './_fonts.scss';
+@import './_colors.scss';
+@import './_easings.scss';
+@import './_functions.scss';
 // @import './_layout.scss';
-@import "./_utils.scss";
+@import './_utils.scss';
 // @import "./_themes.scss";
 /* @import "./_scroll.scss"; */
 
@@ -80,7 +80,7 @@ sup {
 .gsap-marker-start,
 .gsap-marker-scroller-end,
 .gsap-marker-scroller-start {
-  z-index: z-index("gsap-markers") !important;
+  z-index: z-index('gsap-markers') !important;
 }
 
 .input-required {
@@ -130,4 +130,29 @@ sup {
   font-family: var(--font-bomstad-display);
   font-size: desktop-vw(24px);
   font-weight: 900;
+}
+
+.okendo-widget-container {
+  font-family: var(--font-poppins);
+}
+
+.okeReviews .okeReviews-reviewsWidget-header-controls-writeReview {
+  visibility: visible;
+}
+
+.okeReviews .okeReviews-reviewsWidget.is-okeReviews-empty {
+  display: block;
+}
+
+.oke-w-header,
+.oke-w-controls {
+  display: none !important;
+}
+
+.oke-stars-background {
+  opacity: 0 !important;
+}
+
+.oke-w-reviewMinimal-footer {
+  display: none !important;
 }

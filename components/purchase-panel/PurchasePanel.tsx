@@ -1,6 +1,6 @@
 'use client';
 
-import s from './purchase-actions.module.scss';
+import s from './purchase-panel.module.scss';
 
 import { ScrollTrigger } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
@@ -14,11 +14,11 @@ import { Purchase } from '@/components/purchase';
 import { Button } from '@/components/ui/button';
 import { ProductDetail } from '@/types';
 
-export interface PurchaseActionsProps {
+export interface PurchasePanelProps {
   shopifyProduct: ProductDetail;
 }
 
-export default function PurchaseActions(props: PurchaseActionsProps) {
+export default function PurchasePanel(props: PurchasePanelProps) {
   const boxRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const [measureRef, { height }] = useMeasure<HTMLDivElement>();

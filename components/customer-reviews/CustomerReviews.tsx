@@ -2,10 +2,14 @@
 
 import s from './customer-reviews.module.scss';
 
-import { cn } from '@/lib/utils';
+import { ReviewData } from '@/lib/okendo/types';
+import { cn, formatDate, parseISOToDate } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
-import { Review } from 'types/okendo';
+import { AnimatePresence } from 'motion/react';
+import * as motion from 'motion/react-client';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -14,40 +18,37 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useEffect, useRef } from 'react';
+import { Link } from '@/components/utility/link';
+import { DEFAULT_LIMIT, getReviews } from '@/lib/okendo/queries';
+import { useEffect, useState } from 'react';
+import { IconLoadingSpinner } from '../icons';
 
 interface CustomerReviewsProps {
-  reviews: Review[];
+  productId: string;
 }
 
 export default function CustomerReviews(props: CustomerReviewsProps) {
-  function parseISOToDate(isoString: string): Date {
-    try {
-      const date = new Date(isoString);
-      if (isNaN(date.getTime())) {
-        throw new Error('Invalid ISO date string');
-      }
-      return date;
-    } catch (error) {
-      throw error;
-    }
-  }
+  const [limit, setLimit] = useState(DEFAULT_LIMIT);
+  const [items, setItems] = useState<ReviewData['reviews']>([]);
 
-  function formatDate(inputDate: Date, thresholdDays: number = 10): string {
-    const now = new Date();
-    const timeDifference = now.getTime() - inputDate.getTime();
-    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  const { data, isPending, isFetching } = useQuery<ReviewData, Error>({
+    queryKey: ['reviews', limit],
+    queryFn: () => getReviews(props.productId, { limit }),
+  });
 
-    if (daysDifference < thresholdDays) {
-      return `${daysDifference} days ago`;
-    } else {
-      // Format as DD.MM.YYYY
-      const day = inputDate.getDate().toString().padStart(2, '0');
-      const month = (inputDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-      const year = inputDate.getFullYear();
-      return `${day}.${month}.${year}`;
+  useEffect(() => {
+    if (!data) return;
+
+    const remainedItems = data.reviews.filter((review) => {
+      return !items.some((item) => item.reviewId === review.reviewId);
+    });
+
+    if (remainedItems.length > 0) {
+      setItems([...items, ...remainedItems]);
     }
-  }
+  }, [items, data]);
+
+  console.log(isPending, data);
 
   return (
     <Card className={cn(s.customerReviews, 'flex-flex-col items-center')}>
@@ -58,119 +59,82 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
           colorTheme="invertedThemed"
           size="sm"
           padding="fat"
+          asChild
         >
-          WRITE A REVIEW
+          <Link href="https://okendo.reviews/?subscriberId=bd0d64e9-dd61-45c9-865a-1c3a59e98a1e&productId=shopify-8519377223832&locale=en">
+            WRITE A REVIEW
+          </Link>
         </Button>
       </CardHeader>
       <CardContent className={cn('p-0')}>
-        {props.reviews.length >= 0 && (
-          <>
-            {props.reviews.map((review) => (
-              <div className={cn(s.item, 'pt-8 pb-14')} key={review.reviewId}>
-                <div className="flex items-start gap-4">
-                  {/* <Avatar className="w-10 h-10">
-                    <AvatarImage src="/placeholder.svg" alt={review.reviewer.displayName} />
-                    <AvatarFallback>{review.author[0]}</AvatarFallback>
-                  </Avatar> */}
-                  <div className="flex-1 grid grid-cols-12">
-                    <div className="col-span-3 flex items-center">
-                      <p className={s.author}>{review.reviewer.displayName}</p>
-                    </div>
-                    <div className="col-span-6 flex flex-col gap-5">
-                      <div className="flex items-center gap-1">
-                        {Array.from({ length: review.rating }).map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-current" />
-                        ))}
-                      </div>
-                      <p>{review.body}</p>
-                    </div>
-                    <div className="col-span-3 flex items-start justify-end">
-                      <span className={s.date}>
-                        {formatDate(parseISOToDate(review.dateUpdated))}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="okendo-widget-container">
-                    <h2>Star Rating</h2>
-                    <OkendoStarRating
-                      productId={review.productId}
-                    ></OkendoStarRating>
-                  </div>
-                  <div className="okendo-widget-container">
-                    <h2>Reviews Widget</h2>
-                    <OkendoReviewsWidget
-                      productId={review.productId}
-                    ></OkendoReviewsWidget>
+        {items.length === 0 && (
+          <div className="w-full h-[500px] flex items-center justify-center">
+            <div className="h-10 w-10">
+              <IconLoadingSpinner fill="var(--sugar-milk)" />
+            </div>
+          </div>
+        )}
+
+        <AnimatePresence mode="wait">
+          {items?.map((review) => (
+            <motion.div
+              key={review.reviewId}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className={cn(s.item, 'pt-8 pb-14')}
+            >
+              <div className="grid grid-cols-12">
+                <div className="col-span-3 flex items-center gap-4">
+                  <Avatar className="w-10 h-10">
+                    <AvatarImage
+                      src={review.reviewer.avatarUrl}
+                      alt={review.reviewer.displayName}
+                    />
+                    <AvatarFallback>
+                      {review.reviewer.displayName[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex items-center">
+                    <p className={s.author}>{review.reviewer.displayName}</p>
                   </div>
                 </div>
+                <div className="col-span-6">
+                  <div className="flex flex-col gap-5">
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-current" />
+                      ))}
+                    </div>
+                    <p>{review.body}</p>
+                  </div>
+                </div>
+                <div className="col-span-3 flex items-start justify-end">
+                  <span className={s.date}>
+                    {formatDate(parseISOToDate(review.dateCreated))}
+                  </span>
+                </div>
               </div>
-            ))}
-          </>
-        )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </CardContent>
       <CardFooter className="flex items-center justify-center py-10">
-        <Button colorTheme="nakedFull" size="sm">
+        <Button
+          className="flex items-center gap-4"
+          colorTheme="nakedFull"
+          size="sm"
+          onClick={() => setLimit((prev) => prev + 1)}
+        >
           Load More
+          {isFetching && items.length > 0 && (
+            <span className="h-2 w-2">
+              <IconLoadingSpinner fill="var(--sugar-milk)" />
+            </span>
+          )}
         </Button>
       </CardFooter>
     </Card>
   );
 }
-
-const OkendoStarRating = ({ productId }: { productId: string }) => {
-  const widgetContainer = useRef(null);
-
-  const initialiseWidget = () =>
-    // @ts-expect-error: okendo widget api
-    window.okeWidgetApi.initWidget(widgetContainer.current);
-
-  useEffect(() => {
-    // @ts-expect-error: okendo widget api
-    if (window.okeWidgetApi?.initWidget) {
-      initialiseWidget();
-    } else {
-      document.addEventListener('oke-script-loaded', initialiseWidget);
-    }
-
-    return () => {
-      document.removeEventListener('oke-script-loaded', initialiseWidget);
-    };
-  }, [productId]);
-
-  return (
-    <div
-      ref={widgetContainer}
-      data-oke-star-rating
-      data-oke-reviews-product-id={`${productId}`}
-    ></div>
-  );
-};
-
-const OkendoReviewsWidget = ({ productId }: { productId: string }) => {
-  const widgetContainer = useRef(null);
-
-  const initialiseWidget = () =>
-    // @ts-expect-error: okendo widget api
-    window.okeWidgetApi.initWidget(widgetContainer.current);
-
-  useEffect(() => {
-    // @ts-expect-error: okendo widget api
-    if (window.okeWidgetApi?.initWidget) {
-      initialiseWidget();
-    } else {
-      document.addEventListener('oke-script-loaded', initialiseWidget);
-    }
-
-    return () => {
-      document.removeEventListener('oke-script-loaded', initialiseWidget);
-    };
-  }, [productId]);
-
-  return (
-    <div
-      ref={widgetContainer}
-      data-oke-widget
-      data-oke-reviews-product-id={`${productId}`}
-    ></div>
-  );
-};
