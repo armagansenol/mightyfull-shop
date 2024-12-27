@@ -2,12 +2,13 @@ import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { cache } from 'react';
 
+import { Cart } from '@/components/cart';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { SmoothLayout } from '@/layouts/smooth';
 import { ThemeLayout } from '@/layouts/theme';
-import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { sanityFetch } from '@/lib/sanity/client';
+import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { LayoutQueryResponse } from '@/types/layout';
 
 export const metadata: Metadata = {
@@ -48,7 +49,7 @@ export default async function MainLayout({
         </ThemeLayout>
       </SmoothLayout>
       <Footer socialLinks={layoutData.socialLinks} />
-      {/* <Cart /> */}
+      <Cart />
     </div>
   );
 }

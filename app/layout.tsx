@@ -4,7 +4,7 @@ import 'styles/tailwind-initial.css';
 import { Providers } from '@/components/providers';
 
 export default async function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
