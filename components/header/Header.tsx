@@ -7,32 +7,27 @@ import cn from 'clsx';
 import { useEffect, useState } from 'react';
 
 import { routes } from '@/lib/constants';
-import { ProductCollection } from '@/types';
 import { IconCookieCart, IconLogo } from 'components/icons';
 import { Link } from 'components/utility/link';
 import { useLenisStore } from 'lib/store/lenis';
 import { useTheme } from 'lib/store/theme';
 import { usePathname } from 'next/navigation';
 
-interface HeaderProps {
-  shopMenu: ProductCollection[];
-}
+// interface HeaderProps {
+//   shopMenu: ProductCollection[];
+// }
 
-export default function Header(props: HeaderProps) {
-  console.log(props);
-
+export default function Header() {
+  // props: HeaderProps
   const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { lenis } = useLenisStore();
   const [hidden, setHidden] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-
-  console.log('isOpen', isOpen);
 
   useEffect(() => {
     setHamburgerOpen(false);
-  }, [pathname, setIsOpen]);
+  }, [pathname]);
 
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start();
@@ -54,7 +49,7 @@ export default function Header(props: HeaderProps) {
   }, [hidden, lenis]);
 
   const cartCookieIcon = (
-    <div className={s.navItem} onClick={() => setIsOpen(true)}>
+    <div className={s.navItem}>
       <div className={s.iconC}>
         <IconCookieCart fill="var(--primary)" />
       </div>
