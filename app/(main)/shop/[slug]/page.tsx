@@ -2,6 +2,7 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
+import AddToCartButtonClient from '@/components/atc-test/atc.client';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
@@ -118,6 +119,11 @@ export default async function ProductDetialPage({
             <div className={s.productDescription}>
               <CustomizedPortableText content={sanityProduct.description} />
             </div>
+            {shopifyProduct && (
+              <AddToCartButtonClient
+                productVariantId={shopifyProduct.variants[0].id}
+              />
+            )}
             {shopifyProduct && (
               <PurchasePanel shopifyProduct={shopifyProduct} />
             )}

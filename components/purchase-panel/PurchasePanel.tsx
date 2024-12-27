@@ -7,14 +7,10 @@ import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
 import { BellRing } from 'lucide-react';
-import { useEffect, useRef } from 'react';
-
-import { Button } from '@/components/ui/button';
-import { Product } from '@/lib/shopify-test/types';
-
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Quantity } from '@/components/quantity';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
@@ -24,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { Product } from '@/lib/shopify-test/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
 
 export interface PurchasePanelProps {
@@ -31,11 +28,16 @@ export interface PurchasePanelProps {
 }
 
 export default function PurchasePanel(props: PurchasePanelProps) {
-  console.log('shopify product', props.shopifyProduct);
+  // console.log('shopify product', props.shopifyProduct);
 
   const boxRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const [measureRef, { height }] = useMeasure<HTMLDivElement>();
+  const [quantity, setQuantity] = useState(1);
+  const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(
+    PurchaseOption.oneTime
+  );
+  const [sellingPlanId, setSellingPlanId] = useState<string>('');
 
   useEffect(() => {
     if (triggerRef.current) {
@@ -67,11 +69,28 @@ export default function PurchasePanel(props: PurchasePanelProps) {
     { dependencies: [height], revertOnUpdate: true }
   );
 
-  const [quantity, setQuantity] = useState(1);
-  const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(
-    PurchaseOption.oneTime
-  );
-  const [sellingPlanId, setSellingPlanId] = useState<string>('');
+  // const { addToCart } = useCartStore();
+
+  // const handleAddToCart = async () => {
+  //   try {
+  //     await getProduct('chocolate-chip');
+  //   } catch (error) {
+  //     console.error('Error fetching product:', error);
+  //   }
+
+  //   try {
+  //     await addToCart([
+  //       {
+  //         merchandiseId: props.shopifyProduct.variants[0].id,
+  //         quantity: quantity
+  //       }
+  //     ]).then((res) => {
+  //       console.log('Item added to cart', res);
+  //     });
+  //   } catch (error) {
+  //     console.error('Error adding to cart:', error);
+  //   }
+  // };
 
   return (
     <div className="flex-1" ref={triggerRef}>
@@ -117,7 +136,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                           id={PurchaseOption.subscription}
                         />
                         <Label htmlFor={PurchaseOption.subscription}>
-                          {props.shopifyProduct.title}
+                          Subscribe - 10% off
                         </Label>
                       </div>
                     </div>
