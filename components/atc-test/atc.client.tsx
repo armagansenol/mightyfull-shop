@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { addItemTest } from '../cart/actions';
+import { addItemTest } from '@/app/actions/cart';
 
 interface AddToCartButtonClientProps {
   productVariantId: string;
