@@ -1,6 +1,6 @@
 import s from './product-detail-page.module.scss';
 
-import { cn } from '@/lib/utils';
+import { cn, extractShopifyId } from '@/lib/utils';
 
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
@@ -54,10 +54,13 @@ export default async function ProductDetialPage({
   const relatedProducts = animatedCards.filter((card) => {
     return card.product.shopifySlug !== sanityProduct.slug;
   });
-
   const shopifyProduct = await getProduct(params.slug);
+  const productId = extractShopifyId(shopifyProduct?.id as string);
 
-  console.log('sanity product', sanityProduct);
+  // console.log(
+  //   'sanity product id',
+  //   extractShopifyId(shopifyProduct?.id as string)
+  // );
 
   return (
     <>
@@ -125,14 +128,14 @@ export default async function ProductDetialPage({
           <div className={s.cloudTop}>
             <IconCloud fill="var(--text-color)" />
           </div>
-          <CustomerReviews productId={'8519377223832'} />
+          {shopifyProduct && <CustomerReviews productId={productId} />}
           <div className={s.cloudBottom}>
             <IconCloud rotate={180} fill="var(--text-color)" />
           </div>
         </section>
         {/* related products */}
         {relatedProducts.length > 0 && (
-          <section className={cn(s.highlights, 'py-10 tablet:py-20')}>
+          <section className={cn(s.highlights, 'pb-10 tablet:pb-20')}>
             {/* MOBILE */}
             <div className="block tablet:hidden">
               <ProductHighlightCarousel

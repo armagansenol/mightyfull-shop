@@ -47,4 +47,16 @@
       font-size: mobile-vw(12px);
     }
   }
+
+  .message {
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+
+    @include mobile {
+      font-size: mobile-vw(12px);
+    }
+  }
 }

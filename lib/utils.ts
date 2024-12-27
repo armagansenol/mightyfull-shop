@@ -165,3 +165,8 @@ export function formatDate(
   const year = inputDate.getFullYear();
   return `${day}.${month}.${year}`;
 }
+
+export function extractShopifyId(gid: string): string {
+  const matches = gid.match(/gid:\/\/shopify\/\w+\/(\d+)/);
+  return matches?.[1] ?? '';
+}

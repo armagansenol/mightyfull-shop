@@ -8,7 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
+import { useEffect, useState } from 'react';
 
+import { IconLoadingSpinner } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,12 +18,10 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import { DEFAULT_LIMIT, getReviews } from '@/lib/okendo/queries';
-import { useEffect, useState } from 'react';
-import { IconLoadingSpinner } from '../icons';
 
 interface CustomerReviewsProps {
   productId: string;
@@ -30,10 +30,11 @@ interface CustomerReviewsProps {
 export default function CustomerReviews(props: CustomerReviewsProps) {
   const [limit, setLimit] = useState(DEFAULT_LIMIT);
   const [items, setItems] = useState<ReviewData['reviews']>([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  const { data, isPending, isFetching } = useQuery<ReviewData, Error>({
-    queryKey: ['reviews', limit],
-    queryFn: () => getReviews(props.productId, { limit }),
+  const { data, isFetching } = useQuery<ReviewData, Error>({
+    queryKey: ['reviews', limit, props.productId],
+    queryFn: () => getReviews(props.productId, { limit })
   });
 
   useEffect(() => {
@@ -43,12 +44,14 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
       return !items.some((item) => item.reviewId === review.reviewId);
     });
 
+    console.log('remained', remainedItems);
+
+    setHasMore(remainedItems.length > 0);
+
     if (remainedItems.length > 0) {
       setItems([...items, ...remainedItems]);
     }
   }, [items, data]);
-
-  console.log(isPending, data);
 
   return (
     <Card className={cn(s.customerReviews, 'flex-flex-col items-center')}>
@@ -61,20 +64,28 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
           padding="fat"
           asChild
         >
-          <Link href="https://okendo.reviews/?subscriberId=bd0d64e9-dd61-45c9-865a-1c3a59e98a1e&productId=shopify-8519377223832&locale=en">
+          <Link
+            href={`https://okendo.reviews/?subscriberId=bd0d64e9-dd61-45c9-865a-1c3a59e98a1e&productId=shopify-${props.productId}&locale=en`}
+          >
             WRITE A REVIEW
           </Link>
         </Button>
       </CardHeader>
       <CardContent className={cn('p-0')}>
-        {items.length === 0 && (
+        {data?.reviews.length === 0 && items.length === 0 && (
+          <div className="w-full h-[300px] flex items-center justify-center">
+            <p className={s.message}>
+              Be the first to review this product – no reviews yet!
+            </p>
+          </div>
+        )}
+        {isFetching && (
           <div className="w-full h-[500px] flex items-center justify-center">
             <div className="h-10 w-10">
               <IconLoadingSpinner fill="var(--sugar-milk)" />
             </div>
           </div>
         )}
-
         <AnimatePresence mode="wait">
           {items?.map((review) => (
             <motion.div
@@ -120,21 +131,24 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
           ))}
         </AnimatePresence>
       </CardContent>
-      <CardFooter className="flex items-center justify-center py-10">
-        <Button
-          className="flex items-center gap-4"
-          colorTheme="nakedFull"
-          size="sm"
-          onClick={() => setLimit((prev) => prev + 1)}
-        >
-          Load More
-          {isFetching && items.length > 0 && (
-            <span className="h-2 w-2">
-              <IconLoadingSpinner fill="var(--sugar-milk)" />
-            </span>
-          )}
-        </Button>
-      </CardFooter>
+      {items.length > 0 && (
+        <CardFooter className="flex items-center justify-center py-10">
+          <Button
+            className="flex items-center gap-4"
+            colorTheme="nakedFull"
+            size="sm"
+            onClick={() => setLimit((prev) => prev + 1)}
+            disabled={!hasMore}
+          >
+            Load More
+            {isFetching && items.length > 0 && (
+              <span className="h-2 w-2">
+                <IconLoadingSpinner fill="var(--sugar-milk)" />
+              </span>
+            )}
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 }
