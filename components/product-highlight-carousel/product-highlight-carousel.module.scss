@@ -3,11 +3,31 @@
   overflow: hidden;
 
   .slide {
-    @include dims(100vw, auto);
+    @include dims(67vw, auto);
     flex-shrink: 0;
+
+    .cardC {
+      opacity: 0.8;
+      transform: scale(0.8);
+      transition: 700ms all ease;
+
+      &.active {
+        opacity: 1;
+        transform: scale(1);
+
+        .buttons {
+          opacity: 1;
+        }
+      }
+    }
 
     .card {
       @include dims(mobile-vw(250px), auto);
+    }
+
+    .buttons {
+      opacity: 0;
+      transition: 700ms all ease;
     }
 
     .button {
@@ -30,7 +50,7 @@
       }
 
       &::before {
-        content: "";
+        content: '';
         @include position(absolute, 0, 0, 0, 0);
         background-color: var(--blue-ruin);
         border-radius: desktop-vw(8px);
@@ -46,7 +66,7 @@
         color: var(--blue-ruin);
 
         &::before {
-          content: "";
+          content: '';
           background-color: transparent;
           color: var(--blue-ruin);
           border: 1px solid var(--blue-ruin);

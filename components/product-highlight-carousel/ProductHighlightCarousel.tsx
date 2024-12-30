@@ -73,37 +73,41 @@ export default function ProductHighlightCarousel({
                   )}
                   key={i}
                 >
-                  <Link
-                    className={s.card}
-                    href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                    prefetch={true}
-                  >
-                    <AnimatedCard {...item} />
-                  </Link>
                   <div
-                    className="flex flex-row tablet:flex-col items-stretch gap-2"
-                    style={
-                      {
-                        '--text-color': `${items[i].product.colorTheme.text.hex}`
-                      } as React.CSSProperties
-                    }
+                    className={cn(s.cardC, 'space-y-5', {
+                      [s.active]: i === currentSlide
+                    })}
                   >
-                    <Button
-                      asChild
-                      variant="highlighted"
-                      size="sm"
-                      padding="slim"
+                    <Link
+                      className={s.card}
+                      href={`/${routes.shop.url}/${item.product.shopifySlug}`}
+                      prefetch={true}
                     >
-                      <Link
-                        href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                        prefetch={true}
-                      >
-                        SHOP NOW
-                      </Link>
-                    </Button>
-                    <Button variant="default" size="sm" padding="slim">
-                      ADD TO CART
-                    </Button>
+                      <AnimatedCard {...item} />
+                    </Link>
+                    <div
+                      className={cn(
+                        s.buttons,
+                        'flex flex-row tablet:flex-col items-stretch gap-2'
+                      )}
+                      style={
+                        {
+                          '--text-color': `${items[i].product.colorTheme.text.hex}`
+                        } as React.CSSProperties
+                      }
+                    >
+                      <Button asChild size="sm" padding="slim">
+                        <Link
+                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
+                          prefetch={true}
+                        >
+                          SHOP NOW
+                        </Link>
+                      </Button>
+                      <Button size="sm" padding="slim">
+                        ADD TO CART
+                      </Button>
+                    </div>
                   </div>
                 </div>
               );
