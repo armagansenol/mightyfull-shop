@@ -8,11 +8,13 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { routes } from '@/lib/constants';
+import useCartStore from '@/lib/store/cart';
 import { ProductCollection } from '@/types';
 import { IconCookieCart, IconLogo } from 'components/icons';
 import { Link } from 'components/utility/link';
 import { useLenisStore } from 'lib/store/lenis';
 import { useTheme } from 'lib/store/theme';
+import CartModal from '../cart-test/modal';
 
 interface HeaderProps {
   shopMenu: ProductCollection[];
@@ -26,6 +28,7 @@ export default function Header(props: HeaderProps) {
   const { lenis } = useLenisStore();
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
+  const { setOpen } = useCartStore();
 
   useEffect(() => {
     setHamburgerOpen(false);
@@ -138,10 +141,12 @@ export default function Header(props: HeaderProps) {
             <div className={cn(s.navItem)}>
               <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
             </div>
-            <div className="hidden tablet:block">{cartCookieIcon}</div>
-            {/* <div>
+            <div
+              className="hidden tablet:block cursor-pointer"
+              onClick={() => setOpen(true)}
+            >
               <CartModal />
-            </div> */}
+            </div>
           </div>
         </nav>
       </header>

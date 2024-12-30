@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
 import { BellRing } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { addItem } from '@/components/cart-test/actions';
 import { Quantity } from '@/components/quantity';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -91,6 +92,11 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   //     console.error('Error adding to cart:', error);
   //   }
   // };
+
+  const add = useCallback(async () => {
+    const res = await addItem(props.shopifyProduct.variants[0].id);
+    console.log('lol', res);
+  }, [props.shopifyProduct.variants]);
 
   return (
     <div className="flex-1" ref={triggerRef}>
@@ -190,21 +196,25 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
-              <Button
+              <form
                 className="h-12 tablet:h-full tablet:col-span-8"
-                // onClick={handleAddToCart}
-                size="sm"
-                padding="none"
-                colorTheme="themed"
+                action={add}
               >
-                ADD TO CART{' '}
-                {quantity > 0 && (
-                  <>
-                    ({props.shopifyProduct.variants[0].price.amount}
-                    {props.shopifyProduct.variants[0].price.currencyCode})
-                  </>
-                )}
-              </Button>
+                <Button
+                  size="sm"
+                  padding="none"
+                  colorTheme="themed"
+                  type="submit"
+                >
+                  ADD TO CART{' '}
+                  {quantity > 0 && (
+                    <>
+                      ({props.shopifyProduct.variants[0].price.amount}
+                      {props.shopifyProduct.variants[0].price.currencyCode})
+                    </>
+                  )}
+                </Button>
+              </form>
             </div>
           </div>
         ) : (

@@ -12,7 +12,7 @@ import { Cart } from '../shopify-test/types';
 interface CartState {
   cartId: string | null;
   cart: Cart | null;
-
+  open: boolean;
   // Actions
   fetchCart: () => Promise<void>;
   createCart: () => Promise<void>;
@@ -23,6 +23,7 @@ interface CartState {
   updateCart: (
     lines: { id: string; merchandiseId: string; quantity: number }[]
   ) => Promise<void>;
+  setOpen: (open: boolean) => void;
 }
 
 const useCartStore = create<CartState>()(
@@ -30,7 +31,8 @@ const useCartStore = create<CartState>()(
     (set, get) => ({
       cartId: null,
       cart: null,
-
+      open: false,
+      setOpen: (open: boolean) => set({ open }),
       // Fetch cart by ID
       fetchCart: async () => {
         const { cartId } = get();

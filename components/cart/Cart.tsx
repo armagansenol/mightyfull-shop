@@ -4,48 +4,28 @@ import s from './cart.module.scss';
 
 import cn from 'clsx';
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollableBox } from '@/components/utility/scrollable-box';
-import useCartStore from '@/lib/store/cart';
-import { createCartAndSetCookie } from '@/app/actions/cart';
-// import { useCartLineStore } from "@/lib/store/cart-lines"
 
 export default function Cart() {
-  const { cart } = useCartStore();
-  const [isOpen, setIsOpen] = useState(true);
-
-  useEffect(() => {
-    if (!cart) {
-      createCartAndSetCookie();
-    }
-  }, [cart]);
-
   return (
     <>
+      <div className={cn(s.backdrop, { [s.open]: open })} />
       <div
-        className={cn(s.backdrop, { [s.open]: isOpen })}
-        onClick={() => setIsOpen(false)}
-      />
-      <div
-        className={cn(s.cart, { [s.open]: isOpen }, 'flex flex-col flex-1')}
+        className={cn(s.cart, { [s.open]: open }, 'flex flex-col flex-1')}
         data-lenis-prevent
       >
         <div className="flex items-center justify-between py-5 mb-5 border-b border-slate-50">
           <h2 className={s.title}>Your Cart</h2>
-          <Button
-            size="icon"
-            className="rounded-full"
-            onClick={() => setIsOpen(false)}
-          >
+          <Button size="icon" className="rounded-full">
             <X className="h-6 w-6" />
             <span className="sr-only">Close cart</span>
           </Button>
         </div>
         <div
           className={cn(s.cartItems, 'flex flex-1 flex-col gap-8 mt-auto', {
-            [s.disabled]: isOpen
+            [s.disabled]: open
           })}
         >
           <ScrollableBox className="flex-1">

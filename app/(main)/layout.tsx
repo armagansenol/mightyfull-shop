@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import { cache } from 'react';
 
-import { Cart } from '@/components/cart';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { SmoothLayout } from '@/layouts/smooth';
@@ -49,7 +48,6 @@ export default async function MainLayout({
         </ThemeLayout>
       </SmoothLayout>
       <Footer socialLinks={layoutData.socialLinks} />
-      <Cart />
     </div>
   );
 }

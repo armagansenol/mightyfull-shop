@@ -2,7 +2,6 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
-import AddToCartButtonClient from '@/components/atc-test/atc.client';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
@@ -29,6 +28,8 @@ import { Link } from 'components/utility/link';
 import { SanityProductPage } from 'lib/sanity/types';
 import { AnimatedCardProps } from 'types';
 import { LayoutQueryResponse } from 'types/layout';
+import { ProductProvider } from '@/components/product/product-context';
+import { AddToCart } from '@/components/cart-test/add-to-cart';
 
 interface ProductDetailPageProps {
   params: {
@@ -64,7 +65,7 @@ export default async function ProductDetialPage({
   // );
 
   return (
-    <>
+    <ProductProvider>
       {sanityProduct.colorTheme && (
         <ThemeUpdater {...sanityProduct.colorTheme} />
       )}
@@ -119,13 +120,16 @@ export default async function ProductDetialPage({
             <div className={s.productDescription}>
               <CustomizedPortableText content={sanityProduct.description} />
             </div>
-            {shopifyProduct && (
+            {/* {shopifyProduct && (
               <AddToCartButtonClient
                 productVariantId={shopifyProduct.variants[0].id}
               />
-            )}
+            )} */}
             {shopifyProduct && (
-              <PurchasePanel shopifyProduct={shopifyProduct} />
+              <>
+                <PurchasePanel shopifyProduct={shopifyProduct} />
+                <AddToCart product={shopifyProduct} />
+              </>
             )}
           </div>
         </section>
@@ -209,6 +213,6 @@ export default async function ProductDetialPage({
           images={layout.imageCarousel.map((image) => image.url)}
         />
       </div>
-    </>
+    </ProductProvider>
   );
 }

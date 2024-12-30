@@ -2,12 +2,18 @@ import 'styles/global.scss';
 import 'styles/tailwind-initial.css';
 
 import { Providers } from '@/components/providers';
+import { getCart } from '@/lib/shopify-test';
+import { cookies } from 'next/headers';
+import { CartProvider } from '@/components/cart-test/cart-context';
 
 export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cartId = cookies().get('cartId')?.value;
+  const cartPromise = getCart(cartId);
+
   return (
     <html lang="en">
       {/* <head>
@@ -18,7 +24,9 @@ export default async function RootLayout({
         ></script>
       </head> */}
       <body className={`antialiased`}>
-        <Providers>{children}</Providers>
+        <CartProvider cartPromise={cartPromise}>
+          <Providers>{children}</Providers>
+        </CartProvider>
       </body>
     </html>
   );
