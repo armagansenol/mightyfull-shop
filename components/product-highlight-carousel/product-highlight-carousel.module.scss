@@ -7,6 +7,7 @@
     flex-shrink: 0;
 
     .cardC {
+      min-height: mobile-vw(440px);
       opacity: 0.8;
       transform: scale(0.8);
       transition: 700ms all ease;
@@ -23,15 +24,11 @@
       }
     }
 
-    .card {
-      @include dims(mobile-vw(250px), auto);
+    .imgC {
+      @include dims(100%, auto);
 
-      .imgC {
-        @include dims(100%, auto);
-
-        @include mobile {
-          @include dims(mobile-vw(240px));
-        }
+      @include mobile {
+        @include dims(mobile-vw(240px));
       }
     }
 
@@ -124,7 +121,6 @@
     }
   }
 }
-
 .nextButton,
 .prevButton {
   @include dims(mobile-vw(24px));

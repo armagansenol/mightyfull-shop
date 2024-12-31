@@ -75,9 +75,13 @@ export default function ProductHighlightCarousel({
                   key={i}
                 >
                   <div
-                    className={cn(s.cardC, 'space-y-5', {
-                      [s.active]: i === currentSlide
-                    })}
+                    className={cn(
+                      s.cardC,
+                      'flex flex-col items-center justify-between',
+                      {
+                        [s.active]: i === currentSlide
+                      }
+                    )}
                   >
                     <Link
                       className={s.card}
@@ -94,7 +98,7 @@ export default function ProductHighlightCarousel({
                         />
                       </div>
                     </Link>
-                    <div className={cn(s.info, 'space-y-3')}>
+                    <div className={cn(s.info, 'space-y-5')}>
                       <div
                         className={cn(s.text, 'text')}
                         style={{ color: item.product.colorTheme.text.hex }}
