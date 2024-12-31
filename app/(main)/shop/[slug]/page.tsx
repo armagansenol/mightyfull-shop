@@ -7,6 +7,7 @@ import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
 import { ProductImages } from '@/components/product-images';
+import { ProductProvider } from '@/components/product/product-context';
 import { PurchasePanel } from '@/components/purchase-panel';
 import { Button } from '@/components/ui/button';
 import { routes } from '@/lib/constants';
@@ -28,8 +29,11 @@ import { Link } from 'components/utility/link';
 import { SanityProductPage } from 'lib/sanity/types';
 import { AnimatedCardProps } from 'types';
 import { LayoutQueryResponse } from 'types/layout';
-import { ProductProvider } from '@/components/product/product-context';
-import { AddToCart } from '@/components/cart-test/add-to-cart';
+
+import s1 from '@/public/img/s-1.jpg';
+import s2 from '@/public/img/s-2.jpg';
+import s3 from '@/public/img/s-3.jpg';
+import s4 from '@/public/img/s-4.jpg';
 
 interface ProductDetailPageProps {
   params: {
@@ -64,6 +68,8 @@ export default async function ProductDetialPage({
   //   extractShopifyId(shopifyProduct?.id as string)
   // );
 
+  const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
+
   return (
     <ProductProvider>
       {sanityProduct.colorTheme && (
@@ -88,7 +94,10 @@ export default async function ProductDetialPage({
             <ProductImages images={sanityProduct.images} />
             {sanityProduct.specs.length > 0 && (
               <section className={cn(s.specs, 'grid grid-cols-12 gap-5')}>
-                <Accordion className="col-span-10 col-start-3" type="multiple">
+                <Accordion
+                  className="col-span-12 tablet:col-span-10 tablet:col-start-3"
+                  type="multiple"
+                >
                   {sanityProduct.specs.map((item, i) => {
                     return (
                       <AccordionItem value={`${i}`} className={s.spec} key={i}>
@@ -126,10 +135,7 @@ export default async function ProductDetialPage({
               />
             )} */}
             {shopifyProduct && (
-              <>
-                <PurchasePanel shopifyProduct={shopifyProduct} />
-                <AddToCart product={shopifyProduct} />
-              </>
+              <PurchasePanel shopifyProduct={shopifyProduct} />
             )}
           </div>
         </section>
@@ -210,7 +216,8 @@ export default async function ProductDetialPage({
         )}
         <FollowUs
           socialLinks={layout.socialLinks}
-          images={layout.imageCarousel.map((image) => image.url)}
+          // images={layout.imageCarousel.map((image) => image.url)}
+          images={imgs}
         />
       </div>
     </ProductProvider>
