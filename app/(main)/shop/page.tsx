@@ -27,7 +27,7 @@ export default async function ShopPage() {
             <div
               className={cn(
                 s.card,
-                'flex flex-col items-center tablet:items-stretch gap-5 tablet:gap-10'
+                'flex flex-col items-stretch gap-5 tablet:gap-10'
               )}
               key={item.id}
             >
@@ -37,7 +37,7 @@ export default async function ShopPage() {
               >
                 <AnimatedCard {...item} />
               </Link>
-              <div className="flex flex-row tablet:flex-col items-stretch gap-2">
+              <div className="flex flex-col items-stretch gap-2">
                 <Button colorTheme="blueRuin" size="sm" padding="slim" asChild>
                   <Link
                     href={`/${routes.shop.url}/${item.product.shopifySlug}`}
