@@ -1,39 +1,38 @@
-import s from "./quantity.module.scss"
+import s from './quantity.module.scss';
 
-import cn from "clsx"
-import { Minus, Plus } from "lucide-react"
+import cn from 'clsx';
 
-import { Button } from "@/components/ui/button"
+import { IconMinus, IconPlus } from '@/components/icons';
 
 interface QuantityProps {
-  className?: string
-  quantity: number
-  setQuantity: (val: number) => void
+  className?: string;
+  quantity: number;
+  setQuantity: (val: number) => void;
 }
 
 export default function Quantity(props: QuantityProps) {
   return (
-    <div className={cn(s.quantity, "grid grid-cols-12", props.className)}>
-      <Button
-        colorTheme="nakedThemed"
-        size="md"
-        padding="none"
-        className="col-span-4"
+    <div className={cn(s.quantity, 'grid grid-cols-12', props.className)}>
+      <button
+        className="cursor-pointer col-span-4 flex items-center justify-center disabled:opacity-50"
         onClick={() => props.setQuantity(props.quantity - 1)}
         disabled={props.quantity <= 1}
       >
-        <Minus className="h-full w-full" />
-      </Button>
-      <div className="col-span-4 flex items-center justify-center">{props.quantity}</div>
-      <Button
-        colorTheme="nakedThemed"
-        size="md"
-        padding="none"
-        className="col-span-4"
+        <div className={s.iconC}>
+          <IconMinus fill="var(--text-color)" />
+        </div>
+      </button>
+      <div className="col-span-4 flex items-center justify-center">
+        {props.quantity}
+      </div>
+      <button
+        className="cursor-pointer col-span-4 flex items-center justify-center disabled:opacity-50"
         onClick={() => props.setQuantity(props.quantity + 1)}
       >
-        <Plus className="h-full w-full" />
-      </Button>
+        <div className={s.iconC}>
+          <IconPlus fill="var(--text-color)" />
+        </div>
+      </button>
     </div>
-  )
+  );
 }

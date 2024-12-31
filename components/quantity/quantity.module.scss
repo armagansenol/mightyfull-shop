@@ -10,4 +10,12 @@
     border-radius: mobile-vw(8px);
     font-size: mobile-vw(14px);
   }
+
+  .iconC {
+    @include dims(desktop-vw(8px));
+
+    @include mobile {
+      @include dims(mobile-vw(10px));
+    }
+  }
 }
