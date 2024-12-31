@@ -10,12 +10,14 @@
       opacity: 0.8;
       transform: scale(0.8);
       transition: 700ms all ease;
+      pointer-events: none;
 
       &.active {
         opacity: 1;
         transform: scale(1);
+        pointer-events: auto;
 
-        .buttons {
+        .info {
           opacity: 1;
         }
       }
@@ -23,9 +25,36 @@
 
     .card {
       @include dims(mobile-vw(250px), auto);
+
+      .imgC {
+        @include dims(100%, auto);
+
+        @include mobile {
+          @include dims(mobile-vw(240px));
+        }
+      }
     }
 
-    .buttons {
+    .text {
+      margin-top: desktop-vw(-10px);
+      color: var(--fuchsia-nebula);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(40px);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: desktop-vw(30px);
+      text-align: center;
+      transform: translateY(200%) scale(0.7);
+      z-index: 20;
+
+      @include mobile {
+        font-size: mobile-vw(30px);
+        margin-bottom: unset;
+        transform: unset;
+      }
+    }
+
+    .info {
       opacity: 0;
       transition: 700ms all ease;
     }

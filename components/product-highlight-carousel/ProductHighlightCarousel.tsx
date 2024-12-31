@@ -2,14 +2,15 @@
 
 import s from './product-highlight-carousel.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 import { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { AnimatedCard } from '@/components/animated-card';
+import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { IconArrow } from '@/components/icons';
 import { Button } from '@/components/ui/button';
+import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
 import { AnimatedCardProps } from '@/types';
@@ -83,30 +84,53 @@ export default function ProductHighlightCarousel({
                       href={`/${routes.shop.url}/${item.product.shopifySlug}`}
                       prefetch={true}
                     >
-                      <AnimatedCard {...item} />
+                      <div className={s.imgC}>
+                        <Img
+                          className="object-contain"
+                          src={item.imgPackage.url}
+                          height={item.imgPackage.height}
+                          width={item.imgPackage.width}
+                          alt="Picture of a Cookie Package"
+                        />
+                      </div>
                     </Link>
-                    <div
-                      className={cn(
-                        s.buttons,
-                        'flex flex-row tablet:flex-col items-stretch gap-2'
-                      )}
-                      style={
-                        {
-                          '--text-color': `${items[i].product.colorTheme.text.hex}`
-                        } as React.CSSProperties
-                      }
-                    >
-                      <Button asChild size="sm" padding="slim">
-                        <Link
-                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                          prefetch={true}
+                    <div className={cn(s.info, 'space-y-3')}>
+                      <div
+                        className={cn(s.text, 'text')}
+                        style={{ color: item.product.colorTheme.text.hex }}
+                      >
+                        {item.displayTitle.length > 0 && (
+                          <CustomizedPortableText content={item.displayTitle} />
+                        )}
+                      </div>
+                      <div
+                        className={cn(
+                          s.buttons,
+                          'flex flex-col items-stretch gap-2'
+                        )}
+                        style={
+                          {
+                            '--text-color': `${items[i].product.colorTheme.text.hex}`
+                          } as React.CSSProperties
+                        }
+                      >
+                        <Button
+                          colorTheme="invertedThemed"
+                          asChild
+                          size="sm"
+                          padding="slim"
                         >
-                          SHOP NOW
-                        </Link>
-                      </Button>
-                      <Button size="sm" padding="slim">
-                        ADD TO CART
-                      </Button>
+                          <Link
+                            href={`/${routes.shop.url}/${item.product.shopifySlug}`}
+                            prefetch={true}
+                          >
+                            SHOP NOW
+                          </Link>
+                        </Button>
+                        <Button colorTheme="themed" size="sm" padding="slim">
+                          ADD TO CART
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
