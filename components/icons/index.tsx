@@ -650,10 +650,51 @@ export const IconLoadingSpinner = (props: Props) => {
   );
 };
 
+export const IconPlus = (props: Props) => {
+  return (
+    <span
+      className="inherit-dims block"
+      style={{ transform: `rotate(${props.rotate ?? 0}deg)` }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 8 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M8 5.01961H5.06667V8H2.93333V5.01961H0V2.99608H2.93333V0H5.06667V2.99608H8V5.01961Z"
+          fill={props?.fill}
+        />
+      </svg>
+    </span>
+  );
+};
+
+export const IconMinus = (props: Props) => {
+  return (
+    <span
+      className="inherit-dims block"
+      style={{ transform: `rotate(${props.rotate ?? 0}deg)` }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 7 2"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M7 0V2H0V0H7Z" fill={props?.fill} />
+      </svg>
+    </span>
+  );
+};
+
 export const socialIcons: Record<SocialMedia, JSX.Element> = {
   [SocialMedia.tiktok]: <IconTiktok fill="var(--blue-ruin)" />,
   [SocialMedia.facebook]: <IconFacebook fill="var(--blue-ruin)" />,
   [SocialMedia.instagram]: <IconInstagram fill="var(--blue-ruin)" />,
   [SocialMedia.x]: <IconX fill="var(--blue-ruin)" />,
-  [SocialMedia.youtube]: <IconYoutube fill="var(--blue-ruin)" />,
+  [SocialMedia.youtube]: <IconYoutube fill="var(--blue-ruin)" />
 };
