@@ -70,7 +70,6 @@ export default function PurchasePanel(props: PurchasePanelProps) {
         start: `top-=${topDistance}px top`,
         end: `bottom+=${window.innerHeight - (boxHeight ?? 0) - topDistance}px bottom`,
         pin: boxRef.current,
-        markers: true,
         pinSpacing: false
       });
 
