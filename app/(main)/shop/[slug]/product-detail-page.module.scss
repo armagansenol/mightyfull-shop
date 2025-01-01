@@ -68,7 +68,7 @@
 
       &:not(&:last-child) {
         &::before {
-          content: "";
+          content: '';
           @include position(absolute, auto, 0, 0, 0);
           @include dims(100%, 1px);
           background-color: var(--bg-color);
@@ -123,6 +123,11 @@
       @include dims(100%, desktop-vw(150px));
       transform: translateY(-100%);
       z-index: 0;
+
+      @include mobile {
+        @include dims(200%, mobile-vw(200px));
+        transform: translateY(-60%) translateX(-50%);
+      }
     }
 
     .cloudBottom {
@@ -130,6 +135,11 @@
       @include dims(100%, desktop-vw(150px));
       transform: translateY(100%);
       z-index: 0;
+
+      @include mobile {
+        @include dims(200%, mobile-vw(200px));
+        transform: translateY(40%) translateX(-50%);
+      }
     }
   }
 
@@ -197,7 +207,7 @@
         }
 
         &::before {
-          content: "";
+          content: '';
           @include position(absolute, 0, 0, 0, 0);
           background-color: var(--blue-ruin);
           border-radius: desktop-vw(8px);
@@ -213,7 +223,7 @@
           color: var(--blue-ruin);
 
           &::before {
-            content: "";
+            content: '';
             background-color: transparent;
             color: var(--blue-ruin);
             border: 1px solid var(--blue-ruin);

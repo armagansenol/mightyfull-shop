@@ -2,12 +2,12 @@
 
 import s from './purchase-panel.module.scss';
 
-import { ScrollTrigger } from '@/lib/gsap';
 import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
 import { BellRing } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useMedia } from 'react-use';
 
 import { addItem } from '@/components/cart-test/actions';
 import { Quantity } from '@/components/quantity';
@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { ScrollTrigger } from '@/lib/gsap';
 import { Product } from '@/lib/shopify-test/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
 
@@ -30,10 +31,15 @@ export interface PurchasePanelProps {
 
 export default function PurchasePanel(props: PurchasePanelProps) {
   // console.log('shopify product', props.shopifyProduct);
+  const isWiderThanTablet = useMedia('(min-width: 800px)');
 
   const boxRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const [measureRef, { height }] = useMeasure<HTMLDivElement>();
+
+  const [triggerMeasureRef, { height: triggerHeight }] =
+    useMeasure<HTMLDivElement>();
+  const [boxMeasureRef, { height: boxHeight }] = useMeasure<HTMLDivElement>();
+
   const [quantity, setQuantity] = useState(1);
   const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(
     PurchaseOption.oneTime
@@ -41,33 +47,50 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   const [sellingPlanId, setSellingPlanId] = useState<string>('');
 
   useEffect(() => {
-    if (triggerRef.current) {
-      measureRef(triggerRef.current);
+    if (boxRef.current) {
+      boxMeasureRef(boxRef.current);
     }
-  }, [measureRef]);
+  }, [boxMeasureRef]);
+
+  useEffect(() => {
+    if (triggerRef.current) {
+      triggerMeasureRef(triggerRef.current);
+    }
+  }, [triggerMeasureRef]);
 
   useGSAP(
     () => {
+      if (!isWiderThanTablet) return;
       if (!triggerRef.current || !boxRef.current) return;
 
-      //   ScrollTrigger.create({
-      //     trigger: triggerRef.current,
-      //     start: "top top+=150",
-      //     end: "bottom+=280px bottom",
-      //     pin: boxRef.current,
-      //     pinSpacing: false,
-      //     scrub: false,
-      //     markers: true,
-      //   })
+      const topDistance = 120;
 
       ScrollTrigger.create({
         trigger: triggerRef.current,
-        start: 'top-=100px top',
-        end: `bottom+=${boxRef.current?.clientHeight}px bottom`,
-        pin: boxRef.current
+        start: `top-=${topDistance}px top`,
+        end: `bottom+=${window.innerHeight - (boxHeight ?? 0) - topDistance}px bottom`,
+        pin: boxRef.current,
+        markers: true,
+        pinSpacing: false
       });
+
+      //   const tl = gsap.timeline().to(boxRef.current, {
+      //     y: `${d}px`
+      //   });
+
+      //   ScrollTrigger.create({
+      //     animation: tl,
+      //     trigger: triggerRef.current,
+      //     // start: 'top top',
+      //     // end: 'bottom bottom',
+      //     scrub: true,
+      //     markers: true
+      //   });
     },
-    { dependencies: [height], revertOnUpdate: true }
+    {
+      dependencies: [triggerHeight, boxHeight, isWiderThanTablet],
+      revertOnUpdate: true
+    }
   );
 
   // const { addToCart } = useCartStore();
@@ -99,7 +122,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   }, [props.shopifyProduct.variants]);
 
   return (
-    <div className="flex-1" ref={triggerRef}>
+    <div className="tablet:flex-1" ref={triggerRef}>
       <div className="w-full" ref={boxRef}>
         {props.shopifyProduct?.availableForSale ? (
           <div className={s.purchaseOptions}>
@@ -190,7 +213,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
               </div>
             </div>
             <Label className={cn(s.title)}>QUANTITY</Label>
-            <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-3 tablet:h-12">
+            <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-3 tablet:h-14">
               <Quantity
                 className="w-48 tablet:w-auto h-12 tablet:h-full tablet:col-span-4"
                 quantity={quantity}
@@ -203,7 +226,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                 <Button
                   size="sm"
                   padding="none"
-                  colorTheme="themed"
+                  colorTheme="invertedThemed"
                   type="submit"
                 >
                   ADD TO CART{' '}

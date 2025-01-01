@@ -87,7 +87,7 @@ export default async function ProductDetialPage({
         <section
           className={cn(
             s.intro,
-            'flex flex-col items-center tablet:grid grid-cols-11 gap-10 tablet:gap-20 tablet:items-stretch justify-stretch py-20'
+            'flex flex-col items-center tablet:grid grid-cols-11 gap-10 tablet:gap-20 tablet:items-stretch justify-stretch py-20 mb-20 tablet:mb-52'
           )}
         >
           <div className="col-span-6 space-y-10">
@@ -125,7 +125,7 @@ export default async function ProductDetialPage({
           </div>
           <div className="col-span-5 flex flex-col items-stretch">
             <h1 className={s.productTitle}>{sanityProduct.title}</h1>
-            <p className={s.productPackInfo}>1 PACK (12 COOKIES)</p>
+            <p className={s.productPackInfo}>1 PACK ( 12 COOKIES )</p>
             <div className={s.productDescription}>
               <CustomizedPortableText content={sanityProduct.description} />
             </div>
@@ -140,7 +140,7 @@ export default async function ProductDetialPage({
           </div>
         </section>
         {/* product reviews */}
-        <section className={cn(s.reviews, 'my-12 tablet:my-32')}>
+        <section className={cn(s.reviews, 'my-24 tablet:my-32')}>
           <div className={s.cloudTop}>
             <IconCloud fill="var(--text-color)" />
           </div>
