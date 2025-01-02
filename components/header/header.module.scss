@@ -6,7 +6,7 @@
   border-bottom: 1px solid var(--primary);
   padding: 0 var(--padding-x);
   transition: 400ms all ease;
-  z-index: z-index("header");
+  z-index: z-index('header');
 
   &.hidden {
     transform: translateY(-100%);
@@ -120,4 +120,8 @@
       padding: var(--padding-x);
     }
   }
+}
+
+.cpBadge {
+  z-index: z-index('preloader');
 }

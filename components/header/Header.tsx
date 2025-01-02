@@ -69,6 +69,14 @@ export default function Header(props: HeaderProps) {
 
   return (
     <>
+      <div
+        className={cn(
+          s.cpBadge,
+          'fixed bottom-0 left-0 bg-black text-lime-300 text-sm font-bold p-2'
+        )}
+      >
+        CLIENT PREVIEW
+      </div>
       <header
         className={cn(
           s.header,
