@@ -138,7 +138,7 @@ export default function Header(props: HeaderProps) {
             )}
           >
             <div className={cn(s.navItem)}>
-              <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
+              <Link href="mailto:kamola@mightyfull.com">Contact Us TEST</Link>
             </div>
             <div
               className="hidden tablet:block cursor-pointer"
