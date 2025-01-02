@@ -16,6 +16,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <div className="fixed bottom-0 left-0 bg-black text-lime-300 text-sm p-2 z-9999999999999999999999999 font-bold">
+        CLIENT PREVIEW
+      </div>
       {/* <head>
         <meta name="oke:subscriber_id" content={process.env.OKENDO_USER_ID} />
         <script
@@ -23,7 +26,7 @@ export default async function RootLayout({
           src="https://cdn-static.okendo.io/reviews-widget-plus/js/okendo-reviews.js"
         ></script>
       </head> */}
-      <body className={`antialiased`}>
+      <body className={`antialiased isolate`}>
         <CartProvider cartPromise={cartPromise}>
           <Providers>{children}</Providers>
         </CartProvider>
