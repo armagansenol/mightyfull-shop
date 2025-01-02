@@ -2,59 +2,50 @@
 
 import s from './customer-reviews.module.scss';
 
-import { ReviewData } from '@/lib/okendo/types';
 import { cn, formatDate, parseISOToDate } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import * as motion from 'motion/react-client';
-import { useEffect, useState } from 'react';
 
-import { IconLoadingSpinner } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
-import { DEFAULT_LIMIT, getReviews } from '@/lib/okendo/queries';
+import mockReviewData from '@/lib/okendo/mock-data';
 
 interface CustomerReviewsProps {
   productId: string;
 }
 
 export default function CustomerReviews(props: CustomerReviewsProps) {
-  const [limit, setLimit] = useState(DEFAULT_LIMIT);
-  const [items, setItems] = useState<ReviewData['reviews']>([]);
-  const [hasMore, setHasMore] = useState(true);
+  // const [limit, setLimit] = useState(DEFAULT_LIMIT);
+  // const [items, setItems] = useState<ReviewData['reviews']>([]);
 
-  const { data, isFetching } = useQuery<ReviewData, Error>({
-    queryKey: ['reviews', limit, props.productId],
-    queryFn: () => getReviews(props.productId, { limit })
-  });
+  const items = mockReviewData.reviews;
 
-  useEffect(() => {
-    if (!data) return;
+  // const { data, isFetching } = useQuery<ReviewData, Error>({
+  //   queryKey: ['reviews', limit, props.productId],
+  //   queryFn: () => getReviews(props.productId, { limit })
+  // });
 
-    const remainedItems = data.reviews.filter((review) => {
-      return !items.some((item) => item.reviewId === review.reviewId);
-    });
+  // useEffect(() => {
+  //   if (!data) return;
 
-    console.log('remained', remainedItems);
+  //   const remainedItems = data.reviews.filter((review) => {
+  //     return !items.some((item) => item.reviewId === review.reviewId);
+  //   });
 
-    setHasMore(remainedItems.length > 0);
+  //   console.log('remained', remainedItems);
 
-    if (remainedItems.length > 0) {
-      setItems([...items, ...remainedItems]);
-    }
-  }, [items, data]);
+  //   // setHasMore(remainedItems.length > 0);
+
+  //   if (remainedItems.length > 0) {
+  //     setItems([...items, ...remainedItems]);
+  //   }
+  // }, [items, data]);
 
   return (
-    <Card className={cn(s.customerReviews, 'flex-flex-col items-center')}>
+    <Card className={cn(s.customerReviews, 'flex-flex-col items-center pb-20')}>
       <CardHeader className="flex flex-col items-center gap-10 px-0 py-16">
         <CardTitle className={s.title}>Customer Reviews</CardTitle>
         <Button
@@ -72,9 +63,9 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
         </Button>
       </CardHeader>
       <CardContent className={cn('p-0')}>
-        {data?.reviews.length === 0 && items.length === 0 && (
-          <div className="w-full h-[300px] flex items-center justify-center">
-            <p className={s.message}>
+        {/* {data?.reviews.length === 0 && items.length === 0 && (
+          <div className="w-full h-[250px] tablet:h-[300px] flex items-center justify-center ">
+            <p className={cn(s.message, '-mt-16 tablet:mt-0')}>
               Be the first to review this product – no reviews yet!
             </p>
           </div>
@@ -85,7 +76,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
               <IconLoadingSpinner fill="var(--sugar-milk)" />
             </div>
           </div>
-        )}
+        )} */}
         <AnimatePresence mode="wait">
           {items?.map((review) => (
             <motion.div
@@ -96,10 +87,11 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
               transition={{ duration: 0.2 }}
               className={cn(s.item, 'pt-8 pb-14')}
             >
-              <div className="grid grid-cols-12">
+              <div className="flex flex-col tablet:grid grid-cols-12 gap-10 tablet:gap-0 relative">
                 <div className="col-span-3 flex items-center gap-4">
-                  <Avatar className="w-10 h-10">
+                  <Avatar className="w-14 h-14 tablet:w-14 tablet:h-14">
                     <AvatarImage
+                      className="object-cover"
                       src={review.reviewer.avatarUrl}
                       alt={review.reviewer.displayName}
                     />
@@ -111,17 +103,19 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
                     <p className={s.author}>{review.reviewer.displayName}</p>
                   </div>
                 </div>
-                <div className="col-span-6">
-                  <div className="flex flex-col gap-5">
+                <div className="col-span-9">
+                  <div className="flex flex-col gap-5 max-  w-lg">
                     <div className="flex items-center gap-1">
                       {Array.from({ length: review.rating }).map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-current" />
                       ))}
                     </div>
-                    <p>{review.body}</p>
+                    <p className={cn(s.body, 'tablet:max-w-xl')}>
+                      {review.body}
+                    </p>
                   </div>
                 </div>
-                <div className="col-span-3 flex items-start justify-end">
+                <div className="absolute top-0 right-0 flex items-start justify-end">
                   <span className={s.date}>
                     {formatDate(parseISOToDate(review.dateCreated))}
                   </span>
@@ -131,14 +125,14 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
           ))}
         </AnimatePresence>
       </CardContent>
-      {items.length > 0 && (
+      {/* {items.length > 0 && (
         <CardFooter className="flex items-center justify-center py-10">
           <Button
             className="flex items-center gap-4"
             colorTheme="nakedFull"
             size="sm"
             onClick={() => setLimit((prev) => prev + 1)}
-            disabled={!hasMore}
+            // disabled={!hasMore}
           >
             Load More
             {isFetching && items.length > 0 && (
@@ -148,7 +142,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
             )}
           </Button>
         </CardFooter>
-      )}
+      )} */}
     </Card>
   );
 }
