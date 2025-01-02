@@ -68,7 +68,7 @@ export default function CartModal() {
           ) : null}
         </button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-[390px] flex flex-col h-full z-999999999999999999999">
+      <SheetContent className="w-full sm:max-w-[520px] flex flex-col h-full">
         <SheetHeader>
           <SheetTitle>My Cart</SheetTitle>
         </SheetHeader>
@@ -117,7 +117,7 @@ export default function CartModal() {
                           />
                         </div>
                         <div className="flex flex-row">
-                          <div className="relative h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+                          <div className="relative h-20 w-20 overflow-hidden rounded-md">
                             <Image
                               className="h-full w-full object-cover"
                               width={64}

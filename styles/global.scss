@@ -156,3 +156,11 @@ sup {
 .oke-w-reviewMinimal-footer {
   display: none !important;
 }
+
+.modal-z-index {
+  z-index: z-index('modal') !important;
+}
+
+.modal-content-z-index {
+  z-index: z-index('modal') !important;
+}
