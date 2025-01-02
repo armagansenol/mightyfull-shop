@@ -7,14 +7,14 @@ import cn from 'clsx';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import CartModal from '@/components/cart-test/modal';
+import { IconLogo } from '@/components/icons';
+import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import useCartStore from '@/lib/store/cart';
+import { useLenisStore } from '@/lib/store/lenis';
+import { useTheme } from '@/lib/store/theme';
 import { ProductCollection } from '@/types';
-import { IconCookieCart, IconLogo } from 'components/icons';
-import { Link } from 'components/utility/link';
-import { useLenisStore } from 'lib/store/lenis';
-import { useTheme } from 'lib/store/theme';
-import CartModal from '../cart-test/modal';
+import Lenis from 'lenis';
 
 interface HeaderProps {
   shopMenu: ProductCollection[];
@@ -28,7 +28,6 @@ export default function Header(props: HeaderProps) {
   const { lenis } = useLenisStore();
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
-  const { setOpen } = useCartStore();
 
   useEffect(() => {
     setHamburgerOpen(false);
@@ -39,35 +38,34 @@ export default function Header(props: HeaderProps) {
   }, [hamburgerOpen, lenis]);
 
   useEffect(() => {
-    lenis?.on('scroll', () => {
-      if (lenis.scroll < 150) return;
-      if (lenis.velocity > 0) {
-        if (!hidden) {
-          setHidden(true);
-        }
+    const handleEvents = (e: Lenis) => {
+      if (lenis?.direction === 1 && e.actualScroll > window.innerHeight / 2) {
+        setHidden(true);
       } else {
-        if (hidden) {
-          setHidden(false);
-        }
+        setHidden(false);
       }
-    });
-  }, [hidden, lenis]);
+    };
 
-  const cartCookieIcon = (
-    <div className={s.navItem}>
-      <div className={s.iconC}>
-        <IconCookieCart fill="var(--primary)" />
-      </div>
-      <div
-        className={cn(
-          s.amount,
-          'flex items-center justify-center rounded-full'
-        )}
-      >
-        {/* <span>{items.length}</span> */}
-      </div>
-    </div>
-  );
+    lenis?.on('scroll', handleEvents);
+
+    return () => lenis?.off('scroll', handleEvents);
+  }, [lenis]);
+
+  // const cartCookieIcon = (
+  //   <div className={s.navItem}>
+  //     <div className={s.iconC}>
+  //       <IconCookieCart fill="var(--primary)" />
+  //     </div>
+  //     <div
+  //       className={cn(
+  //         s.amount,
+  //         'flex items-center justify-center rounded-full'
+  //       )}
+  //     >
+  //       {/* <span>{items.length}</span> */}
+  //     </div>
+  //   </div>
+  // );
 
   return (
     <>
@@ -82,7 +80,8 @@ export default function Header(props: HeaderProps) {
         style={
           {
             '--primary': primaryColor,
-            '--secondary': secondaryColor
+            '--secondary': secondaryColor,
+            '--tertiary': tertiaryColor
           } as React.CSSProperties
         }
       >
@@ -93,9 +92,10 @@ export default function Header(props: HeaderProps) {
             tertiary={tertiaryColor}
           />
         </Link>
-
         <div className="flex items-center gap-5">
-          <div className="block tablet:hidden">{cartCookieIcon}</div>
+          <div className="flex tablet:hidden">
+            <CartModal />
+          </div>
           <div
             className={cn(s.trigger, 'block tablet:hidden', {
               [s.active]: hamburgerOpen
@@ -109,7 +109,6 @@ export default function Header(props: HeaderProps) {
             )}
           </div>
         </div>
-
         <nav
           className={cn(
             s.navC,
@@ -143,7 +142,7 @@ export default function Header(props: HeaderProps) {
             </div>
             <div
               className="hidden tablet:block cursor-pointer"
-              onClick={() => setOpen(true)}
+              // onClick={() => setOpen(true)}
             >
               <CartModal />
             </div>

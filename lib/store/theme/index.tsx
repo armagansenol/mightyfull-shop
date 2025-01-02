@@ -1,17 +1,17 @@
-import { create } from "zustand"
+import { create } from 'zustand';
 
 const defaultColors = {
-  primary: "var(--blue-ruin)",
-  secondary: "var(--cerulean)",
-  tertiary: "var(--cerulean)",
-}
+  primary: 'var(--blue-ruin)',
+  secondary: 'var(--columbia-blue)',
+  tertiary: 'var(--cerulean)'
+};
 
 interface State {
-  primaryColor: string
-  secondaryColor: string
-  tertiaryColor: string
-  setColors: (primary: string, secondary: string, tertiary: string) => void
-  resetColors: () => void
+  primaryColor: string;
+  secondaryColor: string;
+  tertiaryColor: string;
+  setColors: (primary: string, secondary: string, tertiary: string) => void;
+  resetColors: () => void;
 }
 
 export const useStore = create<State>((set) => ({
@@ -20,15 +20,19 @@ export const useStore = create<State>((set) => ({
   tertiaryColor: defaultColors.tertiary,
 
   setColors: (primary, secondary, tertiary) => {
-    set({ primaryColor: primary, secondaryColor: secondary, tertiaryColor: tertiary })
+    set({
+      primaryColor: primary,
+      secondaryColor: secondary,
+      tertiaryColor: tertiary
+    });
   },
   resetColors: () => {
     set({
       primaryColor: defaultColors.primary,
       secondaryColor: defaultColors.secondary,
-      tertiaryColor: defaultColors.tertiary,
-    })
-  },
-}))
+      tertiaryColor: defaultColors.tertiary
+    });
+  }
+}));
 
-export const useTheme = useStore
+export const useTheme = useStore;

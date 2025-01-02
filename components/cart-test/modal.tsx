@@ -11,7 +11,6 @@ import { useFormStatus } from 'react-dom';
 import { createCartAndSetCookie, redirectToCheckout } from './actions';
 import { useCart } from './cart-context';
 
-import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
@@ -19,10 +18,10 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet';
-import { LoadingSpinner } from '../utility/loading-spinner';
-import { EditItemQuantityButton } from './edit-item-quantity-button';
-import { DeleteItemButton } from './delete-item-button';
 import { IconCookieCart } from '../icons';
+import { LoadingSpinner } from '../utility/loading-spinner';
+import { DeleteItemButton } from './delete-item-button';
+import { EditItemQuantityButton } from './edit-item-quantity-button';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -32,6 +31,8 @@ export default function CartModal() {
   const { cart, updateCartItem } = useCart();
   const [open, setOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
+  // const openCart = () => setOpen(true);
+  const closeCart = () => setOpen(false);
 
   useEffect(() => {
     if (!cart) {
@@ -46,7 +47,7 @@ export default function CartModal() {
       cart?.totalQuantity > 0
     ) {
       if (!open) {
-        setOpen(true);
+        // openCart();
       }
       quantityRef.current = cart?.totalQuantity;
     }
@@ -55,22 +56,22 @@ export default function CartModal() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button size="icon" className="relative">
-          <div className="h-12 w-12">
-            <IconCookieCart fill="var(--primary)" />
-          </div>
+        <button
+          className="relative h-8 w-8 tablet:h-10 tablet:w-10"
+          type="button"
+        >
+          <IconCookieCart fill="var(--primary)" />
           {cart?.totalQuantity ? (
-            <span className="absolute -right-2 -top-2 h-5 w-5 rounded-full bg-blue-600 text-[11px] font-medium text-white flex items-center justify-center">
+            <span className="absolute -left-1 -bottom-1 tablet:-left-2 tablet:-bottom-2 h-5 w-5 tablet:h-6 tablet:w-6 rounded-full text-sm tablet:text-base font-bold text-[var(--primary)] bg-[var(--secondary)] flex items-center justify-center">
               {cart.totalQuantity}
             </span>
           ) : null}
-        </Button>
+        </button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-[390px] flex flex-col h-full">
+      <SheetContent className="w-full sm:max-w-[390px] flex flex-col h-full z-999999999999999999999">
         <SheetHeader>
           <SheetTitle>My Cart</SheetTitle>
         </SheetHeader>
-
         {!cart || cart.lines.length === 0 ? (
           <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
             <ShoppingCartIcon className="h-16" />
@@ -130,7 +131,7 @@ export default function CartModal() {
                           </div>
                           <Link
                             href={merchandiseUrl}
-                            onClick={() => setOpen(false)}
+                            onClick={closeCart}
                             className="z-30 ml-2 flex flex-row space-x-4"
                           >
                             <div className="flex flex-1 flex-col text-base">
