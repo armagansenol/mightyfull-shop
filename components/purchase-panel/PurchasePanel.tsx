@@ -219,7 +219,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                 setQuantity={setQuantity}
               />
               <form
-                className="h-12 tablet:h-full tablet:col-span-8"
+                className="w-64 tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
                 action={add}
               >
                 <Button
@@ -227,14 +227,22 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                   padding="none"
                   colorTheme="invertedThemed"
                   type="submit"
+                  className="gap-1"
                 >
                   ADD TO CART{' '}
-                  {quantity > 0 && (
-                    <>
-                      ({props.shopifyProduct.variants[0].price.amount}
-                      {props.shopifyProduct.variants[0].price.currencyCode})
-                    </>
-                  )}
+                  <span className={s.price}>
+                    {quantity > 0 && (
+                      <>
+                        (
+                        {(
+                          Number(
+                            props.shopifyProduct.variants[0].price.amount
+                          ) * quantity
+                        ).toFixed(2)}{' '}
+                        {props.shopifyProduct.variants[0].price.currencyCode})
+                      </>
+                    )}
+                  </span>
                 </Button>
               </form>
             </div>

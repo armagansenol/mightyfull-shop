@@ -691,6 +691,28 @@ export const IconMinus = (props: Props) => {
   );
 };
 
+export const IconCheck = (props: Props) => {
+  return (
+    <span
+      className="inherit-dims block"
+      style={{ transform: `rotate(${props.rotate ?? 0}deg)` }}
+    >
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 10 8"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3.75 8C3.4375 8 3.125 7.86667 2.875 7.6L0.375 4.93333C-0.125 4.4 -0.125 3.6 0.375 3.06667C0.875 2.53333 1.6875 2.53333 2.125 3.06667L3.75 4.8L7.875 0.4C8.375 -0.133333 9.125 -0.133333 9.625 0.4C10.125 0.933333 10.125 1.73333 9.625 2.26667L4.625 7.6C4.375 7.86667 4.0625 8 3.75 8Z"
+          fill={props?.fill}
+        />
+      </svg>
+    </span>
+  );
+};
+
 export const socialIcons: Record<SocialMedia, JSX.Element> = {
   [SocialMedia.tiktok]: <IconTiktok fill="var(--blue-ruin)" />,
   [SocialMedia.facebook]: <IconFacebook fill="var(--blue-ruin)" />,

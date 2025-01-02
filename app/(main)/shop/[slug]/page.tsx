@@ -93,7 +93,9 @@ export default async function ProductDetialPage({
           <div className="col-span-6 space-y-10">
             <ProductImages images={sanityProduct.images} />
             {sanityProduct.specs.length > 0 && (
-              <section className={cn(s.specs, 'grid grid-cols-12 gap-5')}>
+              <section
+                className={cn(s.specs, 'hidden tablet:grid grid-cols-12 gap-5')}
+              >
                 <Accordion
                   className="col-span-12 tablet:col-span-10 tablet:col-start-3"
                   type="multiple"
@@ -136,6 +138,41 @@ export default async function ProductDetialPage({
             )} */}
             {shopifyProduct && (
               <PurchasePanel shopifyProduct={shopifyProduct} />
+            )}
+            {sanityProduct.specs.length > 0 && (
+              <section
+                className={cn(
+                  s.specs,
+                  'grid tablet:hidden grid-cols-12 gap-5 mt-10'
+                )}
+              >
+                <Accordion
+                  className="col-span-12 tablet:col-span-10 tablet:col-start-3"
+                  type="multiple"
+                >
+                  {sanityProduct.specs.map((item, i) => {
+                    return (
+                      <AccordionItem value={`${i}`} className={s.spec} key={i}>
+                        <AccordionTrigger
+                          className={cn(
+                            s.accordionTrigger,
+                            'flex items-center justify-between py-10 w-full'
+                          )}
+                        >
+                          <h3 className={s.title}>{item.title}</h3>
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-10">
+                          <div className={s.description}>
+                            <CustomizedPortableText
+                              content={item.description}
+                            />
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+              </section>
             )}
           </div>
         </section>
