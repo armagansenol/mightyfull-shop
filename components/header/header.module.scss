@@ -4,7 +4,6 @@
   --padding-x: #{desktop-vw(80px)};
   background: var(--sugar-milk);
   border-bottom: 1px solid var(--primary);
-  padding: 0 var(--padding-x);
   transition: 400ms all ease;
   z-index: z-index('header');
 

@@ -39,7 +39,10 @@ export default async function MainLayout({
     <div
       className={`flex min-h-screen flex-col items-stretch justify-between ${poppins.variable} overflow-hidden`}
     >
-      <Header shopMenu={layoutData.shopMenu} />
+      <Header
+        announcement={layoutData.announcement}
+        shopMenu={layoutData.shopMenu}
+      />
       <SmoothLayout>
         <ThemeLayout>
           <main className="mt-[var(--header-height)] overflow-hidden">

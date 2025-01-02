@@ -1,12 +1,13 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { COLOR_THEME } from "./fragments/colorTheme"
-import { LINKS } from "./fragments/links"
-import { PORTABLE_TEXT } from "./fragments/portableText/portableText"
-import { IMAGE } from "./fragments/image"
+import { COLOR_THEME } from './fragments/colorTheme';
+import { LINKS } from './fragments/links';
+import { PORTABLE_TEXT } from './fragments/portableText/portableText';
+import { IMAGE } from './fragments/image';
 
 export const LAYOUT_QUERY = groq`
   *[_type == 'settings'] | order(_updatedAt desc) [0] {
+    announcement,
     seo,
     footer {
       links[] {
@@ -42,4 +43,4 @@ export const LAYOUT_QUERY = groq`
       title
     }
   }
-`
+`;
