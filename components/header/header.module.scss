@@ -39,7 +39,7 @@
 
     @include mobile {
       @include position(relative, auto, auto, auto, auto);
-      @include dims(auto, mobile-vw(32px));
+      @include dims(mobile-vw(140px), mobile-vw(32px));
       transform: none;
       z-index: 200;
     }
