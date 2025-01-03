@@ -17,6 +17,7 @@
   @include mobile {
     @include dims(auto);
     max-height: none;
+    padding-top: mobile-vw(40px);
   }
 
   .text {
