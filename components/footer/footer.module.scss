@@ -3,7 +3,7 @@
   color: var(--sugar-milk);
   padding: desktop-vw(30px) desktop-vw(180px) desktop-vw(60px) desktop-vw(60px);
   position: relative;
-  z-index: z-index("footer");
+  z-index: z-index('footer');
 
   @include mobile {
     padding: mobile-vw(60px) mobile-vw(16px);
@@ -149,10 +149,6 @@
     font-weight: 500;
     padding: desktop-vw(40px) 0;
 
-    * {
-      fill: var(--sugar-milk);
-    }
-
     @include mobile {
       font-size: mobile-vw(16px);
       padding: mobile-vw(50px) mobile-vw(16px);
@@ -169,13 +165,24 @@
       @include mobile {
         order: 1;
       }
+
+      * {
+        fill: var(--sugar-milk);
+      }
     }
 
     .iconC {
-      @include dims(desktop-vw(30px));
+      @include dims(desktop-vw(32px));
+      transition: 300ms opacity ease;
 
       @include mobile {
-        @include dims(mobile-vw(30px));
+        @include dims(mobile-vw(32px));
+      }
+
+      @include hover {
+        &:hover {
+          opacity: 0.5;
+        }
       }
     }
 
@@ -214,51 +221,111 @@
     z-index: 100;
 
     &.cookie1 {
-      @include position(absolute, desktop-vw(-100px), auto, auto, desktop-vw(50px));
+      @include position(
+        absolute,
+        desktop-vw(-100px),
+        auto,
+        auto,
+        desktop-vw(50px)
+      );
       @include dims(desktop-vw(100px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(50px), auto, auto, mobile-vw(10px));
+        @include position(
+          absolute,
+          mobile-vw(50px),
+          auto,
+          auto,
+          mobile-vw(10px)
+        );
         @include dims(mobile-vw(40px));
       }
     }
 
     &.cookie2 {
-      @include position(absolute, desktop-vw(-125px), auto, auto, desktop-vw(800px));
+      @include position(
+        absolute,
+        desktop-vw(-125px),
+        auto,
+        auto,
+        desktop-vw(800px)
+      );
       @include dims(desktop-vw(120px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(300px), auto, auto, mobile-vw(300px));
+        @include position(
+          absolute,
+          mobile-vw(300px),
+          auto,
+          auto,
+          mobile-vw(300px)
+        );
         @include dims(mobile-vw(40px));
       }
     }
 
     &.cookie3 {
-      @include position(absolute, desktop-vw(0px), desktop-vw(300px), auto, auto);
+      @include position(
+        absolute,
+        desktop-vw(0px),
+        desktop-vw(300px),
+        auto,
+        auto
+      );
       @include dims(desktop-vw(94px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(510px), auto, auto, mobile-vw(310px));
+        @include position(
+          absolute,
+          mobile-vw(510px),
+          auto,
+          auto,
+          mobile-vw(310px)
+        );
         @include dims(mobile-vw(50px));
       }
     }
 
     &.cookie4 {
-      @include position(absolute, desktop-vw(-75px), desktop-vw(-100px), auto, auto);
+      @include position(
+        absolute,
+        desktop-vw(-75px),
+        desktop-vw(-100px),
+        auto,
+        auto
+      );
       @include dims(desktop-vw(260px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(20px), desktop-vw(-20px), auto, auto);
+        @include position(
+          absolute,
+          mobile-vw(20px),
+          desktop-vw(-20px),
+          auto,
+          auto
+        );
         @include dims(mobile-vw(60px));
       }
     }
 
     &.cookie5 {
-      @include position(absolute, desktop-vw(50px), auto, auto, desktop-vw(750px));
+      @include position(
+        absolute,
+        desktop-vw(50px),
+        auto,
+        auto,
+        desktop-vw(750px)
+      );
       @include dims(desktop-vw(100px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(480px), auto, auto, mobile-vw(10px));
+        @include position(
+          absolute,
+          mobile-vw(480px),
+          auto,
+          auto,
+          mobile-vw(10px)
+        );
         @include dims(mobile-vw(40px));
       }
     }

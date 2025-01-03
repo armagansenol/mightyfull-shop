@@ -1,7 +1,8 @@
 import s from './footer.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 
+import { ComesInGoesOutUnderline } from '@/components/comes-in-goes-out';
 import { IconCloud, socialIcons } from '@/components/icons';
 import { Parallax } from '@/components/parallax';
 import { Img } from '@/components/utility/img';
@@ -13,7 +14,6 @@ import c1 from '@/public/img/c1.png';
 import c3 from '@/public/img/c3.png';
 import c4 from '@/public/img/c4.png';
 import c5 from '@/public/img/c5.png';
-import { ComesInGoesOutUnderline } from '../comes-in-goes-out';
 
 interface FooterProps {
   socialLinks: SocialLink[];
@@ -61,11 +61,15 @@ export default function Footer(props: FooterProps) {
           'flex flex-col items-center tablet:flex-row tablet:items-center justify-between gap-10 tablet:gap-20'
         )}
       >
-        <span className={s.c}>©2024 Mightyfull</span>
+        <span className={s.c}>© 2025 Mightyfull</span>
         <div className={cn(s.social, 'flex items-center space-x-4')}>
           {props.socialLinks.map((item, i) => {
             return (
-              <Link className="w-8 h-8 cursor-pointer" href={item.url} key={i}>
+              <Link
+                className={cn(s.iconC, 'cursor-pointer')}
+                href={item.url}
+                key={i}
+              >
                 {socialIcons[item.platform as SocialMedia]}
               </Link>
             );
