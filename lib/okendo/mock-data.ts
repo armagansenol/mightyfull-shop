@@ -60,7 +60,7 @@ const mockReviewData: ReviewData = {
       productUrl: '/products/protein-cookie-peanut-butter',
       rating: 4,
       reviewer: {
-        avatarUrl: undefined,
+        avatarUrl: '/img/male-reviewer.jpg',
         displayName: 'Mark L.',
         isVerified: false
       },
