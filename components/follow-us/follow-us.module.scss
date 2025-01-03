@@ -21,6 +21,7 @@
 
   * {
     fill: var(--blue-ruin);
+    transition: 300ms fill ease;
   }
 }
 
@@ -29,6 +30,14 @@
 
   @include mobile {
     @include dims(mobile-vw(40px));
+  }
+
+  @include hover {
+    &:hover {
+      * {
+        fill: var(--usafa-blue);
+      }
+    }
   }
 }
 
