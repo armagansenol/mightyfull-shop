@@ -9,13 +9,13 @@
 /* @import "./_scroll.scss"; */
 
 :root {
-  --header-height: #{desktop-vw(80px)};
+  --header-height: #{desktop-vw(100px)};
   --page-padding-top: #{desktop-vw(50px)};
   --layout-spacing-x: #{desktop-vw(160px)};
   --font-bomstad-display: BomstadDisplay;
 
   @include mobile {
-    --header-height: #{mobile-vw(60px)};
+    --header-height: #{mobile-vw(80px)};
     --page-padding-top: #{mobile-vw(30px)};
   }
 }

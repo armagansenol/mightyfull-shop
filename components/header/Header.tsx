@@ -2,8 +2,8 @@
 
 import s from './header.module.scss';
 
+import { cn } from '@/lib/utils';
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
-import cn from 'clsx';
 import Lenis from 'lenis';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -26,10 +26,12 @@ export default function Header(props: HeaderProps) {
   console.log(props);
 
   const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
-  const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { lenis } = useLenisStore();
-  const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
+
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [noticebarHidden, setNoticebarHidden] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     setHamburgerOpen(false);
@@ -45,6 +47,12 @@ export default function Header(props: HeaderProps) {
         setHidden(true);
       } else {
         setHidden(false);
+      }
+
+      if (e.actualScroll > window.innerHeight / 5) {
+        setNoticebarHidden(true);
+      } else {
+        setNoticebarHidden(false);
       }
     };
 
@@ -91,9 +99,26 @@ export default function Header(props: HeaderProps) {
           } as React.CSSProperties
         }
       >
-        <Noticebar announcement={props.announcement} />
-        <div className="flex items-center justify-between tablet:justify-stretch">
-          <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
+        <div
+          className={cn(s.noticebarC, {
+            [s.hide]: noticebarHidden
+          })}
+        >
+          <Noticebar announcement={props.announcement} />
+        </div>
+        <div
+          className={cn(
+            s.inner,
+            'flex items-center justify-between tablet:justify-stretch flex-1 relative'
+          )}
+        >
+          <Link
+            href="/"
+            className={cn(
+              s.logoC,
+              'flex items-center justify-center cursor-pointer'
+            )}
+          >
             <IconLogo
               primary={primaryColor}
               secondary={secondaryColor}

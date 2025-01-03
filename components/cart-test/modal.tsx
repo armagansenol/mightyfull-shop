@@ -62,7 +62,7 @@ export default function CartModal() {
         >
           <IconCookieCart fill="var(--primary)" />
           {cart?.totalQuantity ? (
-            <span className="absolute -left-1 -bottom-1 tablet:-left-2 tablet:-bottom-2 h-5 w-5 tablet:h-6 tablet:w-6 rounded-full text-sm tablet:text-base font-bold text-[var(--primary)] bg-[var(--secondary)] flex items-center justify-center">
+            <span className="absolute -left-1 -bottom-[2px] tablet:-left-2 tablet:-bottom-[2px] h-5 w-5 tablet:h-6 tablet:w-6 rounded-full text-sm tablet:text-base font-bold text-[var(--primary)] bg-[var(--secondary)] flex items-center justify-center">
               {cart.totalQuantity}
             </span>
           ) : null}
