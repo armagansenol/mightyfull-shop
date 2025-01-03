@@ -3,20 +3,21 @@
 @import './_colors.scss';
 @import './_easings.scss';
 @import './_functions.scss';
-// @import './_layout.scss';
 @import './_utils.scss';
-// @import "./_themes.scss";
-/* @import "./_scroll.scss"; */
 
 :root {
-  --header-height: #{desktop-vw(100px)};
-  --page-padding-top: #{desktop-vw(50px)};
-  --layout-spacing-x: #{desktop-vw(160px)};
+  --noticebar-height: #{desktop-vw(36px)};
+  --nav-height: #{desktop-vw(70px)};
+  --header-height: calc(var(--nav-height) + var(--noticebar-height));
+
+  --layout-spacing-x: #{desktop-vw(80px)};
   --font-bomstad-display: BomstadDisplay;
 
   @include mobile {
-    --header-height: #{mobile-vw(80px)};
-    --page-padding-top: #{mobile-vw(30px)};
+    --noticebar-height: #{mobile-vw(24px)};
+    --nav-height: #{mobile-vw(60px)};
+
+    --layout-spacing-x: #{mobile-vw(16px)};
   }
 }
 

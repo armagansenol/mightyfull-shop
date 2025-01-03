@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import CartModal from '@/components/cart-test/modal';
+import { ComesInGoesOutUnderline } from '@/components/comes-in-goes-out';
 import { IconLogo } from '@/components/icons';
 import { Noticebar } from '@/components/noticebar';
 import { Link } from '@/components/utility/link';
@@ -109,7 +110,7 @@ export default function Header(props: HeaderProps) {
         <div
           className={cn(
             s.inner,
-            'flex items-center justify-between tablet:justify-stretch flex-1 relative'
+            'flex items-center justify-between tablet:justify-stretch relative'
           )}
         >
           <Link
@@ -158,11 +159,13 @@ export default function Header(props: HeaderProps) {
               )}
             >
               <div className={s.navItem}>
-                <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
+                <Link href={`/${routes.shop.url}`}>
+                  <ComesInGoesOutUnderline label={routes.shop.ui} />
+                </Link>
               </div>
               <div className={s.navItem}>
                 <Link href={`/${routes.ourStory.url}`}>
-                  {routes.ourStory.ui}
+                  <ComesInGoesOutUnderline label={routes.ourStory.ui} />
                 </Link>
               </div>
             </div>
@@ -173,7 +176,9 @@ export default function Header(props: HeaderProps) {
               )}
             >
               <div className={cn(s.navItem)}>
-                <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
+                <Link href="mailto:kamola@mightyfull.com">
+                  <ComesInGoesOutUnderline label="Contact Us" />
+                </Link>
               </div>
               <div
                 className="hidden tablet:block cursor-pointer"

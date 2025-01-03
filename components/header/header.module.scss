@@ -1,6 +1,5 @@
 .header {
   @include position(fixed, 0, 0, auto, 0);
-  --padding-x: #{desktop-vw(80px)};
   background: var(--sugar-milk);
   transition: 400ms all ease;
   z-index: z-index('header');
@@ -10,25 +9,22 @@
   }
 
   .noticebarC {
-    height: desktop-vw(36px);
+    @include dims(auto, var(--noticebar-height));
     overflow: hidden;
     transition: 300ms all ease;
 
-    @include mobile {
-      height: mobile-vw(24px);
-    }
-
     &.hide {
-      height: desktop-vw(0px);
+      height: 0px;
     }
   }
 
   .inner {
+    @include dims(auto, var(--nav-height));
     border-bottom: 1px solid var(--primary);
-    padding: desktop-vw(24px) var(--padding-x);
+    padding: 0 var(--layout-spacing-x);
 
     @include mobile {
-      padding: mobile-vw(10px) mobile-vw(16px);
+      padding: 0 mobile-vw(16px);
     }
   }
 
@@ -78,6 +74,7 @@
     font-family: var(--font-bomstad-display);
     font-size: desktop-vw(20px);
     font-weight: 500;
+    line-height: 1;
     position: relative;
     transition: 300ms all ease;
 
@@ -120,15 +117,6 @@
       span {
         margin-bottom: desktop-vw(-2px);
       }
-    }
-  }
-
-  .navigationMenu {
-    @include position(absolute, 100%, 0, auto, 0);
-    background-color: var(--sugar-milk);
-
-    .categories {
-      padding: var(--padding-x);
     }
   }
 }
