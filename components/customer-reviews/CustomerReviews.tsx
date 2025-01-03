@@ -9,7 +9,13 @@ import * as motion from 'motion/react-client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import mockReviewData from '@/lib/okendo/mock-data';
 
@@ -45,7 +51,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
   // }, [items, data]);
 
   return (
-    <Card className={cn(s.customerReviews, 'flex-flex-col items-center pb-20')}>
+    <Card className={cn(s.customerReviews, 'flex-flex-col items-center')}>
       <CardHeader className="flex flex-col items-center gap-10 px-0 py-16">
         <CardTitle className={s.title}>Customer Reviews</CardTitle>
         <Button
@@ -125,24 +131,24 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
           ))}
         </AnimatePresence>
       </CardContent>
-      {/* {items.length > 0 && (
+      {items.length > 0 && (
         <CardFooter className="flex items-center justify-center py-10">
           <Button
             className="flex items-center gap-4"
             colorTheme="nakedFull"
             size="sm"
-            onClick={() => setLimit((prev) => prev + 1)}
+            // onClick={() => setLimit((prev) => prev + 1)}
             // disabled={!hasMore}
           >
             Load More
-            {isFetching && items.length > 0 && (
+            {/* {isFetching && items.length > 0 && (
               <span className="h-2 w-2">
                 <IconLoadingSpinner fill="var(--sugar-milk)" />
               </span>
-            )}
+            )} */}
           </Button>
         </CardFooter>
-      )} */}
+      )}
     </Card>
   );
 }
