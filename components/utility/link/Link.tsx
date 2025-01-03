@@ -1,12 +1,14 @@
-"use client"
+'use client';
 
-import cn from "clsx"
-import NextLink, { LinkProps as NextLinkProps } from "next/link"
-import React, { forwardRef, useMemo } from "react"
+import cn from 'clsx';
+import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import React, { forwardRef, useMemo } from 'react';
 
-interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">, NextLinkProps {
-  ariaLabel?: string
-  children: React.ReactNode
+interface LinkProps
+  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
+    NextLinkProps {
+  ariaLabel?: string;
+  children: React.ReactNode;
 }
 
 // function sleep(ms: number): Promise<void> {
@@ -14,7 +16,14 @@ interface LinkProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 
 // }
 
 const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
-  { href, children, className, scroll = false, ariaLabel = "go to page", ...props },
+  {
+    href,
+    children,
+    className,
+    scroll = false,
+    ariaLabel = 'go to page',
+    ...props
+  },
   ref
 ) => {
   // const router = useRouter()
@@ -33,11 +42,19 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
   // }
 
   const isProtocol = useMemo(
-    () => typeof href === "string" && (href.startsWith("mailto:") || href.startsWith("tel:")),
+    () =>
+      typeof href === 'string' &&
+      (href.startsWith('mailto:') || href.startsWith('tel:')),
     [href]
-  )
-  const isAnchor = useMemo(() => typeof href === "string" && href.startsWith("#"), [href])
-  const isExternal = useMemo(() => typeof href === "string" && href.startsWith("http"), [href])
+  );
+  const isAnchor = useMemo(
+    () => typeof href === 'string' && href.startsWith('#'),
+    [href]
+  );
+  const isExternal = useMemo(
+    () => typeof href === 'string' && href.startsWith('http'),
+    [href]
+  );
 
   if (href === undefined) {
     return (
@@ -49,15 +66,22 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
       >
         {children}
       </button>
-    )
+    );
   }
 
   if (isProtocol || isExternal) {
     return (
-      <a href={href.toString()} className={className} target="_blank" rel="noopener noreferrer" ref={ref} {...props}>
+      <a
+        href={href.toString()}
+        className={className}
+        target="_blank"
+        rel="noopener noreferrer"
+        ref={ref}
+        {...props}
+      >
         {children}
       </a>
-    )
+    );
   }
 
   return (
@@ -67,17 +91,17 @@ const Link: React.ForwardRefRenderFunction<HTMLAnchorElement, LinkProps> = (
       // onClick={handleTransition}
       scroll={scroll}
       aria-label={ariaLabel}
-      className={cn("cursor-pointer", className)}
+      className={cn('cursor-pointer inline-flex', className)}
       ref={ref}
       {...props}
     >
       {children}
     </NextLink>
-  )
-}
+  );
+};
 
-const ForwardedLink = forwardRef(Link)
+const ForwardedLink = forwardRef(Link);
 
-ForwardedLink.displayName = "Link"
+ForwardedLink.displayName = 'Link';
 
-export default ForwardedLink
+export default ForwardedLink;
