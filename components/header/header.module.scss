@@ -79,8 +79,7 @@
     transition: 300ms all ease;
 
     @include mobile {
-      color: var(--laurens-lace);
-      font-size: mobile-vw(25px);
+      font-size: mobile-vw(35px);
     }
 
     .iconC {

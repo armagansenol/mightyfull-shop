@@ -146,7 +146,7 @@ export default function Header(props: HeaderProps) {
           <nav
             className={cn(
               s.navC,
-              'flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-5 tablet:gap-0',
+              'flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-10 tablet:gap-0',
               {
                 [s.active]: hamburgerOpen
               }
@@ -155,7 +155,7 @@ export default function Header(props: HeaderProps) {
             <div
               className={cn(
                 s.nav,
-                'flex flex-col tablet:flex-row items-center justify-between gap-5 tablet:gap-20'
+                'flex flex-col tablet:flex-row items-center justify-between gap-10 tablet:gap-20'
               )}
             >
               <div className={s.navItem}>
