@@ -75,7 +75,7 @@ export function AddToCart({ product }: { product: Product }) {
   )!;
 
   const add = useCallback(async () => {
-    const res = await addItem(product.variants[0].id);
+    const res = await addItem(product.variants[0].id, 1);
     console.log('lol', res);
   }, [product.variants]);
 
