@@ -13,7 +13,10 @@ import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function addItem(selectedVariantId: string | undefined) {
+export async function addItem(
+  selectedVariantId: string | undefined,
+  quantity: number
+) {
   const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId || !selectedVariantId) {
@@ -21,9 +24,7 @@ export async function addItem(selectedVariantId: string | undefined) {
   }
 
   try {
-    await addToCart(cartId, [
-      { merchandiseId: selectedVariantId, quantity: 1 }
-    ]);
+    await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity }]);
     revalidateTag(TAGS.cart);
   } catch (e) {
     return `Error adding item to cart: ${e instanceof Error ? e.message : 'Unknown error'}`;

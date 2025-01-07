@@ -116,9 +116,9 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   // };
 
   const add = useCallback(async () => {
-    const res = await addItem(props.shopifyProduct.variants[0].id);
+    const res = await addItem(props.shopifyProduct.variants[0].id, quantity);
     console.log('lol', res);
-  }, [props.shopifyProduct.variants]);
+  }, [props.shopifyProduct.variants, quantity]);
 
   return (
     <div className="tablet:flex-1" ref={triggerRef}>
