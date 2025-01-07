@@ -13,16 +13,14 @@ import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
 import { useLenisStore } from '@/lib/store/lenis';
 import { useTheme } from '@/lib/store/theme';
-import { ProductCollection } from '@/types';
 import Lenis from 'lenis';
 
-interface HeaderProps {
-  shopMenu: ProductCollection[];
-}
+// interface HeaderProps {
+//   shopMenu?: ProductCollection[];
+// }
 
-export default function Header(props: HeaderProps) {
-  console.log(props);
-
+export default function Header() {
+// props: HeaderProps
   const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { lenis } = useLenisStore();
@@ -93,9 +91,7 @@ export default function Header(props: HeaderProps) {
           />
         </Link>
         <div className="flex items-center gap-5">
-          <div className="flex tablet:hidden">
-            <CartModal />
-          </div>
+          <div className="flex tablet:hidden">{/* <CartModal /> */}</div>
           <div
             className={cn(s.trigger, 'block tablet:hidden', {
               [s.active]: hamburgerOpen
