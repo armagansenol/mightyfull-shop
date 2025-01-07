@@ -31,10 +31,11 @@ export default function CartModal() {
   const { cart, updateCartItem } = useCart();
   const [open, setOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
-  // const openCart = () => setOpen(true);
+  const openCart = () => setOpen(true);
   const closeCart = () => setOpen(false);
 
   useEffect(() => {
+    console.log('cart modal', cart);
     if (!cart) {
       createCartAndSetCookie();
     }
@@ -47,7 +48,7 @@ export default function CartModal() {
       cart?.totalQuantity > 0
     ) {
       if (!open) {
-        // openCart();
+        openCart();
       }
       quantityRef.current = cart?.totalQuantity;
     }

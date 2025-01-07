@@ -1,12 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
 import type {
   Cart,
   CartItem,
   Product,
   ProductVariant
 } from 'lib/shopify/types';
+import React, { createContext, useContext, useMemo, useReducer } from 'react';
 
 type UpdateType = 'plus' | 'minus' | 'delete';
 
@@ -15,7 +15,10 @@ type CartAction =
       type: 'UPDATE_ITEM';
       payload: { merchandiseId: string; updateType: UpdateType };
     }
-  | { type: 'ADD_ITEM'; payload: { variant: ProductVariant; product: Product } }
+  | {
+      type: 'ADD_ITEM';
+      payload: { variant: ProductVariant; product: Product };
+    }
   | { type: 'SET_INITIAL_CART'; payload: Cart | undefined };
 
 type CartContextType = {
@@ -111,6 +114,8 @@ function updateCartTotals(
 }
 
 function createEmptyCart(): Cart {
+  console.log('createEmptyCart');
+
   return {
     id: undefined,
     checkoutUrl: '',
@@ -196,8 +201,12 @@ export function CartProvider({
 }) {
   const [cart, dispatch] = useReducer(cartReducer, createEmptyCart());
 
+  console.log('CART PROVIDER', cart);
+
   React.useEffect(() => {
     cartPromise.then((initialCart) => {
+      console.log('cartPromise', initialCart);
+
       dispatch({ type: 'SET_INITIAL_CART', payload: initialCart });
     });
   }, [cartPromise]);

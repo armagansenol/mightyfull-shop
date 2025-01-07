@@ -4,6 +4,7 @@ import s from './header.module.scss';
 
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import cn from 'clsx';
+import Lenis from 'lenis';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -13,14 +14,13 @@ import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
 import { useLenisStore } from '@/lib/store/lenis';
 import { useTheme } from '@/lib/store/theme';
-import Lenis from 'lenis';
 
 // interface HeaderProps {
 //   shopMenu?: ProductCollection[];
 // }
 
 export default function Header() {
-// props: HeaderProps
+  // props: HeaderProps
   const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { lenis } = useLenisStore();
