@@ -36,7 +36,7 @@ export default function CartModal() {
 
   useEffect(() => {
     console.log('cart modal', cart);
-    if (!cart) {
+    if (!cart?.id) {
       createCartAndSetCookie();
     }
   }, [cart]);
