@@ -1,7 +1,7 @@
 'use client';
 
 import { removeItem } from '@/components/cart-test/actions';
-import type { CartItem } from 'lib/shopify/types';
+import type { CartItem } from '@/lib/shopify/types';
 import { X } from 'lucide-react';
 import { useCallback } from 'react';
 

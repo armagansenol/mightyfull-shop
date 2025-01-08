@@ -1,10 +1,12 @@
 'use client';
 
-import { updateItemQuantity } from '@/components/cart-test/actions';
 import clsx from 'clsx';
-import type { CartItem } from 'lib/shopify/types';
 import { Minus, Plus } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
+
+import { updateItemQuantity } from '@/components/cart-test/actions';
+
+import type { CartItem } from '@/lib/shopify/types';
 
 function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
   return (

@@ -6,8 +6,8 @@ import {
   getCart,
   removeFromCart,
   updateCart
-} from '@/lib/shopify-test';
-import { TAGS } from 'lib/constants';
+} from '@/lib/shopify';
+import { TAGS } from '@/lib/constants';
 
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';

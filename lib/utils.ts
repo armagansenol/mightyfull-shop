@@ -2,7 +2,7 @@ import { MouseEvent } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { ReadonlyURLSearchParams } from 'next/navigation';
-import { Connection } from './shopify-test/types';
+import { Connection } from './shopify/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

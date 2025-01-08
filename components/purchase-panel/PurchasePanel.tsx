@@ -22,7 +22,7 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { ScrollTrigger } from '@/lib/gsap';
-import { Product } from '@/lib/shopify-test/types';
+import { Product } from '@/lib/shopify/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
 
 export interface PurchasePanelProps {

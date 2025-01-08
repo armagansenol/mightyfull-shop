@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { useProduct } from 'components/product/product-context';
-import { Product, ProductVariant } from 'lib/shopify/types';
+import { Product, ProductVariant } from '@/lib/shopify/types';
 import { Plus } from 'lucide-react';
 import { useCallback } from 'react';
 import { useCart } from './cart-context';

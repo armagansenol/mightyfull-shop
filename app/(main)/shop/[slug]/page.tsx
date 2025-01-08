@@ -2,6 +2,8 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
+import { AnimatedCard } from '@/components/animated-card';
+import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
@@ -9,26 +11,24 @@ import { ProductHighlightCarousel } from '@/components/product-highlight-carouse
 import { ProductImages } from '@/components/product-images';
 import { ProductProvider } from '@/components/product/product-context';
 import { PurchasePanel } from '@/components/purchase-panel';
-import { Button } from '@/components/ui/button';
-import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
-import { sanityFetch } from '@/lib/sanity/client';
-import { LAYOUT_QUERY } from '@/lib/sanity/layout';
-import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
-import { getProduct } from '@/lib/shopify-test';
-import { AnimatedCard } from 'components/animated-card';
-import { CustomerReviews } from 'components/customer-reviews';
-import { ThemeUpdater } from 'components/theme-updater';
+import { ThemeUpdater } from '@/components/theme-updater';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from 'components/ui/accordion';
-import { Link } from 'components/utility/link';
-import { SanityProductPage } from 'lib/sanity/types';
-import { AnimatedCardProps } from 'types';
-import { LayoutQueryResponse } from 'types/layout';
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/components/utility/link';
+import { routes } from '@/lib/constants';
+import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
+import { sanityFetch } from '@/lib/sanity/client';
+import { LAYOUT_QUERY } from '@/lib/sanity/layout';
+import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
+import { SanityProductPage } from '@/lib/sanity/types';
+import { getProduct } from '@/lib/shopify';
+import { AnimatedCardProps } from '@/types';
+import { LayoutQueryResponse } from '@/types/layout';
 
 import s1 from '@/public/img/s-1.jpg';
 import s2 from '@/public/img/s-2.jpg';

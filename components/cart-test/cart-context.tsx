@@ -5,7 +5,7 @@ import type {
   CartItem,
   Product,
   ProductVariant
-} from 'lib/shopify/types';
+} from '@/lib/shopify/types';
 import React, { createContext, useContext, useMemo, useReducer } from 'react';
 
 type UpdateType = 'plus' | 'minus' | 'delete';
