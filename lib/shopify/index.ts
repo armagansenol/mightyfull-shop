@@ -26,8 +26,11 @@ import {
   ShopifyProductOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
-  ShopifyUpdateCartOperation
+  ShopifyUpdateCartOperation,
+  ShopifyShop,
+  ShopifyShopOperation
 } from './types';
+import { getShopQuery } from './queries/shop';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -201,7 +204,11 @@ export async function createCart(): Promise<Cart> {
 
 export async function addToCart(
   cartId: string,
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: {
+    merchandiseId: string;
+    sellingPlanId?: string | undefined;
+    quantity: number;
+  }[]
 ): Promise<Cart> {
   console.log('lines', lines);
 
@@ -234,7 +241,12 @@ export async function removeFromCart(
 
 export async function updateCart(
   cartId: string,
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: {
+    id: string;
+    merchandiseId: string;
+    quantity: number;
+    sellingPlanId?: string;
+  }[]
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
@@ -466,3 +478,11 @@ export async function getProducts({
 
 //   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
 // }
+
+export async function getShop(): Promise<ShopifyShop> {
+  const res = await shopifyFetch<ShopifyShopOperation>({
+    query: getShopQuery
+  });
+
+  return res.body.data.shop;
+}

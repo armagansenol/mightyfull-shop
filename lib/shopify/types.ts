@@ -17,11 +17,23 @@ export type CartProduct = {
   handle: string;
   title: string;
   featuredImage: Image;
+  sellingPlanGroups: {
+    nodes: {
+      name: string;
+      sellingPlans: {
+        nodes: {
+          id: string;
+          name: string;
+        }[];
+      };
+    }[];
+  };
 };
 
 export type CartItem = {
   id: string | undefined;
   quantity: number;
+  sellingPlanId?: string | null;
   cost: {
     totalAmount: Money;
   };
@@ -34,6 +46,26 @@ export type CartItem = {
     }[];
     product: CartProduct;
   };
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      id: string;
+      name: string;
+      description: string;
+      priceAdjustments: {
+        adjustmentValue: {
+          adjustmentPercentage?: number;
+          adjustmentAmount?: {
+            amount: string;
+            currencyCode: string;
+          };
+          price?: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
+      }[];
+    };
+  } | null;
 };
 
 export type Collection = ShopifyCollection & {
@@ -88,6 +120,19 @@ export type ProductVariant = {
     value: string;
   }[];
   price: Money;
+  sellingPlanAllocations: Connection<SellingPlanAllocation>;
+};
+
+export type SellingPlanAllocation = {
+  sellingPlan: {
+    id: string;
+    name: string;
+    description: string;
+    priceAdjustments: PriceAdjustment[];
+  };
+  priceAdjustments: {
+    price: Money;
+  }[];
 };
 
 export type SEO = {
@@ -317,5 +362,41 @@ type FixedPriceAdjustment = {
   price: {
     amount: string;
     currencyCode: string;
+  };
+};
+
+export type ShopifyShop = {
+  id: string;
+  name: string;
+  shippingPolicy: {
+    title: string;
+    body: string;
+    handle: string;
+  };
+  refundPolicy: {
+    title: string;
+    body: string;
+    handle: string;
+  };
+  privacyPolicy: {
+    title: string;
+    body: string;
+    handle: string;
+  };
+  termsOfService: {
+    title: string;
+    body: string;
+    handle: string;
+  };
+  subscriptionPolicy: {
+    title: string;
+    body: string;
+    handle: string;
+  };
+};
+
+export type ShopifyShopOperation = {
+  data: {
+    shop: ShopifyShop;
   };
 };
