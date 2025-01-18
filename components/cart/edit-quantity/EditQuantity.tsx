@@ -4,9 +4,8 @@ import clsx from 'clsx';
 import { Minus, Plus } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 
-import { updateItemQuantity } from '@/components/cart-test/actions';
-
 import type { CartItem } from '@/lib/shopify/types';
+import { updateItemQuantity } from '../actions';
 
 function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
   return (
@@ -31,7 +30,7 @@ function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
   );
 }
 
-export function EditItemQuantityButton({
+export default function EditQuantity({
   item,
   type,
   optimisticUpdate

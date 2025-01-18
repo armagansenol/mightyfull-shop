@@ -42,6 +42,32 @@ const cartFragment = /* GraphQL */ `
               }
             }
           }
+          sellingPlanAllocation {
+            sellingPlan {
+              id
+              name
+              description
+              priceAdjustments {
+                adjustmentValue {
+                  ... on SellingPlanPercentagePriceAdjustment {
+                    adjustmentPercentage
+                  }
+                  ... on SellingPlanFixedAmountPriceAdjustment {
+                    adjustmentAmount {
+                      amount
+                      currencyCode
+                    }
+                  }
+                  ... on SellingPlanFixedPriceAdjustment {
+                    price {
+                      amount
+                      currencyCode
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

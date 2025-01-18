@@ -1,0 +1,12 @@
+.upgrade {
+  border: 1px solid var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(14px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  padding: desktop-vw(12px) desktop-vw(24px);
+  border-radius: desktop-vw(4px);
+  cursor: pointer;
+}

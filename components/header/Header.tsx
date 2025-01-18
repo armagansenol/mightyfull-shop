@@ -8,9 +8,9 @@ import Lenis from 'lenis';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import CartModal from '@/components/cart-test/modal';
 import { IconLogo } from '@/components/icons';
 import { Link } from '@/components/utility/link';
+import { Cart } from '@/components/cart/cart';
 import { routes } from '@/lib/constants';
 import { useLenisStore } from '@/lib/store/lenis';
 import { useTheme } from '@/lib/store/theme';
@@ -140,7 +140,7 @@ export default function Header() {
               className="hidden tablet:block cursor-pointer"
               // onClick={() => setOpen(true)}
             >
-              <CartModal />
+              <Cart />
             </div>
           </div>
         </nav>

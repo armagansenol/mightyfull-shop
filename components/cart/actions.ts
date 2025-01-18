@@ -15,7 +15,8 @@ import { redirect } from 'next/navigation';
 
 export async function addItem(
   selectedVariantId: string | undefined,
-  quantity: number
+  quantity: number,
+  sellingPlanId?: string | undefined
 ) {
   const cartId = (await cookies()).get('cartId')?.value;
 
@@ -24,7 +25,9 @@ export async function addItem(
   }
 
   try {
-    await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity }]);
+    await addToCart(cartId, [
+      { merchandiseId: selectedVariantId, sellingPlanId, quantity }
+    ]);
     revalidateTag(TAGS.cart);
   } catch (e) {
     return `Error adding item to cart: ${e instanceof Error ? e.message : 'Unknown error'}`;
@@ -116,4 +119,45 @@ export async function redirectToCheckout() {
 export async function createCartAndSetCookie() {
   const cart = await createCart();
   (await cookies()).set('cartId', cart.id!);
+}
+
+export async function updateItemSellingPlanOption(payload: {
+  merchandiseId: string;
+  sellingPlanId: string | null;
+}) {
+  const cartId = (await cookies()).get('cartId')?.value;
+
+  if (!cartId) {
+    return 'Missing cart ID';
+  }
+
+  const { merchandiseId, sellingPlanId } = payload;
+
+  try {
+    const cart = await getCart(cartId);
+
+    if (!cart) {
+      return 'Error fetching cart';
+    }
+
+    const lineItem = cart.lines.find(
+      (line) => line.merchandise.id === merchandiseId
+    );
+
+    if (lineItem && lineItem.id) {
+      await updateCart(cartId, [
+        {
+          id: lineItem.id,
+          merchandiseId,
+          quantity: lineItem.quantity,
+          sellingPlanId: sellingPlanId || undefined
+        }
+      ]);
+      revalidateTag(TAGS.cart);
+    } else {
+      return 'Item not found in cart';
+    }
+  } catch (e) {
+    return `Error updating selling plan: ${e instanceof Error ? e.message : 'Unknown error'}`;
+  }
 }

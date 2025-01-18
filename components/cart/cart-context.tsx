@@ -87,7 +87,8 @@ function createOrUpdateCartItem(
         id: product.id,
         handle: product.handle,
         title: product.title,
-        featuredImage: product.featuredImage
+        featuredImage: product.featuredImage,
+        sellingPlanGroups: product.sellingPlanGroups
       }
     }
   };
@@ -212,10 +213,12 @@ export function CartProvider({
   }, [cartPromise]);
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
+    return;
     dispatch({ type: 'UPDATE_ITEM', payload: { merchandiseId, updateType } });
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
+    return;
     dispatch({ type: 'ADD_ITEM', payload: { variant, product } });
   };
 

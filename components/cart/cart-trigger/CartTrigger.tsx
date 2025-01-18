@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ShoppingCartIcon } from 'lucide-react';
 
-export default function OpenCart({
+export default function CartTrigger({
   className,
   quantity
 }: {

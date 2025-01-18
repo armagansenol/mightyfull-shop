@@ -9,7 +9,7 @@ import { BellRing } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 
-import { addItem } from '@/components/cart-test/actions';
+import { addItem } from '@/components/cart/actions';
 import { Quantity } from '@/components/quantity';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+
 import { ScrollTrigger } from '@/lib/gsap';
 import { Product } from '@/lib/shopify/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
@@ -116,9 +117,13 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   // };
 
   const add = useCallback(async () => {
-    const res = await addItem(props.shopifyProduct.variants[0].id, quantity);
+    const res = await addItem(
+      props.shopifyProduct.variants[0].id,
+      quantity,
+      sellingPlanId || undefined
+    );
     console.log('lol', res);
-  }, [props.shopifyProduct.variants, quantity]);
+  }, [props.shopifyProduct, quantity, sellingPlanId]);
 
   return (
     <div className="tablet:flex-1" ref={triggerRef}>

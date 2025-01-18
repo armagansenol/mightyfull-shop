@@ -1,8 +1,9 @@
 import 'styles/global.scss';
 import 'styles/tailwind-initial.css';
 
-import { CartProvider } from '@/components/cart-test/cart-context';
 import { Providers } from '@/components/providers';
+import { CartProvider } from '@/components/cart/cart-context';
+
 import { getCart } from '@/lib/shopify';
 import { cookies } from 'next/headers';
 

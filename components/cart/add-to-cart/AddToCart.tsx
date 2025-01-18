@@ -5,8 +5,8 @@ import { useProduct } from 'components/product/product-context';
 import { Product, ProductVariant } from '@/lib/shopify/types';
 import { Plus } from 'lucide-react';
 import { useCallback } from 'react';
-import { useCart } from './cart-context';
-import { addItem } from './actions';
+import { useCart } from '../cart-context';
+import { addItem } from '../actions';
 
 function SubmitButton({
   availableForSale,
@@ -58,7 +58,7 @@ function SubmitButton({
   );
 }
 
-export function AddToCart({ product }: { product: Product }) {
+export default function AddToCart({ product }: { product: Product }) {
   const { variants, availableForSale } = product;
   const { addCartItem } = useCart();
   const { state } = useProduct();
@@ -84,6 +84,7 @@ export function AddToCart({ product }: { product: Product }) {
       action={async () => {
         addCartItem(finalVariant, product);
         add();
+        console.log('fsjdfkljsdhflkjfh');
       }}
     >
       <SubmitButton
