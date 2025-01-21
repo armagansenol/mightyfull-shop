@@ -1,11 +1,13 @@
 'use client';
 
-import clsx from 'clsx';
-import { Minus, Plus } from 'lucide-react';
+import s from './edit-quantity-button.module.scss';
+
+import cn from 'clsx';
 import { useCallback, useMemo } from 'react';
 
 import type { CartItem } from '@/lib/shopify/types';
 import { updateItemQuantity } from '../actions';
+import { IconPlus, IconMinus } from '@/components/icons';
 
 function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
   return (
@@ -14,23 +16,25 @@ function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
       aria-label={
         type === 'plus' ? 'Increase item quantity' : 'Reduce item quantity'
       }
-      className={clsx(
-        'ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full p-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80',
-        {
-          'ml-auto': type === 'minus'
-        }
+      className={cn(
+        s.editQuantityButton,
+        'flex-shrink-0 flex items-center justify-center'
       )}
     >
       {type === 'plus' ? (
-        <Plus className="h-4 w-4 dark:text-neutral-500" />
+        <div className={s.icon}>
+          <IconPlus fill="var(--blue-ruin)" />
+        </div>
       ) : (
-        <Minus className="h-4 w-4 dark:text-neutral-500" />
+        <div className={s.icon}>
+          <IconMinus fill="var(--blue-ruin)" />
+        </div>
       )}
     </button>
   );
 }
 
-export default function EditQuantity({
+export default function EditQuantityButton({
   item,
   type,
   optimisticUpdate

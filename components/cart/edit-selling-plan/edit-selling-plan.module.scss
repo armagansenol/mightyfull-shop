@@ -1,0 +1,22 @@
+.editSellingPlan {
+  .selectSubscription {
+    border: 1px solid var(--blue-ruin);
+    border-radius: desktop-vw(8px);
+  }
+
+  .removeSubscription {
+    border: 1px solid var(--blue-ruin);
+    border-radius: desktop-vw(8px);
+  }
+}
+
+.upgradeToSubscription {
+  border: 1px solid var(--blue-ruin);
+  border-radius: desktop-vw(8px);
+  color: var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(14px);
+  font-weight: 500;
+  line-height: 1;
+  padding: desktop-vw(11px) 0;
+}

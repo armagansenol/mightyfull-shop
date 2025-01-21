@@ -1,0 +1,15 @@
+.cart {
+  @include dims(desktop-vw(520px), auto);
+
+  .header {
+    border-bottom: 1px solid var(--blue-ruin);
+
+    .title {
+      color: var(--blue-ruin);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(24px);
+      font-weight: 900;
+      line-height: 1;
+    }
+  }
+}

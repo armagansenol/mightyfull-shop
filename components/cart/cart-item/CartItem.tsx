@@ -1,9 +1,12 @@
+import s from './cart-item.module.scss';
+
+import cn from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { updateItemSellingPlanOption } from '@/components/cart/actions';
 import { DeleteItemButton } from '@/components/cart/delete-item-button';
-import { EditQuantity } from '@/components/cart/edit-quantity';
+import { EditQuantityButton } from '@/components/cart/edit-quantity-button';
 import { EditSellingPlan } from '@/components/cart/edit-selling-plan';
 import { Price } from '@/components/price';
 import { DEFAULT_OPTION } from '@/lib/constants';
@@ -39,11 +42,16 @@ export default function CartItem({
           <DeleteItemButton item={item} optimisticUpdate={updateCartItem} />
         </div>
         <div className="flex flex-row">
-          <div className="relative h-20 w-20 overflow-hidden rounded-md">
+          <div
+            className={cn(
+              s.imgC,
+              'relative h-20 w-20 overflow-hidden rounded-md'
+            )}
+          >
             <Image
               className="h-full w-full object-cover"
-              width={64}
-              height={64}
+              width={150}
+              height={150}
               alt={
                 item.merchandise.product.featuredImage.altText ||
                 item.merchandise.product.title
@@ -57,7 +65,7 @@ export default function CartItem({
             className="z-30 ml-2 flex flex-row space-x-4"
           >
             <div className="flex flex-1 flex-col text-base">
-              <span className="leading-tight">
+              <span className={cn(s.title, 'leading-tight')}>
                 {item.merchandise.product.title}
               </span>
               {item.merchandise.title !== DEFAULT_OPTION ? (
@@ -68,22 +76,22 @@ export default function CartItem({
             </div>
           </Link>
         </div>
-        <div className="flex h-16 flex-col justify-between">
+        <div className="flex flex-col justify-between">
           <Price
             className="flex justify-end space-y-2 text-right text-sm"
             amount={item.cost.totalAmount.amount}
             currencyCode={item.cost.totalAmount.currencyCode}
           />
-          <div className="ml-auto flex h-9 flex-row items-center rounded-full border border-neutral-200 dark:border-neutral-700">
-            <EditQuantity
+          <div className={cn(s.editQuantity, 'flex items-center')}>
+            <EditQuantityButton
               item={item}
               type="minus"
               optimisticUpdate={updateCartItem}
             />
-            <p className="w-6 text-center">
-              <span className="w-full text-sm">{item.quantity}</span>
+            <p className={cn(s.quantity, 'flex items-center justify-center')}>
+              <span>{item.quantity}</span>
             </p>
-            <EditQuantity
+            <EditQuantityButton
               item={item}
               type="plus"
               optimisticUpdate={updateCartItem}

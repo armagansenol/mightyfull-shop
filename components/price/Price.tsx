@@ -1,4 +1,6 @@
-import { cn } from '@/lib/utils';
+import s from './price.module.scss';
+
+import cn from 'clsx';
 
 const Price = ({
   amount,
@@ -11,15 +13,13 @@ const Price = ({
   currencyCode: string;
   currencyCodeClassName?: string;
 } & React.ComponentProps<'p'>) => (
-  <p suppressHydrationWarning={true} className={className}>
+  <p suppressHydrationWarning={true} className={cn(s.price, className)}>
+    <span className={currencyCodeClassName}>{`${currencyCode}`}</span>
     {`${new Intl.NumberFormat(undefined, {
       style: 'currency',
       currency: currencyCode,
       currencyDisplay: 'narrowSymbol'
     }).format(parseFloat(amount))}`}
-    <span
-      className={cn('ml-1 inline', currencyCodeClassName)}
-    >{`${currencyCode}`}</span>
   </p>
 );
 

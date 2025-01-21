@@ -1,6 +1,13 @@
 'use client';
 
+import cn from 'clsx';
+
+import s from './edit-selling-plan.module.scss';
+
+import { useCallback, useMemo, useState } from 'react';
+
 import { updateItemSellingPlanOption } from '@/components/cart/actions';
+import { IconX } from '@/components/icons';
 import {
   Select,
   SelectContent,
@@ -9,9 +16,6 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import type { CartItem } from '@/lib/shopify/types';
-
-import { X } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
 
 export default function EditSellingPlan({
   item,
@@ -65,9 +69,10 @@ export default function EditSellingPlan({
         <>
           {!sellingPlanAllocation?.id && (
             <div
-              className={
-                'p-4 flex items-center justify-center cursor-pointer border border-black rounded-md'
-              }
+              className={cn(
+                s.upgradeToSubscription,
+                'flex items-center justify-center cursor-pointer'
+              )}
               onClick={() => setSelectActive(true)}
             >
               Upgrade to Subscription and Save 10%
@@ -76,8 +81,8 @@ export default function EditSellingPlan({
         </>
       )}
       {sellingPlanAllocation?.id && (
-        <div className="grid grid-cols-12 gap-5">
-          <form className="col-span-10">
+        <div className={cn(s.editSellingPlan, 'grid grid-cols-12 gap-2')}>
+          <form className={cn(s.selectSubscription, 'col-span-11')}>
             <Select
               defaultValue={sellingPlanAllocation?.id}
               onValueChange={async (value) => {
@@ -99,7 +104,10 @@ export default function EditSellingPlan({
             </Select>
           </form>
           <form
-            className="col-span-2 flex items-center justify-center"
+            className={cn(
+              s.removeSubscription,
+              'col-span-1 flex items-center justify-center'
+            )}
             action={async () => {
               const sellingPlanId = null;
               optimisticUpdate(payload.merchandiseId, sellingPlanId);
@@ -110,7 +118,7 @@ export default function EditSellingPlan({
               className="cursor-pointer flex items-center justify-center"
               type="submit"
             >
-              <X />
+              <IconX />
             </button>
           </form>
         </div>

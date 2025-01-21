@@ -1,5 +1,7 @@
 'use client';
 
+import s from './cart.module.scss';
+
 import { ShoppingCartIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -21,7 +23,8 @@ import {
 } from '@/components/ui/sheet';
 import { LoadingSpinner } from '@/components/utility/loading-spinner';
 import { DEFAULT_OPTION } from '@/lib/constants';
-import { createUrl } from '@/lib/utils';
+import { cn, createUrl } from '@/lib/utils';
+import { ScrollableBox } from '@/components/utility/scrollable-box';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -39,6 +42,10 @@ export default function Cart() {
     if (!cart?.id) {
       createCartAndSetCookie();
     }
+  }, [cart]);
+
+  useEffect(() => {
+    console.log('cart', cart);
   }, [cart]);
 
   useEffect(() => {
@@ -69,9 +76,9 @@ export default function Cart() {
           ) : null}
         </button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-[520px] flex flex-col h-full">
-        <SheetHeader>
-          <SheetTitle>My Cart</SheetTitle>
+      <SheetContent className={cn(s.cart)}>
+        <SheetHeader className={s.header}>
+          <SheetTitle className={s.title}>Your Cart</SheetTitle>
         </SheetHeader>
         {!cart || cart.lines.length === 0 ? (
           <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
@@ -82,38 +89,43 @@ export default function Cart() {
           </div>
         ) : (
           <div className="flex h-full flex-col justify-between overflow-hidden p-1">
-            <ul className="flex-grow overflow-auto py-4">
-              {cart.lines
-                .sort((a, b) => {
-                  return a.merchandise.product.title.localeCompare(
-                    b.merchandise.product.title
-                  );
-                })
-                .map((item, i) => {
-                  const merchandiseSearchParams = {} as MerchandiseSearchParams;
-                  item.merchandise.selectedOptions.forEach(
-                    ({ name, value }) => {
-                      if (value !== DEFAULT_OPTION) {
-                        merchandiseSearchParams[name.toLowerCase()] = value;
-                      }
-                    }
-                  );
-                  const merchandiseUrl = createUrl(
-                    `/product/${item.merchandise.product.handle}`,
-                    new URLSearchParams(merchandiseSearchParams)
-                  );
+            <div className="flex flex-1 h-[300px] border-2 border-red-500">
+              <ScrollableBox className="flex-1">
+                <ul className="flex-grow overflow-auto py-4">
+                  {cart.lines
+                    .sort((a, b) => {
+                      return a.merchandise.product.title.localeCompare(
+                        b.merchandise.product.title
+                      );
+                    })
+                    .map((item, i) => {
+                      const merchandiseSearchParams =
+                        {} as MerchandiseSearchParams;
+                      item.merchandise.selectedOptions.forEach(
+                        ({ name, value }) => {
+                          if (value !== DEFAULT_OPTION) {
+                            merchandiseSearchParams[name.toLowerCase()] = value;
+                          }
+                        }
+                      );
+                      const merchandiseUrl = createUrl(
+                        `/product/${item.merchandise.product.handle}`,
+                        new URLSearchParams(merchandiseSearchParams)
+                      );
 
-                  return (
-                    <CartItem
-                      key={i}
-                      item={item}
-                      merchandiseUrl={merchandiseUrl}
-                      closeCart={closeCart}
-                      updateCartItem={updateCartItem}
-                    />
-                  );
-                })}
-            </ul>
+                      return (
+                        <CartItem
+                          key={i}
+                          item={item}
+                          merchandiseUrl={merchandiseUrl}
+                          closeCart={closeCart}
+                          updateCartItem={updateCartItem}
+                        />
+                      );
+                    })}
+                </ul>
+              </ScrollableBox>
+            </div>
             <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
               <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
                 <p>Taxes</p>
