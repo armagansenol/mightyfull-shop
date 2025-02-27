@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { updateItemSellingPlanOption } from '@/components/cart/actions';
 import { DeleteItemButton } from '@/components/cart/delete-item-button';
-import { EditSellingPlan } from '@/components/cart/edit-selling-plan';
+import { EditSellingPlanButton } from '@/components/cart/edit-selling-plan-button';
 import { OptimisticQuantityAdjuster } from '@/components/cart/optimistic-quantity-adjuster';
 import { Img } from '@/components/utility/img';
 import type { CartItem as CartLine } from '@/lib/shopify/types';
@@ -76,7 +76,7 @@ export default function CartItem({ item, updateCartItem }: CartItemProps) {
           </div>
         </div>
       </div>
-      <EditSellingPlan
+      <EditSellingPlanButton
         item={item}
         sellingPlanGroups={item.merchandise.product.sellingPlanGroups.nodes}
         optimisticUpdate={updateSellingPlan}

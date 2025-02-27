@@ -1,6 +1,6 @@
 'use client';
 
-import s from './edit-selling-plan.module.scss';
+import s from './edit-selling-plan-button.module.scss';
 
 import cn from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/select';
 import type { CartItem } from '@/lib/shopify/types';
 
-export default function EditSellingPlan({
+export function EditSellingPlanButton({
   item,
   sellingPlanGroups,
   optimisticUpdate
