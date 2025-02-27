@@ -3,13 +3,19 @@
 import s from './edit-quantity-button.module.scss';
 
 import cn from 'clsx';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import type { CartItem } from '@/lib/shopify/types';
 import { updateItemQuantity } from '../actions';
 import { IconPlus, IconMinus } from '@/components/icons';
 
-function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
+function SubmitButton({
+  type,
+  disabled
+}: {
+  type: 'plus' | 'minus';
+  disabled?: boolean;
+}) {
   return (
     <button
       type="submit"
@@ -18,8 +24,10 @@ function SubmitButton({ type }: { type: 'plus' | 'minus' }) {
       }
       className={cn(
         s.editQuantityButton,
-        'flex-shrink-0 flex items-center justify-center'
+        'cursor-pointer flex-shrink-0 flex items-center justify-center',
+        disabled && 'opacity-50 cursor-not-allowed'
       )}
+      disabled={disabled}
     >
       {type === 'plus' ? (
         <div className={s.icon}>
@@ -43,6 +51,8 @@ export default function EditQuantityButton({
   type: 'plus' | 'minus';
   optimisticUpdate: (merchandiseId: string, type: 'plus' | 'minus') => void;
 }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const payload = useMemo(
     () => ({
       merchandiseId: item.merchandise.id,
@@ -52,18 +62,31 @@ export default function EditQuantityButton({
   );
 
   const update = useCallback(async () => {
-    const res = await updateItemQuantity(payload);
-    console.log('lol', res);
+    try {
+      setIsUpdating(true);
+      const res = await updateItemQuantity(payload);
+      if (typeof res === 'string') {
+        console.error('Error updating quantity:', res);
+        // If there's an error, we could revert the optimistic update here
+        // by calling optimisticUpdate with the opposite type
+      }
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
+    } finally {
+      setIsUpdating(false);
+    }
   }, [payload]);
 
   return (
     <form
       action={async () => {
+        // Apply optimistic update immediately
         optimisticUpdate(payload.merchandiseId, type);
+        // Then perform the actual update
         await update();
       }}
     >
-      <SubmitButton type={type} />
+      <SubmitButton type={type} disabled={isUpdating} />
     </form>
   );
 }

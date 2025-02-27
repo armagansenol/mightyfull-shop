@@ -16,7 +16,12 @@ export function ProductDescription({ product }: { product: Product }) {
         </div>
       </div>
       <VariantSelector options={product.options} variants={product.variants} />
-      <AddToCart product={product} />
+      <AddToCart
+        availableForSale={product.availableForSale}
+        variantId={product.variants[0].id}
+        amount={parseFloat(product.priceRange.maxVariantPrice.amount)}
+        currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+      />
     </>
   );
 }

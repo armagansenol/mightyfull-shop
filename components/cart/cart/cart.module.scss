@@ -1,15 +1,61 @@
 .cart {
   @include dims(desktop-vw(520px), auto);
+  background-color: var(--sugar-milk);
 
-  .header {
-    border-bottom: 1px solid var(--blue-ruin);
+  .cartHeader {
+    border-bottom: 2px solid var(--blue-ruin);
 
-    .title {
+    .cartTitle {
       color: var(--blue-ruin);
       font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(24px);
+      font-size: desktop-vw(32px);
       font-weight: 900;
       line-height: 1;
     }
+
+    .closeButton {
+      @include dims(desktop-vw(36px));
+      background-color: var(--blue-ruin);
+      border-radius: 50%;
+      padding: desktop-vw(10px);
+    }
+  }
+
+  .cartItems {
+    height: desktop-vw(400px);
+    max-height: desktop-vw(400px);
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .continueShopping {
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(18px);
+    font-weight: 500;
+  }
+
+  .footnote {
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(14px);
+    font-weight: 500;
+  }
+}
+
+.checkoutButton {
+  @include dims(100%, desktop-vw(48px));
+  background-color: var(--blue-ruin);
+  border-radius: desktop-vw(8px);
+  color: var(--white);
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(20px);
+  font-weight: 900;
+
+  @include mobile {
+    @include dims(100%, mobile-vw(48px));
+    border-radius: mobile-vw(8px);
+    font-size: mobile-vw(16px);
   }
 }

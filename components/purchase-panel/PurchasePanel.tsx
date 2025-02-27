@@ -6,10 +6,9 @@ import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
 import { BellRing } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 
-import { addItem } from '@/components/cart/actions';
 import { Quantity } from '@/components/quantity';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -25,6 +24,7 @@ import {
 import { ScrollTrigger } from '@/lib/gsap';
 import { Product } from '@/lib/shopify/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
+import { AddToCart } from '../cart/add-to-cart';
 
 export interface PurchasePanelProps {
   shopifyProduct: Product;
@@ -116,14 +116,14 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   //   }
   // };
 
-  const add = useCallback(async () => {
-    const res = await addItem(
-      props.shopifyProduct.variants[0].id,
-      quantity,
-      sellingPlanId || undefined
-    );
-    console.log('lol', res);
-  }, [props.shopifyProduct, quantity, sellingPlanId]);
+  // const add = useCallback(async () => {
+  //   const res = await addItem(
+  //     props.shopifyProduct.variants[0].id,
+  //     quantity,
+  //     sellingPlanId || undefined
+  //   );
+  //   console.log('lol', res);
+  // }, [props.shopifyProduct, quantity, sellingPlanId]);
 
   return (
     <div className="tablet:flex-1" ref={triggerRef}>
@@ -223,33 +223,12 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
-              <form
-                className="w-64 tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
-                action={add}
-              >
-                <Button
-                  size="sm"
-                  padding="none"
-                  colorTheme="invertedThemed"
-                  type="submit"
-                  className="gap-1"
-                >
-                  ADD TO CART{' '}
-                  <span className={s.price}>
-                    {quantity > 0 && (
-                      <>
-                        (
-                        {(
-                          Number(
-                            props.shopifyProduct.variants[0].price.amount
-                          ) * quantity
-                        ).toFixed(2)}{' '}
-                        {props.shopifyProduct.variants[0].price.currencyCode})
-                      </>
-                    )}
-                  </span>
-                </Button>
-              </form>
+              <AddToCart
+                availableForSale={props.shopifyProduct.availableForSale}
+                variantId={props.shopifyProduct.variants[0].id}
+                quantity={quantity}
+                sellingPlanId={sellingPlanId}
+              />
             </div>
           </div>
         ) : (

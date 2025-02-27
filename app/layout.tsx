@@ -6,6 +6,7 @@ import { CartProvider } from '@/components/cart/cart-context';
 
 import { getCart } from '@/lib/shopify';
 import { cookies } from 'next/headers';
+import { Toaster } from '@/components/ui/sonner';
 
 export default async function RootLayout({
   children
@@ -29,7 +30,10 @@ export default async function RootLayout({
       </head> */}
       <body className={`antialiased`}>
         <CartProvider cartPromise={cartPromise}>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <Toaster />
+          </Providers>
         </CartProvider>
       </body>
     </html>

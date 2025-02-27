@@ -1,13 +1,12 @@
 'use client';
 
-import cn from 'clsx';
-
 import s from './edit-selling-plan.module.scss';
 
+import cn from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
 
 import { updateItemSellingPlanOption } from '@/components/cart/actions';
-import { IconX } from '@/components/icons';
+import { IconClose } from '@/components/icons';
 import {
   Select,
   SelectContent,
@@ -81,8 +80,8 @@ export default function EditSellingPlan({
         </>
       )}
       {sellingPlanAllocation?.id && (
-        <div className={cn(s.editSellingPlan, 'grid grid-cols-12 gap-2')}>
-          <form className={cn(s.selectSubscription, 'col-span-11')}>
+        <div className={cn(s.editSellingPlan, 'w-full flex gap-2')}>
+          <form className={cn(s.selectSubscription, 'w-full flex flex-1')}>
             <Select
               defaultValue={sellingPlanAllocation?.id}
               onValueChange={async (value) => {
@@ -91,12 +90,18 @@ export default function EditSellingPlan({
                 await update(sellingPlanId);
               }}
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select purchase type" />
+              <SelectTrigger
+                className={cn(s.selectTrigger, 'w-full flex flex-1')}
+              >
+                <SelectValue placeholder={'Select'} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent data-lenis-prevent className={cn(s.msix, 'msix')}>
                 {sellingPlanGroups[0]?.sellingPlans.nodes.map((plan) => (
-                  <SelectItem key={plan.id} value={plan.id}>
+                  <SelectItem
+                    className={cn(s.item, 'item')}
+                    key={plan.id}
+                    value={plan.id}
+                  >
                     {plan.name}
                   </SelectItem>
                 ))}
@@ -106,7 +111,7 @@ export default function EditSellingPlan({
           <form
             className={cn(
               s.removeSubscription,
-              'col-span-1 flex items-center justify-center'
+              'flex items-center justify-center'
             )}
             action={async () => {
               const sellingPlanId = null;
@@ -115,10 +120,13 @@ export default function EditSellingPlan({
             }}
           >
             <button
-              className="cursor-pointer flex items-center justify-center"
+              className={cn(
+                'cursor-pointer flex items-center justify-center',
+                s.closeButton
+              )}
               type="submit"
             >
-              <IconX />
+              <IconClose fill="var(--blue-ruin)" />
             </button>
           </form>
         </div>

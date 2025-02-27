@@ -1,12 +1,44 @@
 .editSellingPlan {
+  @include dims(auto, desktop-vw(36px));
+  color: var(--blue-ruin);
+  font-family: var(--font-poppins);
+  font-size: desktop-vw(14px);
+  font-weight: 600;
+
+  @include mobile {
+    font-size: mobile-vw(12px);
+  }
+
   .selectSubscription {
+    @include dims(auto, desktop-vw(36px));
+    flex: 1;
+  }
+
+  .selectTrigger {
+    @include dims(auto, desktop-vw(36px));
+    border: 1px solid var(--blue-ruin);
+    border-radius: desktop-vw(8px);
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(16px);
+    font-weight: 600;
+    padding: 0 desktop-vw(16px);
+
+    @include mobile {
+      border-radius: mobile-vw(6px);
+      font-size: mobile-vw(14px);
+      padding: 0 mobile-vw(12px);
+    }
+  }
+
+  .removeSubscription {
+    @include dims(desktop-vw(36px));
     border: 1px solid var(--blue-ruin);
     border-radius: desktop-vw(8px);
   }
 
-  .removeSubscription {
-    border: 1px solid var(--blue-ruin);
-    border-radius: desktop-vw(8px);
+  .closeButton {
+    padding: desktop-vw(10px);
   }
 }
 
@@ -19,4 +51,29 @@
   font-weight: 500;
   line-height: 1;
   padding: desktop-vw(11px) 0;
+}
+
+.msi {
+  background-color: var(--sugar-milk);
+  border: 1px solid var(--blue-ruin);
+
+  .item {
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(16px);
+    font-weight: 500;
+    padding: desktop-vw(12px) desktop-vw(8px);
+    transition: 300ms all ease;
+
+    @include mobile {
+      font-size: mobile-vw(16px);
+      padding: mobile-vw(12px) mobile-vw(8px);
+    }
+
+    @include hover {
+      &:hover {
+        background-color: var(--bg-color);
+      }
+    }
+  }
 }

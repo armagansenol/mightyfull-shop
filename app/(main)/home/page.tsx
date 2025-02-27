@@ -25,6 +25,8 @@ import {
   ProductHighlightQueryResult,
   Testimonial
 } from '@/types';
+import { getProduct } from '@/lib/shopify';
+import { AddToCart } from '@/components/cart/add-to-cart';
 
 export default async function HomePage() {
   const { productHighlight } = await sanityFetch<ProductHighlightQueryResult>({
@@ -43,6 +45,12 @@ export default async function HomePage() {
     query: ANIMATED_CARDS_QUERY,
     tags: ['animatedCards']
   });
+  const shopifyProducts = await Promise.all(
+    cards.map(async (card) => {
+      const shopifyProduct = await getProduct(card.product.shopifySlug);
+      return shopifyProduct;
+    })
+  );
 
   return (
     <>
@@ -133,7 +141,7 @@ export default async function HomePage() {
             {/* DESKTOP */}
             <div className="hidden tablet:block">
               <div className="grid grid-cols-4 gap-12 mt-20 flex-shrink-0">
-                {cards.map((item) => {
+                {cards.map((item, i) => {
                   return (
                     <div
                       className={cn(s.card, 'flex flex-col gap-10')}
@@ -159,9 +167,15 @@ export default async function HomePage() {
                             SHOP NOW
                           </Link>
                         </Button>
-                        <Button variant="default" size="sm" padding="slim">
-                          ADD TO CART
-                        </Button>
+                        {shopifyProducts.length > 0 &&
+                          shopifyProducts[i]?.variants?.[0]?.id && (
+                            <AddToCart
+                              availableForSale={
+                                shopifyProducts[i].availableForSale
+                              }
+                              variantId={shopifyProducts[i].variants[0].id}
+                            />
+                          )}
                       </div>
                     </div>
                   );

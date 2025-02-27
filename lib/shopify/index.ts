@@ -31,6 +31,7 @@ import {
   ShopifyShopOperation
 } from './types';
 import { getShopQuery } from './queries/shop';
+import { cookies } from 'next/headers';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -194,6 +195,16 @@ const reshapeProducts = (products: ShopifyProduct[]) => {
 };
 
 export async function createCart(): Promise<Cart> {
+  // Check if there's an existing cart first
+  const existingCartId = (await cookies()).get('cartId')?.value;
+  if (existingCartId) {
+    const existingCart = await getCart(existingCartId);
+    if (existingCart) {
+      return existingCart;
+    }
+  }
+
+  // Only create new cart if no existing valid cart is found
   const res = await shopifyFetch<ShopifyCreateCartOperation>({
     query: createCartMutation,
     cache: 'no-store'

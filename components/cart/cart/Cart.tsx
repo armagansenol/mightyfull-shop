@@ -2,6 +2,7 @@
 
 import s from './cart.module.scss';
 
+import cn from 'clsx';
 import { ShoppingCartIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
@@ -12,19 +13,19 @@ import {
 } from '@/components/cart/actions';
 import { useCart } from '@/components/cart/cart-context';
 import { CartItem } from '@/components/cart/cart-item';
-import { IconCookieCart } from '@/components/icons';
+import { IconClose, IconCookieCart } from '@/components/icons';
 import { Price } from '@/components/price';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet';
 import { LoadingSpinner } from '@/components/utility/loading-spinner';
-import { DEFAULT_OPTION } from '@/lib/constants';
-import { cn, createUrl } from '@/lib/utils';
 import { ScrollableBox } from '@/components/utility/scrollable-box';
+import { DEFAULT_OPTION } from '@/lib/constants';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -32,21 +33,27 @@ type MerchandiseSearchParams = {
 
 export default function Cart() {
   const { cart, updateCartItem } = useCart();
-  const [open, setOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
+  const [open, setOpen] = useState(false);
   const openCart = () => setOpen(true);
   const closeCart = () => setOpen(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    console.log('cart modal', cart);
-    if (!cart?.id) {
-      createCartAndSetCookie();
+    if (!isInitialized) {
+      const checkAndCreateCart = async () => {
+        const cartCookie = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('cartId='));
+        if (!cartCookie && !cart?.id) {
+          await createCartAndSetCookie();
+        }
+        setIsInitialized(true);
+      };
+
+      checkAndCreateCart();
     }
-  }, [cart]);
-
-  useEffect(() => {
-    console.log('cart', cart);
-  }, [cart]);
+  }, [cart?.id, isInitialized]);
 
   useEffect(() => {
     if (
@@ -76,98 +83,127 @@ export default function Cart() {
           ) : null}
         </button>
       </SheetTrigger>
-      <SheetContent className={cn(s.cart)}>
-        <SheetHeader className={s.header}>
-          <SheetTitle className={s.title}>Your Cart</SheetTitle>
+      <SheetContent
+        className={cn(s.cart, 'h-screen flex flex-col items-stretch')}
+      >
+        <SheetHeader
+          className={cn(s.cartHeader, 'flex items-center justify-between py-4')}
+        >
+          <SheetTitle className={s.cartTitle}>Your Cart</SheetTitle>
+          <SheetClose
+            className={cn(
+              s.closeButton,
+              'cursor-pointer flex items-center justify-center'
+            )}
+          >
+            <IconClose fill="var(--sugar-milk)" />
+            <span className="sr-only">Close</span>
+          </SheetClose>
         </SheetHeader>
-        {!cart || cart.lines.length === 0 ? (
-          <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
-            <ShoppingCartIcon className="h-16" />
-            <p className="mt-6 text-center text-2xl font-bold">
-              Your cart is empty.
-            </p>
-          </div>
-        ) : (
-          <div className="flex h-full flex-col justify-between overflow-hidden p-1">
-            <div className="flex flex-1 h-[300px] border-2 border-red-500">
-              <ScrollableBox className="flex-1">
-                <ul className="flex-grow overflow-auto py-4">
-                  {cart.lines
-                    .sort((a, b) => {
-                      return a.merchandise.product.title.localeCompare(
-                        b.merchandise.product.title
-                      );
-                    })
-                    .map((item, i) => {
-                      const merchandiseSearchParams =
-                        {} as MerchandiseSearchParams;
-                      item.merchandise.selectedOptions.forEach(
-                        ({ name, value }) => {
-                          if (value !== DEFAULT_OPTION) {
-                            merchandiseSearchParams[name.toLowerCase()] = value;
+        <div className="flex flex-col items-stretch flex-1">
+          {!cart || cart.lines.length === 0 ? (
+            <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
+              <ShoppingCartIcon className="h-16" />
+              <p className="mt-6 text-center text-2xl font-bold">
+                Your cart is empty.
+              </p>
+            </div>
+          ) : (
+            <div className={'flex flex-col mx-auto flex-1 gap-4'}>
+              <div className={cn(s.cartItems, 'flex flex-1')}>
+                <ScrollableBox className="flex-1">
+                  <ul className="flex-grow overflow-auto py-6">
+                    {cart.lines
+                      .sort((a, b) => {
+                        return a.merchandise.product.title.localeCompare(
+                          b.merchandise.product.title
+                        );
+                      })
+                      .map((item, i) => {
+                        const merchandiseSearchParams =
+                          {} as MerchandiseSearchParams;
+                        item.merchandise.selectedOptions.forEach(
+                          ({ name, value }) => {
+                            if (value !== DEFAULT_OPTION) {
+                              merchandiseSearchParams[name.toLowerCase()] =
+                                value;
+                            }
                           }
-                        }
-                      );
-                      const merchandiseUrl = createUrl(
-                        `/product/${item.merchandise.product.handle}`,
-                        new URLSearchParams(merchandiseSearchParams)
-                      );
-
-                      return (
-                        <CartItem
-                          key={i}
-                          item={item}
-                          merchandiseUrl={merchandiseUrl}
-                          closeCart={closeCart}
-                          updateCartItem={updateCartItem}
-                        />
-                      );
-                    })}
-                </ul>
-              </ScrollableBox>
-            </div>
-            <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
-              <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
-                <p>Taxes</p>
-                <Price
-                  className="text-right text-base text-black dark:text-white"
-                  amount={cart.cost.totalTaxAmount.amount}
-                  currencyCode={cart.cost.totalTaxAmount.currencyCode}
-                />
+                        );
+                        return (
+                          <CartItem
+                            key={i}
+                            item={item}
+                            updateCartItem={updateCartItem}
+                          />
+                        );
+                      })}
+                  </ul>
+                </ScrollableBox>
               </div>
-              <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                <p>Shipping</p>
-                <p className="text-right">Calculated at checkout</p>
-              </div>
-              <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                <p>Total</p>
-                <Price
-                  className="text-right text-base text-black dark:text-white"
-                  amount={cart.cost.totalAmount.amount}
-                  currencyCode={cart.cost.totalAmount.currencyCode}
-                />
+              <div className="flex flex-col items-stretch gap-8 mt-auto">
+                <form action={redirectToCheckout}>
+                  <CheckoutButton
+                    amount={cart.cost.totalAmount.amount}
+                    currencyCode={cart.cost.totalAmount.currencyCode}
+                  />
+                </form>
+                <button
+                  className={cn(
+                    s.continueShopping,
+                    'cursor-pointer mx-auto text-center'
+                  )}
+                  onClick={closeCart}
+                >
+                  Continue Shopping
+                </button>
+                <span className={cn(s.footnote, 'mx-auto text-center')}>
+                  Shipping, taxes and discounts calculated at checkout.
+                </span>
               </div>
             </div>
-            <form action={redirectToCheckout}>
-              <CheckoutButton />
-            </form>
-          </div>
-        )}
+          )}
+        </div>
       </SheetContent>
     </Sheet>
   );
 }
 
-function CheckoutButton() {
+interface CheckoutButtonProps {
+  amount: string;
+  currencyCode: string;
+}
+
+function CheckoutButton({ amount, currencyCode }: CheckoutButtonProps) {
   const { pending } = useFormStatus();
 
   return (
     <button
-      className="block w-full rounded-full bg-blue-600 p-3 text-center text-sm font-medium text-white opacity-90 hover:opacity-100"
+      className={cn(
+        s.checkoutButton,
+        'cursor-pointer flex items-center justify-center'
+      )}
       type="submit"
       disabled={pending}
     >
-      {pending ? <LoadingSpinner /> : 'Proceed to Checkout'}
+      {pending ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <div className="flex flex-row items-center justify-center">
+            <span>Checkout</span>
+            {amount && (
+              <span>
+                <Price
+                  amount={amount}
+                  currencyCode={currencyCode}
+                  className="text-base text-white"
+                />
+              </span>
+            )}
+          </div>
+        </>
+      )}
     </button>
   );
 }

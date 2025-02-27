@@ -713,6 +713,25 @@ export const IconCheck = (props: Props) => {
   );
 };
 
+export const IconClose = (props: Props) => {
+  return (
+    <span className="inherit-dims block">
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 19 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5.8437 7.39645L0 0H6.35462L9.38824 4.23077L12.2941 0H18.6487L12.9966 7.39645L19 15H12.5176L9.51597 10.6805L6.61008 15H0.127731L5.8437 7.39645Z"
+          fill={props?.fill}
+        />
+      </svg>
+    </span>
+  );
+};
+
 export const socialIcons: Record<SocialMedia, JSX.Element> = {
   [SocialMedia.tiktok]: <IconTiktok fill="var(--blue-ruin)" />,
   [SocialMedia.facebook]: <IconFacebook fill="var(--blue-ruin)" />,
