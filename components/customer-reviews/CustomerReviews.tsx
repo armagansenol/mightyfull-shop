@@ -77,7 +77,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
             </div>
           </div>
         )} */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="sync">
           {items?.map((review) => (
             <motion.div
               key={review.reviewId}
