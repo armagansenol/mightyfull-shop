@@ -32,7 +32,7 @@ export default async function RootLayout({
         <CartProvider cartPromise={cartPromise}>
           <Providers>
             {children}
-            <Toaster />
+            <Toaster position="bottom-left" />
           </Providers>
         </CartProvider>
       </body>

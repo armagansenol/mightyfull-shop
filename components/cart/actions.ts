@@ -21,18 +21,28 @@ export async function addItem(
   const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
+    console.log('addItem: Missing cart ID');
     return 'Missing cart ID. Please refresh the page and try again.';
   }
 
   if (!selectedVariantId) {
+    console.log('addItem: Missing variant ID');
     return 'Please select a product variant before adding to cart.';
   }
 
   try {
+    console.log(
+      `addItem: Adding item ${selectedVariantId} to cart, quantity: ${quantity}, sellingPlanId: ${sellingPlanId || 'none'}`
+    );
+
     await addToCart(cartId, [
       { merchandiseId: selectedVariantId, sellingPlanId, quantity }
     ]);
     revalidateTag(TAGS.cart);
+
+    console.log(
+      `addItem: Successfully added item ${selectedVariantId} to cart`
+    );
     return { success: true };
   } catch (e) {
     console.error('Error adding item to cart:', e);
@@ -40,14 +50,19 @@ export async function addItem(
   }
 }
 
-export async function removeItem(merchandiseId: string) {
+export async function removeItem(
+  merchandiseId: string,
+  sellingPlanId?: string | null
+) {
   const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
+    console.log('removeItem: Missing cart ID');
     return 'Missing cart ID';
   }
 
   if (!merchandiseId) {
+    console.log('removeItem: Missing product information');
     return 'Missing product information';
   }
 
@@ -55,18 +70,37 @@ export async function removeItem(merchandiseId: string) {
     const cart = await getCart(cartId);
 
     if (!cart) {
+      console.log('removeItem: Error fetching cart');
       return 'Error fetching cart';
     }
 
+    // Find the line item matching both merchandiseId and sellingPlanId
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) =>
+        line.merchandise.id === merchandiseId &&
+        // Match items with the same selling plan status
+        ((sellingPlanId &&
+          line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+          // Or match items with no selling plan when sellingPlanId is null/undefined
+          (!sellingPlanId && !line.sellingPlanAllocation))
     );
 
     if (lineItem && lineItem.id) {
+      console.log(
+        `removeItem: Removing item ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from cart`
+      );
+
       await removeFromCart(cartId, [lineItem.id]);
       revalidateTag(TAGS.cart);
+
+      console.log(
+        `removeItem: Successfully removed item ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from cart`
+      );
       return { success: true, message: 'Item removed from cart' };
     } else {
+      console.log(
+        `removeItem: Item not found in cart - ${merchandiseId} with selling plan ${sellingPlanId || 'none'}`
+      );
       return 'Item not found in cart';
     }
   } catch (e) {
@@ -199,16 +233,19 @@ export async function createCartAndSetCookie() {
 export async function updateItemSellingPlanOption(payload: {
   merchandiseId: string;
   sellingPlanId: string | null;
+  currentSellingPlanId?: string | null;
 }) {
   const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
+    console.log('updateItemSellingPlanOption: Missing cart ID');
     return 'Missing cart ID';
   }
 
-  const { merchandiseId, sellingPlanId } = payload;
+  const { merchandiseId, sellingPlanId, currentSellingPlanId } = payload;
 
   if (!merchandiseId) {
+    console.log('updateItemSellingPlanOption: Missing product information');
     return 'Missing product information';
   }
 
@@ -216,14 +253,27 @@ export async function updateItemSellingPlanOption(payload: {
     const cart = await getCart(cartId);
 
     if (!cart) {
+      console.log('updateItemSellingPlanOption: Error fetching cart');
       return 'Error fetching cart';
     }
 
+    // Find the line item matching both merchandiseId and currentSellingPlanId
     const lineItem = cart.lines.find(
-      (line) => line.merchandise.id === merchandiseId
+      (line) =>
+        line.merchandise.id === merchandiseId &&
+        // Match items with the same selling plan status
+        ((currentSellingPlanId &&
+          line.sellingPlanAllocation?.sellingPlan?.id ===
+            currentSellingPlanId) ||
+          // Or match items with no selling plan when currentSellingPlanId is null/undefined
+          (!currentSellingPlanId && !line.sellingPlanAllocation))
     );
 
     if (lineItem && lineItem.id) {
+      console.log(
+        `updateItemSellingPlanOption: Updating selling plan for ${merchandiseId} from ${currentSellingPlanId || 'one-time purchase'} to ${sellingPlanId || 'one-time purchase'}`
+      );
+
       await updateCart(cartId, [
         {
           id: lineItem.id,
@@ -233,6 +283,10 @@ export async function updateItemSellingPlanOption(payload: {
         }
       ]);
       revalidateTag(TAGS.cart);
+
+      console.log(
+        `updateItemSellingPlanOption: Successfully updated selling plan for ${merchandiseId}`
+      );
       return {
         success: true,
         message: sellingPlanId
@@ -240,6 +294,9 @@ export async function updateItemSellingPlanOption(payload: {
           : 'One-time purchase option selected'
       };
     } else {
+      console.log(
+        `updateItemSellingPlanOption: Item not found in cart - ${merchandiseId} with selling plan ${currentSellingPlanId || 'none'}`
+      );
       return 'Item not found in cart';
     }
   } catch (e) {
@@ -259,6 +316,7 @@ export async function batchUpdateCart(
     merchandiseId: string;
     quantity?: number;
     sellingPlanId?: string | null;
+    currentSellingPlanId?: string | null;
   }[]
 ) {
   const cartId = (await cookies()).get('cartId')?.value;
@@ -293,16 +351,28 @@ export async function batchUpdateCart(
 
     // Process each operation and group them
     for (const operation of operations) {
-      const { type, merchandiseId, quantity = 1, sellingPlanId } = operation;
+      const {
+        type,
+        merchandiseId,
+        quantity = 1,
+        sellingPlanId,
+        currentSellingPlanId
+      } = operation;
 
       // Convert null sellingPlanId to undefined as required by the API
       const formattedSellingPlanId =
         sellingPlanId === null ? undefined : sellingPlanId;
 
       if (type === 'add') {
-        // Check if this item is already in the cart
+        // Check if this item is already in the cart with the same selling plan
         const existingLine = cart.lines.find(
-          (line) => line.merchandise.id === merchandiseId
+          (line) =>
+            line.merchandise.id === merchandiseId &&
+            // Match items with the same selling plan status
+            ((sellingPlanId &&
+              line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+              // Or match items with no selling plan when sellingPlanId is null/undefined
+              (!sellingPlanId && !line.sellingPlanAllocation))
         );
 
         if (existingLine && existingLine.id) {
@@ -322,16 +392,34 @@ export async function batchUpdateCart(
           });
         }
       } else if (type === 'remove') {
+        // Find the line item matching both merchandiseId and sellingPlanId
         const lineItem = cart.lines.find(
-          (line) => line.merchandise.id === merchandiseId
+          (line) =>
+            line.merchandise.id === merchandiseId &&
+            // Match items with the same selling plan status
+            ((currentSellingPlanId &&
+              line.sellingPlanAllocation?.sellingPlan?.id ===
+                currentSellingPlanId) ||
+              // Or match items with no selling plan when currentSellingPlanId is null/undefined
+              (!currentSellingPlanId && !line.sellingPlanAllocation))
         );
+
         if (lineItem && lineItem.id) {
           removeLineIds.push(lineItem.id);
         }
       } else if (type === 'update') {
+        // For updates, we need to find the item with the current selling plan
         const lineItem = cart.lines.find(
-          (line) => line.merchandise.id === merchandiseId
+          (line) =>
+            line.merchandise.id === merchandiseId &&
+            // Match items with the same selling plan status
+            ((currentSellingPlanId &&
+              line.sellingPlanAllocation?.sellingPlan?.id ===
+                currentSellingPlanId) ||
+              // Or match items with no selling plan when currentSellingPlanId is null/undefined
+              (!currentSellingPlanId && !line.sellingPlanAllocation))
         );
+
         if (lineItem && lineItem.id) {
           if (quantity === 0) {
             removeLineIds.push(lineItem.id);
@@ -378,5 +466,193 @@ export async function batchUpdateCart(
       success: false,
       message: `Error updating cart: ${e instanceof Error ? e.message : 'Unknown error'}`
     };
+  }
+}
+
+export async function incrementItemQuantity(
+  merchandiseId: string,
+  maxQuantity: number = 10,
+  sellingPlanId?: string | null
+) {
+  const cartId = (await cookies()).get('cartId')?.value;
+
+  if (!cartId) {
+    console.log('incrementItemQuantity: Missing cart ID');
+    return 'Missing cart ID';
+  }
+
+  if (!merchandiseId) {
+    console.log('incrementItemQuantity: Missing product information');
+    return 'Missing product information';
+  }
+
+  try {
+    const cart = await getCart(cartId);
+
+    if (!cart) {
+      console.log('incrementItemQuantity: Error fetching cart');
+      return 'Error fetching cart';
+    }
+
+    // Find the line item matching both merchandiseId and sellingPlanId
+    const lineItem = cart.lines.find(
+      (line) =>
+        line.merchandise.id === merchandiseId &&
+        // Match items with the same selling plan status
+        ((sellingPlanId &&
+          line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+          // Or match items with no selling plan when sellingPlanId is null/undefined
+          (!sellingPlanId && !line.sellingPlanAllocation))
+    );
+
+    if (!lineItem) {
+      console.log(
+        `incrementItemQuantity: Item not found in cart - ${merchandiseId} with selling plan ${sellingPlanId || 'none'}`
+      );
+      return 'Item not found in cart';
+    }
+
+    // Don't increment if already at max quantity
+    if (lineItem.quantity >= maxQuantity) {
+      console.log(
+        `incrementItemQuantity: Maximum quantity (${maxQuantity}) reached for ${merchandiseId}`
+      );
+      return {
+        success: false,
+        message: `Maximum quantity (${maxQuantity}) reached`
+      };
+    }
+
+    const newQuantity = lineItem.quantity + 1;
+    console.log(
+      `incrementItemQuantity: Increasing quantity for ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from ${lineItem.quantity} to ${newQuantity}`
+    );
+
+    if (lineItem.id) {
+      await updateCart(cartId, [
+        {
+          id: lineItem.id,
+          merchandiseId,
+          quantity: newQuantity,
+          sellingPlanId: sellingPlanId || undefined
+        }
+      ]);
+
+      revalidateTag(TAGS.cart);
+      console.log(
+        `incrementItemQuantity: Successfully updated quantity for ${merchandiseId} with selling plan ${sellingPlanId || 'none'} to ${newQuantity}`
+      );
+      return {
+        success: true,
+        message: 'Quantity increased successfully',
+        newQuantity
+      };
+    }
+
+    console.log(
+      `incrementItemQuantity: Error updating cart item - ${merchandiseId}`
+    );
+    return 'Error updating cart item';
+  } catch (e) {
+    console.error('Error incrementing item quantity:', e);
+    return `Error incrementing item quantity: ${e instanceof Error ? e.message : 'Unknown error'}`;
+  }
+}
+
+export async function decrementItemQuantity(
+  merchandiseId: string,
+  sellingPlanId?: string | null
+) {
+  const cartId = (await cookies()).get('cartId')?.value;
+
+  if (!cartId) {
+    console.log('decrementItemQuantity: Missing cart ID');
+    return 'Missing cart ID';
+  }
+
+  if (!merchandiseId) {
+    console.log('decrementItemQuantity: Missing product information');
+    return 'Missing product information';
+  }
+
+  try {
+    const cart = await getCart(cartId);
+
+    if (!cart) {
+      console.log('decrementItemQuantity: Error fetching cart');
+      return 'Error fetching cart';
+    }
+
+    // Find the line item matching both merchandiseId and sellingPlanId
+    const lineItem = cart.lines.find(
+      (line) =>
+        line.merchandise.id === merchandiseId &&
+        // Match items with the same selling plan status
+        ((sellingPlanId &&
+          line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+          // Or match items with no selling plan when sellingPlanId is null/undefined
+          (!sellingPlanId && !line.sellingPlanAllocation))
+    );
+
+    if (!lineItem) {
+      console.log(
+        `decrementItemQuantity: Item not found in cart - ${merchandiseId} with selling plan ${sellingPlanId || 'none'}`
+      );
+      return 'Item not found in cart';
+    }
+
+    // If quantity is 1, remove the item
+    if (lineItem.quantity <= 1) {
+      console.log(
+        `decrementItemQuantity: Removing item ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from cart (quantity was 1)`
+      );
+      if (lineItem.id) {
+        await removeFromCart(cartId, [lineItem.id]);
+        revalidateTag(TAGS.cart);
+        console.log(
+          `decrementItemQuantity: Successfully removed item ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from cart`
+        );
+        return {
+          success: true,
+          message: 'Item removed from cart',
+          newQuantity: 0
+        };
+      }
+    } else {
+      // Otherwise decrement the quantity
+      const newQuantity = lineItem.quantity - 1;
+      console.log(
+        `decrementItemQuantity: Decreasing quantity for ${merchandiseId} with selling plan ${sellingPlanId || 'none'} from ${lineItem.quantity} to ${newQuantity}`
+      );
+
+      if (lineItem.id) {
+        await updateCart(cartId, [
+          {
+            id: lineItem.id,
+            merchandiseId,
+            quantity: newQuantity,
+            sellingPlanId: sellingPlanId || undefined
+          }
+        ]);
+
+        revalidateTag(TAGS.cart);
+        console.log(
+          `decrementItemQuantity: Successfully updated quantity for ${merchandiseId} with selling plan ${sellingPlanId || 'none'} to ${newQuantity}`
+        );
+        return {
+          success: true,
+          message: 'Quantity decreased successfully',
+          newQuantity
+        };
+      }
+    }
+
+    console.log(
+      `decrementItemQuantity: Error updating cart item - ${merchandiseId}`
+    );
+    return 'Error updating cart item';
+  } catch (e) {
+    console.error('Error decrementing item quantity:', e);
+    return `Error decrementing item quantity: ${e instanceof Error ? e.message : 'Unknown error'}`;
   }
 }

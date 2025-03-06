@@ -16,7 +16,6 @@ const Price = ({
 } & React.ComponentProps<'p'>) => (
   <p suppressHydrationWarning={true} className={cn(s.price, className)}>
     {/* <span className={currencyCodeClassName}>{`${currencyCode}`}</span> */}
-    $
     <AnimatedNumber
       value={
         // parseFloat(
@@ -28,6 +27,7 @@ const Price = ({
         parseFloat(amount)
       }
     />
+    $
   </p>
 );
 

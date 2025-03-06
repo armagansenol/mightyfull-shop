@@ -6,25 +6,51 @@ import type {
   Product,
   ProductVariant
 } from '@/lib/shopify/types';
-import React, { createContext, useContext, useMemo, useReducer } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useReducer,
+  useCallback
+} from 'react';
 
 type UpdateType = 'plus' | 'minus' | 'delete';
 
 type CartAction =
   | {
       type: 'UPDATE_ITEM';
-      payload: { merchandiseId: string; updateType: UpdateType };
+      payload: {
+        merchandiseId: string;
+        updateType: UpdateType;
+        sellingPlanId?: string | null;
+      };
     }
   | {
       type: 'ADD_ITEM';
       payload: { variant: ProductVariant; product: Product };
     }
-  | { type: 'SET_INITIAL_CART'; payload: Cart | undefined };
+  | { type: 'SET_INITIAL_CART'; payload: Cart | undefined }
+  | {
+      type: 'UPDATE_SELLING_PLAN';
+      payload: {
+        merchandiseId: string;
+        sellingPlanId: string | null;
+        currentSellingPlanId?: string | null;
+      };
+    };
 
 type CartContextType = {
   cart: Cart | undefined;
-  updateCartItem: (merchandiseId: string, updateType: UpdateType) => void;
+  updateCartItem: (
+    merchandiseId: string,
+    updateType: UpdateType,
+    sellingPlanId?: string | null
+  ) => void;
   addCartItem: (variant: ProductVariant, product: Product) => void;
+  updateCartItemSellingPlan: (
+    merchandiseId: string,
+    sellingPlanId: string | null
+  ) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -135,17 +161,22 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
 
   switch (action.type) {
     case 'UPDATE_ITEM': {
-      const { merchandiseId, updateType } = action.payload;
+      const { merchandiseId, updateType, sellingPlanId } = action.payload;
       const updatedLines = currentCart.lines
         .map((item) =>
-          item.merchandise.id === merchandiseId
+          item.merchandise.id === merchandiseId &&
+          // Match items with the same selling plan status
+          ((sellingPlanId &&
+            item.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+            // Or match items with no selling plan when sellingPlanId is null/undefined
+            (!sellingPlanId && !item.sellingPlanAllocation))
             ? updateCartItem(item, updateType)
             : item
         )
         .filter(Boolean) as CartItem[];
 
       if (updatedLines.length === 0) {
-        return {
+        const emptyCart = {
           ...currentCart,
           lines: [],
           totalQuantity: 0,
@@ -154,13 +185,26 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
             totalAmount: { ...currentCart.cost.totalAmount, amount: '0' }
           }
         };
+        console.log('Cart updated (UPDATE_ITEM - now empty):', emptyCart);
+        return emptyCart;
       }
 
-      return {
+      const updatedCart = {
         ...currentCart,
         ...updateCartTotals(updatedLines),
         lines: updatedLines
       };
+      console.log('Cart updated (UPDATE_ITEM):', {
+        totalQuantity: updatedCart.totalQuantity,
+        totalAmount: updatedCart.cost.totalAmount.amount,
+        items: updatedCart.lines.map((item) => ({
+          id: item.merchandise.id,
+          title: item.merchandise.product.title,
+          quantity: item.quantity,
+          amount: item.cost.totalAmount.amount
+        }))
+      });
+      return updatedCart;
     }
     case 'ADD_ITEM': {
       const { variant, product } = action.payload;
@@ -179,14 +223,62 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
           )
         : [...currentCart.lines, updatedItem];
 
-      return {
+      const updatedCart = {
         ...currentCart,
         ...updateCartTotals(updatedLines),
         lines: updatedLines
       };
+      console.log('Cart updated (ADD_ITEM):', {
+        totalQuantity: updatedCart.totalQuantity,
+        totalAmount: updatedCart.cost.totalAmount.amount,
+        items: updatedCart.lines.map((item) => ({
+          id: item.merchandise.id,
+          title: item.merchandise.product.title,
+          quantity: item.quantity,
+          amount: item.cost.totalAmount.amount
+        }))
+      });
+      return updatedCart;
     }
     case 'SET_INITIAL_CART': {
-      return action.payload || createEmptyCart();
+      const initialCart = action.payload || createEmptyCart();
+      console.log('Cart initialized:', {
+        totalQuantity: initialCart.totalQuantity,
+        totalAmount: initialCart.cost.totalAmount.amount,
+        items: initialCart.lines.map((item) => ({
+          id: item.merchandise.id,
+          title: item.merchandise.product.title,
+          quantity: item.quantity,
+          amount: item.cost.totalAmount.amount
+        }))
+      });
+      return initialCart;
+    }
+    case 'UPDATE_SELLING_PLAN': {
+      const { merchandiseId, sellingPlanId, currentSellingPlanId } =
+        action.payload;
+
+      // We'll just mark the item for update and let the server handle the details
+      // This is a simplified approach to avoid type issues
+      console.log('Updating selling plan:', {
+        merchandiseId,
+        sellingPlanId,
+        currentSellingPlanId: currentSellingPlanId || 'none',
+        currentCart: {
+          totalQuantity: currentCart.totalQuantity,
+          totalAmount: currentCart.cost.totalAmount.amount,
+          items: currentCart.lines.map((item) => ({
+            id: item.merchandise.id,
+            title: item.merchandise.product.title,
+            quantity: item.quantity,
+            amount: item.cost.totalAmount.amount,
+            sellingPlanId: item.sellingPlanAllocation?.sellingPlan?.id || null
+          }))
+        }
+      });
+
+      // Return the current cart unchanged - the actual update will happen server-side
+      return currentCart;
     }
     default:
       return currentCart;
@@ -202,33 +294,56 @@ export function CartProvider({
 }) {
   const [cart, dispatch] = useReducer(cartReducer, createEmptyCart());
 
-  console.log('CART PROVIDER', cart);
-
   React.useEffect(() => {
     cartPromise.then((initialCart) => {
-      console.log('cartPromise', initialCart);
-
       dispatch({ type: 'SET_INITIAL_CART', payload: initialCart });
     });
   }, [cartPromise]);
 
-  const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
-    return;
-    dispatch({ type: 'UPDATE_ITEM', payload: { merchandiseId, updateType } });
-  };
+  const updateCartItem = useCallback(
+    (
+      merchandiseId: string,
+      updateType: UpdateType,
+      sellingPlanId?: string | null
+    ) => {
+      dispatch({
+        type: 'UPDATE_ITEM',
+        payload: { merchandiseId, updateType, sellingPlanId }
+      });
+    },
+    [dispatch]
+  );
 
-  const addCartItem = (variant: ProductVariant, product: Product) => {
-    return;
-    dispatch({ type: 'ADD_ITEM', payload: { variant, product } });
-  };
+  const addCartItem = useCallback(
+    (variant: ProductVariant, product: Product) => {
+      dispatch({ type: 'ADD_ITEM', payload: { variant, product } });
+    },
+    [dispatch]
+  );
+
+  const updateCartItemSellingPlan = useCallback(
+    (merchandiseId: string, sellingPlanId: string | null) => {
+      // Get the current selling plan ID for this item
+      const currentSellingPlanId =
+        cart?.lines.find((line) => line.merchandise.id === merchandiseId)
+          ?.sellingPlanAllocation?.sellingPlan?.id || null;
+
+      dispatch({
+        type: 'UPDATE_SELLING_PLAN',
+        payload: { merchandiseId, sellingPlanId, currentSellingPlanId }
+      });
+    },
+    [cart, dispatch]
+  );
 
   const value = useMemo(
     () => ({
       cart,
       updateCartItem,
-      addCartItem
+      addCartItem,
+      updateCartItemSellingPlan
     }),
-    [cart]
+    [cart, updateCartItem, addCartItem, updateCartItemSellingPlan]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -31,7 +31,6 @@ export interface PurchasePanelProps {
 }
 
 export default function PurchasePanel(props: PurchasePanelProps) {
-  // console.log('shopify product', props.shopifyProduct);
   const isWiderThanTablet = useMedia('(min-width: 800px)');
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -92,38 +91,6 @@ export default function PurchasePanel(props: PurchasePanelProps) {
       revertOnUpdate: true
     }
   );
-
-  // const { addToCart } = useCartStore();
-
-  // const handleAddToCart = async () => {
-  //   try {
-  //     await getProduct('chocolate-chip');
-  //   } catch (error) {
-  //     console.error('Error fetching product:', error);
-  //   }
-
-  //   try {
-  //     await addToCart([
-  //       {
-  //         merchandiseId: props.shopifyProduct.variants[0].id,
-  //         quantity: quantity
-  //       }
-  //     ]).then((res) => {
-  //       console.log('Item added to cart', res);
-  //     });
-  //   } catch (error) {
-  //     console.error('Error adding to cart:', error);
-  //   }
-  // };
-
-  // const add = useCallback(async () => {
-  //   const res = await addItem(
-  //     props.shopifyProduct.variants[0].id,
-  //     quantity,
-  //     sellingPlanId || undefined
-  //   );
-  //   console.log('lol', res);
-  // }, [props.shopifyProduct, quantity, sellingPlanId]);
 
   return (
     <div className="tablet:flex-1" ref={triggerRef}>

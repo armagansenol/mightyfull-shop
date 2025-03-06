@@ -46,6 +46,8 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
+        'sugar-milk': 'var(--sugar-milk)',
+        'blue-ruin': 'var(--blue-ruin)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

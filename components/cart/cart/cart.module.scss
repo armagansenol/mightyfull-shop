@@ -1,7 +1,4 @@
 .cart {
-  @include dims(desktop-vw(520px), auto);
-  background-color: var(--sugar-milk);
-
   .cartHeader {
     border-bottom: 2px solid var(--blue-ruin);
 
