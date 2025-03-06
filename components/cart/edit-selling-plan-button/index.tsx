@@ -2,14 +2,11 @@
 
 import s from './edit-selling-plan-button.module.scss';
 
-import { cn } from '@/lib/utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import cn from 'clsx';
 import { Loader2, X } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
-import { updateItemSellingPlanOption } from '@/components/cart/actions';
-import { useCart } from '@/components/cart/cart-context';
+import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
 import {
   Select,
   SelectContent,
@@ -66,9 +63,6 @@ export function EditSellingPlanButton({
     };
   }[];
 }) {
-  const { updateCartItemSellingPlan } = useCart();
-  const queryClient = useQueryClient();
-
   // Get the current selling plan ID from the cart item
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -78,96 +72,9 @@ export function EditSellingPlanButton({
     currentSellingPlanId !== null
   );
 
-  // Setup the mutation for updating the selling plan
-  const { mutate: updateSellingPlan, isPending: isUpdating } = useMutation({
-    mutationFn: async ({
-      newSellingPlanId
-    }: {
-      newSellingPlanId: string | null;
-    }) => {
-      return await updateItemSellingPlanOption({
-        merchandiseId: item.merchandise.id,
-        sellingPlanId: newSellingPlanId,
-        currentSellingPlanId
-      });
-    },
-    // Optimistically update the UI
-    onMutate: async ({ newSellingPlanId }) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ['cart'] });
-
-      // Optimistically update the cart context
-      updateCartItemSellingPlan(item.merchandise.id, newSellingPlanId);
-
-      return { previousSellingPlanId: currentSellingPlanId };
-    },
-    onSuccess: (result, { newSellingPlanId }, context) => {
-      if (result && typeof result === 'object' && 'success' in result) {
-        if (result.success) {
-          // Show success message
-          const message =
-            result.message ||
-            (newSellingPlanId
-              ? 'Subscription updated successfully'
-              : 'Changed to one-time purchase');
-          toast.success(message);
-
-          // If resetting to one-time purchase, hide the select if it was initially hidden
-          if (newSellingPlanId === null && !context?.previousSellingPlanId) {
-            setSelectActive(false);
-          }
-
-          // Invalidate queries to refetch the latest data
-          queryClient.invalidateQueries({ queryKey: ['cart'] });
-        } else {
-          // Show error and revert on failure
-          toast.error(result.message || 'Failed to update subscription');
-          console.error('Error from Shopify:', result.message);
-
-          // Revert the optimistic update
-          if (context) {
-            updateCartItemSellingPlan(
-              item.merchandise.id,
-              context.previousSellingPlanId
-            );
-          }
-        }
-      } else if (typeof result === 'string') {
-        toast.error(result);
-        console.error('Error from Shopify:', result);
-
-        // Revert the optimistic update
-        if (context) {
-          updateCartItemSellingPlan(
-            item.merchandise.id,
-            context.previousSellingPlanId
-          );
-        }
-      }
-    },
-    onError: (error, { newSellingPlanId }, context) => {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : newSellingPlanId
-            ? 'Failed to update subscription option'
-            : 'Failed to update to one-time purchase';
-
-      toast.error(errorMessage);
-      console.error('Error updating subscription:', error);
-
-      // Revert the optimistic update
-      if (context) {
-        updateCartItemSellingPlan(
-          item.merchandise.id,
-          context.previousSellingPlanId
-        );
-      }
-
-      // Invalidate to ensure we're in sync with the server
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
-    }
-  });
+  // Use the hook instead of implementing the mutation directly
+  const { mutate: updateSellingPlan, isPending: isUpdating } =
+    useUpdateSellingPlan(item);
 
   const handleUpdateSellingPlan = useCallback(
     (sellingPlanId: string) => {

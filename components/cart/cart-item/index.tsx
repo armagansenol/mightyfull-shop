@@ -20,7 +20,7 @@ interface CartItemProps {
 
 export default function CartItem({ item }: CartItemProps) {
   return (
-    <li className={cn('w-full space-y-4')}>
+    <div className={cn('w-full space-y-4')}>
       <div className="grid grid-cols-12 gap-6">
         <div className={cn('col-span-4 aspect-square')}>
           <Img
@@ -58,6 +58,6 @@ export default function CartItem({ item }: CartItemProps) {
         item={item}
         sellingPlanGroups={item.merchandise.product.sellingPlanGroups.nodes}
       />
-    </li>
+    </div>
   );
 }

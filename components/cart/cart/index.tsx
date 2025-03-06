@@ -92,17 +92,13 @@ function CartItemsList({
   }, [cart.lines]);
 
   return (
-    <ScrollableBox className="flex-1">
-      <ul
-        className="flex-grow overflow-auto py-6"
-        aria-label="Shopping cart items"
-      >
-        {sortedCartItems.map((item, i) => {
-          return (
-            <CartItem key={i} item={item} updateCartItem={updateCartItem} />
-          );
-        })}
-      </ul>
+    <ScrollableBox
+      wrapperClassName="flex flex-col flex-1"
+      contentClassName="flex-1 py-6 space-y-10"
+    >
+      {sortedCartItems.map((item, i) => {
+        return <CartItem key={i} item={item} updateCartItem={updateCartItem} />;
+      })}
     </ScrollableBox>
   );
 }
@@ -223,7 +219,7 @@ export function Cart() {
       <SheetContent
         className={cn(
           s.cart,
-          'lg:w-3/5 xl:w-2/5 h-screen px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin'
+          'lg:w-3/5 xl:w-2/5 h-full max-h-screen px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin flex flex-col'
         )}
       >
         <SheetHeader
@@ -233,7 +229,7 @@ export function Cart() {
           <SheetClose
             className={cn(
               s.closeButton,
-              'cursor-pointer flex items-center justify-center'
+              'flex items-center justify-center cursor-pointer'
             )}
             aria-label="Close cart"
           >
@@ -245,11 +241,9 @@ export function Cart() {
           {!cart || cart.lines.length === 0 ? (
             <EmptyCart />
           ) : (
-            <div className="space-y-4">
-              <div className={cn(s.cartItems, 'flex flex-1')}>
-                <CartItemsList cart={cart} updateCartItem={updateCartItem} />
-              </div>
-              <div className="flex flex-col items-stretch gap-8 mt-auto">
+            <div className="flex flex-col flex-1 gap-y-4 h-1">
+              <CartItemsList cart={cart} updateCartItem={updateCartItem} />
+              <div className="flex flex-col items-stretch gap-8">
                 <form onSubmit={handleCheckout}>
                   <CheckoutButton
                     amount={cart.cost.totalAmount.amount}
