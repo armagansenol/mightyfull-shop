@@ -138,6 +138,12 @@ export interface Testimonial {
   description: string;
 }
 
+export interface FAQ {
+  _id: string;
+  question: string;
+  answer: PortableTextBlock;
+}
+
 export type SellingPlanGroups = {
   nodes: SellingPlanGroup[];
 };
