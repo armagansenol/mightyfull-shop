@@ -13,16 +13,12 @@ import c1 from '@/public/img/c1.png';
 import c3 from '@/public/img/c3.png';
 import c4 from '@/public/img/c4.png';
 import c5 from '@/public/img/c5.png';
-import { getShop } from '@/lib/shopify';
 
 interface FooterProps {
   socialLinks: SocialLink[];
 }
 
 export default async function Footer(props: FooterProps) {
-  const shop = await getShop();
-  console.log('shop', shop);
-
   return (
     <footer
       className={cn(s.footer, 'flex flex-col items-stretch justify-center')}
@@ -59,7 +55,7 @@ export default async function Footer(props: FooterProps) {
           'flex flex-col items-center tablet:flex-row tablet:items-center justify-between gap-10 tablet:gap-20'
         )}
       >
-        <span className={s.c}>©2024 Mightyfull</span>
+        <span className={s.c}>© 2025 Mightyfull, All Rights Reserved</span>
         <div className={cn(s.social, 'flex items-center space-x-4')}>
           {props.socialLinks.map((item, i) => {
             return (
@@ -70,7 +66,7 @@ export default async function Footer(props: FooterProps) {
           })}
         </div>
         <span className={cn(s.signature, 'ml-0 tablet:ml-auto')}>
-          Made by{' '}
+          Credited to{' '}
           <Link
             className={cn(s.link, 'underline')}
             href="https://justdesignfx.com"
