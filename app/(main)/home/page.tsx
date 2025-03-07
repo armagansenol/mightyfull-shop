@@ -77,7 +77,7 @@ export default async function HomePage() {
             </span>{' '}
             ever!
           </h1>
-          <p>Meet our mightyfull flavors.</p>
+          <p>Meet our mightyfull flavors</p>
           <Button asChild size="md" padding="fat">
             <Link href={routes.shop.url} prefetch>
               SHOP NOW
