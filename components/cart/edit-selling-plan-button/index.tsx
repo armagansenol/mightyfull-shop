@@ -130,12 +130,14 @@ export function EditSellingPlanButton({
         <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
           <div className="flex-1">
             <Select
-              value={currentSellingPlanId || undefined}
+              value={currentSellingPlanId || ''}
               disabled={isUpdating}
               onValueChange={handleUpdateSellingPlan}
             >
               <SelectTrigger className="w-full">
-                <SelectValue>{currentSellingPlanName}</SelectValue>
+                <SelectValue placeholder={currentSellingPlanName}>
+                  {currentSellingPlanName}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {sellingPlanGroups[0]?.sellingPlans.nodes.map((plan) => (
