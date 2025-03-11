@@ -217,3 +217,5 @@ export enum DeliveryInterval {
   threeMonth = 'THREE_MONTH',
   sixMonth = 'SIX_MONTH'
 }
+
+export type CartUpdateType = 'plus' | 'minus' | 'delete';

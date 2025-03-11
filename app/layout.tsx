@@ -1,23 +1,20 @@
 import 'styles/global.scss';
 import 'styles/tailwind-initial.css';
 
-import { Providers } from '@/components/providers';
-import { CartProvider } from '@/components/cart/cart-context';
+import { ReactQueryProvider } from '@/components/providers/react-query';
+import { Toaster } from '@/components/ui/sonner';
 
 import { getCart } from '@/lib/shopify';
 import { cookies } from 'next/headers';
-import { Toaster } from '@/components/ui/sonner';
+import { CartProvider } from '@/components/providers/cart';
 
 export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cartId = (await cookies()).get('cartId')?.value;
-  console.log('cartId', cartId);
-
+  const cartId = cookies().get('cartId')?.value;
   const cartPromise = getCart(cartId);
-  // console.log('initial', initialCart);
 
   return (
     <html lang="en">
@@ -29,12 +26,12 @@ export default async function RootLayout({
         ></script>
       </head> */}
       <body className={`antialiased`}>
-        <CartProvider cartPromise={cartPromise}>
-          <Providers>
+        <ReactQueryProvider>
+          <CartProvider cartPromise={cartPromise}>
             {children}
             <Toaster position="bottom-left" />
-          </Providers>
-        </CartProvider>
+          </CartProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

@@ -6,22 +6,15 @@ import type {
   Product,
   ProductVariant
 } from '@/lib/shopify/types';
-import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useReducer,
-  useCallback
-} from 'react';
-
-type UpdateType = 'plus' | 'minus' | 'delete';
+import { CartUpdateType } from '@/types';
+import { createContext, useContext } from 'react';
 
 type CartAction =
   | {
       type: 'UPDATE_ITEM';
       payload: {
         merchandiseId: string;
-        updateType: UpdateType;
+        updateType: CartUpdateType;
         sellingPlanId?: string | null;
       };
     }
@@ -43,7 +36,7 @@ type CartContextType = {
   cart: Cart | undefined;
   updateCartItem: (
     merchandiseId: string,
-    updateType: UpdateType,
+    updateType: CartUpdateType,
     sellingPlanId?: string | null
   ) => void;
   addCartItem: (variant: ProductVariant, product: Product) => void;
@@ -53,7 +46,9 @@ type CartContextType = {
   ) => void;
 };
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(
+  undefined
+);
 
 function calculateItemCost(quantity: number, price: string): string {
   return (Number(price) * quantity).toString();
@@ -61,7 +56,7 @@ function calculateItemCost(quantity: number, price: string): string {
 
 function updateCartItem(
   item: CartItem,
-  updateType: UpdateType
+  updateType: CartUpdateType
 ): CartItem | null {
   if (updateType === 'delete') return null;
 
@@ -140,7 +135,7 @@ function updateCartTotals(
   };
 }
 
-function createEmptyCart(): Cart {
+export function createEmptyCart(): Cart {
   console.log('createEmptyCart');
 
   return {
@@ -156,7 +151,7 @@ function createEmptyCart(): Cart {
   };
 }
 
-function cartReducer(state: Cart | undefined, action: CartAction): Cart {
+export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
   const currentCart = state || createEmptyCart();
 
   switch (action.type) {
@@ -283,70 +278,6 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
     default:
       return currentCart;
   }
-}
-
-export function CartProvider({
-  children,
-  cartPromise
-}: {
-  children: React.ReactNode;
-  cartPromise: Promise<Cart | undefined>;
-}) {
-  const [cart, dispatch] = useReducer(cartReducer, createEmptyCart());
-
-  React.useEffect(() => {
-    cartPromise.then((initialCart) => {
-      dispatch({ type: 'SET_INITIAL_CART', payload: initialCart });
-    });
-  }, [cartPromise]);
-
-  const updateCartItem = useCallback(
-    (
-      merchandiseId: string,
-      updateType: UpdateType,
-      sellingPlanId?: string | null
-    ) => {
-      dispatch({
-        type: 'UPDATE_ITEM',
-        payload: { merchandiseId, updateType, sellingPlanId }
-      });
-    },
-    [dispatch]
-  );
-
-  const addCartItem = useCallback(
-    (variant: ProductVariant, product: Product) => {
-      dispatch({ type: 'ADD_ITEM', payload: { variant, product } });
-    },
-    [dispatch]
-  );
-
-  const updateCartItemSellingPlan = useCallback(
-    (merchandiseId: string, sellingPlanId: string | null) => {
-      // Get the current selling plan ID for this item
-      const currentSellingPlanId =
-        cart?.lines.find((line) => line.merchandise.id === merchandiseId)
-          ?.sellingPlanAllocation?.sellingPlan?.id || null;
-
-      dispatch({
-        type: 'UPDATE_SELLING_PLAN',
-        payload: { merchandiseId, sellingPlanId, currentSellingPlanId }
-      });
-    },
-    [cart, dispatch]
-  );
-
-  const value = useMemo(
-    () => ({
-      cart,
-      updateCartItem,
-      addCartItem,
-      updateCartItemSellingPlan
-    }),
-    [cart, updateCartItem, addCartItem, updateCartItemSellingPlan]
-  );
-
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
 export function useCart() {
