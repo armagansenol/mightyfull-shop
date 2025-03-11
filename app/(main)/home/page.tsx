@@ -34,8 +34,6 @@ export default async function HomePage() {
       })
     ]);
 
-  console.log('productHighlight', productHighlight);
-
   return (
     <>
       <section
