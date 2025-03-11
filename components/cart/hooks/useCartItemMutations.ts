@@ -79,13 +79,23 @@ export function useUpdateSellingPlan(item: CartItem) {
 
   console.log('item', item);
 
-  return useCartMutation<{ newSellingPlanId: string | null }>({
-    mutationFn: async ({ newSellingPlanId }) => {
-      return await updateItemSellingPlanOption({
+  return useCartMutation<{
+    newSellingPlanId: string | null;
+    onSuccess?: () => void;
+  }>({
+    mutationFn: async ({ newSellingPlanId, onSuccess }) => {
+      const result = await updateItemSellingPlanOption({
         merchandiseId,
         sellingPlanId: newSellingPlanId,
         currentSellingPlanId
       });
+
+      // Call the onSuccess callback if provided and the operation was successful
+      if (onSuccess && typeof result === 'object' && result.success) {
+        onSuccess();
+      }
+
+      return result;
     },
     actionType: 'update-selling-plan',
     merchandiseId,

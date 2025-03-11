@@ -28,8 +28,7 @@ import { LoadingSpinner } from '@/components/utility/loading-spinner';
 import { ScrollableBox } from '@/components/utility/scrollable-box';
 import type { Cart as ShopifyCart } from '@/lib/shopify/types';
 import { useLenisStore } from '@/lib/store/lenis';
-
-type UpdateType = 'plus' | 'minus' | 'delete';
+import { CartUpdateType } from '@/types';
 
 // Custom hook for cart initialization
 function useCartInitialization() {
@@ -79,7 +78,7 @@ function CartItemsList({
   cart: ShopifyCart;
   updateCartItem: (
     merchandiseId: string,
-    updateType: UpdateType,
+    updateType: CartUpdateType,
     sellingPlanId?: string | null
   ) => void;
 }) {

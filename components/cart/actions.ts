@@ -235,9 +235,10 @@ export async function updateItemSellingPlanOption(payload: {
   sellingPlanId: string | null;
   currentSellingPlanId?: string | null;
 }) {
-  console.log('payload', payload);
+  console.log('updateItemSellingPlanOption called with payload:', payload);
 
   const cartId = (await cookies()).get('cartId')?.value;
+  console.log('Cart ID:', cartId);
 
   if (!cartId) {
     console.log('updateItemSellingPlanOption: Missing cart ID');
@@ -252,43 +253,87 @@ export async function updateItemSellingPlanOption(payload: {
   }
 
   try {
+    console.log('Fetching cart...');
     const cart = await getCart(cartId);
+    console.log('Cart fetched:', cart ? 'success' : 'failed');
 
     if (!cart) {
       console.log('updateItemSellingPlanOption: Error fetching cart');
       return 'Error fetching cart';
     }
 
+    console.log(
+      'Looking for line item with merchandiseId:',
+      merchandiseId,
+      'and currentSellingPlanId:',
+      currentSellingPlanId
+    );
+
     // Find the line item matching both merchandiseId and currentSellingPlanId
-    const lineItem = cart.lines.find(
-      (line) =>
+    const lineItem = cart.lines.find((line) => {
+      const matches =
         line.merchandise.id === merchandiseId &&
         // Match items with the same selling plan status
         ((currentSellingPlanId &&
           line.sellingPlanAllocation?.sellingPlan?.id ===
             currentSellingPlanId) ||
           // Or match items with no selling plan when currentSellingPlanId is null/undefined
-          (!currentSellingPlanId && !line.sellingPlanAllocation))
-    );
+          (!currentSellingPlanId && !line.sellingPlanAllocation));
+
+      console.log('Checking line item:', {
+        lineId: line.id,
+        merchandiseId: line.merchandise.id,
+        sellingPlanId: line.sellingPlanAllocation?.sellingPlan?.id || 'none',
+        matches
+      });
+
+      return matches;
+    });
+
+    console.log('Line item found:', lineItem ? 'yes' : 'no');
 
     if (lineItem && lineItem.id) {
-      console.log(
-        `updateItemSellingPlanOption: Updating selling plan for ${merchandiseId} from ${currentSellingPlanId || 'one-time purchase'} to ${sellingPlanId || 'one-time purchase'}`
-      );
+      // If we're trying to reset to one-time purchase (sellingPlanId is null)
+      if (sellingPlanId === null) {
+        console.log(
+          `updateItemSellingPlanOption: Removing subscription by removing and re-adding item ${merchandiseId}`
+        );
 
-      await updateCart(cartId, [
-        {
+        // First, remove the item
+        await removeFromCart(cartId, [lineItem.id]);
+
+        // Then add it back without a selling plan
+        await addToCart(cartId, [
+          {
+            merchandiseId,
+            quantity: lineItem.quantity
+            // No sellingPlanId property at all
+          }
+        ]);
+
+        console.log(
+          `updateItemSellingPlanOption: Successfully reset item ${merchandiseId} to one-time purchase`
+        );
+      } else {
+        // For adding or changing a subscription, use the normal update approach
+        console.log(
+          `updateItemSellingPlanOption: Updating selling plan for ${merchandiseId} to ${sellingPlanId}`
+        );
+
+        // Create the update object
+        const updateObject = {
           id: lineItem.id,
           merchandiseId,
           quantity: lineItem.quantity,
-          sellingPlanId: sellingPlanId || undefined
-        }
-      ]);
+          sellingPlanId
+        };
+
+        console.log('Sending to Shopify API:', updateObject);
+        await updateCart(cartId, [updateObject]);
+      }
+
       revalidateTag(TAGS.cart);
 
-      console.log(
-        `updateItemSellingPlanOption: Successfully updated selling plan for ${merchandiseId}`
-      );
       return {
         success: true,
         message: sellingPlanId

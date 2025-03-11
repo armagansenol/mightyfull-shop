@@ -4,7 +4,7 @@ import s from './edit-selling-plan-button.module.scss';
 
 import cn from 'clsx';
 import { Loader2, X } from 'lucide-react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
 import {
@@ -64,10 +64,18 @@ export function EditSellingPlanButton({
   }[];
 }) {
   // Get the current selling plan ID from the cart item
+  // This will automatically update when the cart data changes
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
 
+  console.log('currentSellingPlanId', currentSellingPlanId);
+
+  useEffect(() => {
+    setSelectActive(currentSellingPlanId !== null);
+  }, [currentSellingPlanId]);
+
   // State for the select dropdown visibility
+  // Only use this for the initial state and user interactions
   const [selectActive, setSelectActive] = useState(
     currentSellingPlanId !== null
   );
@@ -90,6 +98,10 @@ export function EditSellingPlanButton({
     // Don't update if already one-time or if already loading
     if (!currentSellingPlanId || isUpdating) return;
 
+    console.log(
+      'handleResetToOneTime called, currentSellingPlanId:',
+      currentSellingPlanId
+    );
     updateSellingPlan({ newSellingPlanId: null });
   }, [currentSellingPlanId, updateSellingPlan, isUpdating]);
 
@@ -100,7 +112,7 @@ export function EditSellingPlanButton({
         ? sellingPlanGroups[0]?.sellingPlans.nodes.find(
             (plan) => plan.id === currentSellingPlanId
           )?.name || 'Selected plan'
-        : 'One-time purchase',
+        : sellingPlanGroups[0]?.sellingPlans.nodes[0]?.name,
     [currentSellingPlanId, sellingPlanGroups]
   );
 
@@ -108,16 +120,25 @@ export function EditSellingPlanButton({
 
   if (!hasSellingPlans) return null;
 
+  // Determine what to show based on the current server data and local UI state
+  const showUpgradeButton = !selectActive && !currentSellingPlanId;
+  const showSelectionUI = selectActive || currentSellingPlanId !== null;
+
   return (
     <div className={cn({ 'opacity-75': isUpdating })}>
-      {!selectActive && !currentSellingPlanId && (
+      {showUpgradeButton && (
         <div
           className={cn(
             s.upgrade,
             'flex items-center justify-center cursor-pointer',
             isUpdating && 'pointer-events-none'
           )}
-          onClick={() => !isUpdating && setSelectActive(true)}
+          onClick={() =>
+            !isUpdating &&
+            handleUpdateSellingPlan(
+              sellingPlanGroups[0]?.sellingPlans.nodes[0]?.id
+            )
+          }
           role="button"
           tabIndex={0}
           aria-label="Upgrade to subscription and save 10%"
@@ -126,7 +147,7 @@ export function EditSellingPlanButton({
         </div>
       )}
 
-      {(selectActive || currentSellingPlanId) && (
+      {showSelectionUI && (
         <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
           <div className="flex-1">
             <Select
