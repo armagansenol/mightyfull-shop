@@ -77,6 +77,8 @@ export function useUpdateSellingPlan(item: CartItem) {
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
 
+  console.log('item', item);
+
   return useCartMutation<{ newSellingPlanId: string | null }>({
     mutationFn: async ({ newSellingPlanId }) => {
       return await updateItemSellingPlanOption({

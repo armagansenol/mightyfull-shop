@@ -5,12 +5,12 @@ import s from './purchase-panel.module.scss';
 import { cn } from '@/lib/utils';
 import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
-import { BellRing } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 
+import { AddToCart } from '@/components/cart/add-to-cart';
+import { OutOfStock } from '@/components/out-of-stock';
 import { Quantity } from '@/components/quantity';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
@@ -24,13 +24,12 @@ import {
 import { ScrollTrigger } from '@/lib/gsap';
 import { Product } from '@/lib/shopify/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
-import { AddToCart } from '../cart/add-to-cart';
 
 export interface PurchasePanelProps {
   shopifyProduct: Product;
 }
 
-export default function PurchasePanel(props: PurchasePanelProps) {
+export default function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
   const isWiderThanTablet = useMedia('(min-width: 800px)');
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -72,19 +71,6 @@ export default function PurchasePanel(props: PurchasePanelProps) {
         pin: boxRef.current,
         pinSpacing: false
       });
-
-      //   const tl = gsap.timeline().to(boxRef.current, {
-      //     y: `${d}px`
-      //   });
-
-      //   ScrollTrigger.create({
-      //     animation: tl,
-      //     trigger: triggerRef.current,
-      //     // start: 'top top',
-      //     // end: 'bottom bottom',
-      //     scrub: true,
-      //     markers: true
-      //   });
     },
     {
       dependencies: [triggerHeight, boxHeight, isWiderThanTablet],
@@ -95,7 +81,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
   return (
     <div className="tablet:flex-1" ref={triggerRef}>
       <div className="w-full" ref={boxRef}>
-        {props.shopifyProduct?.availableForSale ? (
+        {shopifyProduct?.availableForSale ? (
           <div className={s.purchaseOptions}>
             <Label className={s.title}>PURCHASE OPTIONS</Label>
             <div className={cn(s.purchase, 'rounded-lg mb-10')}>
@@ -150,7 +136,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                         <p className="mb-2">DELIVERY INTERVAL</p>
                         <Select
                           defaultValue={
-                            props.shopifyProduct.sellingPlanGroups.nodes[0]
+                            shopifyProduct.sellingPlanGroups.nodes[0]
                               .sellingPlans.nodes[0].id
                           }
                           value={sellingPlanId as string}
@@ -162,7 +148,7 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                             <SelectValue placeholder={'Select'} />
                           </SelectTrigger>
                           <SelectContent data-lenis-prevent className={s.dsi}>
-                            {props.shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes.map(
+                            {shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes.map(
                               (option, i) => {
                                 return (
                                   <SelectItem
@@ -191,30 +177,18 @@ export default function PurchasePanel(props: PurchasePanelProps) {
                 setQuantity={setQuantity}
               />
               <AddToCart
-                availableForSale={props.shopifyProduct.availableForSale}
-                variantId={props.shopifyProduct.variants[0].id}
+                availableForSale={shopifyProduct.availableForSale}
+                variantId={shopifyProduct.variants[0].id}
                 quantity={quantity}
                 sellingPlanId={sellingPlanId}
               />
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-stretch">
-            <div
-              className={cn(
-                s.outOfStock,
-                'flex justify-center tablet:justify-start mb-10 tablet:mb-20 py-2'
-              )}
-            >
-              OUT OF STOCK
-            </div>
-            <Button className="flex gap-4" size="sm">
-              <span>
-                <BellRing />
-              </span>
-              <span>NOTIFY ME WHEN BACK IN STOCK</span>
-            </Button>
-          </div>
+          <OutOfStock
+            variantId={shopifyProduct.variants[0].id}
+            revalidationPath={`/shop/${shopifyProduct.handle}`}
+          />
         )}
       </div>
     </div>

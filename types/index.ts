@@ -33,6 +33,8 @@ export interface AnimatedCardProps {
     displayTitle: PortableTextBlock[];
     shopifySlug: string;
     shopifyTitle: string;
+    variantId: string;
+    availableForSale: boolean;
     colorTheme: {
       text: ColorThemeHex;
       background: ColorThemeHex;
@@ -53,6 +55,9 @@ export interface ShopifyProduct {
   shopifyTitle: string;
   shopifyStatus: string;
   previewImageUrl: string;
+  variants: {
+    nodes: ProductVariantNode[];
+  };
 }
 
 export interface ProductVariantNode {
@@ -109,7 +114,7 @@ export interface ProductItem {
 
 export interface ProductHighlightQueryResult {
   productHighlight: {
-    items: ProductItem[];
+    items: AnimatedCardProps[];
   };
 }
 

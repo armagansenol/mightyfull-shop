@@ -235,6 +235,8 @@ export async function updateItemSellingPlanOption(payload: {
   sellingPlanId: string | null;
   currentSellingPlanId?: string | null;
 }) {
+  console.log('payload', payload);
+
   const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {

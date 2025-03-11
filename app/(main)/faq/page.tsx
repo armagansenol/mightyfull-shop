@@ -3,7 +3,6 @@ import { FAQ_QUERY } from '@/lib/sanity/faq';
 import { FAQ } from '@/types';
 
 import { PortableText } from '@portabletext/react';
-import * as React from 'react';
 
 export default async function FaqPage() {
   const faq = await sanityFetch<FAQ[]>({

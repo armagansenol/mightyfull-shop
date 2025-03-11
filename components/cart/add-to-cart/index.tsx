@@ -1,106 +1,12 @@
 'use client';
 
+import { IconClose } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { useCallback, useState, useTransition } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { BellRing, Loader2 } from 'lucide-react';
+import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { addItem } from '../actions';
-import { BellRing, Loader2 } from 'lucide-react';
-import { IconClose } from '@/components/icons';
-
-// import clsx from 'clsx';
-// import { useProduct } from 'components/product/product-context';
-// import { Product, ProductVariant } from '@/lib/shopify/types';
-// import { Plus } from 'lucide-react';
-// import { useCallback } from 'react';
-// import { useCart } from '../cart-context';
-// import { addItem } from '../actions';
-
-// function SubmitButton({
-//   availableForSale,
-//   selectedVariantId
-// }: {
-//   availableForSale: boolean;
-//   selectedVariantId: string | undefined;
-// }) {
-//   const buttonClasses =
-//     'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white';
-//   const disabledClasses = 'cursor-not-allowed opacity-60 hover:opacity-60';
-
-//   if (!availableForSale) {
-//     return (
-//       <button disabled className={clsx(buttonClasses, disabledClasses)}>
-//         Out Of Stock
-//       </button>
-//     );
-//   }
-
-//   console.log(selectedVariantId);
-//   if (!selectedVariantId) {
-//     return (
-//       <button
-//         aria-label="Please select an option"
-//         disabled
-//         className={clsx(buttonClasses, disabledClasses)}
-//       >
-//         <div className="absolute left-0 ml-4">
-//           <Plus className="h-5" />
-//         </div>
-//         Add To Cart
-//       </button>
-//     );
-//   }
-
-//   return (
-//     <button
-//       aria-label="Add to cart"
-//       className={clsx(buttonClasses, {
-//         'hover:opacity-90': true
-//       })}
-//     >
-//       <div className="absolute left-0 ml-4">
-//         <Plus className="h-5" />
-//       </div>
-//       Add To Cart
-//     </button>
-//   );
-// }
-
-// export default function AddToCart({ product }: { product: Product }) {
-//   const { variants, availableForSale } = product;
-//   const { addCartItem } = useCart();
-//   const { state } = useProduct();
-
-//   const variant = variants.find((variant: ProductVariant) =>
-//     variant.selectedOptions.every(
-//       (option) => option.value === state[option.name.toLowerCase()]
-//     )
-//   );
-//   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
-//   const selectedVariantId = variant?.id || defaultVariantId;
-//   const finalVariant = variants.find(
-//     (variant) => variant.id === selectedVariantId
-//   )!;
-
-//   const add = useCallback(async () => {
-//     const res = await addItem(product.variants[0].id, 1);
-//     console.log('lol', res);
-//   }, [product.variants]);
-
-//   return (
-//     <form
-//       action={async () => {
-//         addCartItem(finalVariant, product);
-//         add();
-//         console.log('fsjdfkljsdhflkjfh');
-//       }}
-//     >
-//       <SubmitButton
-//         availableForSale={availableForSale}
-//         selectedVariantId={selectedVariantId}
-//       />
-//     </form>
-//   );
-// }
 
 type AddItemResponse = string | { success: boolean };
 
@@ -119,8 +25,26 @@ export function AddToCart({
   quantity?: number;
   sellingPlanId?: string;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const [isLoading, setIsLoading] = useState(false);
+  // Replace useTransition with useMutation
+  const addToCartMutation = useMutation({
+    mutationFn: async () => {
+      return (await addItem(
+        variantId,
+        quantity || 1,
+        sellingPlanId || undefined
+      )) as AddItemResponse;
+    },
+    onError: (error) => {
+      console.error('Add to cart error:', error);
+      toast.error('Failed to add item to cart. Please try again.');
+    },
+    onSuccess: (res) => {
+      if (typeof res === 'string') {
+        toast.error(res);
+      }
+      // Success is handled in cart-context
+    }
+  });
 
   const handleAddToCart = useCallback(() => {
     if (!availableForSale) {
@@ -147,61 +71,40 @@ export function AddToCart({
     }
 
     // Prevent multiple clicks while processing
-    if (isLoading || isPending) return;
+    if (addToCartMutation.isPending) return;
 
-    setIsLoading(true);
+    // Execute the mutation
+    addToCartMutation.mutate();
+  }, [availableForSale, addToCartMutation]);
 
-    // Use server action to add item to cart
-    startTransition(async () => {
-      try {
-        const res = (await addItem(
-          variantId,
-          quantity || 1,
-          sellingPlanId || undefined
-        )) as AddItemResponse;
-
-        if (typeof res === 'string') {
-          toast.error(res);
-        }
-        // Success is handled in cart-context
-      } catch (error) {
-        console.error('Add to cart error:', error);
-        toast.error('Failed to add item to cart. Please try again.');
-      } finally {
-        // Set a minimum loading time to provide better feedback
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 300);
-      }
-    });
-  }, [
-    availableForSale,
-    quantity,
-    variantId,
-    sellingPlanId,
-    isLoading,
-    isPending
-  ]);
+  if (!availableForSale)
+    return (
+      <Button
+        className="w-full"
+        colorTheme="inverted-blue-ruin"
+        size="sm"
+        disabled
+      >
+        OUT OF STOCK
+      </Button>
+    );
 
   return (
     <form
-      className="w-64 tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
+      className="w-full flex"
       action={async () => {
         await handleAddToCart();
       }}
     >
       <Button
-        colorTheme="invertedThemed"
-        padding="slim"
+        className="w-full"
+        colorTheme="inverted-blue-ruin"
         size="sm"
         type="submit"
-        className="gap-1"
-        disabled={isLoading || isPending || !availableForSale}
+        disabled={addToCartMutation.isPending}
       >
-        {isLoading || isPending ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-          </>
+        {addToCartMutation.isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
           <>
             ADD TO CART{' '}

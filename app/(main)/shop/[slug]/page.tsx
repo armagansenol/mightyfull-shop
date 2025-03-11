@@ -2,7 +2,6 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
-import { AnimatedCard } from '@/components/animated-card';
 import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
@@ -18,9 +17,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
-import { Link } from '@/components/utility/link';
-import { routes } from '@/lib/constants';
+
 import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
 import { LAYOUT_QUERY } from '@/lib/sanity/layout';
@@ -30,6 +27,7 @@ import { getProduct } from '@/lib/shopify';
 import { AnimatedCardProps } from '@/types';
 import { LayoutQueryResponse } from '@/types/layout';
 
+import ProductCard from '@/components/product-card';
 import s1 from '@/public/img/s-1.jpg';
 import s2 from '@/public/img/s-2.jpg';
 import s3 from '@/public/img/s-3.jpg';
@@ -53,20 +51,18 @@ export default async function ProductDetialPage({
     query: LAYOUT_QUERY,
     tags: ['layout']
   });
+
   const animatedCards = await sanityFetch<AnimatedCardProps[]>({
     query: ANIMATED_CARDS_QUERY,
     tags: ['animatedCards']
   });
+
   const relatedProducts = animatedCards.filter((card) => {
-    return card.product.shopifySlug !== sanityProduct.slug;
+    return card.product.shopifySlug !== params.slug;
   });
+
   const shopifyProduct = await getProduct(params.slug);
   const productId = extractShopifyId(shopifyProduct?.id as string);
-
-  // console.log(
-  //   'sanity product id',
-  //   extractShopifyId(shopifyProduct?.id as string)
-  // );
 
   const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
@@ -203,47 +199,13 @@ export default async function ProductDetialPage({
               >
                 <h2>Impossible to Choose Just One!</h2>
                 <p>
-                  Can’t decide? Try them all and discover your new favorite!
+                  Can&apos;t decide? Try them all and discover your new
+                  favorite!
                 </p>
                 <div className="flex items-center justify-center gap-10 px-32">
-                  {relatedProducts.map((item) => {
+                  {relatedProducts?.map((item) => {
                     return (
-                      <div
-                        className={cn(
-                          s.card,
-                          'flex flex-col gap-10 flex-shrink-0'
-                        )}
-                        key={item.id}
-                      >
-                        <Link
-                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                          prefetch={true}
-                        >
-                          <AnimatedCard {...item} />
-                        </Link>
-                        <div className="flex flex-row tablet:flex-col items-stretch gap-2">
-                          <Button
-                            colorTheme="blueRuin"
-                            asChild
-                            size="sm"
-                            padding="slim"
-                          >
-                            <Link
-                              href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                              prefetch={true}
-                            >
-                              SHOP NOW
-                            </Link>
-                          </Button>
-                          <Button
-                            colorTheme="invertedBlueRuin"
-                            size="sm"
-                            padding="slim"
-                          >
-                            ADD TO CART
-                          </Button>
-                        </div>
-                      </div>
+                      <ProductCard key={item.id} id={item.id} product={item} />
                     );
                   })}
                 </div>
