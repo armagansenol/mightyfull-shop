@@ -24,12 +24,6 @@ export const resolvePreviewUrl = (document: SanityDocumentLike) => {
   let path = '/'
 
   switch (document?._type) {
-    case 'page': {
-      const slug = (document?.slug as Slug)?.current
-      path = slug == null ? '/' : `/pages/${slug}`
-      break
-    }
-
     case 'product': {
       const slug = (document?.store as store)?.slug?.current
       path = slug == null ? '/' : `/products/${slug}`
@@ -39,12 +33,6 @@ export const resolvePreviewUrl = (document: SanityDocumentLike) => {
     case 'collection': {
       const slug = (document?.store as store)?.slug?.current
       path = slug == null ? '/' : `/collections/${slug}`
-      break
-    }
-
-    case 'person': {
-      const slug = (document?.slug as Slug)?.current
-      path = slug == null ? '/' : `/people/${slug}`
       break
     }
   }

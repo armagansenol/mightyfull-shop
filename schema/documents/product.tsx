@@ -3,9 +3,7 @@ import pluralize from 'pluralize-esm'
 import {defineField, defineType} from 'sanity'
 
 import ShopifyIcon from '../../components/icons/Shopify'
-import ProductHiddenInput from '../../components/inputs/ProductHidden'
 import ShopifyDocumentStatus from '../../components/media/ShopifyDocumentStatus'
-import {getPriceRange} from '../../utils/getPriceRange'
 
 const GROUPS = [
   {
@@ -32,31 +30,42 @@ export default defineType({
   groups: GROUPS,
   fields: [
     defineField({
-      name: 'hidden',
-      type: 'string',
-      components: {
-        field: ProductHiddenInput,
-      },
-      group: GROUPS.map((group) => group.name),
-      hidden: ({parent}) => {
-        const isActive = parent?.store?.status === 'active'
-        const isDeleted = parent?.store?.isDeleted
-        return !parent?.store || (isActive && !isDeleted)
-      },
-    }),
-    // Title (proxy)
-    defineField({
       name: 'titleProxy',
       title: 'Title',
       type: 'proxyString',
       options: {field: 'store.title'},
     }),
-    // Slug (proxy)
+    // defineField({
+    //   name: 'displayTitle',
+    //   title: 'Display Title',
+    //   type: 'array',
+    //   of: [{type: 'block'}],
+    //   group: 'editorial',
+    // }),
+    defineField({
+      name: 'featuredImageProxy',
+      title: 'Featured Image',
+      type: 'proxyString',
+      options: {field: 'store.featuredImage'},
+    }),
+    defineField({
+      name: 'sellingPlansProxy',
+      title: 'Selling Plans',
+      type: 'proxyString',
+      options: {field: 'store.sellingPlans'},
+    }),
     defineField({
       name: 'slugProxy',
       title: 'Slug',
       type: 'proxyString',
-      options: {field: 'store.slug.current'},
+      options: {field: 'store.slug'},
+    }),
+    defineField({
+      name: 'colorTheme',
+      title: 'Color Theme',
+      type: 'reference',
+      to: [{type: 'colorTheme'}],
+      group: 'editorial',
     }),
     defineField({
       name: 'images',
@@ -66,16 +75,10 @@ export default defineType({
       group: 'editorial',
     }),
     defineField({
-      name: 'colorTheme',
-      title: 'Color theme',
-      type: 'reference',
-      to: [{type: 'colorTheme'}],
-      group: 'editorial',
-    }),
-    defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
+      type: 'array',
+      of: [{type: 'block'}],
       group: 'editorial',
     }),
     defineField({
@@ -131,7 +134,7 @@ export default defineType({
       variants: 'store.variants',
     },
     prepare(selection) {
-      const {isDeleted, options, previewImageUrl, priceRange, status, title, variants} = selection
+      const {isDeleted, options, previewImageUrl, status, title, variants} = selection
 
       const optionCount = options?.length
       const variantCount = variants?.length
@@ -141,7 +144,7 @@ export default defineType({
         optionCount ? pluralize('option', optionCount, true) : 'No options',
       ]
 
-      let subtitle = getPriceRange(priceRange)
+      let subtitle = ''
       if (status !== 'active') {
         subtitle = '(Unavailable in Shopify)'
       }

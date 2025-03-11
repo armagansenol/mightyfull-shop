@@ -14,11 +14,6 @@ export default {
           {title: 'Italic', value: 'em'},
         ],
         annotations: [
-          // product
-          {
-            name: 'annotationProduct',
-            type: 'annotationProduct',
-          },
           // Email
           {
             name: 'annotationLinkEmail',

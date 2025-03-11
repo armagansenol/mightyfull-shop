@@ -6,6 +6,12 @@ export default defineType({
   type: 'document',
   fields: [
     {
+      name: 'displayTitle',
+      title: 'Display Title',
+      type: 'array',
+      of: [{type: 'block'}],
+    },
+    {
       name: 'imgPackage',
       title: 'Package Image',
       type: 'image',

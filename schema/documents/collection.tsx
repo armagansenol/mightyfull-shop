@@ -93,22 +93,6 @@ export default defineType({
           return true
         }),
     }),
-    // Show hero
-    defineField({
-      name: 'showHero',
-      title: 'Show hero',
-      type: 'boolean',
-      description: 'If disabled, page title will be displayed instead',
-      group: 'editorial',
-    }),
-    // // Hero
-    defineField({
-      name: 'hero',
-      title: 'Hero',
-      type: 'collection',
-      hidden: ({document}) => !document?.showHero,
-      group: 'editorial',
-    }),
     // // Modules
     defineField({
       name: 'modules',
@@ -120,12 +104,7 @@ export default defineType({
           <em>Only shown on the English site</em>
         </>
       ),
-      of: [
-        {type: 'module.callout'},
-        {type: 'module.callToAction'},
-        {type: 'module.image'},
-        {type: 'module.instagram'},
-      ],
+      of: [{type: 'module.callout'}, {type: 'module.instagram'}],
       group: 'editorial',
     }),
     // Shopify collection

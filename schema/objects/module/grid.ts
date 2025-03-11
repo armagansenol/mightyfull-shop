@@ -46,11 +46,6 @@ export default defineField({
                   lists: [],
                   marks: {
                     annotations: [
-                      // Product
-                      {
-                        name: 'annotationProduct',
-                        type: 'annotationProduct',
-                      },
                       // Email
                       {
                         name: 'annotationLinkEmail',

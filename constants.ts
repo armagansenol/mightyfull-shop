@@ -11,15 +11,10 @@ export const LOCKED_DOCUMENT_TYPES = ['settings', 'home', 'media.tag']
 // - cannot be created in the 'new document' menu
 // - cannot be duplicated, unpublished or deleted
 // - are from the Sanity Connect Shopify app - and can be linked to on Shopify
-export const SHOPIFY_DOCUMENT_TYPES = ['product', 'productVariant', 'collection']
+export const SHOPIFY_DOCUMENT_TYPES = ['product', 'collection']
 
 // References to include in 'internal' links
-export const PAGE_REFERENCES = [
-  {type: 'collection'},
-  {type: 'home'},
-  {type: 'page'},
-  {type: 'product'},
-]
+export const PAGE_REFERENCES = [{type: 'product'}]
 
 // API version to use when using the Sanity client within the studio
 // https://www.sanity.io/help/studio-client-specify-api-version

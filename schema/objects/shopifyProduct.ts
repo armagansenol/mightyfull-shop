@@ -91,54 +91,12 @@ export default defineField({
       type: 'slug',
       description: 'Shopify Product handle',
     }),
-    // Description
+    // featuredImage
     defineField({
-      name: 'descriptionHtml',
-      title: 'HTML Description',
-      type: 'text',
-      rows: 5,
-    }),
-    // Product Type
-    defineField({
-      fieldset: 'organization',
-      name: 'productType',
-      title: 'Product type',
-      type: 'string',
-    }),
-    // Vendor
-    defineField({
-      fieldset: 'organization',
-      name: 'vendor',
-      title: 'Vendor',
-      type: 'string',
-    }),
-    // Tags
-    defineField({
-      fieldset: 'organization',
-      name: 'tags',
-      title: 'Tags',
-      type: 'string',
-    }),
-    // Price range
-    defineField({
-      name: 'priceRange',
-      title: 'Price range',
-      type: 'object',
-      options: {
-        columns: 2,
-      },
-      fields: [
-        {
-          name: 'minVariantPrice',
-          title: 'Min variant price',
-          type: 'number',
-        },
-        {
-          name: 'maxVariantPrice',
-          title: 'Max variant price',
-          type: 'number',
-        },
-      ],
+      name: 'featuredImage',
+      title: 'Featured Image',
+      type: 'image',
+      description: 'Shopify Product featured image',
     }),
     // Preview Image URL
     defineField({
@@ -146,34 +104,6 @@ export default defineField({
       title: 'Preview Image URL',
       type: 'string',
       description: 'Image displayed in both cart and checkout',
-    }),
-    // Options
-    defineField({
-      name: 'options',
-      title: 'Options',
-      type: 'array',
-      of: [
-        {
-          name: 'option',
-          title: 'Option',
-          type: 'productOption',
-        },
-      ],
-    }),
-    // Variants
-    defineField({
-      fieldset: 'variants',
-      name: 'variants',
-      title: 'Variants',
-      type: 'array',
-      of: [
-        {
-          title: 'Variant',
-          type: 'reference',
-          weak: true,
-          to: [{type: 'productVariant'}],
-        },
-      ],
     }),
   ],
 })

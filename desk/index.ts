@@ -1,13 +1,12 @@
-import {ListItemBuilder, StructureResolver} from 'sanity/structure'
+import {StructureResolver} from 'sanity/structure'
 
 import animatedCards from './animatedCards'
-import collections from './collections'
 import colorThemes from './colorThemes'
-import home from './home'
-import pages from './pages'
-import people from './people'
+import layouts from './layouts'
 import products from './products'
 import settings from './settings'
+import testimonials from './testimonials'
+import faq from './faq'
 
 /**
  * Desk structure overrides
@@ -26,38 +25,27 @@ import settings from './settings'
 const DOCUMENT_TYPES_IN_STRUCTURE = [
   'collection',
   'colorTheme',
-  'guide',
-  'home',
   'material',
   'media.tag',
-  'page',
-  'person',
   'product',
-  'productVariant',
   'settings',
   'translation.metadata',
+  'animatedCard',
 ]
 
 export const structure: StructureResolver = (S, context) =>
   S.list()
     .title('Content')
     .items([
-      home(S, context),
-      pages(S, context),
+      layouts(S, context),
       S.divider(),
-      collections(S, context),
       products(S, context),
-      animatedCards(S, context),
       S.divider(),
-      people(S, context),
       colorThemes(S, context),
+      animatedCards(S, context),
+      testimonials(S, context),
       S.divider(),
       settings(S, context),
       S.divider(),
-      // Automatically add new document types to the root pane
-      ...S.documentTypeListItems().filter(
-        (listItem: ListItemBuilder) =>
-          // @ts-expect-error Object is possibly 'undefined'
-          !DOCUMENT_TYPES_IN_STRUCTURE.includes(listItem.getId().toString()),
-      ),
+      faq(S, context),
     ])

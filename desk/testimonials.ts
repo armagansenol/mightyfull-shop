@@ -4,7 +4,7 @@ import defineStructure from '../utils/defineStructure'
 
 export default defineStructure<ListItemBuilder>((S) =>
   S.listItem()
-    .title('AnimatedCards')
-    .schemaType('animatedCard')
-    .child(S.documentTypeList('animatedCard')),
+    .title('Testimonials')
+    .schemaType('testimonial')
+    .child(S.documentTypeList('testimonial').title('Testimonials')),
 )

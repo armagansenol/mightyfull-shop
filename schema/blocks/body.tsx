@@ -22,11 +22,6 @@ export default defineField({
           },
         ],
         annotations: [
-          // product
-          {
-            name: 'annotationProduct',
-            type: 'annotationProduct',
-          },
           // Email
           {
             name: 'annotationLinkEmail',
@@ -61,16 +56,8 @@ export default defineField({
       type: 'module.grid',
     },
     {
-      name: 'blockImages',
-      type: 'module.images',
-    },
-    {
       name: 'blockInstagram',
       type: 'module.instagram',
-    },
-    {
-      name: 'blockProducts',
-      type: 'module.products',
     },
     {
       name: 'blockTaggedProducts',
