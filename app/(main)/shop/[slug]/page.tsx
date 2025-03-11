@@ -18,21 +18,19 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion';
 
-import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
 import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
 import { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
-import { AnimatedCardProps } from '@/types';
 import { LayoutQueryResponse } from '@/types/layout';
 
-import ProductCard from '@/components/product-card';
+import { ProductCard } from '@/components/product-card';
+import { getRelatedProducts } from '@/lib/actions/related-products';
 import s1 from '@/public/img/s-1.jpg';
 import s2 from '@/public/img/s-2.jpg';
 import s3 from '@/public/img/s-3.jpg';
 import s4 from '@/public/img/s-4.jpg';
-
 interface ProductDetailPageProps {
   params: {
     slug: string;
@@ -42,6 +40,7 @@ interface ProductDetailPageProps {
 export default async function ProductDetialPage({
   params
 }: ProductDetailPageProps) {
+  const relatedProducts = await getRelatedProducts(params.slug);
   const sanityProduct = await sanityFetch<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     tags: ['productPage'],
@@ -50,15 +49,6 @@ export default async function ProductDetialPage({
   const layout = await sanityFetch<LayoutQueryResponse>({
     query: LAYOUT_QUERY,
     tags: ['layout']
-  });
-
-  const animatedCards = await sanityFetch<AnimatedCardProps[]>({
-    query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards']
-  });
-
-  const relatedProducts = animatedCards.filter((card) => {
-    return card.product.shopifySlug !== params.slug;
   });
 
   const shopifyProduct = await getProduct(params.slug);
@@ -205,7 +195,18 @@ export default async function ProductDetialPage({
                 <div className="flex items-center justify-center gap-10 px-32">
                   {relatedProducts?.map((item) => {
                     return (
-                      <ProductCard key={item.id} id={item.id} product={item} />
+                      <ProductCard
+                        key={item.id}
+                        id={item.id}
+                        animatedCard={item}
+                        variantId={
+                          item.shopifyProduct?.variants[0].id as string
+                        }
+                        availableForSale={
+                          item.shopifyProduct?.variants[0]
+                            .availableForSale as boolean
+                        }
+                      />
                     );
                   })}
                 </div>

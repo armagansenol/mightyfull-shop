@@ -50,7 +50,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
         <CardTitle className={s.title}>Customer Reviews</CardTitle>
         <Button
           className="mx-auto tablet:ml-auto"
-          colorTheme="invertedThemed"
+          colorTheme="inverted-themed"
           size="sm"
           padding="fat"
           asChild
