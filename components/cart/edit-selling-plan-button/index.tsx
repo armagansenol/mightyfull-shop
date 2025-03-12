@@ -1,11 +1,13 @@
 'use client';
 
 import cn from 'clsx';
-import { Loader2, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
+import { IconClose } from '@/components/icons';
+import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 import {
   Select,
   SelectContent,
@@ -14,8 +16,6 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import type { CartItem } from '@/lib/shopify/types';
-import { IconClose } from '@/components/icons';
-import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 
 function ResetButton({
   onClick,
