@@ -1,4 +1,4 @@
-import { AddToCart } from '@/components/cart-test/add-to-cart';
+import { AddToCart } from '@/components/cart/add-to-cart';
 import { Price } from '@/components/price';
 import { Product } from 'lib/shopify/types';
 import { VariantSelector } from './variant-selector';
@@ -16,7 +16,12 @@ export function ProductDescription({ product }: { product: Product }) {
         </div>
       </div>
       <VariantSelector options={product.options} variants={product.variants} />
-      <AddToCart product={product} />
+      <AddToCart
+        availableForSale={product.availableForSale}
+        variantId={product.variants[0].id}
+        amount={parseFloat(product.priceRange.maxVariantPrice.amount)}
+        currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+      />
     </>
   );
 }

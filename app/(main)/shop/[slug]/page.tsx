@@ -2,6 +2,7 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
+import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
@@ -9,32 +10,27 @@ import { ProductHighlightCarousel } from '@/components/product-highlight-carouse
 import { ProductImages } from '@/components/product-images';
 import { ProductProvider } from '@/components/product/product-context';
 import { PurchasePanel } from '@/components/purchase-panel';
-import { Button } from '@/components/ui/button';
-import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
-import { sanityFetch } from '@/lib/sanity/client';
-import { LAYOUT_QUERY } from '@/lib/sanity/layout';
-import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
-import { getProduct } from '@/lib/shopify-test';
-import { AnimatedCard } from 'components/animated-card';
-import { CustomerReviews } from 'components/customer-reviews';
-import { ThemeUpdater } from 'components/theme-updater';
+import { ThemeUpdater } from '@/components/theme-updater';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from 'components/ui/accordion';
-import { Link } from 'components/utility/link';
-import { SanityProductPage } from 'lib/sanity/types';
-import { AnimatedCardProps } from 'types';
-import { LayoutQueryResponse } from 'types/layout';
+} from '@/components/ui/accordion';
 
+import { sanityFetch } from '@/lib/sanity/client';
+import { LAYOUT_QUERY } from '@/lib/sanity/layout';
+import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
+import { SanityProductPage } from '@/lib/sanity/types';
+import { getProduct } from '@/lib/shopify';
+import { LayoutQueryResponse } from '@/types/layout';
+
+import { ProductCard } from '@/components/product-card';
+import { getRelatedProducts } from '@/lib/actions/related-products';
 import s1 from '@/public/img/s-1.jpg';
 import s2 from '@/public/img/s-2.jpg';
 import s3 from '@/public/img/s-3.jpg';
 import s4 from '@/public/img/s-4.jpg';
-
 interface ProductDetailPageProps {
   params: {
     slug: string;
@@ -44,6 +40,7 @@ interface ProductDetailPageProps {
 export default async function ProductDetialPage({
   params
 }: ProductDetailPageProps) {
+  const relatedProducts = await getRelatedProducts(params.slug);
   const sanityProduct = await sanityFetch<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     tags: ['productPage'],
@@ -53,20 +50,9 @@ export default async function ProductDetialPage({
     query: LAYOUT_QUERY,
     tags: ['layout']
   });
-  const animatedCards = await sanityFetch<AnimatedCardProps[]>({
-    query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards']
-  });
-  const relatedProducts = animatedCards.filter((card) => {
-    return card.product.shopifySlug !== sanityProduct.slug;
-  });
+
   const shopifyProduct = await getProduct(params.slug);
   const productId = extractShopifyId(shopifyProduct?.id as string);
-
-  // console.log(
-  //   'sanity product id',
-  //   extractShopifyId(shopifyProduct?.id as string)
-  // );
 
   const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
@@ -203,47 +189,24 @@ export default async function ProductDetialPage({
               >
                 <h2>Impossible to Choose Just One!</h2>
                 <p>
-                  Can’t decide? Try them all and discover your new favorite!
+                  Can&apos;t decide? Try them all and discover your new
+                  favorite!
                 </p>
                 <div className="flex items-center justify-center gap-10 px-32">
-                  {relatedProducts.map((item) => {
+                  {relatedProducts?.map((item) => {
                     return (
-                      <div
-                        className={cn(
-                          s.card,
-                          'flex flex-col gap-10 flex-shrink-0'
-                        )}
+                      <ProductCard
                         key={item.id}
-                      >
-                        <Link
-                          href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                          prefetch={true}
-                        >
-                          <AnimatedCard {...item} />
-                        </Link>
-                        <div className="flex flex-row tablet:flex-col items-stretch gap-2">
-                          <Button
-                            colorTheme="blueRuin"
-                            asChild
-                            size="sm"
-                            padding="slim"
-                          >
-                            <Link
-                              href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                              prefetch={true}
-                            >
-                              SHOP NOW
-                            </Link>
-                          </Button>
-                          <Button
-                            colorTheme="invertedBlueRuin"
-                            size="sm"
-                            padding="slim"
-                          >
-                            ADD TO CART
-                          </Button>
-                        </div>
-                      </div>
+                        id={item.id}
+                        animatedCard={item}
+                        variantId={
+                          item.shopifyProduct?.variants[0].id as string
+                        }
+                        availableForSale={
+                          item.shopifyProduct?.variants[0]
+                            .availableForSale as boolean
+                        }
+                      />
                     );
                   })}
                 </div>

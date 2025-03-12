@@ -4,25 +4,23 @@ import s from './header.module.scss';
 
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import cn from 'clsx';
+import Lenis from 'lenis';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import CartModal from '@/components/cart-test/modal';
 import { IconLogo } from '@/components/icons';
 import { Link } from '@/components/utility/link';
+import { Cart } from '@/components/cart/cart';
 import { routes } from '@/lib/constants';
 import { useLenisStore } from '@/lib/store/lenis';
 import { useTheme } from '@/lib/store/theme';
-import { ProductCollection } from '@/types';
-import Lenis from 'lenis';
 
-interface HeaderProps {
-  shopMenu: ProductCollection[];
-}
+// interface HeaderProps {
+//   shopMenu?: ProductCollection[];
+// }
 
-export default function Header(props: HeaderProps) {
-  console.log(props);
-
+export default function Header() {
+  // props: HeaderProps
   const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const { lenis } = useLenisStore();
@@ -93,9 +91,7 @@ export default function Header(props: HeaderProps) {
           />
         </Link>
         <div className="flex items-center gap-5">
-          <div className="flex tablet:hidden">
-            <CartModal />
-          </div>
+          <div className="flex tablet:hidden">{/* <CartModal /> */}</div>
           <div
             className={cn(s.trigger, 'block tablet:hidden', {
               [s.active]: hamburgerOpen
@@ -144,7 +140,7 @@ export default function Header(props: HeaderProps) {
               className="hidden tablet:block cursor-pointer"
               // onClick={() => setOpen(true)}
             >
-              <CartModal />
+              <Cart />
             </div>
           </div>
         </nav>

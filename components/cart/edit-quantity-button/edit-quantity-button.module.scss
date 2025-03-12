@@ -1,0 +1,13 @@
+.editQuantityButton {
+  @include dims(desktop-vw(34px));
+  color: var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: desktop-vw(14px);
+  font-weight: 500;
+  line-height: 1;
+
+  .icon {
+    width: desktop-vw(10px);
+    height: desktop-vw(10px);
+  }
+}

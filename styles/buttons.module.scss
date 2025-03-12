@@ -5,29 +5,33 @@
   transition: 200ms all ease;
 }
 
-.blueRuin {
+.blue-ruin {
   background-color: var(--blue-ruin);
   border: 1px solid var(--blue-ruin);
   color: var(--sugar-milk);
 
-  @include hover {
-    &:hover {
-      background-color: var(--sugar-milk);
-      color: var(--blue-ruin);
+  .hover-animation {
+    @include hover {
+      &:hover {
+        background-color: var(--sugar-milk);
+        color: var(--blue-ruin);
+      }
     }
   }
 }
 
-.invertedBlueRuin {
+.inverted-blue-ruin {
   background-color: var(--sugar-milk);
   border: 1px solid var(--blue-ruin);
   color: var(--blue-ruin);
 
-  @include hover {
-    &:hover {
-      background-color: var(--blue-ruin);
-      border: 1px solid var(--blue-ruin);
-      color: var(--sugar-milk);
+  &.hover-animation {
+    @include hover {
+      &:hover {
+        background-color: var(--blue-ruin);
+        border: 1px solid var(--blue-ruin);
+        color: var(--sugar-milk);
+      }
     }
   }
 }
@@ -37,47 +41,52 @@
   border: 1px solid var(--text-color);
   color: var(--text-color);
 
-  @include hover {
-    &:hover {
-      background-color: var(--text-color);
-      color: var(--sugar-milk);
+  &.hover-animation {
+    @include hover {
+      &:hover {
+        background-color: var(--text-color);
+        color: var(--sugar-milk);
+      }
     }
   }
 }
 
-.invertedThemed {
+.inverted-themed {
   background-color: var(--text-color);
   border: 1px solid var(--sugar-milk);
   color: var(--sugar-milk);
 
-  @include hover {
-    &:hover {
-      background-color: var(--sugar-milk);
-      border: 1px solid var(--text-color);
-      color: var(--text-color);
+  &.hover-animation {
+    @include hover {
+      &:hover {
+        background-color: var(--sugar-milk);
+        border: 1px solid var(--text-color);
+        color: var(--text-color);
+      }
     }
   }
 }
 
-.nakedBlueRuin {
+.naked-blue-ruin {
   background-color: transparent;
   border: none;
   color: var(--blue-ruin);
 }
 
-.nakedThemed {
+.naked-themed {
   background-color: transparent;
   border: none;
   color: var(--text-color);
 }
 
-.nakedFull {
+.naked-full {
   background-color: transparent;
   border: none;
   color: var(--sugar-milk);
 }
 
 .sm {
+  height: desktop-vw(40px);
   font-size: desktop-vw(16px);
 
   @include mobile {
@@ -86,6 +95,7 @@
 }
 
 .md {
+  height: desktop-vw(48px);
   font-size: desktop-vw(24px);
 
   @include mobile {

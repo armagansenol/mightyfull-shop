@@ -119,7 +119,7 @@ export default function ProductHighlightCarousel({
                         }
                       >
                         <Button
-                          colorTheme="invertedThemed"
+                          colorTheme="inverted-themed"
                           asChild
                           size="sm"
                           padding="slim"

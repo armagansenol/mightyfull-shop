@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-xl whitespace-nowrap focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 tablet:[&_svg]:size-6 [&_svg]:shrink-0 [&>*]:pointer-events-none',
+  'inline-flex items-center justify-center rounded-xl font-bold whitespace-nowrap focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -21,19 +21,19 @@ const buttonVariants = cva(
         icon: 'h-9 w-9'
       },
       padding: {
-        fat: 'py-4 px-6 tablet:py-5 tablet:px-12 rounded-lg',
-        slim: 'py-4 px-5 tablet:py-3 tablet:px-none w-full rounded-md tablet:rounded-lg',
+        fat: 'px-6 tablet:px-12 rounded-lg',
+        slim: 'px-5 tablet:px-none w-full rounded-md tablet:rounded-lg',
         none: 'w-full h-full rounded-lg',
         square: 'p-4'
       },
       colorTheme: {
-        blueRuin: s.blueRuin,
+        'blue-ruin': s['blue-ruin'],
         themed: s.themed,
-        invertedBlueRuin: s.invertedBlueRuin,
-        invertedThemed: s.invertedThemed,
-        nakedBlueRuin: s.nakedBlueRuin,
-        nakedThemed: s.nakedThemed,
-        nakedFull: s.nakedFull
+        'inverted-blue-ruin': s['inverted-blue-ruin'],
+        'inverted-themed': s['inverted-themed'],
+        'naked-blue-ruin': s['naked-blue-ruin'],
+        'naked-themed': s['naked-themed'],
+        'naked-full': s['naked-full']
       }
     },
     defaultVariants: {
@@ -47,15 +47,17 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  hoverAnimation?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
+      hoverAnimation = true,
       variant = 'default',
       size = 'md',
-      padding = 'fat',
+      padding = 'none',
       colorTheme = 'themed',
       asChild = false,
       ...props
@@ -67,6 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           'cursor-pointer',
+          { [s['hover-animation']]: hoverAnimation },
           buttonVariants({
             variant,
             size,

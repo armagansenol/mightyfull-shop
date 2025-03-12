@@ -1,9 +1,46 @@
+import imageFragment from './image';
+import seoFragment from './seo';
+
 const productFragment = /* GraphQL */ `
   fragment product on Product {
     id
     handle
-    title
     availableForSale
+    title
+    description
+    descriptionHtml
+    options {
+      id
+      name
+      values
+    }
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    variants(first: 250) {
+      edges {
+        node {
+          id
+          title
+          availableForSale
+          selectedOptions {
+            name
+            value
+          }
+          price {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
     sellingPlanGroups(first: 10) {
       nodes {
         name
@@ -38,18 +75,24 @@ const productFragment = /* GraphQL */ `
         }
       }
     }
-    variants(first: 1) {
-      nodes {
-        id
-        availableForSale
-        quantityAvailable
-        price {
-          amount
-          currencyCode
+    featuredImage {
+      ...image
+    }
+    images(first: 20) {
+      edges {
+        node {
+          ...image
         }
       }
     }
+    seo {
+      ...seo
+    }
+    tags
+    updatedAt
   }
-`
+  ${imageFragment}
+  ${seoFragment}
+`;
 
-export default productFragment
+export default productFragment;

@@ -2,47 +2,37 @@ import s from './home.module.scss';
 
 import { cn } from '@/lib/utils';
 
-import { AnimatedCard } from '@/components/animated-card';
 import { FadeInOutCarousel } from '@/components/fade-in-out-carousel';
 import { FeatureHighlight } from '@/components/feature-highlight';
 import { IconCloud2, IconLeftArm, IconRightArm } from '@/components/icons';
 import { Marquee } from '@/components/marquee';
 import { PackageAnimation } from '@/components/package-animation';
 import { Parallax } from '@/components/parallax';
+import { ProductCard } from '@/components/product-card';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
 import { Button } from '@/components/ui/button';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
+import { getProductHighlight } from '@/lib/actions/product-highlight';
 import { routes } from '@/lib/constants';
-import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
 import { sanityFetch } from '@/lib/sanity/client';
 import { FEATURE_HIGHLIGHT_QUERY } from '@/lib/sanity/featureHighlightQuery';
-import { PRODUCT_HIGHLIGHT_QUERY } from '@/lib/sanity/productHighlight';
 import { TESTIMONIALS_QUERY } from '@/lib/sanity/testimonials';
-import {
-  AnimatedCardProps,
-  FeatureHighlightQueryResult,
-  ProductHighlightQueryResult,
-  Testimonial
-} from '@/types';
+import { FeatureHighlightQueryResult, Testimonial } from '@/types';
 
 export default async function HomePage() {
-  const { productHighlight } = await sanityFetch<ProductHighlightQueryResult>({
-    query: PRODUCT_HIGHLIGHT_QUERY,
-    tags: ['productHighlight']
-  });
-  const { featureHighlight } = await sanityFetch<FeatureHighlightQueryResult>({
-    query: FEATURE_HIGHLIGHT_QUERY,
-    tags: ['featureHighlight']
-  });
-  const testimonials = await sanityFetch<Testimonial[]>({
-    query: TESTIMONIALS_QUERY,
-    tags: ['testmonials']
-  });
-  const cards = await sanityFetch<AnimatedCardProps[]>({
-    query: ANIMATED_CARDS_QUERY,
-    tags: ['animatedCards']
-  });
+  const [productHighlight, { featureHighlight }, testimonials] =
+    await Promise.all([
+      getProductHighlight(),
+      sanityFetch<FeatureHighlightQueryResult>({
+        query: FEATURE_HIGHLIGHT_QUERY,
+        tags: ['featureHighlight']
+      }),
+      sanityFetch<Testimonial[]>({
+        query: TESTIMONIALS_QUERY,
+        tags: ['testmonials']
+      })
+    ]);
 
   return (
     <>
@@ -69,7 +59,7 @@ export default async function HomePage() {
             </span>{' '}
             ever!
           </h1>
-          <p>Meet our mightyfull flavors.</p>
+          <p>Meet our mightyfull flavors</p>
           <Button asChild size="md" padding="fat">
             <Link href={routes.shop.url} prefetch>
               SHOP NOW
@@ -118,64 +108,52 @@ export default async function HomePage() {
           </div>
         </Marquee>
       </section>
-      {productHighlight.items.length > 0 && (
+      {Array.isArray(productHighlight) && productHighlight.length > 0 && (
         <section className={cn(s.highlights, 'py-10 tablet:py-20')}>
           <section className={cn(s.shop, 'flex flex-col items-center')}>
             <h2>Impossible to Choose Just One!</h2>
-            <p>Can’t decide? Try them all and discover your new favorite!</p>
+            <p>
+              Can&apos;t decide? Try them all and discover your new favorite!
+            </p>
             {/* MOBILE */}
             <div className="block tablet:hidden">
               <ProductHighlightCarousel
-                items={cards}
+                items={productHighlight}
                 options={{ loop: true }}
               />
             </div>
             {/* DESKTOP */}
             <div className="hidden tablet:block">
-              <div className="grid grid-cols-4 gap-12 mt-20 flex-shrink-0">
-                {cards.map((item) => {
-                  return (
-                    <div
-                      className={cn(s.card, 'flex flex-col gap-10')}
-                      key={item.id}
-                    >
-                      <Link
-                        href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                        prefetch={true}
-                      >
-                        <AnimatedCard {...item} />
-                      </Link>
-                      <div className="flex flex-col items-stretch space-y-2">
-                        <Button
-                          colorTheme="blueRuin"
-                          size="sm"
-                          padding="slim"
-                          asChild
-                        >
-                          <Link
-                            href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                            prefetch={true}
-                          >
-                            SHOP NOW
-                          </Link>
-                        </Button>
-                        <Button variant="default" size="sm" padding="slim">
-                          ADD TO CART
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="flex flex-col items-center tablet:grid grid-cols-4 gap-16 mt-10 tablet:mt-20 px-4 tablet:px-0">
+                {Array.isArray(productHighlight) &&
+                  productHighlight.length > 0 &&
+                  productHighlight.map((item) => {
+                    return (
+                      <ProductCard
+                        key={item.id}
+                        id={item.id}
+                        animatedCard={item}
+                        variantId={
+                          item.shopifyProduct?.variants[0].id as string
+                        }
+                        availableForSale={
+                          item.shopifyProduct?.variants[0]
+                            .availableForSale as boolean
+                        }
+                      />
+                    );
+                  })}
               </div>
             </div>
           </section>
         </section>
       )}
-      {featureHighlight.items.length > 0 && (
-        <div className="bg-[var(--blue-ruin)] p-2 tablet:p-5">
-          <FeatureHighlight items={featureHighlight.items} />
-        </div>
-      )}
+      {Array.isArray(featureHighlight.items) &&
+        featureHighlight.items.length > 0 && (
+          <div className="bg-[var(--blue-ruin)] p-2 tablet:p-5">
+            <FeatureHighlight items={featureHighlight.items} />
+          </div>
+        )}
       <div className="relative bg-[var(--blue-ruin)] p-2 tablet:p-5 overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0 h-2 tablet:h-5 bg-[var(--blue-ruin)] z-50"></div>
         <section
@@ -255,20 +233,22 @@ export default async function HomePage() {
         <div className="col-span-7 py-20 tablet:py-0 flex items-center justify-center">
           <div className={s.sliderC}>
             <FadeInOutCarousel options={{ loop: true }}>
-              {testimonials.map((item) => {
-                return (
-                  <div
-                    className={cn(
-                      s.item,
-                      'flex flex-col items-center justify-center'
-                    )}
-                    key={item._id}
-                  >
-                    <div className={s.title}>{item.description}</div>
-                    <div className={s.description}>{item.title}</div>
-                  </div>
-                );
-              })}
+              {Array.isArray(testimonials) &&
+                testimonials.length > 0 &&
+                testimonials.map((item) => {
+                  return (
+                    <div
+                      className={cn(
+                        s.item,
+                        'flex flex-col items-center justify-center'
+                      )}
+                      key={item._id}
+                    >
+                      <div className={s.title}>{item.description}</div>
+                      <div className={s.description}>{item.title}</div>
+                    </div>
+                  );
+                })}
             </FadeInOutCarousel>
           </div>
         </div>

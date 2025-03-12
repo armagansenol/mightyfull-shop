@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 import tailwindAnimate from 'tailwindcss-animate';
+import tailwindTypography from '@tailwindcss/typography';
 
 const config: Config = {
   darkMode: ['class'],
@@ -11,6 +12,26 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        '24': 'repeat(24, minmax(0, 1fr))'
+      },
+      gridTemplateRows: {
+        '24': 'repeat(24, minmax(0, 1fr))'
+      },
+      gridColumn: {
+        'span-13': 'span 13 / span 13',
+        'span-14': 'span 14 / span 14',
+        'span-15': 'span 15 / span 15',
+        'span-16': 'span 16 / span 16',
+        'span-17': 'span 17 / span 17',
+        'span-18': 'span 18 / span 18',
+        'span-19': 'span 19 / span 19',
+        'span-20': 'span 20 / span 20',
+        'span-21': 'span 21 / span 21',
+        'span-22': 'span 22 / span 22',
+        'span-23': 'span 23 / span 23',
+        'span-24': 'span 24 / span 24'
+      },
       fontFamily: {
         'bomstad-display': 'var(--font-bomstad-display)',
         poppins: 'var(--font-poppins)'
@@ -25,40 +46,42 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)'
       },
       colors: {
+        'sugar-milk': 'var(--sugar-milk)',
+        'blue-ruin': 'var(--blue-ruin)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
-        },
-        tertiary: {
-          DEFAULT: 'hsl(var(--tertiary))',
-          foreground: 'hsl(var(--tertiary-foreground))'
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
-        },
+        // card: {
+        //   DEFAULT: 'hsl(var(--card))',
+        //   foreground: 'hsl(var(--card-foreground))'
+        // },
+        // popover: {
+        //   DEFAULT: 'hsl(var(--popover))',
+        //   foreground: 'hsl(var(--popover-foreground))'
+        // },
+        // primary: {
+        //   DEFAULT: 'hsl(var(--primary))',
+        //   foreground: 'hsl(var(--primary-foreground))'
+        // },
+        // secondary: {
+        //   DEFAULT: 'hsl(var(--secondary))',
+        //   foreground: 'hsl(var(--secondary-foreground))'
+        // },
+        // tertiary: {
+        //   DEFAULT: 'hsl(var(--tertiary))',
+        //   foreground: 'hsl(var(--tertiary-foreground))'
+        // },
+        // muted: {
+        //   DEFAULT: 'hsl(var(--muted))',
+        //   foreground: 'hsl(var(--muted-foreground))'
+        // },
+        // accent: {
+        //   DEFAULT: 'hsl(var(--accent))',
+        //   foreground: 'hsl(var(--accent-foreground))'
+        // },
+        // destructive: {
+        //   DEFAULT: 'hsl(var(--destructive))',
+        //   foreground: 'hsl(var(--destructive-foreground))'
+        // },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -94,6 +117,6 @@ const config: Config = {
       }
     }
   },
-  plugins: [tailwindAnimate]
+  plugins: [tailwindAnimate, tailwindTypography]
 };
 export default config;

@@ -156,3 +156,44 @@ sup {
 .oke-w-reviewMinimal-footer {
   display: none !important;
 }
+
+.modal-z-index {
+  z-index: z-index('modal') !important;
+}
+
+.modal-content-z-index {
+  z-index: z-index('modal') !important;
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: z-index('preloader') !important;
+
+  @include mobile {
+    max-height: mobile-vw(160px);
+  }
+}
+
+.msix {
+  background-color: var(--sugar-milk);
+  border: 1px solid var(--blue-ruin);
+
+  .item {
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(16px);
+    font-weight: 500;
+    padding: desktop-vw(12px) desktop-vw(8px);
+    transition: 300ms all ease;
+
+    @include mobile {
+      font-size: mobile-vw(16px);
+      padding: mobile-vw(12px) mobile-vw(8px);
+    }
+
+    @include hover {
+      &:hover {
+        background-color: var(--columbia-blue);
+      }
+    }
+  }
+}

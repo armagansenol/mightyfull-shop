@@ -1,0 +1,83 @@
+.out-of-stock {
+  font-size: desktop-vw(16px);
+  font-family: var(--font-bomstad-display);
+  font-weight: 700;
+
+  @include mobile {
+    font-size: mobile-vw(16px);
+  }
+}
+
+.notify-me-content {
+  background-color: var(--cherry-blush);
+  border: 4px solid var(--highlighter-lilac);
+  border-radius: desktop-vw(32px);
+  height: desktop-vw(480px);
+  max-width: none;
+  overflow: hidden;
+  padding: 0;
+  width: desktop-vw(800px);
+
+  .close-button {
+    --size: #{desktop-vw(44px)};
+    background-color: var(--highlighter-lilac);
+    border-radius: 50%;
+    height: var(--size);
+    padding: calc(var(--size) * 0.25);
+    position: absolute;
+    right: desktop-vw(16px);
+    top: desktop-vw(16px);
+    width: var(--size);
+  }
+
+  .title {
+    color: var(--highlighter-lilac);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(28px);
+    font-weight: 700;
+    margin-bottom: desktop-vw(16px);
+  }
+
+  .description {
+    color: var(--highlighter-lilac);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    margin-bottom: desktop-vw(16px);
+  }
+
+  .input {
+    border: 1px solid var(--highlighter-lilac);
+    border-radius: desktop-vw(8px);
+    color: var(--highlighter-lilac);
+    font-size: desktop-vw(24px);
+    font-weight: 700;
+    height: auto;
+    padding: desktop-vw(16px);
+    padding-top: desktop-vw(14px);
+
+    &::placeholder {
+      color: var(--highlighter-lilac-light);
+      font-family: var(--font-bomstad-display);
+      font-size: desktop-vw(24px);
+      font-weight: 700;
+    }
+  }
+
+  .submitButton {
+    background-color: var(--highlighter-lilac-transparent);
+    border-radius: desktop-vw(8px);
+    border: 1px solid var(--highlighter-lilac);
+    color: var(--highlighter-lilac);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(20px);
+    font-weight: 700;
+    padding: desktop-vw(16px) desktop-vw(32px);
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: var(--highlighter-lilac);
+      color: var(--white);
+    }
+  }
+}

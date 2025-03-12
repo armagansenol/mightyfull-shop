@@ -1,5 +1,5 @@
-@use "sass:math";
-@import "./_variables.scss";
+@use 'sass:math';
+@import './_variables.scss';
 
 // Breakpoint
 @mixin mobile {
@@ -37,7 +37,10 @@
 }
 
 @function columns($columns) {
-  @return calc((#{$columns} * var(--layout-column-width)) + ((#{$columns} - 1) * var(--layout-columns-gap)));
+  @return calc(
+    (#{$columns} * var(--layout-column-width)) +
+      ((#{$columns} - 1) * var(--layout-columns-gap))
+  );
 }
 
 @mixin outline($color) {
@@ -62,7 +65,13 @@
   height: $height;
 }
 
-@mixin position($position, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+@mixin position(
+  $position,
+  $top: auto,
+  $right: auto,
+  $bottom: auto,
+  $left: auto
+) {
   position: $position;
   top: $top;
   right: $right;
@@ -72,30 +81,28 @@
 
 // z-index
 $z-indexes: (
-  "preloader",
-  "gsap-markers",
-  "cart",
-  "cart-backdrop",
-  "cursor",
-  "privacy-popup",
-  "modal-content",
-  "modal",
-  "sticky",
-  "error",
-  "navigation",
-  "hamburger",
-  "menu",
-  "menu-bg",
-  "navigation-mobile",
-  "header",
-  "loading-screen",
-  "logo",
-  "img",
-  "main",
-  "language-select",
-  "footer-overlay",
-  "footer",
-  "bg"
+  'preloader',
+  'gsap-markers',
+  'modal-content',
+  'modal',
+  'cursor',
+  'privacy-popup',
+  'sticky',
+  'error',
+  'navigation',
+  'hamburger',
+  'menu',
+  'menu-bg',
+  'navigation-mobile',
+  'header',
+  'loading-screen',
+  'logo',
+  'img',
+  'main',
+  'language-select',
+  'footer-overlay',
+  'footer',
+  'bg'
 );
 
 @function z-index($name) {

@@ -38,67 +38,67 @@
     }
   }
 
-  .button {
-    @include dims(100%, desktop-vw(40px));
-    color: var(--sugar-milk);
-    font-size: desktop-vw(14px);
-    font-weight: 900;
-    padding: desktop-vw(8px) 0;
-    position: relative;
-    transition: 300ms all ease;
+  // .button {
+  //   @include dims(100%, desktop-vw(40px));
+  //   color: var(--sugar-milk);
+  //   font-size: desktop-vw(14px);
+  //   font-weight: 900;
+  //   padding: desktop-vw(8px) 0;
+  //   position: relative;
+  //   transition: 300ms all ease;
 
-    @include mobile {
-      @include dims(mobile-vw(140px), mobile-vw(40px));
-      font-size: mobile-vw(14px);
-      padding: mobile-vw(8px) 0;
-    }
+  //   @include mobile {
+  //     @include dims(mobile-vw(140px), mobile-vw(40px));
+  //     font-size: mobile-vw(14px);
+  //     padding: mobile-vw(8px) 0;
+  //   }
 
-    span {
-      transition: 200ms all ease;
-    }
+  //   span {
+  //     transition: 200ms all ease;
+  //   }
 
-    &::before {
-      content: "";
-      @include position(absolute, 0, 0, 0, 0);
-      background-color: var(--blue-ruin);
-      border-radius: desktop-vw(8px);
-      transition: 200ms all ease;
-      z-index: -1;
+  //   &::before {
+  //     content: "";
+  //     @include position(absolute, 0, 0, 0, 0);
+  //     background-color: var(--blue-ruin);
+  //     border-radius: desktop-vw(8px);
+  //     transition: 200ms all ease;
+  //     z-index: -1;
 
-      @include mobile {
-        border-radius: mobile-vw(8px);
-      }
-    }
+  //     @include mobile {
+  //       border-radius: mobile-vw(8px);
+  //     }
+  //   }
 
-    &:nth-child(2) {
-      color: var(--blue-ruin);
+  //   &:nth-child(2) {
+  //     color: var(--blue-ruin);
 
-      &::before {
-        content: "";
-        background-color: transparent;
-        color: var(--blue-ruin);
-        border: 1px solid var(--blue-ruin);
-      }
+  //     &::before {
+  //       content: "";
+  //       background-color: transparent;
+  //       color: var(--blue-ruin);
+  //       border: 1px solid var(--blue-ruin);
+  //     }
 
-      @include hover {
-        &:hover {
-          span {
-            transform: scale(1.2);
-          }
-        }
-      }
-    }
+  //     @include hover {
+  //       &:hover {
+  //         span {
+  //           transform: scale(1.2);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    @include hover {
-      &:hover {
-        color: var(--blue-ruin);
+  //   @include hover {
+  //     &:hover {
+  //       color: var(--blue-ruin);
 
-        &::before {
-          background-color: transparent;
-          color: var(--blue-ruin);
-          border: 1px solid var(--blue-ruin);
-        }
-      }
-    }
-  }
+  //       &::before {
+  //         background-color: transparent;
+  //         color: var(--blue-ruin);
+  //         border: 1px solid var(--blue-ruin);
+  //       }
+  //     }
+  //   }
+  // }
 }
