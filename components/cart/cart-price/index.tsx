@@ -1,7 +1,6 @@
 'use client';
 
 import { Price } from '@/components/price';
-import cn from 'clsx';
 
 interface CartPriceProps {
   amount: string;
@@ -11,9 +10,9 @@ interface CartPriceProps {
 
 export function CartPrice({ amount, currencyCode, className }: CartPriceProps) {
   return (
-    <div className={cn('text-2xl transition-opacity duration-300', className)}>
+    <div className={className}>
       <Price
-        className={className}
+        className="font-bomstad-display font-medium text-2xl text-blue-ruin"
         amount={amount}
         currencyCode={currencyCode}
       />

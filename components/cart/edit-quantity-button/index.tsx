@@ -1,16 +1,16 @@
 'use client';
 
-import React from 'react';
-import { Loader2, MinusIcon, PlusIcon } from 'lucide-react';
+import NumberFlow from '@number-flow/react';
+import { Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 
-import type { CartItem } from '../../../lib/shopify/types';
+import { IconMinus, IconPlus } from '@/components/icons';
+import { CartItem } from '@/lib/shopify/types';
 import {
-  useIncrementCartItem,
-  useDecrementCartItem
+  useDecrementCartItem,
+  useIncrementCartItem
 } from '../hooks/useCartItemMutations';
 
-// Simple quantity button component
 export function QuantityButton({
   type,
   disabled,
@@ -28,44 +28,38 @@ export function QuantityButton({
     <button
       aria-label={ariaLabel}
       onClick={onClick}
-      className={`flex h-8 w-8 items-center justify-center rounded-full border ${
-        disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-neutral-100'
-      }`}
+      className={`cursor-pointer h-10 w-10 flex items-center justify-center`}
       disabled={disabled || isLoading}
     >
       {isLoading ? (
-        <Loader2 className="h-4 w-4 animate-spin" />
+        <Loader2 className="h-4 w-4 animate-spin text-blue-ruin" />
       ) : type === 'plus' ? (
-        <PlusIcon className="h-4 w-4" />
+        <span className="w-1/2 h-1/2 flex items-center justify-center">
+          <IconPlus fill="var(--blue-ruin)" />
+        </span>
       ) : (
-        <MinusIcon className="h-4 w-4" />
+        <span className="w-1/2 h-1/2 flex items-center justify-center">
+          <IconMinus fill="var(--blue-ruin)" />
+        </span>
       )}
     </button>
   );
 }
 
-/**
- * Increment button component using the useIncrementCartItem hook
- */
 export function IncrementButton({
   item,
-  maxQuantity = 10
+  maxQuantity = 100
 }: {
   item: CartItem;
   maxQuantity?: number;
 }) {
   const productTitle = item.merchandise.product.title;
-
-  // Check if the button should be disabled based on quantity limits
   const isDisabled = item.quantity >= maxQuantity;
-
-  // Use the increment cart item hook without optimistic updates
   const { mutate, isPending: isLoading } = useIncrementCartItem(
     item,
     maxQuantity
   );
 
-  // Handler for the button click
   const handleIncrement = useCallback(() => {
     if (!isLoading && !isDisabled) {
       mutate({});
@@ -83,19 +77,11 @@ export function IncrementButton({
   );
 }
 
-/**
- * Decrement button component using the useDecrementCartItem hook
- */
 export function DecrementButton({ item }: { item: CartItem }) {
   const productTitle = item.merchandise.product.title;
-
-  // Check if the button should be disabled based on quantity limits
   const isDisabled = item.quantity <= 1;
-
-  // Use the decrement cart item hook without optimistic updates
   const { mutate, isPending: isLoading } = useDecrementCartItem(item);
 
-  // Handler for the button click
   const handleDecrement = useCallback(() => {
     if (!isLoading && !isDisabled) {
       mutate({});
@@ -113,9 +99,6 @@ export function DecrementButton({ item }: { item: CartItem }) {
   );
 }
 
-/**
- * Quantity control component that combines increment and decrement buttons
- */
 export function QuantityControl({
   item,
   maxQuantity = 10
@@ -124,11 +107,14 @@ export function QuantityControl({
   maxQuantity?: number;
 }) {
   return (
-    <div className="flex items-center space-x-2" aria-live="polite">
+    <div
+      className="flex items-center space-x-2 border border-blue-ruin rounded-lg"
+      aria-live="polite"
+    >
       <DecrementButton item={item} />
-
-      <span className="w-8 text-center">{item.quantity}</span>
-
+      <span className="w-6 text-center font-poppins font-bold text-lg text-blue-ruin leading-none">
+        <NumberFlow value={item.quantity} />
+      </span>
       <IncrementButton item={item} maxQuantity={maxQuantity} />
     </div>
   );

@@ -1,7 +1,4 @@
-import { AnimatedNumber } from '@/components/animated-number';
-import s from './price.module.scss';
-
-import cn from 'clsx';
+import NumberFlow from '@number-flow/react';
 
 const Price = ({
   amount,
@@ -14,9 +11,10 @@ const Price = ({
   currencyCode: string;
   currencyCodeClassName?: string;
 } & React.ComponentProps<'p'>) => (
-  <p suppressHydrationWarning={true} className={cn(s.price, className)}>
+  <p className={className}>
+    <NumberFlow value={parseFloat(amount)} />$
     {/* <span className={currencyCodeClassName}>{`${currencyCode}`}</span> */}
-    <AnimatedNumber
+    {/* <AnimatedNumber
       value={
         // parseFloat(
         // `${new Intl.NumberFormat(undefined, {
@@ -26,8 +24,7 @@ const Price = ({
         // }).format(parseFloat(amount))}`)
         parseFloat(amount)
       }
-    />
-    $
+    /> */}
   </p>
 );
 

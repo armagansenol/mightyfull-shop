@@ -1,7 +1,5 @@
 'use client';
 
-import s from './edit-selling-plan-button.module.scss';
-
 import cn from 'clsx';
 import { Loader2, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -16,6 +14,8 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import type { CartItem } from '@/lib/shopify/types';
+import { IconClose } from '@/components/icons';
+import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 
 function ResetButton({
   onClick,
@@ -32,7 +32,7 @@ function ResetButton({
     <button
       type="button"
       className={cn(
-        'p-2 rounded-full hover:bg-gray-100 transition-colors',
+        'h-12 w-12 p-4 rounded-lg hover:bg-gray-100 transition-colors bg-white border border-blue-ruin',
         'cursor-pointer flex items-center justify-center',
         (disabled || isLoading) && 'opacity-50 cursor-not-allowed'
       )}
@@ -43,7 +43,7 @@ function ResetButton({
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
       ) : (
-        <X className="h-4 w-4" />
+        <IconClose fill="var(--blue-ruin)" />
       )}
     </button>
   );
@@ -116,7 +116,6 @@ export function EditSellingPlanButton({
 
   if (!hasSellingPlans) return null;
 
-  // Determine what to show based on the current state
   const showUpgradeButton = !selectActive && !currentSellingPlanId;
   const showSelectionUI = selectActive || currentSellingPlanId !== null;
 
@@ -164,7 +163,6 @@ export function EditSellingPlanButton({
   );
 }
 
-// Extract UI components
 function UpgradeButton({
   isUpdating,
   onClick
@@ -173,18 +171,19 @@ function UpgradeButton({
   onClick: () => void;
 }) {
   return (
-    <div
+    <button
       className={cn(
-        s.upgrade,
-        'flex items-center justify-center cursor-pointer relative',
+        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
         isUpdating && 'pointer-events-none'
       )}
       onClick={onClick}
-      role="button"
       tabIndex={0}
       aria-label="Upgrade to subscription and save 10%"
+      type="button"
     >
-      Upgrade to Subscription and Save 10%
+      <span className="font-bomstad-display font-medium text-blue-ruin text-base leading-none">
+        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
+      </span>
       {isUpdating && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
@@ -196,7 +195,7 @@ function UpgradeButton({
           <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
         </motion.div>
       )}
-    </div>
+    </button>
   );
 }
 
@@ -225,14 +224,26 @@ function SubscriptionSelector({
           disabled={isUpdating}
           onValueChange={onSellingPlanChange}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger
+            className={cn(
+              'w-full h-12 bg-white border border-blue-ruin rounded-lg',
+              'text-base font-bomstad-display font-medium text-blue-ruin'
+            )}
+          >
             <SelectValue placeholder={currentSellingPlanName}>
               {currentSellingPlanName}
             </SelectValue>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             {sellingPlans.map((plan) => (
-              <SelectItem key={plan.id} value={plan.id}>
+              <SelectItem
+                className={cn(
+                  'w-full h-12',
+                  'text-base font-bomstad-display font-medium text-blue-ruin'
+                )}
+                key={plan.id}
+                value={plan.id}
+              >
                 {plan.name}
               </SelectItem>
             ))}

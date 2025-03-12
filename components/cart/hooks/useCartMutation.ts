@@ -1,7 +1,7 @@
+import { useCart } from '@/components/cart/cart-context';
+import { test } from '@/components/custom-toast/success';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { useCart } from '@/components/cart/cart-context';
-
 type CartActionType = 'plus' | 'minus' | 'delete' | 'update-selling-plan';
 type MutationResult = { success: boolean; message?: string } | string;
 
@@ -79,7 +79,8 @@ export function useCartMutation<
             result.message ||
             successMessage ||
             `${productTitle} updated successfully`;
-          toast.success(message);
+
+          test(message);
 
           // Invalidate cart queries
           queryClient.invalidateQueries({ queryKey: ['cart'] });
