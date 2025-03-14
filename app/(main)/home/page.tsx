@@ -60,7 +60,12 @@ export default async function HomePage() {
             ever!
           </h1>
           <p>Meet our mightyfull flavors</p>
-          <Button asChild size="md" padding="fat">
+          <Button
+            asChild
+            className="h-16 mt-10 font-black"
+            size="md"
+            padding="fat"
+          >
             <Link href={routes.shop.url} prefetch>
               SHOP NOW
             </Link>

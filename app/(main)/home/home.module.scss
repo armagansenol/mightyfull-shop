@@ -1,7 +1,11 @@
 .intro {
   @include dims(auto, calc(100vh - var(--header-height)));
   max-height: desktop-vw(700px);
-  background: linear-gradient(to bottom, var(--blue-ruin), var(--columbia-blue));
+  background: linear-gradient(
+    to bottom,
+    var(--blue-ruin) 55%,
+    var(--columbia-blue)
+  );
   padding: desktop-vw(50px) desktop-vw(80px);
   padding-bottom: desktop-vw(100px);
   position: relative;
@@ -44,10 +48,10 @@
       }
 
       &:before {
-        content: "";
+        content: '';
         @include position(absolute, 50%, auto, auto, 50%);
         @include dims(125%);
-        background: url("../../../public/img/might.svg");
+        background: url('../../../public/img/might.svg');
         background-size: contain;
         background-repeat: no-repeat;
         transform: translate(-45%, -50%);
@@ -65,10 +69,10 @@
       }
 
       &:before {
-        content: "";
+        content: '';
         @include position(absolute, auto, auto, -90%, 50%);
         @include dims(100%);
-        background: url("../../../public/img/best.svg");
+        background: url('../../../public/img/best.svg');
         background-size: contain;
         background-repeat: no-repeat;
         transform: translateX(-50%);
@@ -256,7 +260,7 @@
       }
 
       &::before {
-        content: "";
+        content: '';
         @include position(absolute, 0, 0, 0, 0);
         background-color: var(--blue-ruin);
         border-radius: desktop-vw(8px);
@@ -272,7 +276,7 @@
         color: var(--blue-ruin);
 
         &::before {
-          content: "";
+          content: '';
           background-color: transparent;
           color: var(--blue-ruin);
           border: 1px solid var(--blue-ruin);
@@ -419,11 +423,23 @@
     z-index: 100;
 
     &.cookie3 {
-      @include position(absolute, desktop-vw(200px), auto, auto, desktop-vw(1200px));
+      @include position(
+        absolute,
+        desktop-vw(200px),
+        auto,
+        auto,
+        desktop-vw(1200px)
+      );
       @include dims(desktop-vw(120px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(40px), auto, auto, mobile-vw(310px));
+        @include position(
+          absolute,
+          mobile-vw(40px),
+          auto,
+          auto,
+          mobile-vw(310px)
+        );
         @include dims(mobile-vw(50px));
       }
     }
