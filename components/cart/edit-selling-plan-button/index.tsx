@@ -181,7 +181,7 @@ function UpgradeButton({
       aria-label="Upgrade to subscription and save 10%"
       type="button"
     >
-      <span className="font-bomstad-display font-medium text-blue-ruin text-base leading-none">
+      <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
         <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
       </span>
       {isUpdating && (
@@ -227,7 +227,7 @@ function SubscriptionSelector({
           <SelectTrigger
             className={cn(
               'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
-              'text-base font-bomstad-display font-medium text-blue-ruin'
+              'text-lg font-bomstad-display font-medium text-blue-ruin'
             )}
           >
             <SelectValue placeholder={currentSellingPlanName}>
@@ -239,7 +239,7 @@ function SubscriptionSelector({
               <SelectItem
                 className={cn(
                   'w-full h-12',
-                  'text-base font-bomstad-display font-medium text-blue-ruin'
+                  'text-lg font-bomstad-display font-medium text-blue-ruin'
                 )}
                 key={plan.id}
                 value={plan.id}
