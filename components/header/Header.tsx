@@ -8,12 +8,13 @@ import Lenis from 'lenis';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { Cart } from '@/components/cart/cart';
 import { IconLogo } from '@/components/icons';
 import { Link } from '@/components/utility/link';
-import { Cart } from '@/components/cart/cart';
 import { routes } from '@/lib/constants';
 import { useLenisStore } from '@/lib/store/lenis';
 import { useTheme } from '@/lib/store/theme';
+import { CircleUserRound } from 'lucide-react';
 
 // interface HeaderProps {
 //   shopMenu?: ProductCollection[];
@@ -130,11 +131,16 @@ export default function Header() {
           <div
             className={cn(
               s.nav,
-              'flex flex-col tablet:flex-row items-center justify-between gap-20'
+              'flex flex-col tablet:flex-row items-center justify-between gap-14'
             )}
           >
-            <div className={cn(s.navItem)}>
+            <div className={cn(s.navItem, 'cursor-pointer')}>
               <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
+            </div>
+            <div className={cn(s.navItem, 'cursor-pointer')}>
+              <Link href="https://shopify.com/67633938584/account">
+                <CircleUserRound className="w-9 h-9" />
+              </Link>
             </div>
             <div
               className="hidden tablet:block cursor-pointer"
