@@ -5,6 +5,7 @@ import { Loader2Icon } from 'lucide-react';
 
 import { Price } from '@/components/price';
 import { Button } from '@/components/ui/button';
+import { motion } from 'motion/react';
 
 interface CheckoutButtonProps {
   amount: string;
@@ -34,10 +35,13 @@ export function CheckoutButton({
             Checkout
           </span>
           {amount && (
-            <span className="flex items-center justify-center text-2xl font-medium">
+            <motion.span
+              layout
+              className="flex items-center justify-center text-2xl font-medium"
+            >
               (
-              <Price amount={amount} currencyCode={currencyCode} />)
-            </span>
+              <Price animated amount={amount} currencyCode={currencyCode} />)
+            </motion.span>
           )}
         </div>
       )}

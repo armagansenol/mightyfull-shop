@@ -1,7 +1,6 @@
 .default {
   font-family: var(--font-bomstad-display);
   font-weight: 700;
-  line-height: 1;
   transition: 200ms all ease;
 }
 
@@ -10,7 +9,7 @@
   border: 1px solid var(--blue-ruin);
   color: var(--sugar-milk);
 
-  .hover-animation {
+  &.hover-animation {
     @include hover {
       &:hover {
         background-color: var(--sugar-milk);
@@ -86,7 +85,6 @@
 }
 
 .sm {
-  height: desktop-vw(40px);
   font-size: desktop-vw(16px);
 
   @include mobile {
@@ -95,7 +93,6 @@
 }
 
 .md {
-  height: desktop-vw(48px);
   font-size: desktop-vw(24px);
 
   @include mobile {

@@ -76,8 +76,8 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="flex gap-4" size="sm">
-            <BellRing />
+          <Button className="h-12 flex gap-4" colorTheme="themed" size="sm">
+            <BellRing className="w-5 h-5" />
             <span>NOTIFY ME WHEN BACK IN STOCK</span>
           </Button>
         </DialogTrigger>

@@ -109,7 +109,10 @@ function createOrUpdateCartItem(
         handle: product.handle,
         title: product.title,
         featuredImage: product.featuredImage,
-        sellingPlanGroups: product.sellingPlanGroups
+        sellingPlanGroups: product.sellingPlanGroups,
+        variants: {
+          edges: product.variants.map((variant) => ({ node: variant }))
+        }
       }
     }
   };

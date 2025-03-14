@@ -226,7 +226,7 @@ function SubscriptionSelector({
         >
           <SelectTrigger
             className={cn(
-              'w-full h-12 bg-white border border-blue-ruin rounded-lg',
+              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
               'text-base font-bomstad-display font-medium text-blue-ruin'
             )}
           >

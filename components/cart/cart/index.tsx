@@ -22,6 +22,8 @@ export function Cart() {
   const { mutate: handleCheckout, isPending: isCheckoutPending } =
     useCartCheckout();
 
+  console.log('cart lines', cart?.lines);
+
   const uniqueItemCount = cart?.lines?.length || 0;
 
   useScrollLock(open);

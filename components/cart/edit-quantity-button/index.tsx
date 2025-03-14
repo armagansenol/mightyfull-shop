@@ -101,7 +101,7 @@ export function DecrementButton({ item }: { item: CartItem }) {
 
 export function QuantityControl({
   item,
-  maxQuantity = 10
+  maxQuantity = 100
 }: {
   item: CartItem;
   maxQuantity?: number;
