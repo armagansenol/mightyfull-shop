@@ -17,8 +17,7 @@ const buttonVariants = cva(
       size: {
         sm: s.sm,
         md: s.md,
-        lg: s.lg,
-        icon: 'h-9 w-9'
+        lg: s.lg
       },
       padding: {
         fat: 'px-6 tablet:px-12 rounded-lg',
@@ -28,12 +27,12 @@ const buttonVariants = cva(
       },
       colorTheme: {
         'blue-ruin': s['blue-ruin'],
-        themed: s.themed,
         'inverted-blue-ruin': s['inverted-blue-ruin'],
         'inverted-themed': s['inverted-themed'],
         'naked-blue-ruin': s['naked-blue-ruin'],
         'naked-themed': s['naked-themed'],
-        'naked-full': s['naked-full']
+        'naked-full': s['naked-full'],
+        themed: s.themed
       }
     },
     defaultVariants: {
@@ -74,9 +73,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             variant,
             size,
             padding,
-            colorTheme,
-            className
-          })
+            colorTheme
+          }),
+          className
         )}
         ref={ref}
         {...props}

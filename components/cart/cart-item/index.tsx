@@ -1,11 +1,11 @@
 import cn from 'clsx';
 
-import { CartPrice } from '@/components/cart/cart-price';
 import { DeleteItemButton } from '@/components/cart/delete-item-button';
 import { QuantityControl } from '@/components/cart/edit-quantity-button';
 import { EditSellingPlanButton } from '@/components/cart/edit-selling-plan-button';
 import { Img } from '@/components/utility/img';
 import type { CartItem as CartLine } from '@/lib/shopify/types';
+import { Price } from '@/components/price';
 
 interface CartItemProps {
   item: CartLine;
@@ -43,11 +43,51 @@ export default function CartItem({ item }: CartItemProps) {
           </div>
           <DeleteItemButton item={item} />
         </div>
-        <CartPrice
-          amount={item.cost.totalAmount.amount}
-          currencyCode={item.cost.totalAmount.currencyCode}
-          className="absolute top-1/2 right-0 -translate-y-1/2"
-        />
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col items-end gap-1">
+          {item.sellingPlanAllocation?.sellingPlan?.id ? (
+            <>
+              {/* original price */}
+              <div className="line-through font-bomstad-display text-gray-400 text-xl font-bold">
+                <Price
+                  className="leading-none"
+                  amount={(
+                    parseFloat(
+                      item.merchandise.product.variants.edges[0].node.price
+                        .amount
+                    ) * item.quantity
+                  ).toString()}
+                  currencyCode={
+                    item.merchandise.product.variants.edges[0].node.price
+                      .currencyCode
+                  }
+                />
+              </div>
+              {/* price with discount */}
+              <div className="font-bomstad-display text-green-500 text-3xl font-bold">
+                <Price
+                  animated
+                  amount={item.cost.totalAmount.amount}
+                  currencyCode={item.cost.totalAmount.currencyCode}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="font-bomstad-display text-blue-ruin text-3xl font-bold">
+              <Price
+                animated
+                amount={(
+                  parseFloat(
+                    item.merchandise.product.variants.edges[0].node.price.amount
+                  ) * item.quantity
+                ).toString()}
+                currencyCode={
+                  item.merchandise.product.variants.edges[0].node.price
+                    .currencyCode
+                }
+              />
+            </div>
+          )}
+        </div>
       </div>
       <EditSellingPlanButton
         item={item}

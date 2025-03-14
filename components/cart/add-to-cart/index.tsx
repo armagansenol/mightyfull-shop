@@ -2,49 +2,34 @@
 
 import { IconClose } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { useMutation } from '@tanstack/react-query';
 import { BellRing, Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { addItem } from '../actions';
-
-type AddItemResponse = string | { success: boolean };
+import { useAddToCart } from '../hooks/useAddToCart';
 
 export function AddToCart({
+  buttonTheme,
   availableForSale,
+  className,
   variantId,
   amount,
   currencyCode,
-  quantity,
-  sellingPlanId
+  quantity = 1,
+  sellingPlanId,
+  productTitle = 'Item'
 }: {
+  buttonTheme?: 'inverted-blue-ruin' | 'inverted-themed';
+  className?: string;
   availableForSale: boolean;
   variantId: string;
+  productTitle?: string;
   amount?: number;
   currencyCode?: string;
   quantity?: number;
   sellingPlanId?: string;
 }) {
-  // Replace useTransition with useMutation
-  const addToCartMutation = useMutation({
-    mutationFn: async () => {
-      return (await addItem(
-        variantId,
-        quantity || 1,
-        sellingPlanId || undefined
-      )) as AddItemResponse;
-    },
-    onError: (error) => {
-      console.error('Add to cart error:', error);
-      toast.error('Failed to add item to cart. Please try again.');
-    },
-    onSuccess: (res) => {
-      if (typeof res === 'string') {
-        toast.error(res);
-      }
-      // Success is handled in cart-context
-    }
-  });
+  // Use the new hook instead of direct mutation
+  const { mutate, isPending } = useAddToCart(variantId, productTitle);
 
   const handleAddToCart = useCallback(() => {
     if (!availableForSale) {
@@ -71,39 +56,33 @@ export function AddToCart({
     }
 
     // Prevent multiple clicks while processing
-    if (addToCartMutation.isPending) return;
+    if (isPending) return;
 
-    // Execute the mutation
-    addToCartMutation.mutate();
-  }, [availableForSale, addToCartMutation]);
+    // Execute the mutation using the hook
+    mutate({ quantity, sellingPlanId });
+  }, [availableForSale, isPending, mutate, quantity, sellingPlanId]);
 
   if (!availableForSale)
     return (
-      <Button
-        className="w-full"
-        colorTheme="inverted-blue-ruin"
-        size="sm"
-        disabled
-      >
+      <Button className={className} colorTheme={buttonTheme} size="sm" disabled>
         OUT OF STOCK
       </Button>
     );
 
   return (
     <form
-      className="w-full flex"
+      className={className}
       action={async () => {
         await handleAddToCart();
       }}
     >
       <Button
-        className="w-full"
-        colorTheme="inverted-blue-ruin"
+        colorTheme={buttonTheme}
         size="sm"
         type="submit"
-        disabled={addToCartMutation.isPending}
+        disabled={isPending}
       >
-        {addToCartMutation.isPending ? (
+        {isPending ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
           <>

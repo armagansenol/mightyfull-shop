@@ -1,7 +1,6 @@
 import { SanityAssetImage } from '@/lib/sanity';
 import { PortableTextBlock } from '@portabletext/react';
 import {
-  Image,
   ProductVariant,
   SellingPlanGroup,
   Seo
@@ -191,20 +190,6 @@ export interface CartLineItem {
       value: string;
     }[];
     product: Product;
-  };
-}
-
-export interface CartProductNode {
-  id: string;
-  sellingPlanId?: string;
-  handle: string;
-  title: string;
-  featuredImage: Image;
-  variants: {
-    nodes: {
-      id: string;
-      price: ProductVariant['price'];
-    }[];
   };
 }
 

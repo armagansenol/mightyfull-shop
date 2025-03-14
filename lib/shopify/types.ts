@@ -214,6 +214,7 @@ export type CartProduct = {
       };
     }[];
   };
+  variants: Connection<ProductVariant>;
 };
 
 /**
