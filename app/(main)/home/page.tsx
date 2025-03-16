@@ -200,7 +200,7 @@ export default async function HomePage() {
               <br />
               Our journey began with a simple moment in the kitchen.
             </p>
-            <Button asChild size="md" padding="fat">
+            <Button asChild className="h-16" size="md" padding="fat">
               <Link href={routes.ourStory.url}>READ OUR STORY</Link>
             </Button>
           </div>
