@@ -1,5 +1,6 @@
 import { useCartMutation } from './useCartMutation';
 import { addItem } from '@/components/cart/actions';
+import { toast } from 'sonner';
 
 /**
  * Hook for adding an item to the cart
@@ -30,6 +31,12 @@ export function useAddToCart(variantId: string, productTitle: string) {
     merchandiseId: variantId,
     sellingPlanId: undefined, // Changed from null to undefined
     productTitle,
-    successMessage: `${productTitle} added to cart`
+    successMessage: `${productTitle} added to cart`,
+    // Add error handling for toast display
+    onError: (error: Error) => {
+      // Display error toast
+      toast.error(`Failed to add ${productTitle} to cart: ${error.message}`);
+      return error.message;
+    }
   });
 }

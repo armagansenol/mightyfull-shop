@@ -46,6 +46,19 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
   const [sellingPlanId, setSellingPlanId] = useState<string>('');
 
   useEffect(() => {
+    if (purchaseOption === PurchaseOption.oneTime) {
+      setSellingPlanId('');
+    } else if (
+      purchaseOption === PurchaseOption.subscription &&
+      shopifyProduct.sellingPlanGroups.nodes.length > 0
+    ) {
+      setSellingPlanId(
+        shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
+      );
+    }
+  }, [purchaseOption, shopifyProduct.sellingPlanGroups.nodes]);
+
+  useEffect(() => {
     if (boxRef.current) {
       boxMeasureRef(boxRef.current);
     }
@@ -139,7 +152,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                             shopifyProduct.sellingPlanGroups.nodes[0]
                               .sellingPlans.nodes[0].id
                           }
-                          value={sellingPlanId as string}
+                          value={sellingPlanId}
                           onValueChange={(value: DeliveryInterval) =>
                             setSellingPlanId(value)
                           }
@@ -175,6 +188,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                 className="w-48 tablet:w-auto h-12 tablet:h-full tablet:col-span-4"
                 quantity={quantity}
                 setQuantity={setQuantity}
+                // maxQuantity={shopifyProduct.variants[0].quantityAvailable}
               />
               <AddToCart
                 buttonTheme="inverted-themed"

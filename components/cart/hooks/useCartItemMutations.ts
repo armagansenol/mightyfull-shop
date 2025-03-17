@@ -7,9 +7,6 @@ import {
 } from '@/components/cart/actions';
 import type { CartItem } from '@/lib/shopify/types';
 
-/**
- * Hook for deleting an item from the cart
- */
 export function useDeleteCartItem(item: CartItem) {
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -27,9 +24,6 @@ export function useDeleteCartItem(item: CartItem) {
   });
 }
 
-/**
- * Hook for incrementing an item's quantity
- */
 export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -50,9 +44,6 @@ export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
   });
 }
 
-/**
- * Hook for decrementing an item's quantity
- */
 export function useDecrementCartItem(item: CartItem) {
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -69,9 +60,6 @@ export function useDecrementCartItem(item: CartItem) {
   });
 }
 
-/**
- * Hook for updating an item's selling plan
- */
 export function useUpdateSellingPlan(item: CartItem) {
   const merchandiseId = item.merchandise.id;
   const currentSellingPlanId =

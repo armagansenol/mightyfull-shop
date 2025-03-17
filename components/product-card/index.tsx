@@ -35,7 +35,7 @@ export function ProductCard({
       <div className="flex flex-row tablet:flex-col items-stretch gap-2">
         <Button
           hoverAnimation={false}
-          className="h-12 font-black"
+          className="h-10 font-black"
           colorTheme="blue-ruin"
           asChild
           size="sm"
@@ -49,7 +49,7 @@ export function ProductCard({
         </Button>
         <AddToCart
           buttonTheme="inverted-blue-ruin"
-          className="w-full h-12 font-black"
+          className="w-full h-10 font-black"
           availableForSale={availableForSale}
           variantId={variantId}
         />

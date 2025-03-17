@@ -121,6 +121,7 @@ export type ProductVariant = {
   selectedOptions: SelectedOption[];
   price: Money;
   sellingPlanAllocations: Connection<SellingPlanAllocation>;
+  quantityAvailable: number;
 };
 
 /**

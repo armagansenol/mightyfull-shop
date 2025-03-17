@@ -49,7 +49,7 @@ export default function CustomerReviews(props: CustomerReviewsProps) {
       <CardHeader className="flex flex-col items-center gap-10 px-0 py-16">
         <CardTitle className={s.title}>Customer Reviews</CardTitle>
         <Button
-          className="mx-auto tablet:ml-auto"
+          className="h-14 mx-auto tablet:ml-auto"
           colorTheme="inverted-themed"
           size="sm"
           padding="fat"
