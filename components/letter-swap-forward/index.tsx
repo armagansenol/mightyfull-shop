@@ -38,7 +38,7 @@ const LetterSwapForward = ({
   const [blocked, setBlocked] = useState(false);
 
   const startAnimation = useCallback(() => {
-    if (blocked) return;
+    if (blocked || !scope.current) return;
 
     setBlocked(true);
 
@@ -53,12 +53,12 @@ const LetterSwapForward = ({
     });
 
     animate(
-      '.letter',
+      scope.current.querySelectorAll('.letter'),
       { y: reverse ? '100%' : '-100%' },
       mergeTransition(transition)
     ).then(() => {
       animate(
-        '.letter',
+        scope.current.querySelectorAll('.letter'),
         {
           y: 0
         },
@@ -71,14 +71,14 @@ const LetterSwapForward = ({
     });
 
     animate(
-      '.letter-secondary',
+      scope.current.querySelectorAll('.letter-secondary'),
       {
         top: '0%'
       },
       mergeTransition(transition)
     ).then(() => {
       animate(
-        '.letter-secondary',
+        scope.current.querySelectorAll('.letter-secondary'),
         {
           top: reverse ? '-100%' : '100%'
         },
@@ -87,7 +87,15 @@ const LetterSwapForward = ({
         }
       );
     });
-  }, [blocked, animate, reverse, transition, staggerDuration, staggerFrom]);
+  }, [
+    blocked,
+    animate,
+    reverse,
+    transition,
+    staggerDuration,
+    staggerFrom,
+    scope
+  ]);
 
   // Expose the animation function to parent via ref
   useEffect(() => {
