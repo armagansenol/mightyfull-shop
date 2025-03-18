@@ -12,8 +12,11 @@ interface UseCartMutationOptions<TVariables extends Record<string, unknown>> {
   // The action type to perform on success
   actionType: CartActionType;
 
-  // The merchandise ID to update
-  merchandiseId: string;
+  // The line ID to update (instead of merchandise ID)
+  lineId: string;
+
+  // The merchandise ID (optional, for context updates)
+  merchandiseId?: string;
 
   // Optional selling plan ID
   sellingPlanId?: string | null;
@@ -39,7 +42,7 @@ export function useCartMutation<
 >({
   mutationFn,
   actionType,
-  merchandiseId,
+  lineId,
   sellingPlanId,
   productTitle = 'Item',
   successMessage,
@@ -63,12 +66,12 @@ export function useCartMutation<
             'newSellingPlanId' in variables
           ) {
             updateCartItemSellingPlan(
-              merchandiseId,
+              lineId,
               variables.newSellingPlanId as string | null
             );
           } else {
             updateCartItem(
-              merchandiseId,
+              lineId,
               actionType as 'plus' | 'minus' | 'delete',
               sellingPlanId || null
             );

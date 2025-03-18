@@ -8,15 +8,17 @@ import {
 import type { CartItem } from '@/lib/shopify/types';
 
 export function useDeleteCartItem(item: CartItem) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await removeItem(merchandiseId, sellingPlanId);
+      return removeItem(lineId);
     },
     actionType: 'delete',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle,
@@ -25,19 +27,17 @@ export function useDeleteCartItem(item: CartItem) {
 }
 
 export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await incrementItemQuantity(
-        merchandiseId,
-        maxQuantity,
-        sellingPlanId
-      );
+      return incrementItemQuantity(lineId, maxQuantity);
     },
     actionType: 'plus',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
@@ -45,15 +45,17 @@ export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
 }
 
 export function useDecrementCartItem(item: CartItem) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await decrementItemQuantity(merchandiseId, sellingPlanId);
+      return decrementItemQuantity(lineId);
     },
     actionType: 'minus',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
@@ -61,11 +63,10 @@ export function useDecrementCartItem(item: CartItem) {
 }
 
 export function useUpdateSellingPlan(item: CartItem) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
-
-  console.log('item', item);
 
   return useCartMutation<{
     newSellingPlanId: string | null;
@@ -73,6 +74,7 @@ export function useUpdateSellingPlan(item: CartItem) {
   }>({
     mutationFn: async ({ newSellingPlanId, onSuccess }) => {
       const result = await updateItemSellingPlanOption({
+        lineId,
         merchandiseId,
         sellingPlanId: newSellingPlanId,
         currentSellingPlanId
@@ -86,6 +88,7 @@ export function useUpdateSellingPlan(item: CartItem) {
       return result;
     },
     actionType: 'update-selling-plan',
+    lineId,
     merchandiseId,
     sellingPlanId: currentSellingPlanId,
     successMessage: 'Subscription option updated'
