@@ -52,11 +52,13 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
       purchaseOption === PurchaseOption.subscription &&
       shopifyProduct.sellingPlanGroups.nodes.length > 0
     ) {
-      setSellingPlanId(
-        shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
-      );
+      if (!sellingPlanId) {
+        setSellingPlanId(
+          shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
+        );
+      }
     }
-  }, [purchaseOption, shopifyProduct.sellingPlanGroups.nodes]);
+  }, [purchaseOption, shopifyProduct.sellingPlanGroups.nodes, sellingPlanId]);
 
   useEffect(() => {
     if (boxRef.current) {
