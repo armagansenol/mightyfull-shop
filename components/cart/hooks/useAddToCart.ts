@@ -28,6 +28,7 @@ export function useAddToCart(variantId: string, productTitle: string) {
       return result;
     },
     actionType: 'plus', // Using 'plus' since we're adding to the cart
+    lineId: '', // Adding an empty lineId as we're adding a new item
     merchandiseId: variantId,
     sellingPlanId: undefined, // Changed from null to undefined
     productTitle,
