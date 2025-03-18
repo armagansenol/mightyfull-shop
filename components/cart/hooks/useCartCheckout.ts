@@ -17,6 +17,7 @@ export function useCartCheckout() {
       }
     },
     actionType: 'delete',
+    lineId: 'checkout',
     merchandiseId: 'checkout',
     successMessage: 'Redirecting to checkout...'
   });
