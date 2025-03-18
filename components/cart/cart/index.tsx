@@ -8,8 +8,9 @@ import { CartHeader } from '@/components/cart/cart-header';
 import { CartTrigger } from '@/components/cart/cart-trigger';
 import { useCartCheckout } from '@/components/cart/hooks/useCartCheckout';
 import { useCartInitialization } from '@/components/cart/hooks/useCartInitialization';
-import { useScrollLock } from '@/components/cart/hooks/useScrollLock';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+import { useScrollLock } from '@/hooks/use-scroll-lock';
 
 export function Cart() {
   const [open, setOpen] = useState(false);
