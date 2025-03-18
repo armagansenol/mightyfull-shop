@@ -57,6 +57,11 @@ const LetterSwapForward = ({
       { y: reverse ? '100%' : '-100%' },
       mergeTransition(transition)
     ).then(() => {
+      if (!scope.current) {
+        setBlocked(false);
+        return;
+      }
+
       animate(
         scope.current.querySelectorAll('.letter'),
         {
@@ -77,6 +82,8 @@ const LetterSwapForward = ({
       },
       mergeTransition(transition)
     ).then(() => {
+      if (!scope.current) return;
+
       animate(
         scope.current.querySelectorAll('.letter-secondary'),
         {
