@@ -421,16 +421,22 @@ export async function updateItemSellingPlanOption(payload: {
 
   try {
     return await withCartCleanup(cartId, async () => {
+      // Get the current cart and line item before any modifications
+      const cart = await getCart(cartId);
+      const lineItem = cart?.lines.find((line) => line.id === lineId);
+
+      if (!lineItem) {
+        return 'Item not found in cart';
+      }
+
+      const quantity = lineItem.quantity;
+
       // If we're trying to reset to one-time purchase (sellingPlanId is null)
       if (sellingPlanId === null) {
         // First, remove the item
         await removeFromCart(cartId, [lineId]);
 
-        // Then add it back without a selling plan
-        const cart = await getCart(cartId);
-        const lineItem = cart?.lines.find((line) => line.id === lineId);
-        const quantity = lineItem?.quantity || 1;
-
+        // Then add it back without a selling plan, using the preserved quantity
         await addToCart(cartId, [
           {
             merchandiseId,
@@ -440,11 +446,6 @@ export async function updateItemSellingPlanOption(payload: {
         ]);
       } else {
         // For adding or changing a subscription, use the normal update approach
-        const cart = await getCart(cartId);
-        const lineItem = cart?.lines.find((line) => line.id === lineId);
-        const quantity = lineItem?.quantity || 1;
-
-        // Create the update object
         const updateObject = {
           id: lineId,
           merchandiseId,
