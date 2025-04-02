@@ -247,7 +247,8 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
           id: item.merchandise.id,
           title: item.merchandise.product.title,
           quantity: item.quantity,
-          amount: item.cost.totalAmount.amount
+          amount: item.cost.totalAmount.amount,
+          sellingPlanId: item.sellingPlanAllocation?.sellingPlan?.id
         }))
       });
       return initialCart;

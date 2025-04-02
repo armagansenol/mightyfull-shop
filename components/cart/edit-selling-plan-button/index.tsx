@@ -49,6 +49,116 @@ function ResetButton({
   );
 }
 
+function UpgradeButton({
+  isUpdating,
+  onClick
+}: {
+  isUpdating: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      className={cn(
+        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
+        isUpdating && 'pointer-events-none'
+      )}
+      onClick={onClick}
+      tabIndex={0}
+      aria-label="Upgrade to subscription and save 10%"
+      type="button"
+    >
+      <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
+        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
+      </span>
+      {isUpdating && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+        </motion.div>
+      )}
+    </button>
+  );
+}
+
+function SubscriptionSelector({
+  currentSellingPlanId,
+  currentSellingPlanName,
+  sellingPlans,
+  isUpdating,
+  onSellingPlanChange,
+  onReset,
+  item
+}: {
+  currentSellingPlanId: string | null;
+  currentSellingPlanName: string | undefined;
+  sellingPlans: { id: string; name: string }[];
+  isUpdating: boolean;
+  onSellingPlanChange: (id: string) => void;
+  onReset: () => void;
+  item: CartItem;
+}) {
+  return (
+    <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
+      <div className="flex-1">
+        <Select
+          value={currentSellingPlanId || ''}
+          disabled={isUpdating}
+          onValueChange={onSellingPlanChange}
+        >
+          <SelectTrigger
+            className={cn(
+              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
+              'text-lg font-bomstad-display font-medium text-blue-ruin'
+            )}
+          >
+            <SelectValue placeholder={currentSellingPlanName}>
+              {currentSellingPlanName}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            {sellingPlans.map((plan) => (
+              <SelectItem
+                className={cn(
+                  'w-full h-12',
+                  'text-lg font-bomstad-display font-medium text-blue-ruin'
+                )}
+                key={plan.id}
+                value={plan.id}
+              >
+                {plan.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <ResetButton
+        onClick={onReset}
+        disabled={isUpdating || !currentSellingPlanId}
+        isLoading={isUpdating && currentSellingPlanId === null}
+        ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
+      />
+
+      {isUpdating && currentSellingPlanId !== null && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 export function EditSellingPlanButton({
   item,
   sellingPlanGroups
@@ -159,116 +269,6 @@ export function EditSellingPlanButton({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-function UpgradeButton({
-  isUpdating,
-  onClick
-}: {
-  isUpdating: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className={cn(
-        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
-        isUpdating && 'pointer-events-none'
-      )}
-      onClick={onClick}
-      tabIndex={0}
-      aria-label="Upgrade to subscription and save 10%"
-      type="button"
-    >
-      <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
-        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
-      </span>
-      {isUpdating && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-        </motion.div>
-      )}
-    </button>
-  );
-}
-
-function SubscriptionSelector({
-  currentSellingPlanId,
-  currentSellingPlanName,
-  sellingPlans,
-  isUpdating,
-  onSellingPlanChange,
-  onReset,
-  item
-}: {
-  currentSellingPlanId: string | null;
-  currentSellingPlanName: string | undefined;
-  sellingPlans: { id: string; name: string }[];
-  isUpdating: boolean;
-  onSellingPlanChange: (id: string) => void;
-  onReset: () => void;
-  item: CartItem;
-}) {
-  return (
-    <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
-      <div className="flex-1">
-        <Select
-          value={currentSellingPlanId || ''}
-          disabled={isUpdating}
-          onValueChange={onSellingPlanChange}
-        >
-          <SelectTrigger
-            className={cn(
-              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
-              'text-lg font-bomstad-display font-medium text-blue-ruin'
-            )}
-          >
-            <SelectValue placeholder={currentSellingPlanName}>
-              {currentSellingPlanName}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            {sellingPlans.map((plan) => (
-              <SelectItem
-                className={cn(
-                  'w-full h-12',
-                  'text-lg font-bomstad-display font-medium text-blue-ruin'
-                )}
-                key={plan.id}
-                value={plan.id}
-              >
-                {plan.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <ResetButton
-        onClick={onReset}
-        disabled={isUpdating || !currentSellingPlanId}
-        isLoading={isUpdating && currentSellingPlanId === null}
-        ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
-      />
-
-      {isUpdating && currentSellingPlanId !== null && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-        </motion.div>
-      )}
     </div>
   );
 }

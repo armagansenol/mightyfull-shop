@@ -426,11 +426,27 @@ export type CartUpdateLineItem = CartLineItem & {
 };
 
 /**
+ * Represents a selling plan update line item
+ */
+export type CartSellingPlanUpdateLineItem = {
+  id: string;
+  sellingPlanId?: string | null;
+};
+
+/**
  * Represents a cart update operation
  */
 export type ShopifyUpdateCartOperation = BaseOperation<
   { cartLinesUpdate: { cart: ShopifyCart } },
   { cartId: string; lines: CartUpdateLineItem[] }
+>;
+
+/**
+ * Represents a selling plan update operation
+ */
+export type ShopifyUpdateSellingPlanOperation = BaseOperation<
+  { cartLinesUpdate: { cart: ShopifyCart } },
+  { cartId: string; lines: CartSellingPlanUpdateLineItem[] }
 >;
 
 /**

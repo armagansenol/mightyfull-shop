@@ -64,7 +64,6 @@ export function useDecrementCartItem(item: CartItem) {
 
 export function useUpdateSellingPlan(item: CartItem) {
   const lineId = item.id!;
-  const merchandiseId = item.merchandise.id;
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
 
@@ -75,9 +74,7 @@ export function useUpdateSellingPlan(item: CartItem) {
     mutationFn: async ({ newSellingPlanId, onSuccess }) => {
       const result = await updateItemSellingPlanOption({
         lineId,
-        merchandiseId,
-        sellingPlanId: newSellingPlanId,
-        currentSellingPlanId
+        sellingPlanId: newSellingPlanId
       });
 
       // Call the onSuccess callback if provided and the operation was successful
@@ -89,7 +86,7 @@ export function useUpdateSellingPlan(item: CartItem) {
     },
     actionType: 'update-selling-plan',
     lineId,
-    merchandiseId,
+    merchandiseId: item.merchandise.id,
     sellingPlanId: currentSellingPlanId,
     successMessage: 'Subscription option updated'
   });

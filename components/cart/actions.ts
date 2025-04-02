@@ -5,7 +5,8 @@ import {
   createCart,
   getCart,
   removeFromCart,
-  updateCart
+  updateCart,
+  updateCartSellingPlan
 } from '@/lib/shopify';
 import { TAGS } from '@/lib/constants';
 
@@ -403,9 +404,7 @@ export async function createCartAndSetCookie() {
 
 export async function updateItemSellingPlanOption(payload: {
   lineId: string;
-  merchandiseId: string;
   sellingPlanId: string | null;
-  currentSellingPlanId?: string | null;
 }) {
   const cartId = await cookies().get('cartId')?.value;
 
@@ -413,10 +412,10 @@ export async function updateItemSellingPlanOption(payload: {
     return 'Missing cart ID';
   }
 
-  const { lineId, merchandiseId, sellingPlanId } = payload;
+  const { lineId, sellingPlanId } = payload;
 
-  if (!lineId || !merchandiseId) {
-    return 'Missing required information';
+  if (!lineId) {
+    return 'Missing line ID';
   }
 
   try {
@@ -429,32 +428,13 @@ export async function updateItemSellingPlanOption(payload: {
         return 'Item not found in cart';
       }
 
-      const quantity = lineItem.quantity;
-
-      // If we're trying to reset to one-time purchase (sellingPlanId is null)
-      if (sellingPlanId === null) {
-        // First, remove the item
-        await removeFromCart(cartId, [lineId]);
-
-        // Then add it back without a selling plan, using the preserved quantity
-        await addToCart(cartId, [
-          {
-            merchandiseId,
-            quantity
-            // No sellingPlanId property at all
-          }
-        ]);
-      } else {
-        // For adding or changing a subscription, use the normal update approach
-        const updateObject = {
+      // Update the line item with the new selling plan (or null for one-time purchase)
+      await updateCartSellingPlan(cartId, [
+        {
           id: lineId,
-          merchandiseId,
-          quantity,
-          sellingPlanId
-        };
-
-        await updateCart(cartId, [updateObject]);
-      }
+          sellingPlanId: sellingPlanId || null
+        }
+      ]);
 
       revalidateTag(TAGS.cart);
 

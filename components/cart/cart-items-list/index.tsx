@@ -15,14 +15,12 @@ interface CartItemsListProps {
 }
 
 export function CartItemsList({ cart, updateCartItem }: CartItemsListProps) {
-  const reversedCartLines = [...cart.lines].reverse();
-
   return (
     <ScrollableBox
       wrapperClassName="flex flex-col flex-1"
       contentClassName="flex-1 py-6 space-y-10"
     >
-      {reversedCartLines.map((item) => (
+      {cart.lines.map((item) => (
         <div key={item.id}>
           <CartItem item={item} updateCartItem={updateCartItem} />
         </div>

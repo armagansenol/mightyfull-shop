@@ -27,6 +27,7 @@ import {
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
   ShopifyUpdateCartOperation,
+  ShopifyUpdateSellingPlanOperation,
   ShopifyShop,
   ShopifyShopOperation
 } from './types';
@@ -231,6 +232,25 @@ export async function updateCart(
   }[]
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
+    query: editCartItemsMutation,
+    variables: {
+      cartId,
+      lines
+    },
+    cache: 'no-store'
+  });
+
+  return reshapeCart(res.body.data.cartLinesUpdate.cart);
+}
+
+export async function updateCartSellingPlan(
+  cartId: string,
+  lines: {
+    id: string;
+    sellingPlanId?: string | null;
+  }[]
+): Promise<Cart> {
+  const res = await shopifyFetch<ShopifyUpdateSellingPlanOperation>({
     query: editCartItemsMutation,
     variables: {
       cartId,
