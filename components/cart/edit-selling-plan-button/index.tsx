@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import type { CartItem } from '@/lib/shopify/types';
+import { CartItem } from '@/lib/shopify/types';
 
 function ResetButton({
   onClick,
@@ -41,7 +41,7 @@ function ResetButton({
       aria-label={ariaLabel}
     >
       {isLoading ? (
-        <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+        <Loader2 className="h-4 w-4 animate-spin text-blue-ruin" />
       ) : (
         <IconClose fill="var(--blue-ruin)" />
       )}
@@ -78,7 +78,7 @@ function UpgradeButton({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
         </motion.div>
       )}
     </button>
@@ -152,7 +152,7 @@ function SubscriptionSelector({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
+          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
         </motion.div>
       )}
     </div>
@@ -230,15 +230,19 @@ export function EditSellingPlanButton({
   const showSelectionUI = selectActive || currentSellingPlanId !== null;
 
   return (
-    <div className={cn({ 'opacity-75': isUpdating })}>
-      <AnimatePresence mode="wait">
+    <div
+      className={cn('transition-opacity duration-700', {
+        'opacity-75': isUpdating
+      })}
+    >
+      <AnimatePresence mode="popLayout">
         {showUpgradeButton && (
           <motion.div
             key="upgrade-button"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
             <UpgradeButton
               isUpdating={isUpdating}
@@ -255,7 +259,7 @@ export function EditSellingPlanButton({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
             <SubscriptionSelector
               currentSellingPlanId={currentSellingPlanId}

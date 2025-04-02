@@ -1,12 +1,7 @@
-import { useCartMutation } from './useCartMutation';
 import { addItem } from '@/components/cart/actions';
 import { toast } from 'sonner';
+import { useCartMutation } from './useCartMutation';
 
-/**
- * Hook for adding an item to the cart
- * @param variantId The ID of the product variant to add
- * @param productTitle The title of the product (for notifications)
- */
 export function useAddToCart(variantId: string, productTitle: string) {
   return useCartMutation<{
     quantity?: number;

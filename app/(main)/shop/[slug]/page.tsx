@@ -2,7 +2,6 @@ import s from './product-detail-page.module.scss';
 
 import { cn, extractShopifyId } from '@/lib/utils';
 
-import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
@@ -25,6 +24,7 @@ import { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
 import { LayoutQueryResponse } from '@/types/layout';
 
+import OkendoWidget from '@/components/okendo-widget';
 import { ProductCard } from '@/components/product-card';
 import { getRelatedProducts } from '@/lib/actions/related-products';
 import s1 from '@/public/img/s-1.jpg';
@@ -167,7 +167,10 @@ export default async function ProductDetialPage({
           <div className={s.cloudTop}>
             <IconCloud fill="var(--text-color)" />
           </div>
-          {shopifyProduct && <CustomerReviews productId={productId} />}
+          {/* {shopifyProduct && <CustomerReviews productId={productId} />} */}
+          <div className="h-[500px]">
+            <OkendoWidget productId={productId} />
+          </div>
           <div className={s.cloudBottom}>
             <IconCloud rotate={180} fill="var(--text-color)" />
           </div>

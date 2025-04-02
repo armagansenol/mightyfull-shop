@@ -283,6 +283,34 @@ export type Cart = Omit<ShopifyCart, 'lines'> & {
   lines: CartItem[];
 };
 
+export interface CartLine {
+  id?: string;
+  merchandise: {
+    id: string;
+  };
+  quantity: number;
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      id: string;
+      name: string;
+      description: string;
+      priceAdjustments: {
+        adjustmentValue: {
+          adjustmentPercentage?: number;
+          adjustmentAmount?: {
+            amount: string;
+            currencyCode: string;
+          };
+          price?: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
+      }[];
+    } | null;
+  } | null;
+}
+
 // ===== Selling Plan Types =====
 
 /**

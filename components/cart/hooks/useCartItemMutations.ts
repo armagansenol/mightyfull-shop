@@ -26,7 +26,7 @@ export function useDeleteCartItem(item: CartItem) {
   });
 }
 
-export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
+export function useIncrementCartItem(item: CartItem, maxQuantity?: number) {
   const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -74,7 +74,7 @@ export function useUpdateSellingPlan(item: CartItem) {
     mutationFn: async ({ newSellingPlanId, onSuccess }) => {
       const result = await updateItemSellingPlanOption({
         lineId,
-        sellingPlanId: newSellingPlanId
+        sellingPlanId: newSellingPlanId || null
       });
 
       // Call the onSuccess callback if provided and the operation was successful

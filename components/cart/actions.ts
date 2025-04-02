@@ -1,14 +1,8 @@
 'use server';
 
-import {
-  addToCart,
-  createCart,
-  getCart,
-  removeFromCart,
-  updateCart,
-  updateCartSellingPlan
-} from '@/lib/shopify';
-import { TAGS } from '@/lib/constants';
+import { CartOperationType, TAGS } from '@/lib/constants';
+import { cartService } from '@/lib/shopify';
+import { Cart, CartLine } from '@/lib/shopify/types';
 
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -24,7 +18,7 @@ async function cleanupZeroQuantityItems(
   maxRetries = 2
 ): Promise<boolean> {
   try {
-    const cart = await getCart(cartId);
+    const cart = await cartService.get(cartId);
 
     if (!cart) {
       return false;
@@ -65,11 +59,11 @@ async function cleanupZeroQuantityItems(
       );
 
       // Perform the removal
-      await removeFromCart(cartId, lineIdsToRemove);
+      await cartService.remove(cartId, lineIdsToRemove);
       revalidateTag(TAGS.cart);
 
       // Verify removal was successful
-      const updatedCart = await getCart(cartId);
+      const updatedCart = await cartService.get(cartId);
       const remainingZeroItems =
         updatedCart?.lines.filter((line) => line.quantity === 0) || [];
 
@@ -163,17 +157,73 @@ function formatErrorForToast(error: unknown): string {
   return 'An unexpected error occurred. Please try again.';
 }
 
-export async function addItem(
-  selectedVariantId: string | undefined,
-  quantity: number,
-  sellingPlanId?: string | undefined
-) {
-  const cartId = await cookies().get('cartId')?.value;
+/**
+ * Utility function to get cart ID from cookies
+ */
+function getCartId(): string | undefined {
+  return cookies().get('cartId')?.value;
+}
 
+/**
+ * Utility function to validate cart ID
+ */
+function validateCartId(cartId: string | undefined): {
+  success: boolean;
+  message?: string;
+} {
   if (!cartId) {
     return {
       success: false,
       message: 'Missing cart ID. Please refresh the page and try again.'
+    };
+  }
+  return { success: true };
+}
+
+/**
+ * Utility function to handle common cart operations with error handling
+ */
+async function withCartOperation<T>(
+  operation: () => Promise<T>,
+  errorMessage: string
+): Promise<T | { success: false; message: string }> {
+  try {
+    return await operation();
+  } catch (e) {
+    console.error(errorMessage, e);
+    return {
+      success: false,
+      message: formatErrorForToast(e)
+    };
+  }
+}
+
+function findLineItem(
+  cart: Cart,
+  merchandiseId: string,
+  sellingPlanId?: string | null
+): CartLine | undefined {
+  return cart.lines.find(
+    (line) =>
+      line.merchandise.id === merchandiseId &&
+      ((sellingPlanId &&
+        line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+        (!sellingPlanId && !line.sellingPlanAllocation))
+  );
+}
+
+export async function addItem(
+  selectedVariantId: string | undefined,
+  quantity: number,
+  sellingPlanId?: string
+) {
+  const cartId = getCartId();
+  const validation = validateCartId(cartId);
+
+  if (!validation.success) {
+    return {
+      success: false,
+      message: validation.message
     };
   }
 
@@ -189,74 +239,61 @@ export async function addItem(
     quantity = 1;
   }
 
-  try {
-    return await withCartCleanup(cartId, async () => {
+  return await withCartOperation(async () => {
+    return await withCartCleanup(cartId!, async () => {
       // First check if this item already exists in the cart
-      const currentCart = await getCart(cartId);
+      const currentCart = await cartService.get(cartId!);
 
       if (currentCart) {
         // Find existing line items with the same variant and selling plan
-        const existingItems = currentCart.lines.filter(
-          (line) =>
-            line.merchandise.id === selectedVariantId &&
-            // Match items with the same selling plan status
-            ((sellingPlanId &&
-              line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
-              // Or match items with no selling plan when sellingPlanId is null/undefined
-              (!sellingPlanId && !line.sellingPlanAllocation))
+        const existingItem = findLineItem(
+          currentCart,
+          selectedVariantId,
+          sellingPlanId
         );
 
-        // If we found existing items, update them instead of adding new ones
-        if (existingItems.length > 0) {
-          // Get the first non-zero quantity item, or the first item if all are zero
-          const itemToUpdate =
-            existingItems.find((item) => item.quantity > 0) || existingItems[0];
+        // If we found an existing item, update it
+        if (existingItem && existingItem.id) {
+          const newQuantity =
+            (existingItem.quantity > 0 ? existingItem.quantity : 0) + quantity;
 
-          if (itemToUpdate && itemToUpdate.id) {
-            const newQuantity =
-              (itemToUpdate.quantity > 0 ? itemToUpdate.quantity : 0) +
-              quantity;
+          // Update the existing item
+          await cartService.update(cartId!, [
+            {
+              id: existingItem.id,
+              merchandiseId: selectedVariantId,
+              quantity: newQuantity,
+              sellingPlanId: sellingPlanId
+            }
+          ]);
 
-            // Update the existing item
-            await updateCart(cartId, [
-              {
-                id: itemToUpdate.id,
-                merchandiseId: selectedVariantId,
-                quantity: newQuantity,
-                sellingPlanId: sellingPlanId || undefined
-              }
-            ]);
+          revalidateTag(TAGS.cart);
 
-            revalidateTag(TAGS.cart);
-
-            return {
-              success: true,
-              message: 'Item quantity updated successfully'
-            };
-          }
+          return {
+            success: true,
+            message: 'Item quantity updated successfully'
+          };
         }
       }
 
       // If no existing items or couldn't update, add as new
-      await addToCart(cartId, [
-        { merchandiseId: selectedVariantId, sellingPlanId, quantity }
+      await cartService.add(cartId!, [
+        {
+          merchandiseId: selectedVariantId,
+          quantity,
+          ...(sellingPlanId && { sellingPlanId })
+        }
       ]);
 
       revalidateTag(TAGS.cart);
 
       return { success: true, message: 'Item added to cart successfully' };
     });
-  } catch (e) {
-    console.error('Error adding item to cart:', e);
-    return {
-      success: false,
-      message: formatErrorForToast(e)
-    };
-  }
+  }, 'Error adding item to cart:');
 }
 
 export async function removeItem(lineId: string) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -268,7 +305,7 @@ export async function removeItem(lineId: string) {
 
   try {
     return await withCartCleanup(cartId, async () => {
-      await removeFromCart(cartId, [lineId]);
+      await cartService.remove(cartId, [lineId]);
       revalidateTag(TAGS.cart);
 
       return { success: true, message: 'Item removed from cart' };
@@ -283,7 +320,7 @@ export async function updateItemQuantity(payload: {
   merchandiseId: string;
   quantity: number;
 }) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -297,7 +334,7 @@ export async function updateItemQuantity(payload: {
 
   try {
     return await withCartCleanup(cartId, async () => {
-      const cart = await getCart(cartId);
+      const cart = await cartService.get(cartId);
 
       if (!cart) {
         return 'Error fetching cart';
@@ -309,9 +346,9 @@ export async function updateItemQuantity(payload: {
 
       if (lineItem && lineItem.id) {
         if (quantity === 0) {
-          await removeFromCart(cartId, [lineItem.id]);
+          await cartService.remove(cartId, [lineItem.id]);
         } else {
-          await updateCart(cartId, [
+          await cartService.update(cartId, [
             {
               id: lineItem.id,
               merchandiseId,
@@ -321,7 +358,7 @@ export async function updateItemQuantity(payload: {
         }
       } else if (quantity > 0) {
         // If the item doesn't exist in the cart and quantity > 0, add it
-        await addToCart(cartId, [{ merchandiseId, quantity }]);
+        await cartService.add(cartId, [{ merchandiseId, quantity }]);
       }
 
       revalidateTag(TAGS.cart);
@@ -335,13 +372,13 @@ export async function updateItemQuantity(payload: {
 
 export async function redirectToCheckout() {
   try {
-    const cartId = await cookies().get('cartId')?.value;
+    const cartId = cookies().get('cartId')?.value;
 
     if (!cartId) {
       throw new Error('No cart found. Please add items to your cart first.');
     }
 
-    const cart = await getCart(cartId);
+    const cart = await cartService.get(cartId);
 
     if (!cart) {
       throw new Error('Unable to find your cart. Please try again.');
@@ -367,13 +404,13 @@ export async function redirectToCheckout() {
 }
 
 export async function createCartAndSetCookie() {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const existingCartId = cookieStore.get('cartId')?.value;
 
   // Check if there's an existing cart first
   if (existingCartId) {
     try {
-      const existingCart = await getCart(existingCartId);
+      const existingCart = await cartService.get(existingCartId);
       if (existingCart) {
         return existingCart;
       }
@@ -385,7 +422,7 @@ export async function createCartAndSetCookie() {
 
   // Only create new cart if no existing valid cart is found
   try {
-    const cart = await createCart();
+    const cart = await cartService.create();
 
     // Set the cart cookie with a 30-day expiration
     cookieStore.set('cartId', cart.id!, {
@@ -406,7 +443,7 @@ export async function updateItemSellingPlanOption(payload: {
   lineId: string;
   sellingPlanId: string | null;
 }) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -421,7 +458,7 @@ export async function updateItemSellingPlanOption(payload: {
   try {
     return await withCartCleanup(cartId, async () => {
       // Get the current cart and line item before any modifications
-      const cart = await getCart(cartId);
+      const cart = await cartService.get(cartId);
       const lineItem = cart?.lines.find((line) => line.id === lineId);
 
       if (!lineItem) {
@@ -429,10 +466,10 @@ export async function updateItemSellingPlanOption(payload: {
       }
 
       // Update the line item with the new selling plan (or null for one-time purchase)
-      await updateCartSellingPlan(cartId, [
+      await cartService.updateSellingPlan(cartId, [
         {
           id: lineId,
-          sellingPlanId: sellingPlanId || null
+          sellingPlanId: sellingPlanId
         }
       ]);
 
@@ -458,14 +495,14 @@ export async function updateItemSellingPlanOption(payload: {
  */
 export async function batchUpdateCart(
   operations: {
-    type: 'add' | 'remove' | 'update';
+    type: CartOperationType;
     merchandiseId: string;
     quantity?: number;
     sellingPlanId?: string | null;
-    currentSellingPlanId?: string | null;
+    currentSellingPlanId?: string;
   }[]
 ) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return {
@@ -476,7 +513,7 @@ export async function batchUpdateCart(
 
   try {
     return await withCartCleanup(cartId, async () => {
-      const cart = await getCart(cartId);
+      const cart = await cartService.get(cartId);
 
       if (!cart) {
         return { success: false, message: 'Error fetching cart' };
@@ -506,11 +543,15 @@ export async function batchUpdateCart(
           currentSellingPlanId
         } = operation;
 
-        // Convert null sellingPlanId to undefined as required by the API
-        const formattedSellingPlanId =
-          sellingPlanId === null ? undefined : sellingPlanId;
+        // For one-time purchases, omit sellingPlanId entirely
+        // For subscriptions, include the sellingPlanId
+        const formattedOperation = {
+          merchandiseId,
+          quantity,
+          ...(sellingPlanId && { sellingPlanId })
+        };
 
-        if (type === 'add') {
+        if (type === CartOperationType.ADD) {
           // Check if this item is already in the cart with the same selling plan
           const existingLine = cart.lines.find(
             (line) =>
@@ -527,19 +568,13 @@ export async function batchUpdateCart(
             // If it exists and has an ID, update it instead of adding
             updateOperations.push({
               id: existingLine.id,
-              merchandiseId,
-              quantity: existingLine.quantity + quantity,
-              sellingPlanId: formattedSellingPlanId
+              ...formattedOperation
             });
           } else {
             // Otherwise add it
-            addOperations.push({
-              merchandiseId,
-              quantity,
-              sellingPlanId: formattedSellingPlanId
-            });
+            addOperations.push(formattedOperation);
           }
-        } else if (type === 'remove') {
+        } else if (type === CartOperationType.REMOVE) {
           // Find the line item matching both merchandiseId and sellingPlanId
           const lineItem = cart.lines.find(
             (line) =>
@@ -555,7 +590,7 @@ export async function batchUpdateCart(
           if (lineItem && lineItem.id) {
             removeLineIds.push(lineItem.id);
           }
-        } else if (type === 'update') {
+        } else if (type === CartOperationType.UPDATE) {
           // For updates, we need to find the item with the current selling plan
           const lineItem = cart.lines.find(
             (line) =>
@@ -574,18 +609,12 @@ export async function batchUpdateCart(
             } else {
               updateOperations.push({
                 id: lineItem.id,
-                merchandiseId,
-                quantity,
-                sellingPlanId: formattedSellingPlanId
+                ...formattedOperation
               });
             }
           } else if (quantity > 0) {
             // If the item doesn't exist in the cart and quantity > 0, add it
-            addOperations.push({
-              merchandiseId,
-              quantity,
-              sellingPlanId: formattedSellingPlanId
-            });
+            addOperations.push(formattedOperation);
           }
         }
       }
@@ -593,10 +622,14 @@ export async function batchUpdateCart(
       // Execute the grouped operations
       await Promise.all([
         // Only call APIs if there are operations to perform
-        addOperations.length > 0 ? addToCart(cartId, addOperations) : null,
-        removeLineIds.length > 0 ? removeFromCart(cartId, removeLineIds) : null,
+        addOperations.length > 0
+          ? cartService.add(cartId, addOperations)
+          : null,
+        removeLineIds.length > 0
+          ? cartService.remove(cartId, removeLineIds)
+          : null,
         updateOperations.length > 0
-          ? updateCart(cartId, updateOperations)
+          ? cartService.update(cartId, updateOperations)
           : null
       ]);
 
@@ -622,9 +655,9 @@ export async function batchUpdateCart(
 
 export async function incrementItemQuantity(
   lineId: string,
-  maxQuantity: number = 10
+  maxQuantity?: number
 ) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -636,7 +669,7 @@ export async function incrementItemQuantity(
 
   try {
     return await withCartCleanup(cartId, async () => {
-      const cart = await getCart(cartId);
+      const cart = await cartService.get(cartId);
 
       if (!cart) {
         return 'Error fetching cart';
@@ -650,7 +683,7 @@ export async function incrementItemQuantity(
       }
 
       // Don't increment if already at max quantity
-      if (lineItem.quantity >= maxQuantity) {
+      if (maxQuantity !== undefined && lineItem.quantity >= maxQuantity) {
         return {
           success: false,
           message: `Maximum quantity (${maxQuantity}) reached`
@@ -659,13 +692,12 @@ export async function incrementItemQuantity(
 
       const newQuantity = lineItem.quantity + 1;
 
-      await updateCart(cartId, [
+      await cartService.update(cartId, [
         {
           id: lineId,
           merchandiseId: lineItem.merchandise.id,
           quantity: newQuantity,
-          sellingPlanId:
-            lineItem.sellingPlanAllocation?.sellingPlan?.id || undefined
+          sellingPlanId: lineItem.sellingPlanAllocation?.sellingPlan?.id
         }
       ]);
 
@@ -683,7 +715,7 @@ export async function incrementItemQuantity(
 }
 
 export async function decrementItemQuantity(lineId: string) {
-  const cartId = await cookies().get('cartId')?.value;
+  const cartId = cookies().get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -695,7 +727,7 @@ export async function decrementItemQuantity(lineId: string) {
 
   try {
     return await withCartCleanup(cartId, async () => {
-      const cart = await getCart(cartId);
+      const cart = await cartService.get(cartId);
 
       if (!cart) {
         return 'Error fetching cart';
@@ -710,7 +742,7 @@ export async function decrementItemQuantity(lineId: string) {
 
       // If quantity is 1, remove the item
       if (lineItem.quantity <= 1) {
-        await removeFromCart(cartId, [lineId]);
+        await cartService.remove(cartId, [lineId]);
         revalidateTag(TAGS.cart);
         return {
           success: true,
@@ -721,13 +753,12 @@ export async function decrementItemQuantity(lineId: string) {
         // Otherwise decrement the quantity
         const newQuantity = lineItem.quantity - 1;
 
-        await updateCart(cartId, [
+        await cartService.update(cartId, [
           {
             id: lineId,
             merchandiseId: lineItem.merchandise.id,
             quantity: newQuantity,
-            sellingPlanId:
-              lineItem.sellingPlanAllocation?.sellingPlan?.id || undefined
+            sellingPlanId: lineItem.sellingPlanAllocation?.sellingPlan?.id
           }
         ]);
 
