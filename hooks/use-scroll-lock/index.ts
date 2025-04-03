@@ -1,12 +1,12 @@
+import { useLenis } from 'lenis/react';
 import { useEffect } from 'react';
-import { useLenisStore } from '@/lib/store/lenis';
 
 /**
  * Custom hook to lock/unlock scrolling when a modal or drawer is open
  * @param isOpen Whether the modal/drawer is open
  */
 export function useScrollLock(isOpen: boolean) {
-  const { lenis } = useLenisStore();
+  const lenis = useLenis();
 
   useEffect(() => {
     if (isOpen) {

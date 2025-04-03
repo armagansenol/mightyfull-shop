@@ -3,12 +3,12 @@
 import s from './purchase-panel.module.scss';
 
 import { cn } from '@/lib/utils';
-import { useGSAP } from '@gsap/react';
 import { useMeasure } from '@uidotdev/usehooks';
 import { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 
 import { AddToCart } from '@/components/cart/add-to-cart';
+import { ScrollTrigger, gsap, useGSAP } from '@/components/gsap';
 import { OutOfStock } from '@/components/out-of-stock';
 import { Quantity } from '@/components/quantity';
 import { Label } from '@/components/ui/label';
@@ -20,8 +20,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-
-import { ScrollTrigger } from '@/lib/gsap';
 import { Product } from '@/lib/shopify/types';
 import { DeliveryInterval, PurchaseOption } from '@/types';
 
@@ -74,6 +72,8 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
 
   useGSAP(
     () => {
+      gsap.registerPlugin(ScrollTrigger);
+
       if (!isWiderThanTablet) return;
       if (!triggerRef.current || !boxRef.current) return;
 
@@ -97,7 +97,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
     <div className="tablet:flex-1" ref={triggerRef}>
       <div className="w-full" ref={boxRef}>
         {shopifyProduct?.availableForSale ? (
-          <div className={s.purchaseOptions}>
+          <div className="w-full">
             <Label className={s.title}>PURCHASE OPTIONS</Label>
             <div className={cn(s.purchase, 'rounded-lg mb-10')}>
               <div className="space-y-6">

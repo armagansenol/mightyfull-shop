@@ -2,7 +2,7 @@
   width: 100%;
 
   .title {
-    color: var(--text-color);
+    color: var(--primary);
     display: block;
     font-family: var(--font-poppins);
     font-size: desktop-vw(14px);
@@ -18,7 +18,7 @@
   }
 
   .border {
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--primary);
     border-radius: desktop-vw(12px);
     padding: desktop-vw(20px);
 
@@ -30,7 +30,7 @@
 
   .purchaseOption {
     > label {
-      color: var(--text-color);
+      color: var(--primary);
       font-family: var(--font-poppins);
       font-size: desktop-vw(18px);
       font-weight: 600;
@@ -42,7 +42,7 @@
   }
 
   .subscriptionOptions {
-    color: var(--text-color);
+    color: var(--primary);
     font-family: var(--font-poppins);
     font-size: desktop-vw(14px);
     font-weight: 600;
@@ -59,9 +59,9 @@
 
     .selectTrigger {
       @include dims(desktop-vw(320px), desktop-vw(50px));
-      border: 1px solid var(--text-color);
+      border: 1px solid var(--primary);
       border-radius: desktop-vw(8px);
-      color: var(--text-color);
+      color: var(--primary);
       font-family: var(--font-poppins);
       font-size: desktop-vw(16px);
       font-weight: 600;
@@ -79,7 +79,7 @@
   .checkbox {
     @include dims(desktop-vw(20px));
     padding: desktop-vw(4px);
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--primary);
     border-radius: 50%;
 
     @include mobile {
@@ -87,8 +87,8 @@
       padding: mobile-vw(3px);
     }
 
-    &[data-state="checked"] {
-      background-color: var(--text-color);
+    &[data-state='checked'] {
+      background-color: var(--primary);
       color: var(--sugar-milk);
     }
   }
@@ -96,10 +96,10 @@
 
 .dsi {
   background-color: var(--sugar-milk);
-  border: 1px solid var(--text-color);
+  border: 1px solid var(--primary);
 
   .item {
-    color: var(--text-color);
+    color: var(--primary);
     font-family: var(--font-poppins);
     font-size: desktop-vw(16px);
     font-weight: 500;
@@ -113,7 +113,7 @@
 
     @include hover {
       &:hover {
-        background-color: var(--bg-color);
+        background-color: var(--secondary);
       }
     }
   }

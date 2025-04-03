@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 
 import { cartService } from '@/lib/shopify';
 import { cookies } from 'next/headers';
+import { GSAP } from '@/components/gsap';
 
 export default async function RootLayout({
   children
@@ -30,6 +31,7 @@ export default async function RootLayout({
           <CartProvider cartPromise={cartPromise}>
             {children}
             <Toaster position="bottom-left" />
+            <GSAP />
           </CartProvider>
         </ReactQueryProvider>
       </body>

@@ -7,21 +7,11 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types';
 import { ImageAsset } from 'sanity';
 
-// Color theme types
-export type ColorThemeHex = {
-  hex: string;
-};
-
-export type SanityColorTheme = {
-  background: string;
-  text: string;
-  tertiary: string;
-};
-
-export interface Theme {
+export type ColorTheme = {
   primary: string;
   secondary: string;
-}
+  tertiary: string;
+};
 
 export interface AnimatedCardProps {
   id: string;
@@ -34,10 +24,7 @@ export interface AnimatedCardProps {
     shopifyTitle: string;
     variantId: string;
     availableForSale: boolean;
-    colorTheme: {
-      text: ColorThemeHex;
-      background: ColorThemeHex;
-    };
+    colorTheme: ColorTheme;
   };
 }
 
@@ -108,7 +95,7 @@ export interface ProductItem {
   image: SanityAssetImage;
   title: string;
   slug: string;
-  colorTheme: SanityColorTheme;
+  colorTheme: ColorTheme;
 }
 
 export interface ProductHighlightQueryResult {
@@ -122,7 +109,7 @@ export interface FeatureHighlightCard {
   title: string;
   description: string;
   icon: SanityAssetImage;
-  colorTheme: SanityColorTheme;
+  colorTheme: ColorTheme;
 }
 
 export interface FeatureHighlightQueryResult {

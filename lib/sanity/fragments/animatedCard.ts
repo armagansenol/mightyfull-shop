@@ -1,5 +1,6 @@
 import groq from 'groq';
 
+import { COLOR_THEME } from './colorTheme';
 import { IMAGE } from './image';
 
 export const ANIMATED_CARD = groq`
@@ -16,8 +17,7 @@ export const ANIMATED_CARD = groq`
     "shopifySlug": store.slug.current,
     "shopifyTitle": store.title,
     colorTheme->{
-      text,
-      background
+      ${COLOR_THEME}
     }
   }
 `;

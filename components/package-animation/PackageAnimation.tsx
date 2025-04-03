@@ -1,110 +1,122 @@
-"use client"
+'use client';
 
-import s from "./package-animation.module.scss"
+import s from './package-animation.module.scss';
 
-import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap"
-import cn from "clsx"
+import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
+import cn from 'clsx';
 
-import { Img } from "@/components/utility/img"
-import { useRef } from "react"
+import { Img } from '@/components/utility/img';
+import { useRef } from 'react';
 
 export default function PackageAnimation() {
-  const ref = useRef(null)
+  const ref = useRef(null);
   // const triggerClass = "gsap-scrolltrigger-c"
 
   useGSAP(
     () => {
       const tl = gsap.timeline({
-        paused: true,
-      })
+        paused: true
+      });
 
       tl.from(
-        ".package",
+        '.package',
         {
           yPercent: -30,
-          scale: 1.1,
+          scale: 1.1
         },
-        "s"
+        's'
       )
         .from(
-          ".cookie",
+          '.cookie',
           {
             yPercent: 50,
-            scale: 0.9,
+            scale: 0.9
           },
-          "s"
+          's'
         )
         .from(
-          ".cookie-slow",
+          '.cookie-slow',
           {
             yPercent: 30,
-            scale: 0.8,
+            scale: 0.8
           },
-          "s"
-        )
+          's'
+        );
 
       ScrollTrigger.create({
         animation: tl,
         trigger: ref.current,
         markers: false,
-        scrub: true,
-      })
+        scrub: true
+      });
     },
     {
-      scope: ref,
+      scope: ref
     }
-  )
+  );
 
   return (
-    <div className={cn(s.packageAnimation, "w-full grid grid-cols-3 items-center justify-items-center	")} ref={ref}>
-      <div className={cn(s.animatedCard, "-rotate-6")}>
-        <div className={cn(s.package, "package")}>
+    <div
+      className={cn(
+        s.packageAnimation,
+        'w-full grid grid-cols-3 items-center justify-items-center	'
+      )}
+      ref={ref}
+    >
+      <div className={cn(s.animatedCard, '-rotate-6')}>
+        <div className={cn(s.package, 'package')}>
           <Img
             className="object-contain"
-            src={"/img/p-pb-choco-oatie.png"}
+            src={'/img/p-pb-choco-oatie.png'}
             alt="Cookie Package"
             width={1000}
             height={1000}
           />
         </div>
-        <div className={cn(s.cookie, "cookie-slow")}>
-          <Img className="object-contain" src={"/img/c-pb-choco-oatie.png"} alt="Cookie" width={1000} height={1000} />
-        </div>
-      </div>
-      <div className={cn(s.animatedCard, "z-10")}>
-        <div className={cn(s.package, "package")}>
+        <div className={cn(s.cookie, 'cookie-slow')}>
           <Img
             className="object-contain"
-            src={"/img/p-choco-chip-with-shadow.png"}
-            alt="Cookie Package"
-            width={1000}
-            height={1000}
-          />
-        </div>
-        <div className={cn(s.cookie, "cookie")}>
-          <Img
-            className="object-contain"
-            src={"/img/c-pb-jelly-choco-chip.png"}
+            src={'/img/c-pb-choco-oatie.png'}
             alt="Cookie"
             width={1000}
             height={1000}
           />
         </div>
       </div>
-      <div className={cn(s.animatedCard, "rotate-6")}>
-        <div className={cn(s.package, "package")}>
+      <div className={cn(s.animatedCard, 'z-10')}>
+        <div className={cn(s.package, 'package')}>
           <Img
             className="object-contain"
-            src={"/img/p-double-choco-chip.png"}
+            src={'/img/p-choco-chip-with-shadow.png'}
             alt="Cookie Package"
             width={1000}
             height={1000}
           />
         </div>
-        <div className={cn(s.cookie, "cookie-slow")}>
+        <div className={cn(s.cookie, 'cookie')}>
           <Img
             className="object-contain"
-            src={"/img/c-double-choco-chip.png"}
+            src={'/img/c-pb-jelly-choco-chip.png'}
+            alt="Cookie"
+            width={1000}
+            height={1000}
+          />
+        </div>
+      </div>
+      <div className={cn(s.animatedCard, 'rotate-6')}>
+        <div className={cn(s.package, 'package')}>
+          <Img
+            className="object-contain"
+            src={'/img/p-double-choco-chip.png'}
+            alt="Cookie Package"
+            width={1000}
+            height={1000}
+          />
+        </div>
+        <div className={cn(s.cookie, 'cookie-slow')}>
+          <Img
+            className="object-contain"
+            src={'/img/c-double-choco-chip.png'}
             alt="Cookie"
             width={1000}
             height={1000}
@@ -112,5 +124,5 @@ export default function PackageAnimation() {
         </div>
       </div>
     </div>
-  )
+  );
 }

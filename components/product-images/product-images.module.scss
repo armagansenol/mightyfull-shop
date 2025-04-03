@@ -21,7 +21,7 @@
     &::before {
       content: '';
       @include position(absolute, -1px, -1px, -1px, -1px);
-      background-color: var(--bg-color);
+      background-color: var(--secondary);
       border-radius: inherit;
       opacity: 0.3;
       transition: 400ms background-color ease;
@@ -50,7 +50,7 @@
   &::before {
     content: '';
     @include position(absolute, -1px, -1px, -1px, -1px);
-    background-color: var(--bg-color);
+    background-color: var(--secondary);
     border-radius: inherit;
     opacity: 0.3;
     transition: 400ms background-color ease;

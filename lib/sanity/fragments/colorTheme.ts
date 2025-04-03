@@ -1,8 +1,8 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const COLOR_THEME = groq`
-  'background': background.hex,
-  'text': text.hex,
+  'primary': primary.hex,
+  'secondary': secondary.hex,
   'tertiary': tertiary.hex,
 
-`
+`;

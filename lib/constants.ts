@@ -19,6 +19,12 @@ export const breakpoints = {
   tablet: 1024
 };
 
+export const defaultColorTheme = {
+  primary: 'var(--blue-ruin)',
+  secondary: 'var(--cerulean)',
+  tertiary: 'var(--columbia-blue)'
+};
+
 export const baseUrl = 'mightyfull.com';
 
 export const routes = {

@@ -1,6 +1,6 @@
 .productPage {
   background-color: var(--sugar-milk);
-  color: var(--text-color);
+  color: var(--primary);
 
   .intro {
     padding: 0 desktop-vw(120px) 0 desktop-vw(80px);
@@ -72,7 +72,7 @@
           content: '';
           @include position(absolute, auto, 0, 0, 0);
           @include dims(100%, 1px);
-          background-color: var(--bg-color);
+          background-color: var(--secondary);
           border-radius: inherit;
           opacity: 0.3;
           transition: 400ms background-color ease;
@@ -104,13 +104,13 @@
       }
 
       .accordionTrigger {
-        color: var(--text-color);
+        color: var(--primary);
       }
     }
   }
 
   .reviews {
-    background-color: var(--text-color);
+    background-color: var(--primary);
     color: var(--sugar-milk);
     padding: 0 desktop-vw(80px);
     position: relative;

@@ -1,22 +1,24 @@
 import s from './product-detail-page.module.scss';
 
-import { cn, extractShopifyId } from '@/lib/utils';
+import { extractShopifyId } from '@/lib/utils';
+import cn from 'clsx';
 
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { IconCloud } from '@/components/icons';
+import { ProductCard } from '@/components/product-card';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
 import { ProductImages } from '@/components/product-images';
-import { ProductProvider } from '@/components/product/product-context';
 import { PurchasePanel } from '@/components/purchase-panel';
-import { ThemeUpdater } from '@/components/theme-updater';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
+import { Wrapper } from '@/components/wrapper';
 
+import { getRelatedProducts } from '@/lib/actions/related-products';
 import { sanityFetch } from '@/lib/sanity/client';
 import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
@@ -25,8 +27,7 @@ import { getProduct } from '@/lib/shopify';
 import { LayoutQueryResponse } from '@/types/layout';
 
 import OkendoWidget from '@/components/okendo-widget';
-import { ProductCard } from '@/components/product-card';
-import { getRelatedProducts } from '@/lib/actions/related-products';
+
 import s1 from '@/public/img/s-1.jpg';
 import s2 from '@/public/img/s-2.jpg';
 import s3 from '@/public/img/s-3.jpg';
@@ -56,19 +57,12 @@ export default async function ProductDetialPage({
 
   const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
+  console.log('sanityProduct.colorTheme', sanityProduct.colorTheme);
+
   return (
-    <ProductProvider>
-      {sanityProduct.colorTheme && (
-        <ThemeUpdater {...sanityProduct.colorTheme} />
-      )}
+    <Wrapper colorTheme={sanityProduct.colorTheme} headerWithPadding>
       <div
         className={cn(s.productPage, 'pt-7 tablet:pt-20 mb-20 tablet:mb-60')}
-        style={
-          {
-            '--text-color': `${sanityProduct.colorTheme?.text}`,
-            '--bg-color': `${sanityProduct.colorTheme?.background}`
-          } as React.CSSProperties
-        }
       >
         <section
           className={cn(
@@ -165,14 +159,14 @@ export default async function ProductDetialPage({
         {/* product reviews */}
         <section className={cn(s.reviews, 'my-24 tablet:my-32')}>
           <div className={s.cloudTop}>
-            <IconCloud fill="var(--text-color)" />
+            <IconCloud fill="var(--primary)" />
           </div>
           {/* {shopifyProduct && <CustomerReviews productId={productId} />} */}
           <div className="h-[500px]">
             <OkendoWidget productId={productId} />
           </div>
           <div className={s.cloudBottom}>
-            <IconCloud rotate={180} fill="var(--text-color)" />
+            <IconCloud rotate={180} fill="var(--primary)" />
           </div>
         </section>
         {/* related products */}
@@ -223,6 +217,6 @@ export default async function ProductDetialPage({
           images={imgs}
         />
       </div>
-    </ProductProvider>
+    </Wrapper>
   );
 }

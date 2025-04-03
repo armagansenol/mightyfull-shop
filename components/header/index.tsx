@@ -5,6 +5,7 @@ import s from './header.module.scss';
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
 import cn from 'clsx';
 import Lenis from 'lenis';
+import { useLenis } from 'lenis/react';
 import { CircleUserRound } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,19 +14,15 @@ import { Cart } from '@/components/cart/cart';
 import { IconLogo } from '@/components/icons';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import { useLenisStore } from '@/lib/store/lenis';
-import { useTheme } from '@/lib/store/theme';
 
-// interface HeaderProps {
-//   shopMenu?: ProductCollection[];
-// }
+interface HeaderProps {
+  withPadding?: boolean;
+}
 
-export function Header() {
-  // props: HeaderProps
-  const { primaryColor, secondaryColor, tertiaryColor } = useTheme();
+export function Header({ withPadding = false }: HeaderProps) {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const { lenis } = useLenisStore();
   const [hidden, setHidden] = useState(false);
+  const lenis = useLenis();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -67,90 +64,82 @@ export function Header() {
   // );
 
   return (
-    <>
-      <header
+    <header
+      className={cn(
+        s.header,
+        'flex items-center justify-between tablet:justify-stretch',
+        {
+          [s.hidden]: hidden,
+          [s.withPadding]: withPadding
+        }
+      )}
+    >
+      <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
+        <IconLogo
+          primary="var(--primary)"
+          secondary="var(--secondary)"
+          tertiary="var(--tertiary)"
+        />
+      </Link>
+      <div className="flex items-center gap-5">
+        <div className="flex tablet:hidden">{/* <CartModal /> */}</div>
+        <div
+          className={cn(s.trigger, 'block tablet:hidden', {
+            [s.active]: hamburgerOpen
+          })}
+          onClick={() => setHamburgerOpen((prev) => !prev)}
+        >
+          {hamburgerOpen ? (
+            <Cross1Icon className="w-full h-full" />
+          ) : (
+            <HamburgerMenuIcon className="w-full h-full" />
+          )}
+        </div>
+      </div>
+      <nav
         className={cn(
-          s.header,
-          'flex items-center justify-between tablet:justify-stretch',
+          s.navC,
+          'flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-5 tablet:gap-0',
           {
-            [s.hidden]: hidden
+            [s.active]: hamburgerOpen
           }
         )}
-        style={
-          {
-            '--primary': primaryColor,
-            '--secondary': secondaryColor,
-            '--tertiary': tertiaryColor
-          } as React.CSSProperties
-        }
       >
-        <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
-          <IconLogo
-            primary={primaryColor}
-            secondary={secondaryColor}
-            tertiary={tertiaryColor}
-          />
-        </Link>
-        <div className="flex items-center gap-5">
-          <div className="flex tablet:hidden">{/* <CartModal /> */}</div>
-          <div
-            className={cn(s.trigger, 'block tablet:hidden', {
-              [s.active]: hamburgerOpen
-            })}
-            onClick={() => setHamburgerOpen((prev) => !prev)}
-          >
-            {hamburgerOpen ? (
-              <Cross1Icon className="w-full h-full" />
-            ) : (
-              <HamburgerMenuIcon className="w-full h-full" />
-            )}
-          </div>
-        </div>
-        <nav
+        <div
           className={cn(
-            s.navC,
-            'flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-5 tablet:gap-0',
-            {
-              [s.active]: hamburgerOpen
-            }
+            s.nav,
+            'flex flex-col tablet:flex-row items-center justify-between gap-5 tablet:gap-20'
           )}
         >
-          <div
-            className={cn(
-              s.nav,
-              'flex flex-col tablet:flex-row items-center justify-between gap-5 tablet:gap-20'
-            )}
-          >
-            <div className={s.navItem}>
-              <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
-            </div>
-            <div className={s.navItem}>
-              <Link href={`/${routes.ourStory.url}`}>{routes.ourStory.ui}</Link>
-            </div>
+          <div className={s.navItem}>
+            <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
+          </div>
+          <div className={s.navItem}>
+            <Link href={`/${routes.ourStory.url}`}>{routes.ourStory.ui}</Link>
+          </div>
+        </div>
+        <div
+          className={cn(
+            s.nav,
+            'flex flex-col tablet:flex-row items-center justify-between gap-14'
+          )}
+        >
+          <div className={cn(s.navItem, 'cursor-pointer')}>
+            <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
+          </div>
+          <div className={cn(s.navItem, 'cursor-pointer')}>
+            <Link href="https://shopify.com/67633938584/account">
+              <CircleUserRound className="w-9 h-9" />
+            </Link>
           </div>
           <div
-            className={cn(
-              s.nav,
-              'flex flex-col tablet:flex-row items-center justify-between gap-14'
-            )}
+            className="hidden tablet:block cursor-pointer"
+            // onClick={() => setOpen(true)}
           >
-            <div className={cn(s.navItem, 'cursor-pointer')}>
-              <Link href="mailto:kamola@mightyfull.com">Contact Us</Link>
-            </div>
-            <div className={cn(s.navItem, 'cursor-pointer')}>
-              <Link href="https://shopify.com/67633938584/account">
-                <CircleUserRound className="w-9 h-9" />
-              </Link>
-            </div>
-            <div
-              className="hidden tablet:block cursor-pointer"
-              // onClick={() => setOpen(true)}
-            >
-              <Cart />
-            </div>
+            <Cart />
           </div>
-        </nav>
-      </header>
-    </>
+        </div>
+      </nav>
+    </header>
   );
 }

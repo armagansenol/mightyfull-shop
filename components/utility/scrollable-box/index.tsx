@@ -1,6 +1,6 @@
 import s from './scrollable-box.module.scss';
 
-import { gsap } from '@/lib/gsap';
+import { gsap } from '@/components/gsap';
 import cn from 'clsx';
 import Lenis from 'lenis';
 import { ReactNode, useRef, useState } from 'react';
