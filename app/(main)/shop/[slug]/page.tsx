@@ -20,18 +20,12 @@ import { Wrapper } from '@/components/wrapper';
 
 import { getRelatedProducts } from '@/lib/actions/related-products';
 import { sanityFetch } from '@/lib/sanity/client';
-import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
 import { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
-import { LayoutQueryResponse } from '@/types/layout';
 
 import OkendoWidget from '@/components/okendo-widget';
 
-import s1 from '@/public/img/s-1.jpg';
-import s2 from '@/public/img/s-2.jpg';
-import s3 from '@/public/img/s-3.jpg';
-import s4 from '@/public/img/s-4.jpg';
 interface ProductDetailPageProps {
   params: {
     slug: string;
@@ -47,17 +41,11 @@ export default async function ProductDetialPage({
     tags: ['productPage'],
     qParams: { slug: params.slug }
   });
-  const layout = await sanityFetch<LayoutQueryResponse>({
-    query: LAYOUT_QUERY,
-    tags: ['layout']
-  });
 
   const shopifyProduct = await getProduct(params.slug);
   const productId = extractShopifyId(shopifyProduct?.id as string);
 
-  const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
-
-  console.log('sanityProduct.colorTheme', sanityProduct.colorTheme);
+  // const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
   return (
     <Wrapper colorTheme={sanityProduct.colorTheme} headerWithPadding>
@@ -211,11 +199,7 @@ export default async function ProductDetialPage({
             </div>
           </section>
         )}
-        <FollowUs
-          socialLinks={layout.socialLinks}
-          // images={layout.imageCarousel.map((image) => image.url)}
-          images={imgs}
-        />
+        <FollowUs />
       </div>
     </Wrapper>
   );

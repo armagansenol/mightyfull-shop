@@ -1,13 +1,24 @@
 import 'styles/global.scss';
 import 'styles/tailwind-initial.css';
 
+import { GSAP } from '@/components/gsap';
 import { CartProvider } from '@/components/providers/cart';
 import { ReactQueryProvider } from '@/components/providers/react-query';
 import { Toaster } from '@/components/ui/sonner';
-
+import { LayoutDataProvider } from '@/context/layout-data';
+import { sanityFetch } from '@/lib/sanity/client';
+import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { cartService } from '@/lib/shopify';
+import { LayoutQueryResponse } from '@/types';
 import { cookies } from 'next/headers';
-import { GSAP } from '@/components/gsap';
+import { cache } from 'react';
+
+const getLayoutData = cache(async (): Promise<LayoutQueryResponse> => {
+  return await sanityFetch<LayoutQueryResponse>({
+    query: LAYOUT_QUERY,
+    tags: ['layout']
+  });
+});
 
 export default async function RootLayout({
   children
@@ -16,6 +27,10 @@ export default async function RootLayout({
 }>) {
   const cartId = cookies().get('cartId')?.value;
   const cartPromise = cartService.get(cartId);
+
+  const layoutData = await getLayoutData();
+
+  console.log('layoutData', layoutData);
 
   return (
     <html lang="en">
@@ -29,9 +44,11 @@ export default async function RootLayout({
       <body className={`antialiased`}>
         <ReactQueryProvider>
           <CartProvider cartPromise={cartPromise}>
-            {children}
-            <Toaster position="bottom-left" />
-            <GSAP />
+            <LayoutDataProvider value={layoutData}>
+              {children}
+              <Toaster position="bottom-left" />
+              <GSAP />
+            </LayoutDataProvider>
           </CartProvider>
         </ReactQueryProvider>
       </body>

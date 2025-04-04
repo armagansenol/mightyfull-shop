@@ -732,10 +732,30 @@ export const IconClose = (props: Props) => {
   );
 };
 
-export const socialIcons: Record<SocialMedia, JSX.Element> = {
-  [SocialMedia.tiktok]: <IconTiktok fill="var(--blue-ruin)" />,
-  [SocialMedia.facebook]: <IconFacebook fill="var(--blue-ruin)" />,
-  [SocialMedia.instagram]: <IconInstagram fill="var(--blue-ruin)" />,
-  [SocialMedia.x]: <IconX fill="var(--blue-ruin)" />,
-  [SocialMedia.youtube]: <IconYoutube fill="var(--blue-ruin)" />
+export const IconAsterisk = (props: Props) => {
+  return (
+    <span className="inherit-dims block">
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 6 6"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M5.48744 0.809524L6 2.25397L3.90452 3L5.75879 3.73016L4.70352 5.22222L3.33166 3.79365L3.31658 6H1.74874L2.44221 3.79365L0.572864 5.2381L0 3.73016L2.09548 2.98413L0.271357 2.25397L1.28141 0.809524L2.71357 2.20635L2.72864 0H4.31156L3.60301 2.20635L5.48744 0.809524Z"
+          fill={props.fill}
+        />
+      </svg>
+    </span>
+  );
+};
+
+export const socialIcons: Record<SocialMedia, (fill: string) => JSX.Element> = {
+  [SocialMedia.tiktok]: (fill) => <IconTiktok fill={fill} />,
+  [SocialMedia.facebook]: (fill) => <IconFacebook fill={fill} />,
+  [SocialMedia.instagram]: (fill) => <IconInstagram fill={fill} />,
+  [SocialMedia.x]: (fill) => <IconX fill={fill} />,
+  [SocialMedia.youtube]: (fill) => <IconYoutube fill={fill} />,
+  [SocialMedia.linkedin]: (fill) => <IconYoutube fill={fill} />
 };

@@ -1,15 +1,28 @@
-.header {
+.headerWrapper {
   @include position(fixed, 0, 0, auto, 0);
-  @include dims(auto, var(--header-height));
-  --padding-x: #{desktop-vw(80px)};
   background: var(--sugar-milk);
-  padding: 0 var(--padding-x);
-  transition: 400ms all ease;
+  transition: 400ms transform ease;
   z-index: z-index('header');
 
   &.hidden {
     transform: translateY(-100%);
   }
+
+  .noticebarWrapper {
+    @include dims(100%, var(--noticebar-height));
+    overflow: hidden;
+    transition: 400ms height ease;
+
+    &.hidden {
+      height: 0;
+    }
+  }
+}
+
+.header {
+  --padding-x: #{desktop-vw(80px)};
+  @include dims(100%, var(--header-height));
+  padding: 0 var(--padding-x);
 
   @include mobile {
     --padding-x: #{mobile-vw(16px)};

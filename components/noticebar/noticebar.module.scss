@@ -1,0 +1,26 @@
+.noticebar {
+  @include dims(100%, var(--noticebar-height));
+  background-color: var(--tertiary);
+  font-family: var(--font-poppins);
+  font-size: desktop-vw(14px);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  transition: 400ms background-color ease;
+
+  @include mobile {
+    font-size: mobile-vw(12px);
+    padding: mobile-vw(5px) 0;
+  }
+
+  .iconC {
+    @include dims(desktop-vw(6px));
+    margin-bottom: desktop-vw(2px);
+
+    @include mobile {
+      @include dims(mobile-vw(6px));
+      margin-bottom: mobile-vw(2px);
+    }
+  }
+}

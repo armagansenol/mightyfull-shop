@@ -75,7 +75,8 @@ export enum SocialMedia {
   facebook = 'facebook',
   instagram = 'instagram',
   x = 'x',
-  youtube = 'youtube'
+  youtube = 'youtube',
+  linkedin = 'linkedin'
 }
 
 export interface ProductCard {
@@ -198,4 +199,25 @@ export interface Store {
   address: string;
   city: string;
   country: string;
+}
+
+export interface SeoSettings {
+  title: string;
+  description?: string;
+}
+
+export interface SocialLink {
+  platform: string;
+  url: string;
+}
+
+export interface LayoutQueryResponse {
+  noticebar: Noticebar;
+  socialLinks: SocialLink[];
+  imageCarousel: ImageAsset[];
+}
+
+export interface Noticebar {
+  title: string;
+  active: boolean;
 }

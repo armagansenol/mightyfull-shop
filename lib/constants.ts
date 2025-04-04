@@ -67,5 +67,15 @@ export const routes = {
       title: '404 Not Found',
       description: "We couldn't find the page you were looking for."
     }
+  },
+  contact: {
+    ariaLabel: 'Contact',
+    name: 'contact',
+    url: 'contact',
+    ui: 'Contact Us',
+    seo: {
+      title: 'Contact Us | MIGHTYFULL',
+      description: 'This might be the best cookie ever!'
+    }
   }
 };
