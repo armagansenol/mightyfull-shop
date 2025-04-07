@@ -14,7 +14,6 @@ import { defaultColorTheme } from '@/lib/constants';
 interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
   lenis?: boolean | LenisOptions;
   colorTheme?: ColorTheme;
-  headerWithPadding?: boolean;
 }
 
 export function Wrapper({
@@ -22,14 +21,15 @@ export function Wrapper({
   className,
   lenis = true,
   colorTheme = defaultColorTheme,
-  headerWithPadding = false,
   ...props
 }: WrapperProps) {
   const { noticebar } = useLayoutData();
 
   return (
     <div
-      className={cn(s.wrapper, 'flex flex-col')}
+      className={cn(s.wrapper, 'flex flex-col', {
+        [s.withNoticebar]: noticebar.active
+      })}
       style={
         {
           '--primary': colorTheme.primary,
@@ -38,13 +38,8 @@ export function Wrapper({
         } as React.CSSProperties
       }
     >
-      <Header withPadding={headerWithPadding} />
-      <main
-        className={cn('relative flex flex-col grow', className, {
-          [s.withNoticebar]: noticebar.active
-        })}
-        {...props}
-      >
+      <Header />
+      <main className={cn('relative flex flex-col grow', className)} {...props}>
         {children}
       </main>
       {lenis && <Lenis root options={typeof lenis === 'object' ? lenis : {}} />}

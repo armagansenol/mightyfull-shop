@@ -20,13 +20,7 @@
 }
 
 .header {
-  --padding-x: #{desktop-vw(80px)};
   @include dims(100%, var(--header-height));
-  padding: 0 var(--padding-x);
-
-  @include mobile {
-    --padding-x: #{mobile-vw(16px)};
-  }
 
   &:after {
     content: '';
@@ -35,12 +29,6 @@
     background-color: var(--primary);
     transform: translateX(-50%) translateY(-2px);
     z-index: 10;
-  }
-
-  &.withPadding {
-    &:after {
-      @include dims(calc(100vw - var(--padding-x) * 2), 2px);
-    }
   }
 
   .logoC {

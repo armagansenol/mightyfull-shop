@@ -13,15 +13,11 @@ import { Cart } from '@/components/cart/cart';
 import { IconLogo } from '@/components/icons';
 import { Noticebar } from '@/components/noticebar';
 import { Link } from '@/components/utility/link';
+import { useLayoutData } from '@/context/layout-data';
 import { routes } from '@/lib/constants';
 import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
-import { useLayoutData } from '@/context/layout-data';
 
-interface HeaderProps {
-  withPadding?: boolean;
-}
-
-export function Header({ withPadding = false }: HeaderProps) {
+export function Header() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [noticebarHidden, setNoticebarHidden] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
@@ -89,9 +85,10 @@ export function Header({ withPadding = false }: HeaderProps) {
         </div>
       )}
       <header
-        className={cn(s.header, 'relative flex items-center justify-between', {
-          [s.withPadding]: withPadding
-        })}
+        className={cn(
+          s.header,
+          'container relative flex items-center justify-between'
+        )}
       >
         <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
           <IconLogo
