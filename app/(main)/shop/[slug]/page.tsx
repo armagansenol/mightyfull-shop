@@ -1,6 +1,5 @@
 import s from './product-detail-page.module.scss';
 
-import { extractShopifyId } from '@/lib/utils';
 import cn from 'clsx';
 
 import { CustomizedPortableText } from '@/components/customized-portable-text';
@@ -23,6 +22,7 @@ import { sanityFetch } from '@/lib/sanity/client';
 import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
 import { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
+import { extractShopifyId } from '@/lib/utils';
 
 import OkendoWidget from '@/components/okendo-widget';
 
@@ -48,7 +48,7 @@ export default async function ProductDetialPage({
   // const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
   return (
-    <Wrapper colorTheme={sanityProduct.colorTheme} headerWithPadding>
+    <Wrapper colorTheme={sanityProduct.colorTheme}>
       <div
         className={cn(s.productPage, 'pt-7 tablet:pt-20 mb-20 tablet:mb-60')}
       >
