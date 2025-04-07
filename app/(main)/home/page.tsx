@@ -13,29 +13,25 @@ import { ProductHighlightCarousel } from '@/components/product-highlight-carouse
 import { Button } from '@/components/ui/button';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
+import { Wrapper } from '@/components/wrapper';
 import { getProductHighlight } from '@/lib/actions/product-highlight';
-import { routes } from '@/lib/constants';
+import { defaultColorTheme, routes } from '@/lib/constants';
 import { sanityFetch } from '@/lib/sanity/client';
-import { FEATURE_HIGHLIGHT_QUERY } from '@/lib/sanity/featureHighlightQuery';
 import { TESTIMONIALS_QUERY } from '@/lib/sanity/testimonials';
-import { FeatureHighlightQueryResult, Testimonial } from '@/types';
+import { Testimonial } from '@/types';
 
 export default async function HomePage() {
-  const [productHighlight, { featureHighlight }, testimonials] =
-    await Promise.all([
-      getProductHighlight(),
-      sanityFetch<FeatureHighlightQueryResult>({
-        query: FEATURE_HIGHLIGHT_QUERY,
-        tags: ['featureHighlight']
-      }),
-      sanityFetch<Testimonial[]>({
-        query: TESTIMONIALS_QUERY,
-        tags: ['testmonials']
-      })
-    ]);
+  const [productHighlight, testimonials] = await Promise.all([
+    getProductHighlight(),
+
+    sanityFetch<Testimonial[]>({
+      query: TESTIMONIALS_QUERY,
+      tags: ['testmonials']
+    })
+  ]);
 
   return (
-    <>
+    <Wrapper colorTheme={defaultColorTheme}>
       <section
         className={cn(
           s.intro,
@@ -153,12 +149,9 @@ export default async function HomePage() {
           </section>
         </section>
       )}
-      {Array.isArray(featureHighlight.items) &&
-        featureHighlight.items.length > 0 && (
-          <div className="bg-[var(--blue-ruin)] p-2 tablet:p-5">
-            <FeatureHighlight items={featureHighlight.items} />
-          </div>
-        )}
+      <div className="bg-[var(--blue-ruin)] p-2 tablet:p-5">
+        <FeatureHighlight />
+      </div>
       <div className="relative bg-[var(--blue-ruin)] p-2 tablet:p-5 overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0 h-2 tablet:h-5 bg-[var(--blue-ruin)] z-50"></div>
         <section
@@ -200,7 +193,7 @@ export default async function HomePage() {
               <br />
               Our journey began with a simple moment in the kitchen.
             </p>
-            <Button asChild size="md" padding="fat">
+            <Button asChild className="h-16" size="md" padding="fat">
               <Link href={routes.ourStory.url}>READ OUR STORY</Link>
             </Button>
           </div>
@@ -258,6 +251,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-    </>
+    </Wrapper>
   );
 }

@@ -1,14 +1,15 @@
 import s from './our-story.module.scss';
 
-import { cn } from '@/lib/utils';
+import cn from 'clsx';
 
 import { IconLeftArm, IconRightArm, IconStar } from '@/components/icons';
-import { Img } from '@/components/utility/img';
 import { Marquee } from '@/components/marquee';
-
+import { Img } from '@/components/utility/img';
+import { Wrapper } from '@/components/wrapper';
+import { defaultColorTheme } from '@/lib/constants';
 export default function Page() {
   return (
-    <>
+    <Wrapper colorTheme={defaultColorTheme}>
       <section className={cn(s.intro, 'flex flex-col items-stretch')}>
         <div className={cn('flex flex-col items-center')}>
           <div className={cn(s.titleC, 'flex items-center gap-3')}>
@@ -179,6 +180,6 @@ export default function Page() {
           </strong>
         </p>
       </section>
-    </>
+    </Wrapper>
   );
 }

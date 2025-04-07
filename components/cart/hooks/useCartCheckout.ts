@@ -1,9 +1,6 @@
 import { useCartMutation } from './useCartMutation';
 import { redirectToCheckout } from '@/components/cart/actions';
 
-/**
- * Hook for handling cart checkout process
- */
 export function useCartCheckout() {
   return useCartMutation({
     mutationFn: async () => {
@@ -17,6 +14,7 @@ export function useCartCheckout() {
       }
     },
     actionType: 'delete',
+    lineId: 'checkout',
     merchandiseId: 'checkout',
     successMessage: 'Redirecting to checkout...'
   });

@@ -1,10 +1,7 @@
-import { useState } from 'react';
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from '../cart-context';
 import { createCartAndSetCookie } from '../actions';
 
-// Custom hook for cart initialization
 export function useCartInitialization() {
   const { cart } = useCart();
   const [isInitialized, setIsInitialized] = useState(false);

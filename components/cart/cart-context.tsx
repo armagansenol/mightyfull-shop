@@ -247,7 +247,8 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
           id: item.merchandise.id,
           title: item.merchandise.product.title,
           quantity: item.quantity,
-          amount: item.cost.totalAmount.amount
+          amount: item.cost.totalAmount.amount,
+          sellingPlanId: item.sellingPlanAllocation?.sellingPlan?.id
         }))
       });
       return initialCart;
@@ -256,27 +257,45 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
       const { merchandiseId, sellingPlanId, currentSellingPlanId } =
         action.payload;
 
-      // We'll just mark the item for update and let the server handle the details
-      // This is a simplified approach to avoid type issues
-      console.log('Updating selling plan:', {
-        merchandiseId,
-        sellingPlanId,
-        currentSellingPlanId: currentSellingPlanId || 'none',
-        currentCart: {
-          totalQuantity: currentCart.totalQuantity,
-          totalAmount: currentCart.cost.totalAmount.amount,
-          items: currentCart.lines.map((item) => ({
-            id: item.merchandise.id,
-            title: item.merchandise.product.title,
-            quantity: item.quantity,
-            amount: item.cost.totalAmount.amount,
-            sellingPlanId: item.sellingPlanAllocation?.sellingPlan?.id || null
-          }))
+      // Find the current line item to preserve its quantity
+      const currentLine = currentCart.lines.find(
+        (line) =>
+          line.merchandise.id === merchandiseId &&
+          ((currentSellingPlanId &&
+            line.sellingPlanAllocation?.sellingPlan?.id ===
+              currentSellingPlanId) ||
+            (!currentSellingPlanId && !line.sellingPlanAllocation))
+      );
+
+      if (!currentLine) return currentCart;
+
+      // Create a new line item with the same quantity but updated selling plan
+      const updatedLines = currentCart.lines.map((line) => {
+        if (line.id === currentLine.id) {
+          return {
+            ...line,
+            sellingPlanAllocation: sellingPlanId
+              ? {
+                  sellingPlan: {
+                    id: sellingPlanId,
+                    name: '', // This will be updated by the server
+                    description: '',
+                    priceAdjustments: []
+                  },
+                  priceAdjustments: []
+                }
+              : null
+          };
         }
+        return line;
       });
 
-      // Return the current cart unchanged - the actual update will happen server-side
-      return currentCart;
+      // Update cart with new lines and recalculate totals
+      return {
+        ...currentCart,
+        ...updateCartTotals(updatedLines),
+        lines: updatedLines
+      };
     }
     default:
       return currentCart;

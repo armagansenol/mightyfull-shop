@@ -6,12 +6,13 @@ import { EditSellingPlanButton } from '@/components/cart/edit-selling-plan-butto
 import { Img } from '@/components/utility/img';
 import type { CartItem as CartLine } from '@/lib/shopify/types';
 import { Price } from '@/components/price';
+import { CartUpdateType } from '@/types';
 
 interface CartItemProps {
   item: CartLine;
   updateCartItem?: (
     merchandiseId: string,
-    updateType: 'plus' | 'minus' | 'delete',
+    updateType: CartUpdateType,
     sellingPlanId?: string | null
   ) => void;
 }

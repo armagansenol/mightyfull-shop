@@ -121,6 +121,7 @@ export type ProductVariant = {
   selectedOptions: SelectedOption[];
   price: Money;
   sellingPlanAllocations: Connection<SellingPlanAllocation>;
+  quantityAvailable: number;
 };
 
 /**
@@ -282,6 +283,34 @@ export type Cart = Omit<ShopifyCart, 'lines'> & {
   lines: CartItem[];
 };
 
+export interface CartLine {
+  id?: string;
+  merchandise: {
+    id: string;
+  };
+  quantity: number;
+  sellingPlanAllocation?: {
+    sellingPlan: {
+      id: string;
+      name: string;
+      description: string;
+      priceAdjustments: {
+        adjustmentValue: {
+          adjustmentPercentage?: number;
+          adjustmentAmount?: {
+            amount: string;
+            currencyCode: string;
+          };
+          price?: {
+            amount: string;
+            currencyCode: string;
+          };
+        };
+      }[];
+    } | null;
+  } | null;
+}
+
 // ===== Selling Plan Types =====
 
 /**
@@ -425,11 +454,27 @@ export type CartUpdateLineItem = CartLineItem & {
 };
 
 /**
+ * Represents a selling plan update line item
+ */
+export type CartSellingPlanUpdateLineItem = {
+  id: string;
+  sellingPlanId?: string | null;
+};
+
+/**
  * Represents a cart update operation
  */
 export type ShopifyUpdateCartOperation = BaseOperation<
   { cartLinesUpdate: { cart: ShopifyCart } },
   { cartId: string; lines: CartUpdateLineItem[] }
+>;
+
+/**
+ * Represents a selling plan update operation
+ */
+export type ShopifyUpdateSellingPlanOperation = BaseOperation<
+  { cartLinesUpdate: { cart: ShopifyCart } },
+  { cartId: string; lines: CartSellingPlanUpdateLineItem[] }
 >;
 
 /**

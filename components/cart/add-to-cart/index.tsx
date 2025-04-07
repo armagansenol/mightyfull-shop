@@ -1,11 +1,12 @@
 'use client';
 
-import { IconClose } from '@/components/icons';
-import { Button } from '@/components/ui/button';
 import { BellRing, Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 import { toast } from 'sonner';
-import { useAddToCart } from '../hooks/useAddToCart';
+
+import { useAddToCart } from '@/components/cart/hooks/useAddToCart';
+import { IconClose } from '@/components/icons';
+import { Button } from '@/components/ui/button';
 
 export function AddToCart({
   buttonTheme,
@@ -28,7 +29,6 @@ export function AddToCart({
   quantity?: number;
   sellingPlanId?: string;
 }) {
-  // Use the new hook instead of direct mutation
   const { mutate, isPending } = useAddToCart(variantId, productTitle);
 
   const handleAddToCart = useCallback(() => {
@@ -58,7 +58,6 @@ export function AddToCart({
     // Prevent multiple clicks while processing
     if (isPending) return;
 
-    // Execute the mutation using the hook
     mutate({ quantity, sellingPlanId });
   }, [availableForSale, isPending, mutate, quantity, sellingPlanId]);
 
@@ -72,8 +71,8 @@ export function AddToCart({
   return (
     <form
       className={className}
-      action={async () => {
-        await handleAddToCart();
+      action={() => {
+        handleAddToCart();
       }}
     >
       <Button

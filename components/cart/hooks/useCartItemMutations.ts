@@ -7,19 +7,18 @@ import {
 } from '@/components/cart/actions';
 import type { CartItem } from '@/lib/shopify/types';
 
-/**
- * Hook for deleting an item from the cart
- */
 export function useDeleteCartItem(item: CartItem) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await removeItem(merchandiseId, sellingPlanId);
+      return removeItem(lineId);
     },
     actionType: 'delete',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle,
@@ -27,57 +26,46 @@ export function useDeleteCartItem(item: CartItem) {
   });
 }
 
-/**
- * Hook for incrementing an item's quantity
- */
-export function useIncrementCartItem(item: CartItem, maxQuantity = 10) {
+export function useIncrementCartItem(item: CartItem, maxQuantity?: number) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await incrementItemQuantity(
-        merchandiseId,
-        maxQuantity,
-        sellingPlanId
-      );
+      return incrementItemQuantity(lineId, maxQuantity);
     },
     actionType: 'plus',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
   });
 }
 
-/**
- * Hook for decrementing an item's quantity
- */
 export function useDecrementCartItem(item: CartItem) {
+  const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
   const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
-      return await decrementItemQuantity(merchandiseId, sellingPlanId);
+      return decrementItemQuantity(lineId);
     },
     actionType: 'minus',
+    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
   });
 }
 
-/**
- * Hook for updating an item's selling plan
- */
 export function useUpdateSellingPlan(item: CartItem) {
-  const merchandiseId = item.merchandise.id;
+  const lineId = item.id!;
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
-
-  console.log('item', item);
 
   return useCartMutation<{
     newSellingPlanId: string | null;
@@ -85,9 +73,8 @@ export function useUpdateSellingPlan(item: CartItem) {
   }>({
     mutationFn: async ({ newSellingPlanId, onSuccess }) => {
       const result = await updateItemSellingPlanOption({
-        merchandiseId,
-        sellingPlanId: newSellingPlanId,
-        currentSellingPlanId
+        lineId,
+        sellingPlanId: newSellingPlanId || null
       });
 
       // Call the onSuccess callback if provided and the operation was successful
@@ -98,7 +85,8 @@ export function useUpdateSellingPlan(item: CartItem) {
       return result;
     },
     actionType: 'update-selling-plan',
-    merchandiseId,
+    lineId,
+    merchandiseId: item.merchandise.id,
     sellingPlanId: currentSellingPlanId,
     successMessage: 'Subscription option updated'
   });

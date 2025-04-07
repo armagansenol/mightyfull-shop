@@ -19,9 +19,9 @@
 
   &.active {
     &::before {
-      content: "";
+      content: '';
       @include position(absolute, -1px, -1px, -1px, -1px);
-      background-color: var(--bg-color);
+      background-color: var(--secondary);
       border-radius: inherit;
       opacity: 0.3;
       transition: 400ms background-color ease;
@@ -29,7 +29,7 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       @include position(absolute, 0, 0, 0, 0);
       background-color: var(--sugar-milk);
       border-radius: inherit;
@@ -48,9 +48,9 @@
   transition: 400ms background-color ease;
 
   &::before {
-    content: "";
+    content: '';
     @include position(absolute, -1px, -1px, -1px, -1px);
-    background-color: var(--bg-color);
+    background-color: var(--secondary);
     border-radius: inherit;
     opacity: 0.3;
     transition: 400ms background-color ease;
@@ -58,7 +58,7 @@
   }
 
   &::after {
-    content: "";
+    content: '';
     @include position(absolute, 0, 0, 0, 0);
     background-color: var(--sugar-milk);
     border-radius: inherit;
@@ -66,7 +66,7 @@
     z-index: 10;
   }
 
-  > img {
+  .mainImg {
     position: relative;
     z-index: 15;
   }

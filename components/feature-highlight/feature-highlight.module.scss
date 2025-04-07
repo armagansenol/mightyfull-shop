@@ -1,6 +1,8 @@
 .featureHighlight {
   border-radius: desktop-vw(60px);
   font-family: var(--font-poppins);
+  padding-bottom: desktop-vw(400px);
+  padding-top: desktop-vw(100px);
   position: relative;
   text-align: center;
 
@@ -29,12 +31,24 @@
   }
 
   .stickerC {
-    @include position(absolute, desktop-vw(100px), desktop-vw(150px), auto, auto);
+    @include position(
+      absolute,
+      desktop-vw(100px),
+      desktop-vw(150px),
+      auto,
+      auto
+    );
     @include dims(desktop-vw(380px));
     transform: translate(25%, 25%);
 
     @include mobile {
-      @include position(absolute, mobile-vw(160px), mobile-vw(16px), auto, auto);
+      @include position(
+        absolute,
+        mobile-vw(160px),
+        mobile-vw(16px),
+        auto,
+        auto
+      );
       @include dims(mobile-vw(180px));
       transform: translate(15%, 25%);
     }
@@ -63,8 +77,8 @@
 
   .card {
     @include dims(desktop-vw(360px), desktop-vw(380px));
-    background-color: var(--bg-color);
-    border: 2px solid var(--text-color);
+    background-color: var(--tertiary);
+    border: 2px solid var(--primary);
     border-radius: desktop-vw(32px);
     position: relative;
     transform: rotate(-6deg);
@@ -81,7 +95,7 @@
     }
 
     .title {
-      color: var(--text-color);
+      color: var(--primary);
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(40px);
       font-weight: 700;
@@ -96,7 +110,7 @@
     }
 
     .desc {
-      color: var(--text-color);
+      color: var(--primary);
       font-family: var(--font-poppins);
       font-size: desktop-vw(22px);
       font-weight: 400;
@@ -123,51 +137,111 @@
     z-index: 100;
 
     &.cookie1 {
-      @include position(absolute, desktop-vw(200px), auto, auto, desktop-vw(50px));
+      @include position(
+        absolute,
+        desktop-vw(200px),
+        auto,
+        auto,
+        desktop-vw(50px)
+      );
       @include dims(desktop-vw(120px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(250px), auto, auto, mobile-vw(10px));
+        @include position(
+          absolute,
+          mobile-vw(250px),
+          auto,
+          auto,
+          mobile-vw(10px)
+        );
         @include dims(mobile-vw(60px));
       }
     }
 
     &.cookie2 {
-      @include position(absolute, desktop-vw(50px), auto, auto, desktop-vw(1200px));
+      @include position(
+        absolute,
+        desktop-vw(50px),
+        auto,
+        auto,
+        desktop-vw(1200px)
+      );
       @include dims(desktop-vw(132px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(750px), auto, auto, mobile-vw(10px));
+        @include position(
+          absolute,
+          mobile-vw(750px),
+          auto,
+          auto,
+          mobile-vw(10px)
+        );
         @include dims(mobile-vw(60px));
       }
     }
 
     &.cookie3 {
-      @include position(absolute, desktop-vw(1200px), auto, auto, desktop-vw(1200px));
+      @include position(
+        absolute,
+        desktop-vw(1200px),
+        auto,
+        auto,
+        desktop-vw(1200px)
+      );
       @include dims(desktop-vw(120px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(540px), auto, auto, mobile-vw(310px));
+        @include position(
+          absolute,
+          mobile-vw(540px),
+          auto,
+          auto,
+          mobile-vw(310px)
+        );
         @include dims(mobile-vw(50px));
       }
     }
 
     &.cookie4 {
-      @include position(absolute, desktop-vw(1100px), auto, auto, desktop-vw(-150px));
+      @include position(
+        absolute,
+        desktop-vw(1100px),
+        auto,
+        auto,
+        desktop-vw(-150px)
+      );
       @include dims(desktop-vw(260px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(1090px), auto, auto, mobile-vw(10px));
+        @include position(
+          absolute,
+          mobile-vw(1090px),
+          auto,
+          auto,
+          mobile-vw(10px)
+        );
         @include dims(mobile-vw(40px));
       }
     }
 
     &.cookie5 {
-      @include position(absolute, desktop-vw(1000px), auto, auto, desktop-vw(1300px));
+      @include position(
+        absolute,
+        desktop-vw(1000px),
+        auto,
+        auto,
+        desktop-vw(1300px)
+      );
       @include dims(desktop-vw(160px));
 
       @include mobile {
-        @include position(absolute, mobile-vw(880px), auto, auto, mobile-vw(300px));
+        @include position(
+          absolute,
+          mobile-vw(880px),
+          auto,
+          auto,
+          mobile-vw(300px)
+        );
         @include dims(mobile-vw(35px));
       }
     }

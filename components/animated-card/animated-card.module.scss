@@ -11,7 +11,7 @@
 
   .bg {
     @include position(absolute, 0, 0, 0, 0);
-    background-color: #fffaf3;
+    background-color: var(--sugar-milk);
     z-index: 10;
 
     @include mobile {
@@ -49,13 +49,12 @@
     }
 
     .text {
-      margin-top: desktop-vw(-10px);
-      color: var(--fuchsia-nebula);
       font-family: var(--font-bomstad-display);
       font-size: desktop-vw(40px);
       font-weight: 900;
       line-height: 1;
       margin-bottom: desktop-vw(30px);
+      margin-top: desktop-vw(-10px);
       text-align: center;
       transform: translateY(200%) scale(0.7);
       z-index: 20;

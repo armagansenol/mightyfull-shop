@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import type { CartItem } from '@/lib/shopify/types';
+import { CartItem } from '@/lib/shopify/types';
 
 function ResetButton({
   onClick,
@@ -41,11 +41,121 @@ function ResetButton({
       aria-label={ariaLabel}
     >
       {isLoading ? (
-        <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+        <Loader2 className="h-4 w-4 animate-spin text-blue-ruin" />
       ) : (
         <IconClose fill="var(--blue-ruin)" />
       )}
     </button>
+  );
+}
+
+function UpgradeButton({
+  isUpdating,
+  onClick
+}: {
+  isUpdating: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      className={cn(
+        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
+        isUpdating && 'pointer-events-none'
+      )}
+      onClick={onClick}
+      tabIndex={0}
+      aria-label="Upgrade to subscription and save 10%"
+      type="button"
+    >
+      <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
+        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
+      </span>
+      {isUpdating && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
+        </motion.div>
+      )}
+    </button>
+  );
+}
+
+function SubscriptionSelector({
+  currentSellingPlanId,
+  currentSellingPlanName,
+  sellingPlans,
+  isUpdating,
+  onSellingPlanChange,
+  onReset,
+  item
+}: {
+  currentSellingPlanId: string | null;
+  currentSellingPlanName: string | undefined;
+  sellingPlans: { id: string; name: string }[];
+  isUpdating: boolean;
+  onSellingPlanChange: (id: string) => void;
+  onReset: () => void;
+  item: CartItem;
+}) {
+  return (
+    <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
+      <div className="flex-1">
+        <Select
+          value={currentSellingPlanId || ''}
+          disabled={isUpdating}
+          onValueChange={onSellingPlanChange}
+        >
+          <SelectTrigger
+            className={cn(
+              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
+              'text-lg font-bomstad-display font-medium text-blue-ruin'
+            )}
+          >
+            <SelectValue placeholder={currentSellingPlanName}>
+              {currentSellingPlanName}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="bg-white">
+            {sellingPlans.map((plan) => (
+              <SelectItem
+                className={cn(
+                  'w-full h-12',
+                  'text-lg font-bomstad-display font-medium text-blue-ruin'
+                )}
+                key={plan.id}
+                value={plan.id}
+              >
+                {plan.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <ResetButton
+        onClick={onReset}
+        disabled={isUpdating || !currentSellingPlanId}
+        isLoading={isUpdating && currentSellingPlanId === null}
+        ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
+      />
+
+      {isUpdating && currentSellingPlanId !== null && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
+        </motion.div>
+      )}
+    </div>
   );
 }
 
@@ -120,15 +230,19 @@ export function EditSellingPlanButton({
   const showSelectionUI = selectActive || currentSellingPlanId !== null;
 
   return (
-    <div className={cn({ 'opacity-75': isUpdating })}>
-      <AnimatePresence mode="wait">
+    <div
+      className={cn('transition-opacity duration-700', {
+        'opacity-75': isUpdating
+      })}
+    >
+      <AnimatePresence mode="popLayout">
         {showUpgradeButton && (
           <motion.div
             key="upgrade-button"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
             <UpgradeButton
               isUpdating={isUpdating}
@@ -145,7 +259,7 @@ export function EditSellingPlanButton({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.2 }}
           >
             <SubscriptionSelector
               currentSellingPlanId={currentSellingPlanId}
@@ -159,116 +273,6 @@ export function EditSellingPlanButton({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-function UpgradeButton({
-  isUpdating,
-  onClick
-}: {
-  isUpdating: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className={cn(
-        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
-        isUpdating && 'pointer-events-none'
-      )}
-      onClick={onClick}
-      tabIndex={0}
-      aria-label="Upgrade to subscription and save 10%"
-      type="button"
-    >
-      <span className="font-bomstad-display font-medium text-blue-ruin text-base leading-none">
-        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
-      </span>
-      {isUpdating && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-        </motion.div>
-      )}
-    </button>
-  );
-}
-
-function SubscriptionSelector({
-  currentSellingPlanId,
-  currentSellingPlanName,
-  sellingPlans,
-  isUpdating,
-  onSellingPlanChange,
-  onReset,
-  item
-}: {
-  currentSellingPlanId: string | null;
-  currentSellingPlanName: string | undefined;
-  sellingPlans: { id: string; name: string }[];
-  isUpdating: boolean;
-  onSellingPlanChange: (id: string) => void;
-  onReset: () => void;
-  item: CartItem;
-}) {
-  return (
-    <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
-      <div className="flex-1">
-        <Select
-          value={currentSellingPlanId || ''}
-          disabled={isUpdating}
-          onValueChange={onSellingPlanChange}
-        >
-          <SelectTrigger
-            className={cn(
-              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
-              'text-base font-bomstad-display font-medium text-blue-ruin'
-            )}
-          >
-            <SelectValue placeholder={currentSellingPlanName}>
-              {currentSellingPlanName}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            {sellingPlans.map((plan) => (
-              <SelectItem
-                className={cn(
-                  'w-full h-12',
-                  'text-base font-bomstad-display font-medium text-blue-ruin'
-                )}
-                key={plan.id}
-                value={plan.id}
-              >
-                {plan.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <ResetButton
-        onClick={onReset}
-        disabled={isUpdating || !currentSellingPlanId}
-        isLoading={isUpdating && currentSellingPlanId === null}
-        ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
-      />
-
-      {isUpdating && currentSellingPlanId !== null && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-500" />
-        </motion.div>
-      )}
     </div>
   );
 }

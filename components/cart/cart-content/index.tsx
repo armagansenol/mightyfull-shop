@@ -25,11 +25,13 @@ interface CartContentProps {
 function EmptyCart() {
   return (
     <div
-      className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden"
+      className="w-full h-full mt-20 text-blue-ruin flex flex-col items-center justify-center gap-y-4"
       aria-label="Empty shopping cart"
     >
-      <ShoppingCartIcon className="h-16" />
-      <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
+      <ShoppingCartIcon className="h-14 w-14" />
+      <p className="mt-6 font-bomstad-display text-center text-3xl font-bold">
+        Your cart is empty
+      </p>
     </div>
   );
 }

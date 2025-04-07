@@ -8,9 +8,9 @@ import { CartHeader } from '@/components/cart/cart-header';
 import { CartTrigger } from '@/components/cart/cart-trigger';
 import { useCartCheckout } from '@/components/cart/hooks/useCartCheckout';
 import { useCartInitialization } from '@/components/cart/hooks/useCartInitialization';
-import { useCartNotifications } from '@/components/cart/hooks/useCartNotifications';
-import { useScrollLock } from '@/components/cart/hooks/useScrollLock';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+import { useScrollLock } from '@/hooks/use-scroll-lock';
 
 export function Cart() {
   const [open, setOpen] = useState(false);
@@ -22,12 +22,9 @@ export function Cart() {
   const { mutate: handleCheckout, isPending: isCheckoutPending } =
     useCartCheckout();
 
-  console.log('cart lines', cart?.lines);
-
   const uniqueItemCount = cart?.lines?.length || 0;
 
   useScrollLock(open);
-  useCartNotifications(openCart);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,7 +40,13 @@ export function Cart() {
           onClick={openCart}
         />
       </SheetTrigger>
-      <SheetContent className="lg:w-3/5 xl:w-2/5 h-full max-h-screen px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin flex flex-col">
+      <SheetContent
+        className="lg:w-3/5 xl:w-2/5 h-full max-h-screen px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin flex flex-col"
+        aria-describedby="cart-content-description"
+      >
+        <div id="cart-content-description" className="sr-only">
+          Your shopping cart contents
+        </div>
         <CartHeader />
         <CartContent
           cart={cart}

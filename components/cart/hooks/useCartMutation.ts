@@ -2,6 +2,8 @@ import { useCart } from '@/components/cart/cart-context';
 import { test } from '@/components/custom-toast/success';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import type { Cart, CartItem } from '@/lib/shopify/types';
+
 type CartActionType = 'plus' | 'minus' | 'delete' | 'update-selling-plan';
 type MutationResult = { success: boolean; message?: string } | string;
 
@@ -12,8 +14,11 @@ interface UseCartMutationOptions<TVariables extends Record<string, unknown>> {
   // The action type to perform on success
   actionType: CartActionType;
 
-  // The merchandise ID to update
-  merchandiseId: string;
+  // The line ID to update (instead of merchandise ID)
+  lineId: string;
+
+  // The merchandise ID (optional, for context updates)
+  merchandiseId?: string;
 
   // Optional selling plan ID
   sellingPlanId?: string | null;
@@ -39,7 +44,7 @@ export function useCartMutation<
 >({
   mutationFn,
   actionType,
-  merchandiseId,
+  lineId,
   sellingPlanId,
   productTitle = 'Item',
   successMessage,
@@ -62,13 +67,27 @@ export function useCartMutation<
             actionType === 'update-selling-plan' &&
             'newSellingPlanId' in variables
           ) {
-            updateCartItemSellingPlan(
-              merchandiseId,
-              variables.newSellingPlanId as string | null
-            );
+            // Get the current cart state
+            const currentCart = queryClient.getQueryData(['cart']) as
+              | Cart
+              | undefined;
+            if (currentCart) {
+              // Find the current line item
+              const currentLine = currentCart.lines.find(
+                (line: CartItem) => line.id === lineId
+              );
+
+              if (currentLine) {
+                // Update the cart item with the new selling plan while preserving quantity
+                updateCartItemSellingPlan(
+                  lineId,
+                  variables.newSellingPlanId as string | null
+                );
+              }
+            }
           } else {
             updateCartItem(
-              merchandiseId,
+              lineId,
               actionType as 'plus' | 'minus' | 'delete',
               sellingPlanId || null
             );
@@ -82,8 +101,10 @@ export function useCartMutation<
 
           test(message);
 
-          // Invalidate cart queries
-          queryClient.invalidateQueries({ queryKey: ['cart'] });
+          // Invalidate cart queries after a short delay to ensure our local state is updated
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] });
+          }, 100);
 
           // Call custom onSuccess if provided
           if (onSuccess) {
