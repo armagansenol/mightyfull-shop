@@ -11,7 +11,7 @@ export default async function ShopPage() {
   const products = await getAllProducts();
 
   return (
-    <Wrapper colorTheme={defaultColorTheme} headerWithPadding>
+    <Wrapper colorTheme={defaultColorTheme}>
       <section className={cn(s.shop, 'flex flex-col items-center')}>
         <h2>Impossible to Choose Just One!</h2>
         <p>Can&apos;t decide? Try them all and discover your new favorite!</p>
