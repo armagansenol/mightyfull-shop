@@ -22,17 +22,6 @@
   }
 }
 
-.border {
-  border: 1px solid var(--primary);
-  border-radius: desktop-vw(12px);
-  padding: desktop-vw(20px);
-
-  @include mobile {
-    border-radius: mobile-vw(8px);
-    padding: mobile-vw(16px);
-  }
-}
-
 .purchaseOption {
   > label {
     color: var(--primary);
@@ -117,7 +106,7 @@
 
     @include hover {
       &:hover {
-        background-color: var(--secondary);
+        background-color: var(--tertiary);
       }
     }
   }

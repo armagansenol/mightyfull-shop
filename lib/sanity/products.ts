@@ -1,4 +1,4 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const PRODUCTS_QUERY = groq`
  *[_type == "product"] {
@@ -8,6 +8,5 @@ export const PRODUCTS_QUERY = groq`
   "shopifyDescription": store.description,
   colorTheme,
   description,
-  specs,
 }
-`
+`;

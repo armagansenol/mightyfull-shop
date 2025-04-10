@@ -1,10 +1,10 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { COLOR_THEME } from "../colorTheme"
-import { CUSTOM_PRODUCT_OPTIONS } from "../customProductOptions"
-import { IMAGE } from "../image"
-import { SEO_SHOPIFY } from "../seoShopify"
-import { SHARED_TEXT } from "../sharedText"
+import { COLOR_THEME } from '../colorTheme';
+import { CUSTOM_PRODUCT_OPTIONS } from '../customProductOptions';
+import { IMAGE } from '../image';
+import { SEO_SHOPIFY } from '../seoShopify';
+import { SHARED_TEXT } from '../sharedText';
 
 export const PRODUCT_PAGE = groq`
   _id,
@@ -20,7 +20,8 @@ export const PRODUCT_PAGE = groq`
     ${COLOR_THEME}
   },
   description,
-  specs[] {
+  productSpecifications[] {
+    "id": _key,
     title,
     description
   },
@@ -32,4 +33,4 @@ export const PRODUCT_PAGE = groq`
   "slug": store.slug.current,
   ${SHARED_TEXT},
 
-`
+`;

@@ -1,4 +1,4 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const PRODUCT_DETAIL_QUERY = groq`
   *[_type == "productDetail" && product->store.handle == $slug][0] {
@@ -11,7 +11,6 @@ export const PRODUCT_DETAIL_QUERY = groq`
       }
     },
     description,
-    specs,
     store {
       title,
       status,
@@ -27,4 +26,4 @@ export const PRODUCT_DETAIL_QUERY = groq`
       "previewImageUrl": store.previewImageUrl
     }
   }
-`
+`;
