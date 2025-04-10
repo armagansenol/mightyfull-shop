@@ -37,7 +37,7 @@ export function ProductSpecs({ specs, className }: ProductSpecsProps) {
             </AccordionTrigger>
             <AccordionContent className="pb-10">
               <CustomizedPortableText
-                wrapperClassName="font-poppins font-normal text-primary text-sm"
+                wrapperClassName="prose font-poppins font-normal text-primary text-sm"
                 content={item.description}
               />
             </AccordionContent>

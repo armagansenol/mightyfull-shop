@@ -45,7 +45,7 @@ export default async function ProductDetialPage({
   // const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
   return (
-    <Wrapper className="popop" colorTheme={sanityProduct.colorTheme}>
+    <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
       <section
         className={cn(
           'container flex flex-col items-center tablet:grid grid-cols-24 tablet:items-stretch justify-stretch py-12 mb-20'
@@ -66,7 +66,7 @@ export default async function ProductDetialPage({
             1 PACK ( 12 COOKIES )
           </small>
           <CustomizedPortableText
-            wrapperClassName="text-primary font-poppins text-sm font-normal mb-10"
+            wrapperClassName="prose text-primary font-poppins text-sm font-normal mb-10"
             content={sanityProduct.description}
           />
           {/* purchase panel */}

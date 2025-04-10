@@ -23,7 +23,7 @@ export function AnimatedCard(props: AnimatedCardProps) {
       tl.current = gsap
         .timeline({ paused: true })
         .to(
-          '.package',
+          '.gsap-package',
           {
             yPercent: -100,
             duration,
@@ -32,7 +32,7 @@ export function AnimatedCard(props: AnimatedCardProps) {
           's'
         )
         .to(
-          '.cookie',
+          '.gsap-cookie',
           {
             yPercent: -100,
             duration,
@@ -49,7 +49,7 @@ export function AnimatedCard(props: AnimatedCardProps) {
           's'
         )
         .to(
-          '.text',
+          '.gsap-text',
           {
             scale: 1,
             y: 0,
@@ -59,7 +59,7 @@ export function AnimatedCard(props: AnimatedCardProps) {
           's'
         )
         .to(
-          '.img-cookie',
+          '.gsap-img-cookie',
           {
             scale: 1,
             duration
@@ -90,7 +90,7 @@ export function AnimatedCard(props: AnimatedCardProps) {
       <div
         className={cx(
           s.package,
-          'package',
+          'gsap-package',
           'flex flex-col items-center justify-center'
         )}
       >
@@ -105,16 +105,18 @@ export function AnimatedCard(props: AnimatedCardProps) {
           />
         </div>
       </div>
-      <div className={cx(s.cookie, 'cookie', 'flex flex-col items-center')}>
+      <div
+        className={cx(s.cookie, 'gsap-cookie', 'flex flex-col items-center')}
+      >
         <div
-          className={cx(s.text, 'text')}
+          className={cx(s.text, 'gsap-text')}
           style={{ color: props.product.colorTheme.primary }}
         >
           {props.displayTitle.length > 0 && (
             <CustomizedPortableText content={props.displayTitle} />
           )}
         </div>
-        <div className={cx(s.imgC, 'img-cookie')}>
+        <div className={cx(s.imgC, 'gsap-img-cookie')}>
           <Img
             className="object-contain"
             src={props.imgCookie.url}

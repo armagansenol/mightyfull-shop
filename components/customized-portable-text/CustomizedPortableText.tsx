@@ -23,7 +23,7 @@ export default function CustomizedPortableText(
   };
 
   return (
-    <div className={cn('prose', props.wrapperClassName)}>
+    <div className={cn(props.wrapperClassName)}>
       <PortableText value={props.content} components={components} />
     </div>
   );
