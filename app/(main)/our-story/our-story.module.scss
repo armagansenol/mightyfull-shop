@@ -11,7 +11,13 @@
   }
 
   .cookieC {
-    @include position(absolute, auto, desktop-vw(100px), desktop-vw(-100px), auto);
+    @include position(
+      absolute,
+      auto,
+      desktop-vw(100px),
+      desktop-vw(-100px),
+      auto
+    );
     @include dims(desktop-vw(350px));
     transform: translate(50%, 25%);
 
@@ -214,7 +220,8 @@
 
   .text {
     background-color: var(--cherry-blush);
-    padding: desktop-vw(100px) desktop-vw(90px) desktop-vw(100px) desktop-vw(80px);
+    padding: desktop-vw(120px) desktop-vw(90px) desktop-vw(120px)
+      desktop-vw(80px);
 
     @include mobile {
       padding: mobile-vw(50px) mobile-vw(16px);

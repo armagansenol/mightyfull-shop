@@ -2,7 +2,7 @@
 
 import s from './header.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 import Lenis from 'lenis';
 import { useLenis } from 'lenis/react';
 import { CircleUserRound } from 'lucide-react';
@@ -35,13 +35,13 @@ export function Header() {
 
   useEffect(() => {
     const handleEvents = (e: Lenis) => {
-      if (lenis?.direction === 1 && e.actualScroll > window.innerHeight / 2) {
+      if (lenis?.direction === 1 && e.actualScroll > window.innerHeight / 4) {
         setHeaderHidden(true);
       } else {
         setHeaderHidden(false);
       }
 
-      if (lenis?.direction === 1 && e.actualScroll > window.innerHeight / 4) {
+      if (lenis?.direction === 1 && e.actualScroll > window.innerHeight / 8) {
         setNoticebarHidden(true);
       } else {
         setNoticebarHidden(false);

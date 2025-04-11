@@ -2,8 +2,7 @@ import { SanityAssetImage } from '@/lib/sanity';
 import { PortableTextBlock } from '@portabletext/react';
 import {
   ProductVariant,
-  SellingPlanGroup,
-  Seo
+  SellingPlanGroup
 } from '@shopify/hydrogen-react/storefront-api-types';
 import { ImageAsset } from 'sanity';
 
@@ -51,23 +50,6 @@ export interface ProductVariantNode {
   availableForSale: boolean;
   quantityAvailable: number;
   price: ProductVariant['price'];
-}
-
-export interface ProductDetail {
-  id: string;
-  availableForSale: boolean;
-  hidden: string;
-  titleProxy: string;
-  images: ImageAsset[];
-  description: string;
-  specs: ProductSpec[];
-  store: StoreDetails;
-  seo: Seo;
-  product: ShopifyProduct;
-  sellingPlanGroups: SellingPlanGroups;
-  variants: {
-    nodes: ProductVariantNode[];
-  };
 }
 
 export enum SocialMedia {

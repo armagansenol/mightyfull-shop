@@ -1,188 +1,76 @@
-.productPage {
-  background-color: var(--sugar-milk);
-  color: var(--primary);
+.reviews {
+  background-color: var(--primary);
+  color: var(--sugar-milk);
+  padding: 0 desktop-vw(80px);
+  position: relative;
 
-  .intro {
-    padding: 0 desktop-vw(120px) 0 desktop-vw(80px);
+  @include mobile {
+    padding: 0 mobile-vw(16px);
+  }
+
+  .cloudTop {
+    @include position(absolute, desktop-vw(50px), 0, auto, 0);
+    @include dims(100%, desktop-vw(150px));
+    transform: translateY(-100%);
+    z-index: 0;
 
     @include mobile {
-      padding: 0 mobile-vw(16px);
-    }
-
-    .productTitle {
-      font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(32px);
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: desktop-vw(10px);
-
-      @include mobile {
-        align-self: center;
-        @include dims(mobile-vw(300px), auto);
-        font-size: mobile-vw(32px);
-        line-height: 1.25;
-        margin-bottom: mobile-vw(16px);
-        text-align: center;
-      }
-    }
-
-    .productPackInfo {
-      font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(16px);
-      font-weight: 500;
-      line-height: 1;
-      margin-bottom: desktop-vw(30px);
-
-      @include mobile {
-        font-size: mobile-vw(15px);
-        margin-bottom: mobile-vw(30px);
-        text-align: center;
-      }
-    }
-
-    .productDescription {
-      font-family: var(--font-poppins);
-      font-size: desktop-vw(14px);
-      font-weight: 400;
-      margin-bottom: desktop-vw(50px);
-
-      @include mobile {
-        font-size: mobile-vw(16px);
-        line-height: 2;
-        margin-bottom: mobile-vw(30px);
-        text-align: center;
-      }
-
-      > p {
-        margin-bottom: desktop-vw(16px);
-
-        @include mobile {
-          margin-bottom: mobile-vw(16px);
-        }
-      }
+      @include dims(200%, mobile-vw(200px));
+      transform: translateY(-60%) translateX(-50%);
     }
   }
 
-  .specs {
-    .spec {
-      position: relative;
+  .cloudBottom {
+    @include position(absolute, auto, 0, desktop-vw(50px), 0);
+    @include dims(100%, desktop-vw(150px));
+    transform: translateY(100%);
+    z-index: 0;
 
-      &:not(&:last-child) {
-        &::before {
-          content: '';
-          @include position(absolute, auto, 0, 0, 0);
-          @include dims(100%, 1px);
-          background-color: var(--secondary);
-          border-radius: inherit;
-          opacity: 0.3;
-          transition: 400ms background-color ease;
-          z-index: 5;
-        }
-      }
+    @include mobile {
+      @include dims(200%, mobile-vw(200px));
+      transform: translateY(40%) translateX(-50%);
+    }
+  }
+}
 
-      .title {
-        font-family: var(--font-bomstad-display);
-        font-size: desktop-vw(32px);
-        font-weight: 900;
+.relatedProducts {
+  padding: desktop-vw(50px) desktop-vw(80px);
+  position: relative;
+  z-index: 100;
 
-        @include mobile {
-          font-size: mobile-vw(28px);
-          line-height: 1.25;
-        }
-      }
+  @include mobile {
+    margin-bottom: mobile-vw(30px);
+    padding: mobile-vw(50px) mobile-vw(16px);
+  }
 
-      .description {
-        font-family: var(--font-poppins);
-        font-size: desktop-vw(15px);
-        font-weight: 400;
-        line-height: 1.5;
+  > h2 {
+    @include dims(desktop-vw(610px), auto);
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: desktop-vw(60px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: desktop-vw(10px);
+    text-align: center;
 
-        @include mobile {
-          font-size: mobile-vw(14px);
-          line-height: 1.5;
-        }
-      }
-
-      .accordionTrigger {
-        color: var(--primary);
-      }
+    @include mobile {
+      @include dims(auto);
+      font-size: mobile-vw(60px);
+      margin-bottom: mobile-vw(10px);
     }
   }
 
-  .reviews {
-    background-color: var(--primary);
-    color: var(--sugar-milk);
-    padding: 0 desktop-vw(80px);
-    position: relative;
+  > p {
+    color: var(--blue-ruin);
+    font-family: var(--font-poppins);
+    font-size: desktop-vw(18px);
+    font-weight: 400;
+    margin-bottom: desktop-vw(50px);
+    text-align: center;
 
     @include mobile {
-      padding: 0 mobile-vw(16px);
-    }
-
-    .cloudTop {
-      @include position(absolute, desktop-vw(50px), 0, auto, 0);
-      @include dims(100%, desktop-vw(150px));
-      transform: translateY(-100%);
-      z-index: 0;
-
-      @include mobile {
-        @include dims(200%, mobile-vw(200px));
-        transform: translateY(-60%) translateX(-50%);
-      }
-    }
-
-    .cloudBottom {
-      @include position(absolute, auto, 0, desktop-vw(50px), 0);
-      @include dims(100%, desktop-vw(150px));
-      transform: translateY(100%);
-      z-index: 0;
-
-      @include mobile {
-        @include dims(200%, mobile-vw(200px));
-        transform: translateY(40%) translateX(-50%);
-      }
-    }
-  }
-
-  .relatedProducts {
-    padding: desktop-vw(50px) desktop-vw(80px);
-    position: relative;
-    z-index: 100;
-
-    @include mobile {
-      margin-bottom: mobile-vw(30px);
-      padding: mobile-vw(50px) mobile-vw(16px);
-    }
-
-    > h2 {
-      @include dims(desktop-vw(610px), auto);
-      color: var(--blue-ruin);
-      font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(60px);
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: desktop-vw(10px);
-      text-align: center;
-
-      @include mobile {
-        @include dims(auto);
-        font-size: mobile-vw(60px);
-        margin-bottom: mobile-vw(10px);
-      }
-    }
-
-    > p {
-      color: var(--blue-ruin);
-      font-family: var(--font-poppins);
-      font-size: desktop-vw(18px);
-      font-weight: 400;
-      margin-bottom: desktop-vw(50px);
-      text-align: center;
-
-      @include mobile {
-        font-size: mobile-vw(18px);
-        margin-bottom: mobile-vw(50px);
-      }
+      font-size: mobile-vw(18px);
+      margin-bottom: mobile-vw(50px);
     }
   }
 }

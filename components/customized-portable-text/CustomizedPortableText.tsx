@@ -1,20 +1,30 @@
-import { PortableText, PortableTextBlock, PortableTextComponents } from "@portabletext/react"
+import { cn } from '@/lib/utils';
+import React from 'react';
+
+import {
+  PortableText,
+  PortableTextBlock,
+  PortableTextComponents
+} from '@portabletext/react';
 
 export interface CustomizedPortableTextProps {
-  content: PortableTextBlock[]
+  wrapperClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+  content: PortableTextBlock[];
 }
 
-export default function CustomizedPortableText(props: CustomizedPortableTextProps) {
+export default function CustomizedPortableText(
+  props: CustomizedPortableTextProps
+) {
   const components: PortableTextComponents = {
-    list: {
-      bullet: ({ children }) => <ul className="list-disc pl-6">{children}</ul>,
-      number: ({ children }) => <ol className="list-decimal pl-6">{children}</ol>,
-    },
-    listItem: {
-      bullet: ({ children }) => <li className="mb-2">{children}</li>,
-      number: ({ children }) => <li className="mb-2">{children}</li>,
-    },
-  }
+    marks: {
+      em: ({ children }) => <span className="italic">{children}</span>,
+      strong: ({ children }) => <span className="font-bold">{children}</span>
+    }
+  };
 
-  return <PortableText value={props.content} components={components} />
+  return (
+    <div className={cn(props.wrapperClassName)}>
+      <PortableText value={props.content} components={components} />
+    </div>
+  );
 }

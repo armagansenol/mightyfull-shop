@@ -10,6 +10,7 @@ import { Lenis } from '@/components/lenis';
 import { ColorTheme } from '@/types';
 import { useLayoutData } from '@/context/layout-data';
 import { defaultColorTheme } from '@/lib/constants';
+import { useEffect } from 'react';
 
 interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
   lenis?: boolean | LenisOptions;
@@ -24,6 +25,18 @@ export function Wrapper({
   ...props
 }: WrapperProps) {
   const { noticebar } = useLayoutData();
+
+  useEffect(() => {
+    document.body.style.setProperty('--primary', colorTheme?.primary);
+    document.body.style.setProperty('--secondary', colorTheme?.secondary);
+    document.body.style.setProperty('--tertiary', colorTheme?.tertiary);
+
+    return () => {
+      document.body.style.removeProperty('--primary');
+      document.body.style.removeProperty('--secondary');
+      document.body.style.removeProperty('--tertiary');
+    };
+  }, [colorTheme]);
 
   return (
     <div

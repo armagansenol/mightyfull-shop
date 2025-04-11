@@ -215,16 +215,12 @@ export type SanityProductPage = {
   gid: string;
   slug?: string;
   seo: SanitySeo;
-  specs: {
+  productSpecifications: {
+    id: string;
     title: string;
     description: PortableTextBlock[];
   }[];
   images: ImageAsset[];
-  sharedText: {
-    deliveryAndReturns: PortableTextBlock[];
-    deliverySummary: string;
-    environmentallyFriendly: string;
-  };
 };
 
 export type SanitySeo = {

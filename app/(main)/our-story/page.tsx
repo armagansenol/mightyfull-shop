@@ -1,15 +1,15 @@
 import s from './our-story.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 
 import { IconLeftArm, IconRightArm, IconStar } from '@/components/icons';
-import { Marquee } from '@/components/marquee';
 import { Img } from '@/components/utility/img';
+import { Marquee } from '@/components/marquee';
 import { Wrapper } from '@/components/wrapper';
-import { defaultColorTheme } from '@/lib/constants';
+
 export default function Page() {
   return (
-    <Wrapper colorTheme={defaultColorTheme}>
+    <Wrapper>
       <section className={cn(s.intro, 'flex flex-col items-stretch')}>
         <div className={cn('flex flex-col items-center')}>
           <div className={cn(s.titleC, 'flex items-center gap-3')}>
@@ -141,13 +141,13 @@ export default function Page() {
           </p>
         </div>
         <div className="col-span-6">
-          <div className={s.imgC}>
+          <div className={cn(s.imgC, 'relative w-full h-full')}>
             <Img
-              className="object-contain"
-              src="/img/lady-2.jpg"
-              height={1000}
-              width={1000}
-              alt="Lady eating a cookie"
+              className="w-full h-full object-cover"
+              src="/img/mightyfull-helmet.jpg"
+              alt="Mightyfull Helmet"
+              fill
+              sizes="50vw"
             />
           </div>
         </div>

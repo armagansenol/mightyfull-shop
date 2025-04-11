@@ -1,11 +1,9 @@
 'use client';
 
-import s from './product-images.module.scss';
-
-import cx from 'clsx';
+import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import { ImageAsset } from 'sanity';
-import { AnimatePresence, motion } from 'motion/react';
 
 import { Img } from '@/components/utility/img';
 
@@ -19,25 +17,27 @@ export function ProductImages({ images }: ProductImagesProps) {
   return (
     <div className="flex flex-col-reverse items-center tablet:items-start tablet:grid grid-cols-12 gap-5">
       <div
-        className={cx(
-          s.images,
+        className={cn(
           'col-span-2 flex flex-row tablet:flex-col justify-center tablet:justify-start gap-2'
         )}
       >
         {images.map((item, i) => {
           return (
             <div
-              className={cx(s.imgC, 'cursor-pointer', {
-                [s.active]: currentItem === i
-              })}
+              className={cn(
+                'w-full aspect-square rounded-xl p-3 cursor-pointer',
+                {
+                  'border border-tertiary': currentItem === i
+                }
+              )}
               key={i}
               onClick={() => setCurrentItem(i)}
             >
               <Img
                 className="object-contain"
                 src={item.url}
-                height={500}
-                width={500}
+                height={1000}
+                width={1000}
                 alt="Product Visual"
                 priority
               />
@@ -46,10 +46,10 @@ export function ProductImages({ images }: ProductImagesProps) {
         })}
       </div>
       <div className="col-span-10">
-        <div className={s.mainImgC}>
+        <div className="w-full aspect-square border border-tertiary rounded-xl p-16">
           <AnimatePresence mode="popLayout">
             <motion.div
-              className={s.mainImg}
+              className="w-full h-full"
               key={currentItem}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
