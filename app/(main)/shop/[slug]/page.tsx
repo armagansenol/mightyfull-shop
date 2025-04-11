@@ -48,7 +48,7 @@ export default async function ProductDetialPage({
     <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
       <section
         className={cn(
-          'container flex flex-col items-center tablet:grid grid-cols-24 tablet:items-stretch justify-stretch py-12 mb-20'
+          'container flex flex-col items-center gap-5 tablet:gap-0 tablet:grid grid-cols-24 tablet:items-stretch justify-stretch py-6 tablet:py-12 mb-20'
         )}
       >
         <div className="col-span-12 space-y-10">
@@ -58,7 +58,7 @@ export default async function ProductDetialPage({
             specs={sanityProduct.productSpecifications}
           />
         </div>
-        <div className="col-span-12 flex flex-col items-stretch pl-20 pr-14">
+        <div className="col-span-12 flex flex-col items-stretch px-0 tablet:pl-20 tablet:pr-14 text-center tablet:text-left">
           <h1 className="text-primary font-bomstad-display text-4xl font-black">
             {sanityProduct.title}
           </h1>

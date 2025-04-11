@@ -12,7 +12,12 @@ const config: Config = {
   ],
   theme: {
     container: {
-      center: true
+      center: true,
+      padding: {
+        DEFAULT: '1rem',
+        tablet: '0',
+        desktop: '0'
+      }
     },
     extend: {
       gridTemplateColumns: {

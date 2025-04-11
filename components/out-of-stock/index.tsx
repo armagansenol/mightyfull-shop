@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Img } from '@/components/utility/img';
+import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 
 export interface OutOfStockProps {
   variantId: string;
@@ -68,7 +69,7 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
     <div className="flex flex-col items-stretch">
       <div
         className={cn(
-          s['out-of-stock'],
+          'font-poppins text-primary text-base font-bold',
           'flex justify-center tablet:justify-start mb-10 tablet:mb-20 py-2'
         )}
       >
@@ -94,7 +95,9 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
           <div className="grid grid-cols-12">
             <div className="col-span-7 p-8">
               <DialogTitle className={s.title}>
-                Notify me when back in stock
+                Please enter your email address and we&apos;ll notify you when
+                this product is{' '}
+                <span className="underline">back in stock!</span>
               </DialogTitle>
               <DialogDescription className="text-sm font-normal text-[var(--nova-pink)]">
                 {isSuccess ? (
@@ -104,9 +107,6 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
                   </p>
                 ) : (
                   <>
-                    <p className={s.description}>
-                      We will notify you when the product is back in stock.
-                    </p>
                     <Form {...form}>
                       <form
                         onSubmit={form.handleSubmit(handleBackInStockSubmit)}
@@ -139,7 +139,7 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
                           {isSubmitting ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            'NOTIFY ME'
+                            <LetterSwapOnHover label="SUBMIT" />
                           )}
                         </button>
                       </form>

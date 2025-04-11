@@ -30,14 +30,14 @@ export function ProductSpecs({ specs, className }: ProductSpecsProps) {
             <AccordionTrigger
               className={cn(
                 'flex items-center justify-between py-10 w-full',
-                'font-bomstad-display font-black text-primary text-4xl'
+                'font-bomstad-display font-black text-primary text-3xl tablet:text-4xl'
               )}
             >
               {item.title}
             </AccordionTrigger>
             <AccordionContent className="pb-10">
               <CustomizedPortableText
-                wrapperClassName="prose font-poppins font-normal text-primary text-sm"
+                wrapperClassName="prose font-poppins font-normal text-primary text-sm text-left"
                 content={item.description}
               />
             </AccordionContent>

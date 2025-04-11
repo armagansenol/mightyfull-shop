@@ -1,7 +1,5 @@
 'use client';
 
-import s from './purchase-panel.module.scss';
-
 import { cn } from '@/lib/utils';
 import { TooltipContent } from '@radix-ui/react-tooltip';
 import { useMeasure } from '@uidotdev/usehooks';
@@ -108,43 +106,46 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
       <div className="w-full" ref={boxRef}>
         {shopifyProduct?.availableForSale ? (
           <div className="w-full">
-            <Label className={s.title}>PURCHASE OPTIONS</Label>
-            <div
-              className={cn(
-                s.purchase,
-                'border border-primary rounded-xl mb-10 p-5'
-              )}
-            >
+            <Label className="block text-primary font-poppins font-semibold text-sm mb-1 ml-2">
+              PURCHASE OPTIONS
+            </Label>
+            <div className="border border-primary rounded-xl mb-10 p-5">
               <RadioGroup
                 value={purchaseOption}
                 onValueChange={(value: PurchaseOption) =>
                   setPurchaseOption(value)
                 }
               >
-                <div className="space-y-6">
-                  <div
-                    className={cn(
-                      s.purchaseOption,
-                      'flex items-center space-x-2'
-                    )}
-                  >
+                <div className="space-y-5">
+                  <div className={cn('flex items-center gap-2 group')}>
                     <RadioGroupItem
-                      className={s.checkbox}
+                      className={cn(
+                        'w-6 h-6 p-1.5',
+                        'data-[state=checked]:bg-primary data-[state=checked]:text-sugar-milk',
+                        'data-[state=unchecked]:bg-transparent',
+                        'group-hover:data-[state=unchecked]:bg-tertiary',
+                        'transition-all duration-300 ease-in-out'
+                      )}
                       value={PurchaseOption.oneTime}
                       id={PurchaseOption.oneTime}
                     />
-                    <Label htmlFor={PurchaseOption.oneTime}>
+
+                    <Label
+                      className="font-poppins font-semibold text-primary text-lg cursor-pointer"
+                      htmlFor={PurchaseOption.oneTime}
+                    >
                       One-time purchase
                     </Label>
                   </div>
-                  <div
-                    className={cn(
-                      s.purchaseOption,
-                      'flex items-center space-x-2'
-                    )}
-                  >
+                  <div className={cn('flex items-center gap-2 group')}>
                     <RadioGroupItem
-                      className={s.checkbox}
+                      className={cn(
+                        'w-6 h-6 p-1.5',
+                        'data-[state=checked]:bg-primary data-[state=checked]:text-sugar-milk',
+                        'data-[state=unchecked]:bg-transparent ',
+                        'group-hover:data-[state=unchecked]:bg-tertiary',
+                        'transition-all duration-300 ease-in-out'
+                      )}
                       value={PurchaseOption.subscription}
                       id={PurchaseOption.subscription}
                     />
@@ -152,7 +153,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                       className="flex items-center space-x-2"
                       htmlFor={PurchaseOption.subscription}
                     >
-                      <span className="cursor-pointer">
+                      <span className="font-poppins font-semibold text-primary text-lg cursor-pointer">
                         Subscribe - 10% off
                       </span>
                     </Label>
@@ -171,8 +172,8 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                               Love flexibility? So do we! Modify, upgrade, or
                               cancel your subscription anytime—no strings
                               attached. Just set it and forget it (or tweak it
-                              whenever you like). We’ll keep things rolling with
-                              automatic renewals, so you never miss a beat!
+                              whenever you like). We&apos;ll keep things rolling
+                              with automatic renewals, so you never miss a beat!
                               <Link
                                 className="block mt-2 underline"
                                 href="/faq"
@@ -186,34 +187,21 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                     </span>
                   </div>
                 </div>
+
                 <div
                   className={cn(
-                    'font-poppins font-normal text-primary text-[0.7rem] overflow-hidden max-h-[0px] transition-all duration-500 ease-in-out',
+                    'font-poppins font-normal text-primary mt-10 opacity-30 transition-opacity duration-500 ease-in-out',
                     {
-                      'max-h-[400px]':
+                      'opacity-100':
                         purchaseOption === PurchaseOption.subscription
                     }
                   )}
                 >
-                  When you subscribe to a product, you&apos;ll receive repeat
-                  deliveries based on the schedule you choose. Payments will be
-                  processed automatically through your selected payment method
-                  at checkout. Subscriptions renew automatically at the end of
-                  their term. Your order confirmation email includes links to
-                  manage or cancel your subscription easily. For any further
-                  questions, check out our{' '}
-                  <Link className="underline" href="/faq">
-                    FAQ
-                  </Link>{' '}
-                  or contact us directly!
-                </div>
-                <div
-                  className={cn(s.subscriptionOptions, 'mt-10', {
-                    [s.active]: purchaseOption === PurchaseOption.subscription
-                  })}
-                >
-                  <p className="mb-2">DELIVERY INTERVAL</p>
+                  <p className="block text-primary font-poppins font-semibold text-sm mb-1 ml-2">
+                    DELIVERY INTERVAL
+                  </p>
                   <Select
+                    disabled={purchaseOption !== PurchaseOption.subscription}
                     defaultValue={
                       shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans
                         .nodes[0].id
@@ -223,15 +211,23 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                       setSellingPlanId(value)
                     }
                   >
-                    <SelectTrigger className={s.selectTrigger}>
-                      <SelectValue placeholder={'Select'} />
+                    <SelectTrigger
+                      className={cn(
+                        'w-10/12 max-w-sm border border-primary rounded-lg p-3',
+                        'text-primary font-poppins font-semibold text-sm'
+                      )}
+                    >
+                      <SelectValue />
                     </SelectTrigger>
-                    <SelectContent data-lenis-prevent className={s.dsi}>
+                    <SelectContent
+                      className="bg-sugar-milk border border-primary rounded-lg"
+                      data-lenis-prevent
+                    >
                       {shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes.map(
                         (option, i) => {
                           return (
                             <SelectItem
-                              className={s.item}
+                              className="font-poppins font-semibold py-4 text-primary text-base hover:bg-primary hover:text-sugar-milk transition-all duration-300 ease-in-out"
                               value={option.id}
                               key={i}
                             >
@@ -242,20 +238,45 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                       )}
                     </SelectContent>
                   </Select>
+                  <div
+                    className={cn(
+                      'max-w-md overflow-hidden max-h-[0px] transition-all duration-700 ease-in-out',
+                      {
+                        'max-h-[400px]':
+                          purchaseOption === PurchaseOption.subscription
+                      }
+                    )}
+                  >
+                    <article className="font-poppins font-normal text-primary text-[0.7rem] mt-4">
+                      When you subscribe to a product, you&apos;ll receive
+                      repeat deliveries based on the schedule you choose.
+                      Payments will be processed automatically through your
+                      selected payment method at checkout. Subscriptions renew
+                      automatically at the end of their term. Your order
+                      confirmation email includes links to manage or cancel your
+                      subscription easily. For any further questions, check out
+                      our{' '}
+                      <Link className="underline" href="/faq">
+                        FAQ
+                      </Link>{' '}
+                      or contact us directly!
+                    </article>
+                  </div>
                 </div>
               </RadioGroup>
             </div>
-            <Label className={cn(s.title)}>QUANTITY</Label>
+            <Label className="block text-primary font-poppins font-semibold text-sm mb-1 ml-1">
+              QUANTITY
+            </Label>
             <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-3 tablet:h-14">
               <Quantity
-                className="w-48 tablet:w-auto h-12 tablet:h-full tablet:col-span-4"
+                className="w-32 tablet:w-auto h-10 tablet:h-full tablet:col-span-4"
                 quantity={quantity}
                 setQuantity={setQuantity}
-                // maxQuantity={shopifyProduct.variants[0].quantityAvailable}
               />
               <AddToCart
                 buttonTheme="inverted-themed"
-                className="tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
+                className="w-full tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
                 availableForSale={shopifyProduct.availableForSale}
                 variantId={shopifyProduct.variants[0].id}
                 quantity={quantity}
