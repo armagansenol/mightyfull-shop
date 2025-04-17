@@ -1,6 +1,6 @@
 import s from './shop.module.scss';
 
-import cn from 'clsx';
+import { cn } from '@/lib/utils';
 
 import { ProductCard } from '@/components/product-card';
 import { Wrapper } from '@/components/wrapper';
@@ -15,7 +15,12 @@ export default async function ShopPage() {
       <section className={cn(s.shop, 'flex flex-col items-center')}>
         <h2>Impossible to Choose Just One!</h2>
         <p>Can&apos;t decide? Try them all and discover your new favorite!</p>
-        <div className="flex flex-col items-center tablet:grid grid-cols-4 gap-16 mt-10 tablet:mt-20 px-4 tablet:px-0">
+        <div
+          className={cn(
+            s.productContainer,
+            'flex flex-col items-center tablet:grid grid-cols-4'
+          )}
+        >
           {products.map((item) => {
             const product = item.shopifyProduct;
             return (

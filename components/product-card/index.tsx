@@ -1,12 +1,14 @@
-import { routes } from '@/lib/constants';
-import { cn } from '@/lib/utils';
-import { AnimatedCardProps } from '@/types';
-import { AnimatedCard } from '../animated-card';
-import { AddToCart } from '../cart/add-to-cart';
-import { Button } from '../ui/button';
-import { Link } from '../utility/link';
 import s from './product-card.module.scss';
-import { LetterSwapOnHover } from '../letter-swap-on-hover';
+
+import { cn } from '@/lib/utils';
+
+import { AnimatedCard } from '@/components/animated-card';
+import { AddToCart } from '@/components/cart/add-to-cart';
+import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/components/utility/link';
+import { routes } from '@/lib/constants';
+import { AnimatedCardProps } from '@/types';
 
 export interface ProductCardProps {
   id: string;
@@ -22,20 +24,17 @@ export function ProductCard({
   availableForSale
 }: ProductCardProps) {
   return (
-    <div
-      className={cn(s['product-card'], 'flex flex-col gap-10 flex-shrink-0')}
-      key={id}
-    >
+    <div className={cn(s['product-card'], 'flex flex-col')} key={id}>
       <Link
         href={`/${routes.shop.url}/${animatedCard.product.shopifySlug}`}
         prefetch={true}
       >
         <AnimatedCard {...animatedCard} />
       </Link>
-      <div className="flex flex-row tablet:flex-col items-stretch gap-2">
+      <div className={cn(s['button-c'], 'flex flex-col')}>
         <Button
           hoverAnimation={false}
-          className="h-10 font-black"
+          className={s.button}
           colorTheme="blue-ruin"
           asChild
           size="sm"
@@ -49,7 +48,7 @@ export function ProductCard({
         </Button>
         <AddToCart
           buttonTheme="inverted-blue-ruin"
-          className="w-full h-10 font-black"
+          className={s.button}
           availableForSale={availableForSale}
           variantId={variantId}
         />

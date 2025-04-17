@@ -1,12 +1,12 @@
 .shop {
-  padding: desktop-vw(50px) desktop-vw(80px);
+  padding: desktop-vw(75px) desktop-vw(40px);
   padding-bottom: desktop-vw(200px);
   position: relative;
   z-index: 100;
 
   @include mobile {
-    margin-bottom: mobile-vw(30px);
     padding: mobile-vw(50px) mobile-vw(16px);
+    padding-bottom: mobile-vw(100px);
   }
 
   > h2 {
@@ -29,76 +29,22 @@
   > p {
     color: var(--blue-ruin);
     font-family: var(--font-poppins);
-    font-size: desktop-vw(18px);
+    font-size: mobile-vw(18px);
     font-weight: 400;
     text-align: center;
 
-    @include mobile {
-      font-size: mobile-vw(18px);
+    @include desktop {
+      font-size: desktop-vw(18px);
     }
   }
 
-  // .button {
-  //   @include dims(100%, desktop-vw(40px));
-  //   color: var(--sugar-milk);
-  //   font-size: desktop-vw(14px);
-  //   font-weight: 900;
-  //   padding: desktop-vw(8px) 0;
-  //   position: relative;
-  //   transition: 300ms all ease;
+  .productContainer {
+    gap: desktop-vw(20px);
+    margin-top: desktop-vw(50px);
 
-  //   @include mobile {
-  //     @include dims(mobile-vw(140px), mobile-vw(40px));
-  //     font-size: mobile-vw(14px);
-  //     padding: mobile-vw(8px) 0;
-  //   }
-
-  //   span {
-  //     transition: 200ms all ease;
-  //   }
-
-  //   &::before {
-  //     content: "";
-  //     @include position(absolute, 0, 0, 0, 0);
-  //     background-color: var(--blue-ruin);
-  //     border-radius: desktop-vw(8px);
-  //     transition: 200ms all ease;
-  //     z-index: -1;
-
-  //     @include mobile {
-  //       border-radius: mobile-vw(8px);
-  //     }
-  //   }
-
-  //   &:nth-child(2) {
-  //     color: var(--blue-ruin);
-
-  //     &::before {
-  //       content: "";
-  //       background-color: transparent;
-  //       color: var(--blue-ruin);
-  //       border: 1px solid var(--blue-ruin);
-  //     }
-
-  //     @include hover {
-  //       &:hover {
-  //         span {
-  //           transform: scale(1.2);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   @include hover {
-  //     &:hover {
-  //       color: var(--blue-ruin);
-
-  //       &::before {
-  //         background-color: transparent;
-  //         color: var(--blue-ruin);
-  //         border: 1px solid var(--blue-ruin);
-  //       }
-  //     }
-  //   }
-  // }
+    @include mobile {
+      margin-top: mobile-vw(50px);
+      gap: mobile-vw(50px);
+    }
+  }
 }

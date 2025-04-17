@@ -46,7 +46,7 @@ const config: Config = {
       },
       screens: {
         tablet: '800px',
-        desktop: '1024px'
+        desktop: '1280px'
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -3,8 +3,8 @@
 @import './_colors.scss';
 @import './_easings.scss';
 @import './_functions.scss';
-// @import './_layout.scss';
 @import './_utils.scss';
+@import './okendo-widget.scss';
 // @import "./_themes.scss";
 /* @import "./_scroll.scss"; */
 
@@ -15,8 +15,12 @@
   --layout-spacing-x: #{desktop-vw(160px)};
   --font-bomstad-display: BomstadDisplay;
 
+  --oke-border-color: rgba(255, 255, 255, 0.2);
+  --oke-shadingColor: transparent;
+
   @include mobile {
     --header-height: #{mobile-vw(60px)};
+    --noticebar-height: #{mobile-vw(18px)};
     --page-padding-top: #{mobile-vw(30px)};
   }
 }
@@ -133,31 +137,6 @@ sup {
   font-weight: 900;
 }
 
-.okendo-widget-container {
-  font-family: var(--font-poppins);
-}
-
-.okeReviews .okeReviews-reviewsWidget-header-controls-writeReview {
-  visibility: visible;
-}
-
-.okeReviews .okeReviews-reviewsWidget.is-okeReviews-empty {
-  display: block;
-}
-
-.oke-w-header,
-.oke-w-controls {
-  display: none !important;
-}
-
-.oke-stars-background {
-  opacity: 0 !important;
-}
-
-.oke-w-reviewMinimal-footer {
-  display: none !important;
-}
-
 .modal-z-index {
   z-index: z-index('modal') !important;
 }
@@ -171,31 +150,6 @@ sup {
 
   @include mobile {
     max-height: mobile-vw(160px);
-  }
-}
-
-.msix {
-  background-color: var(--sugar-milk);
-  border: 1px solid var(--blue-ruin);
-
-  .item {
-    color: var(--blue-ruin);
-    font-family: var(--font-poppins);
-    font-size: desktop-vw(16px);
-    font-weight: 500;
-    padding: desktop-vw(12px) desktop-vw(8px);
-    transition: 300ms all ease;
-
-    @include mobile {
-      font-size: mobile-vw(16px);
-      padding: mobile-vw(12px) mobile-vw(8px);
-    }
-
-    @include hover {
-      &:hover {
-        background-color: var(--columbia-blue);
-      }
-    }
   }
 }
 

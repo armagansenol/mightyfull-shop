@@ -60,7 +60,8 @@
       z-index: 20;
 
       @include mobile {
-        font-size: mobile-vw(30px);
+        font-size: mobile-vw(35px);
+        line-height: 1.15;
         margin-bottom: unset;
         transform: unset;
       }

@@ -2,7 +2,7 @@
 
 import s from './animated-card.module.scss';
 
-import cx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useRef } from 'react';
 
 import { CustomizedPortableText } from '@/components/customized-portable-text';
@@ -82,13 +82,13 @@ export function AnimatedCard(props: AnimatedCardProps) {
   return (
     <div
       ref={ref}
-      className={cx(s.animatedCard, 'animated-card')}
+      className={cn(s.animatedCard, 'animated-card')}
       onMouseEnter={mouseIn}
       onMouseLeave={mouseOut}
     >
-      <div className={cx(s.bg, 'gsap-bg')}></div>
+      <div className={cn(s.bg, 'gsap-bg')}></div>
       <div
-        className={cx(
+        className={cn(
           s.package,
           'gsap-package',
           'flex flex-col items-center justify-center'
@@ -106,17 +106,17 @@ export function AnimatedCard(props: AnimatedCardProps) {
         </div>
       </div>
       <div
-        className={cx(s.cookie, 'gsap-cookie', 'flex flex-col items-center')}
+        className={cn(s.cookie, 'gsap-cookie', 'flex flex-col items-center')}
       >
         <div
-          className={cx(s.text, 'gsap-text')}
+          className={cn(s.text, 'gsap-text')}
           style={{ color: props.product.colorTheme.primary }}
         >
           {props.displayTitle.length > 0 && (
             <CustomizedPortableText content={props.displayTitle} />
           )}
         </div>
-        <div className={cx(s.imgC, 'gsap-img-cookie')}>
+        <div className={cn(s.imgC, 'gsap-img-cookie')}>
           <Img
             className="object-contain"
             src={props.imgCookie.url}
