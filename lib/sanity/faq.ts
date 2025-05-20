@@ -4,6 +4,10 @@ export const FAQ_QUERY = groq`
 *[_type == "faq"]|order(orderRank) {
   _id,
   question,
-  answer
+  answer,
+  "category": {
+    "_id": category->_id,
+    "title": category->title
+  }
 }
 `;

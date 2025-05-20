@@ -46,7 +46,12 @@ const config: Config = {
       },
       screens: {
         tablet: '800px',
-        desktop: '1280px'
+        desktop: '1280px',
+        sm: '40rem',
+        md: '48rem',
+        lg: '64rem',
+        xl: '80rem',
+        '2xl': '96rem'
       },
       borderRadius: {
         lg: 'var(--radius)',

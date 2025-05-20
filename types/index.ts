@@ -116,6 +116,10 @@ export interface FAQ {
   _id: string;
   question: string;
   answer: PortableTextBlock;
+  category: {
+    title: string;
+    _id: string;
+  };
 }
 
 export type SellingPlanGroups = {
