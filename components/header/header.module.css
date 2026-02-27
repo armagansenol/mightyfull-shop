@@ -6,7 +6,7 @@
   left: 0;
   background: var(--sugar-milk);
   transition: 400ms transform ease;
-  z-index: 180;
+  z-index: var(--z-header);
 
   &.hidden {
     transform: translateY(-100%);

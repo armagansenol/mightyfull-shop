@@ -3,7 +3,7 @@
   color: var(--sugar-milk);
   padding: 30px 180px 60px 60px;
   position: relative;
-  z-index: 110;
+  z-index: var(--z-footer);
 
   @media (max-width: 800px) {
     padding: 60px 16px;
