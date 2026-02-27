@@ -4,11 +4,11 @@
   overflow: hidden;
   will-change: transform;
 
-  @include reduced-motion {
-    --duration: #{50s} !important;
+  @media (prefers-reduced-motion: reduce) {
+    --duration: 50s !important;
   }
 
-  @include mobile {
+  @media (max-width: 800px) {
     .inner {
       animation: marquee-inverted calc(var(--duration) / 100) linear infinite;
     }
@@ -34,14 +34,6 @@
       animation-play-state: var(--animation-status);
     }
   }
-
-  // @include hover {
-  //   &:hover {
-  //     .inner {
-  //       animation-play-state: paused;
-  //     }
-  //   }
-  // }
 
   @keyframes marquee {
     0% {

@@ -1,0 +1,23 @@
+.quantity {
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  color: var(--primary);
+  font-family: var(--font-poppins);
+  font-size: 1rem;
+  font-weight: 600;
+
+  @media (max-width: 800px) {
+    border-radius: 8px;
+    font-size: 0.875rem;
+  }
+
+  .iconC {
+    width: 8px;
+    height: 8px;
+
+    @media (max-width: 800px) {
+      width: 10px;
+      height: 10px;
+    }
+  }
+}

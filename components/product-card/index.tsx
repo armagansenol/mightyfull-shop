@@ -6,7 +6,7 @@ import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import type { AnimatedCardProps } from '@/types';
-import s from './product-card.module.scss';
+import s from './product-card.module.css';
 
 export interface ProductCardProps {
   id: string;

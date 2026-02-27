@@ -4,7 +4,7 @@ import { useRect } from 'hamo';
 import type Lenis from 'lenis';
 import { useLenis } from 'lenis/react';
 import { useEffect, useRef } from 'react';
-import s from './scrollbar.module.scss';
+import s from './scrollbar.module.css';
 
 function mapRange(
   inMin: number,

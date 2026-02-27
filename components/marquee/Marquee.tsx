@@ -3,7 +3,7 @@
 import { useIntersectionObserver } from '@uidotdev/usehooks';
 import cn from 'clsx';
 import type { ReactElement } from 'react';
-import s from './marquee.module.scss';
+import s from './marquee.module.css';
 
 type Props = {
   children: ReactElement;

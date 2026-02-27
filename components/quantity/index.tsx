@@ -1,6 +1,6 @@
 import cn from 'clsx';
 import { IconMinus, IconPlus } from '@/components/icons';
-import s from './quantity.module.scss';
+import s from './quantity.module.css';
 
 interface QuantityProps {
   className?: string;
