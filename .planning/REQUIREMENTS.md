@@ -17,9 +17,9 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [x] **DEP-06**: Sanity, next-sanity, @portabletext/react upgraded to latest stable
 - [x] **DEP-07**: Shopify Hydrogen React and Storefront API Client upgraded to latest compatible
 - [x] **DEP-08**: Radix UI packages upgraded to latest stable
-- [ ] **DEP-09**: TanStack React Query, Zustand, React Hook Form upgraded to latest stable
-- [ ] **DEP-10**: Zod, Sonner, Lucide React, and utility packages upgraded to latest stable
-- [ ] **DEP-11**: ESLint, TypeScript, and dev dependencies upgraded to latest stable
+- [x] **DEP-09**: TanStack React Query, Zustand, React Hook Form upgraded to latest stable
+- [x] **DEP-10**: Zod, Sonner, Lucide React, and utility packages upgraded to latest stable
+- [x] **DEP-11**: ESLint, TypeScript, and dev dependencies upgraded to latest stable
 - [x] **DEP-12**: Site builds successfully and runs without runtime errors after all upgrades
 
 ### SCSS to CSS Modules Migration
@@ -108,9 +108,9 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DEP-06 | Phase 1 | Complete |
 | DEP-07 | Phase 1 | Complete |
 | DEP-08 | Phase 1 | Complete |
-| DEP-09 | Phase 1 | Pending |
-| DEP-10 | Phase 1 | Pending |
-| DEP-11 | Phase 1 | Pending |
+| DEP-09 | Phase 1 | Complete |
+| DEP-10 | Phase 1 | Complete |
+| DEP-11 | Phase 1 | Complete |
 | DEP-12 | Phase 1 | Complete |
 | CSS-01 | Phase 2 | Pending |
 | CSS-02 | Phase 2 | Pending |
