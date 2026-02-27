@@ -1,0 +1,597 @@
+/* ==========================================================================
+   Section 1 -- Fonts (from _fonts.scss)
+   ========================================================================== */
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Black.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-ExtraBold.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Bold.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-SemiBold.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Medium.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Regular.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Light.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-ExtraLight.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-ExtraLight.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+@font-face {
+  font-family: "BomstadDisplay";
+  src:
+    url("/fonts/bomstad-display/BomstadDisplay-Thin.woff") format("woff"),
+    url("/fonts/bomstad-display/BomstadDisplay-Thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+
+/* ==========================================================================
+   Section 2 -- Reset (from _reset.scss)
+   ========================================================================== */
+
+/***
+    The new CSS reset - version 1.7.3 (last updated 7.8.2022)
+    GitHub page: https://github.com/elad2412/the-new-css-reset
+***/
+
+/*
+    Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
+    - The "symbol *" part is to solve Firefox SVG sprite bug
+ */
+*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol
+      *)) {
+  all: unset;
+  display: revert;
+}
+
+/* Preferred box-sizing value */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Reapply the pointer cursor for anchor tags */
+a,
+button {
+  cursor: pointer;
+}
+
+/* Remove list styles (bullets/numbers) */
+ol,
+ul,
+menu {
+  list-style: none;
+}
+
+/* For images to not be able to exceed their container */
+img {
+  max-width: 100%;
+}
+
+/* removes spacing between cells in tables */
+table {
+  border-collapse: collapse;
+}
+
+/* Safari - solving issue when using user-select:none on the <body> text input doesn't working */
+input,
+textarea {
+  -webkit-user-select: auto;
+}
+
+/* revert the 'white-space' property for textarea elements on Safari */
+textarea {
+  white-space: revert;
+}
+
+/* minimum style to allow to style meter element */
+meter {
+  -webkit-appearance: revert;
+  appearance: revert;
+}
+
+/* reset default text opacity of input placeholder */
+::placeholder {
+  color: unset;
+}
+
+/* fix the feature of 'hidden' attribute.
+   display:revert; revert to element instead of attribute */
+:where([hidden]) {
+  display: none;
+}
+
+/* revert for bug in Chromium browsers
+   - fix for the content editable attribute will work properly.
+   - webkit-user-select: auto; added for Safari in case of using user-select:none on wrapper element*/
+:where([contenteditable]:not([contenteditable='false'])) {
+  -moz-user-modify: read-write;
+  -webkit-user-modify: read-write;
+  overflow-wrap: break-word;
+  -webkit-line-break: after-white-space;
+  -webkit-user-select: auto;
+}
+
+/* apply back the draggable feature - exist only in Chromium and Safari */
+:where([draggable='true']) {
+  -webkit-user-drag: element;
+}
+
+/* ==========================================================================
+   Section 3 -- Colors (from _colors.scss)
+   ========================================================================== */
+
+:root {
+  --white: rgb(255, 255, 255);
+  --white-transparent: rgb(255 255 255 / 0);
+  --black: rgb(21, 24, 25);
+  --black-transparent: rgb(21 24 25 / 0);
+  --error: rgb(229, 72, 77);
+  --error-transparent: rgb(229 72 77 / 0);
+  --blue-ruin: rgb(0, 119, 224);
+  --blue-ruin-transparent: rgb(0 119 224 / 0);
+  --cerulean: rgb(85, 177, 242);
+  --cerulean-transparent: rgb(85 177 242 / 0);
+  --sugar-milk: rgb(255, 250, 243);
+  --sugar-milk-transparent: rgb(255 250 243 / 0);
+  --nova-pink: rgb(220, 79, 149);
+  --nova-pink-transparent: rgb(220 79 149 / 0);
+  --nova-pink-light: rgba(220, 79, 149, 0.15);
+  --nova-pink-light-transparent: rgb(220 79 149 / 0);
+  --cherry-blush: rgb(255, 199, 224);
+  --cherry-blush-transparent: rgb(255 199 224 / 0);
+  --fuchsia-nebula: rgb(124, 30, 179);
+  --fuchsia-nebula-transparent: rgb(124 30 179 / 0);
+  --rose-dragee: rgb(233, 206, 255);
+  --rose-dragee-transparent: rgb(233 206 255 / 0);
+  --lavender-blossom: rgb(185, 122, 221);
+  --lavender-blossom-transparent: rgb(185 122 221 / 0);
+  --columbia-blue: rgb(152, 225, 255);
+  --columbia-blue-transparent: rgb(152 225 255 / 0);
+  --highlighter-lilac: rgb(211, 49, 130);
+  --highlighter-lilac-transparent: rgb(211 49 130 / 0);
+  --highlighter-lilac-light: rgba(211, 49, 130, 0.15);
+  --highlighter-lilac-light-transparent: rgb(211 49 130 / 0);
+  --silverback: rgb(203, 203, 203);
+  --silverback-transparent: rgb(203 203 203 / 0);
+}
+
+/* ==========================================================================
+   Section 4 -- Easings (from _easings.scss)
+   ========================================================================== */
+
+:root {
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-quart: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-in-circ: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-circ: cubic-bezier(0.075, 0.82, 0.165, 1);
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
+  --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
+  --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+/* ==========================================================================
+   Section 5 -- Z-index custom properties (from _functions.scss z-index map)
+   ========================================================================== */
+
+:root {
+  --z-preloader: 300;
+  --z-gsap-markers: 290;
+  --z-modal-content: 280;
+  --z-modal: 270;
+  --z-cursor: 260;
+  --z-privacy-popup: 250;
+  --z-sticky: 240;
+  --z-error: 230;
+  --z-navigation: 220;
+  --z-hamburger: 210;
+  --z-menu: 200;
+  --z-menu-bg: 190;
+  --z-navigation-mobile: 180;
+  --z-header: 170;
+  --z-loading-screen: 160;
+  --z-logo: 150;
+  --z-img: 140;
+  --z-main: 130;
+  --z-language-select: 120;
+  --z-footer-overlay: 110;
+  --z-footer: 100;
+  --z-bg: 100;
+}
+
+/* ==========================================================================
+   Section 6 -- Layout and sizing custom properties (from global.scss :root)
+   ========================================================================== */
+
+:root {
+  --header-height: calc(80 / 1440 * 100vw);
+  --noticebar-height: calc(30 / 1440 * 100vw);
+  --page-padding-top: calc(50 / 1440 * 100vw);
+  --layout-spacing-x: calc(160 / 1440 * 100vw);
+  --font-bomstad-display: BomstadDisplay;
+  --oke-border-color: rgba(255, 255, 255, 0.2);
+  --oke-shadingColor: transparent;
+}
+
+@media (max-width: 800px) {
+  :root {
+    --header-height: calc(60 / 375 * 100vw);
+    --noticebar-height: calc(22 / 375 * 100vw);
+    --page-padding-top: calc(30 / 375 * 100vw);
+  }
+}
+
+/* ==========================================================================
+   Section 7 -- Utility classes (from _utils.scss)
+   ========================================================================== */
+
+.aspect-ratio {
+  position: relative;
+  padding-bottom: calc(100% / var(--aspect-ratio));
+  width: 100%;
+  height: 0;
+
+  & > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.full-width {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.hidden-overflow {
+  overflow: hidden;
+}
+
+.pointer-none {
+  pointer-events: none;
+}
+
+.relative {
+  position: relative;
+}
+
+.hide-on-desktop {
+  @media (min-width: 800px) {
+    display: none;
+  }
+}
+
+.hide-on-mobile {
+  @media (max-width: 800px) {
+    display: none;
+  }
+}
+
+.lazy {
+  opacity: 0;
+  transition: 0.4s all ease;
+
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
+
+  & * {
+    cursor: pointer;
+  }
+}
+
+.cursor-hidden {
+  cursor: none;
+
+  & * {
+    cursor: none;
+  }
+}
+
+.flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.flex-center-y {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+html:not(.has-scroll-smooth) {
+  .hide-on-native-scroll {
+    display: none;
+  }
+}
+
+html.has-scroll-smooth {
+  .hide-on-smooth-scroll {
+    display: none;
+  }
+}
+
+.noSelect {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.italic {
+  font-style: italic;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.remove-autofill-styles {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: inherit;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+/* ==========================================================================
+   Section 8 -- Base styles (from global.scss body section)
+   ========================================================================== */
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  pointer-events: auto;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: var(--sugar-milk);
+  line-height: 1;
+  min-height: 100vh;
+  transition-property: opacity;
+  transition-timing-function: ease;
+  transition-duration: 400ms;
+}
+
+.page-transition {
+  opacity: 0;
+}
+
+a,
+button,
+input,
+label,
+textarea,
+select {
+  color: inherit;
+  cursor: pointer;
+}
+
+*::selection {
+  background-color: var(--blue-ruin);
+  color: var(--sugar-milk);
+}
+
+input {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: inherit;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: default;
+}
+
+sup {
+  font-size: xx-small;
+  vertical-align: super;
+}
+
+/* Be sure markers on top */
+.gsap-marker-end,
+.gsap-marker-start,
+.gsap-marker-scroller-end,
+.gsap-marker-scroller-start {
+  z-index: var(--z-gsap-markers) !important;
+}
+
+.input-required {
+  color: var(--error) !important;
+  transition: 200ms all ease;
+
+  & * {
+    color: var(--error) !important;
+    transition: 200ms all ease;
+  }
+}
+
+.inherit-dims {
+  height: inherit;
+  width: inherit;
+}
+
+.cursor-none {
+  cursor: none;
+
+  & * {
+    cursor: none;
+  }
+}
+
+.text-highlight {
+  color: var(--white);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.1em;
+  padding-right: 0.1ch;
+
+  @media (max-width: 800px) {
+    font-size: 1em;
+    font-weight: 500;
+    padding-right: unset;
+  }
+}
+
+.buttonStyle {
+  width: calc(220 / 1440 * 100vw);
+  height: calc(65 / 1440 * 100vw);
+  border: 1px solid var(--blue-ruin);
+  border-radius: calc(8 / 1440 * 100vw);
+  color: var(--blue-ruin);
+  flex-shrink: 0;
+  font-family: var(--font-bomstad-display);
+  font-size: calc(24 / 1440 * 100vw);
+  font-weight: 900;
+}
+
+.modal-z-index {
+  z-index: var(--z-modal) !important;
+}
+
+.modal-content-z-index {
+  z-index: var(--z-modal) !important;
+}
+
+[data-radix-popper-content-wrapper] {
+  z-index: var(--z-preloader) !important;
+
+  @media (max-width: 800px) {
+    max-height: calc(160 / 375 * 100vw);
+  }
+}
+
+.remaining-height {
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* ==========================================================================
+   Section 9 -- Okendo widget overrides (separate file imported below)
+   ========================================================================== */
+
+@import './okendo-widget.css';
