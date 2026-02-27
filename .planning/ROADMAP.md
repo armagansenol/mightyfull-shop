@@ -28,12 +28,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The dev server starts and all pages load without runtime errors in the console
   3. All dynamic route `params` and `cookies()` calls use the await pattern (no deprecation warnings)
   4. No package in `package.json` reports a version behind its latest stable release
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Next.js upgrade with codemod (async params/cookies, framework breaking changes)
-- [ ] 01-02: Animation, CMS, and UI library upgrades (GSAP, Motion, Lenis, Embla, Sanity, Radix, Hydrogen)
-- [ ] 01-03: State, form, utility, and dev dependency upgrades (TanStack, Zustand, RHF, Zod, ESLint, TS)
+- [ ] 01-01-PLAN.md — pnpm migration + Next.js/React verification + async API compliance
+- [ ] 01-02-PLAN.md — Animation, CMS, Shopify, and Radix UI library upgrades
+- [ ] 01-03-PLAN.md — State, form, utility upgrades (Zod v4) + Biome migration + final verification
 
 ### Phase 2: SCSS to CSS Modules
 **Goal**: All styling is delivered via plain CSS modules with no SASS dependency, using native CSS nesting, calc() for vw functions, and CSS custom properties for variables
