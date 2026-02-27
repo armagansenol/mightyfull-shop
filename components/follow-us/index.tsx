@@ -7,7 +7,7 @@ import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { useLayoutData } from '@/context/layout-data';
 import type { SocialLink, SocialMedia } from '@/types';
-import s from './follow-us.module.scss';
+import s from './follow-us.module.css';
 
 export interface FollowUsProps {
   socialLinks: SocialLink[];

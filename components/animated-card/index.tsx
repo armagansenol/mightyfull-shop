@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 import { Img } from '@/components/utility/img';
 import { cn } from '@/lib/utils';
 import type { AnimatedCardProps } from '@/types';
-import s from './animated-card.module.scss';
+import s from './animated-card.module.css';
 
 export function AnimatedCard(props: AnimatedCardProps) {
   const ref = useRef(null);

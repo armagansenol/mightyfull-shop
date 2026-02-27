@@ -1,63 +1,63 @@
 .notify-me-content {
   background-color: var(--cherry-blush);
   border: 4px solid var(--highlighter-lilac);
-  border-radius: desktop-vw(32px);
-  height: desktop-vw(480px);
+  border-radius: 32px;
+  height: 480px;
   max-width: none;
   overflow: hidden;
   padding: 0;
-  width: desktop-vw(800px);
+  width: 800px;
 
   .close-button {
-    --size: #{desktop-vw(44px)};
+    --size: 44px;
     background-color: var(--highlighter-lilac);
     border-radius: 50%;
     height: var(--size);
     padding: calc(var(--size) * 0.25);
     position: absolute;
-    right: desktop-vw(16px);
-    top: desktop-vw(16px);
+    right: 16px;
+    top: 16px;
     width: var(--size);
   }
 
   .title {
     color: var(--highlighter-lilac);
     font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(28px);
+    font-size: 28px;
     font-weight: 700;
     line-height: 1.25;
-    margin-bottom: desktop-vw(32px);
-    width: desktop-vw(340px);
+    margin-bottom: 32px;
+    width: 340px;
   }
 
   .input {
     border: 1px solid var(--highlighter-lilac);
-    border-radius: desktop-vw(8px);
+    border-radius: 8px;
     color: var(--highlighter-lilac);
-    font-size: desktop-vw(20px);
+    font-size: 20px;
     font-weight: 700;
     height: auto;
-    padding: desktop-vw(16px);
-    padding-top: desktop-vw(14px);
+    padding: 16px;
+    padding-top: 14px;
 
     &::placeholder {
       color: var(--highlighter-lilac-light);
       font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(20px);
+      font-size: 20px;
       font-weight: 700;
     }
   }
 
   .submitButton {
     background-color: var(--highlighter-lilac);
-    border-radius: desktop-vw(8px);
+    border-radius: 8px;
     border: 1px solid var(--highlighter-lilac);
     color: var(--sugar-milk);
     font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(20px);
+    font-size: 20px;
     font-weight: 700;
     margin-right: auto;
-    padding: desktop-vw(12px) desktop-vw(28px);
+    padding: 12px 28px;
     transition: background-color 0.3s ease;
 
     &:hover {

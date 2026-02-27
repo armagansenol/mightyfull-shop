@@ -7,7 +7,7 @@ import {
   useEffect,
   useState
 } from 'react';
-import s from './embla.module.scss';
+import s from './embla.module.css';
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;

@@ -3,7 +3,7 @@ import { Wrapper } from '@/components/wrapper';
 import { getAllProducts } from '@/lib/actions/all-products';
 import { defaultColorTheme } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import s from './shop.module.scss';
+import s from './shop.module.css';
 
 export default async function ShopPage() {
   const products = await getAllProducts();

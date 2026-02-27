@@ -1,0 +1,93 @@
+.animatedCard {
+  width: 100%;
+  height: 270px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+
+  @media (max-width: 800px) {
+    width: auto;
+    height: auto;
+    overflow: auto;
+  }
+
+  .bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--sugar-milk);
+    z-index: 10;
+
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+
+  .package {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    z-index: 20;
+
+    @media (max-width: 800px) {
+      width: auto;
+      height: auto;
+    }
+
+    .imgC {
+      width: 100%;
+      height: auto;
+
+      @media (max-width: 800px) {
+        width: 240px;
+        height: 240px;
+      }
+    }
+  }
+
+  .cookie {
+    width: inherit;
+    height: inherit;
+    padding-top: 40px;
+    position: relative;
+    z-index: 20;
+
+    @media (max-width: 800px) {
+      width: auto;
+      height: auto;
+      padding-top: 16px;
+    }
+
+    .text {
+      font-family: var(--font-bomstad-display);
+      font-size: 40px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 30px;
+      margin-top: -10px;
+      text-align: center;
+      transform: translateY(200%) scale(0.7);
+      z-index: 20;
+
+      @media (max-width: 800px) {
+        font-size: 35px;
+        line-height: 1.15;
+        margin-bottom: unset;
+        transform: unset;
+      }
+    }
+
+    .imgC {
+      width: 280px;
+      height: 280px;
+      transform: scale(1.5);
+      z-index: 30;
+
+      @media (max-width: 800px) {
+        display: none;
+      }
+    }
+  }
+}

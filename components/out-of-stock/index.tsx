@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Img } from '@/components/utility/img';
 import { subscribeToBackInStock } from '@/lib/klaviyo/actions';
 import { cn } from '@/lib/utils';
-import s from './out-of-stock.module.scss';
+import s from './out-of-stock.module.css';
 
 export interface OutOfStockProps {
   variantId: string;

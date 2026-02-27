@@ -13,7 +13,7 @@ import {
   PrevButton,
   usePrevNextButtons
 } from './EmblaCarouselButtons';
-import s from './product-highlight-carousel.module.scss';
+import s from './product-highlight-carousel.module.css';
 
 // Define the enhanced type based on the structure returned by getProductHighlight
 type SanityItem =

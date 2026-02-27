@@ -1,6 +1,6 @@
 .slide {
   width: 100vw;
-  padding: 0 mobile-vw(40px);
+  padding: 0 40px;
 
   .animation-c {
     opacity: 0.8;
@@ -18,27 +18,37 @@
 
 .nextButton,
 .prevButton {
-  @include dims(mobile-vw(24px));
+  width: 24px;
+  height: 24px;
   z-index: 10;
 
-  @include mobile {
-    @include dims(mobile-vw(30px));
+  @media (max-width: 800px) {
+    width: 30px;
+    height: 30px;
   }
 }
 .nextButton {
-  @include position(absolute, 30%, 0, auto, auto);
+  position: absolute;
+  top: 30%;
+  right: 0;
+  bottom: auto;
+  left: auto;
   transform: translateY(-50%);
 
-  @include mobile {
-    right: mobile-vw(40px);
+  @media (max-width: 800px) {
+    right: 40px;
   }
 }
 .prevButton {
-  @include position(absolute, 30%, auto, auto, 0);
+  position: absolute;
+  top: 30%;
+  right: auto;
+  bottom: auto;
+  left: 0;
   transform: translateY(-50%);
 
-  @include mobile {
-    left: mobile-vw(40px);
+  @media (max-width: 800px) {
+    left: 40px;
   }
 }
 .emblaButtonDisabled {

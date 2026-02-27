@@ -11,7 +11,7 @@ import {
   PrevButton,
   usePrevNextButtons
 } from './EmblaCarouselButtons';
-import s from './embla.module.scss';
+import s from './embla.module.css';
 
 type PropType = {
   children: ReactNode | ReactNode[];
