@@ -1,15 +1,20 @@
 .headerWrapper {
-  @include position(fixed, 0, 0, auto, 0);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
   background: var(--sugar-milk);
   transition: 400ms transform ease;
-  z-index: z-index('header');
+  z-index: 180;
 
   &.hidden {
     transform: translateY(-100%);
   }
 
   .noticebarWrapper {
-    @include dims(100%, var(--noticebar-height));
+    width: 100%;
+    height: var(--noticebar-height);
     overflow: hidden;
     transition: 400ms height ease;
 
@@ -20,44 +25,65 @@
 }
 
 .header {
-  @include dims(100%, var(--header-height));
-  padding: 0 desktop-vw(80px);
+  width: 100%;
+  height: var(--header-height);
+  padding: 0 80px;
 
   &:after {
     content: '';
-    @include position(absolute, 100%, auto, 0, 50%);
-    @include dims(100vw, 2px);
+    position: absolute;
+    top: 100%;
+    right: auto;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    height: 2px;
     background-color: var(--primary);
     transform: translateX(-50%) translateY(-2px);
     z-index: 10;
   }
 
   .logoC {
-    @include position(absolute, 50%, auto, auto, 50%);
-    @include dims(desktop-vw(230px), auto);
+    position: absolute;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    width: 230px;
+    height: auto;
     transform: translate(-50%, -50%);
 
-    @include mobile {
-      @include position(relative, auto, auto, auto, auto);
-      @include dims(mobile-vw(140px), auto);
+    @media (max-width: 800px) {
+      position: relative;
+      top: auto;
+      right: auto;
+      bottom: auto;
+      left: auto;
+      width: 140px;
+      height: auto;
       transform: none;
       z-index: 200;
     }
   }
 
   .trigger {
-    @include dims(mobile-vw(24px));
+    width: 24px;
+    height: 24px;
     color: var(--primary);
     z-index: 200;
   }
 
   .navC {
-    @include mobile {
-      @include position(fixed, 0, 0, 0, 0);
+    @media (max-width: 800px) {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       background-color: var(--sugar-milk);
       color: var(--primary);
       opacity: 0;
-      padding: mobile-vw(16px);
+      padding: 16px;
       pointer-events: none;
       transition: 400ms opacity ease;
       z-index: 100;
@@ -72,25 +98,27 @@
   .navItem {
     color: var(--primary);
     font-family: var(--font-bomstad-display);
-    font-size: desktop-vw(20px);
+    font-size: 20px;
     font-weight: 700;
     position: relative;
     transition: 300ms all ease;
 
-    @include mobile {
+    @media (max-width: 800px) {
       color: var(--laurens-lace);
-      font-size: mobile-vw(25px);
+      font-size: 25px;
     }
 
     .iconC {
-      @include dims(desktop-vw(35px));
+      width: 35px;
+      height: 35px;
       transition: 300ms transform var(--ease-out-expo);
 
-      @include mobile {
-        @include dims(mobile-vw(25px));
+      @media (max-width: 800px) {
+        width: 25px;
+        height: 25px;
       }
 
-      @include hover {
+      @media (hover: hover) {
         &:hover {
           transform: scale(1.1);
         }
@@ -98,29 +126,39 @@
     }
 
     .amount {
-      @include position(absolute, auto, auto, 0, 0);
-      @include dims(desktop-vw(22px));
+      position: absolute;
+      top: auto;
+      right: auto;
+      bottom: 0;
+      left: 0;
+      width: 22px;
+      height: 22px;
       background-color: var(--secondary);
       color: var(--sugar-milk);
       font-family: var(--font-poppins);
-      font-size: desktop-vw(15px);
+      font-size: 15px;
       font-weight: 700;
       line-height: 1;
       transform: translate(-25%, 25%);
 
-      @include mobile {
-        @include dims(mobile-vw(16px));
-        font-size: mobile-vw(12px);
+      @media (max-width: 800px) {
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
       }
 
       span {
-        margin-bottom: desktop-vw(-2px);
+        margin-bottom: -2px;
       }
     }
   }
 
   .navigationMenu {
-    @include position(absolute, 100%, 0, auto, 0);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: auto;
+    left: 0;
     background-color: var(--sugar-milk);
 
     .categories {

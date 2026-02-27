@@ -3,7 +3,7 @@ import { Marquee } from '@/components/marquee';
 import { Img } from '@/components/utility/img';
 import { Wrapper } from '@/components/wrapper';
 import { cn } from '@/lib/utils';
-import s from './our-story.module.scss';
+import s from './our-story.module.css';
 
 export default function Page() {
   return (

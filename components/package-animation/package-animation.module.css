@@ -1,0 +1,96 @@
+.packageAnimation {
+  margin-bottom: -200px;
+  margin-top: 100px;
+  padding: 0 50px;
+  pointer-events: none;
+
+  @media (max-width: 800px) {
+    margin-bottom: -100px;
+    margin-top: 50px;
+    padding: 0 6px;
+  }
+
+  .animatedCard {
+    width: var(--dims);
+    height: var(--dims);
+    position: relative;
+    transform-origin: center;
+
+    &:nth-child(1),
+    &:nth-child(3) {
+      --dims: 500px;
+      margin-top: 220px;
+
+      @media (max-width: 800px) {
+        --dims: 130px;
+        margin-top: 120px;
+      }
+
+      .package {
+        transform: translate(-50%, calc(-50% + 200px));
+
+        @media (max-width: 800px) {
+          transform: translate(-50%, calc(-50% + 10px));
+        }
+      }
+
+      .cookie {
+        transform: translate(-50%, calc(-50% - 150px));
+
+        @media (max-width: 800px) {
+          transform: translate(-50%, calc(-50% - 75px));
+        }
+      }
+    }
+
+    &:nth-child(2) {
+      --dims: 670px;
+
+      @media (max-width: 800px) {
+        --dims: 170px;
+      }
+
+      .package {
+        transform: translate(-50%, calc(-50% + 250px));
+
+        @media (max-width: 800px) {
+          transform: translate(-50%, calc(-50% + 50px));
+        }
+      }
+
+      .cookie {
+        transform: translate(-50%, calc(-50% - 300px));
+
+        @media (max-width: 800px) {
+          transform: translate(-50%, calc(-50% - 100px));
+        }
+      }
+    }
+
+    .package {
+      position: absolute;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      left: 50%;
+      width: var(--dims);
+      height: var(--dims);
+      z-index: 10;
+    }
+
+    .cookie {
+      position: absolute;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      left: 50%;
+      width: calc(var(--dims) * 0.7);
+      height: calc(var(--dims) * 0.7);
+
+      @media (max-width: 800px) {
+        width: calc(var(--dims) * 0.75);
+        height: calc(var(--dims) * 0.75);
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ import { FadeIn } from '@/components/fade-in';
 import { IconProtein8 } from '@/components/icons';
 import { Parallax } from '@/components/parallax';
 import { Img } from '@/components/utility/img';
-import s from './feature-highlight.module.scss';
+import s from './feature-highlight.module.css';
 
 export function FeatureHighlight() {
   const items = [

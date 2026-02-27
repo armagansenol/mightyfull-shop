@@ -13,7 +13,7 @@ import { Link } from '@/components/utility/link';
 import { useLayoutData } from '@/context/layout-data';
 import { routes } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import s from './header.module.scss';
+import s from './header.module.css';
 
 export function Header() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);

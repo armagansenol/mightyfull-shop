@@ -16,7 +16,7 @@ import { sanityFetch } from '@/lib/sanity/client';
 import { TESTIMONIALS_QUERY } from '@/lib/sanity/testimonials';
 import { cn } from '@/lib/utils';
 import type { Testimonial } from '@/types';
-import s from './home.module.scss';
+import s from './home.module.css';
 
 export default async function HomePage() {
   const [productHighlight, testimonials] = await Promise.all([

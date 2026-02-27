@@ -11,7 +11,7 @@ import c3 from '@/public/img/c3.png';
 import c4 from '@/public/img/c4.png';
 import c5 from '@/public/img/c5.png';
 import type { SocialMedia } from '@/types';
-import s from './footer.module.scss';
+import s from './footer.module.css';
 
 export function Footer() {
   const { socialLinks } = useLayoutData();
