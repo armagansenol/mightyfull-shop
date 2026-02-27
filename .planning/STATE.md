@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T12:47:25.371Z"
+last_updated: "2026-02-27T13:42:45.133Z"
 progress:
   total_phases: 2
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 8
+  completed_plans: 8
 ---
 
 # Project State
@@ -23,9 +23,9 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 2 of 4 (SCSS to CSS Modules) — COMPLETE
-Plan: 4 of 4 in Phase 2 — Plan 02-04 complete (buttons.module.css, sass removed, zero SCSS files)
-Status: Phase 2 complete, ready for Phase 3
-Last activity: 2026-02-27 — Completed Plan 02-04: buttons.module.scss converted, sass removed, zero SCSS remains. Phase 2 fully complete.
+Plan: 5 of 5 in Phase 2 — Plan 02-05 complete (z-index vars fixed, stale import fixed, all 16 CSS requirements marked complete)
+Status: Phase 2 fully closed, ready for Phase 3
+Last activity: 2026-02-27 — Completed Plan 02-05: gap closure complete. All verification truths satisfied. REQUIREMENTS.md fully updated.
 
 Progress: [█████░░░░░] 57%
 
@@ -49,6 +49,7 @@ Progress: [█████░░░░░] 57%
 *Updated after each plan completion*
 | Phase 02-scss-to-css-modules P03 | 13 | 2 tasks | 39 files |
 | Phase 02-scss-to-css-modules P04 | 5 | 2 tasks | 7 files |
+| Phase 02-scss-to-css-modules P05 | 1 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,7 @@ Recent decisions affecting current work:
 - [Phase 02-03]: z-index('header')=180, z-index('footer')=110 computed from SCSS $z-indexes list formula
 - [Phase 02-03]: tablet-vw() in home module -> calc(N / 1024 * 100vw) fallback; @include tablet -> @media (max-width: 1024px)
 - [Phase 02-04]: Button font-size omitted from CSS module; applied via Tailwind text-base/text-2xl/text-3xl in JSX — consistent with locked decision for Tailwind font sizes
+- [Phase 02-05]: z-index 180/110 replaced with var(--z-header)/var(--z-footer) — top-level component z-index uses CSS custom properties; local stacking context integers are correct
 
 ### Pending Todos
 
@@ -95,6 +97,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed Plan 02-04 — Phase 2 SCSS migration 100% complete (zero SCSS files, sass removed).
+Stopped at: Completed Plan 02-05 — Phase 2 gap closure complete. All 5 verification truths satisfied. All 16 CSS requirements marked complete.
 Resume file: .planning/phases/03-tailwind-v4/ (Phase 3, Plan 01)
-Resume context: All 31 SCSS modules converted to CSS modules. sass package removed. sassOptions removed from next.config.mjs. Ready for Tailwind v4 upgrade phase.
+Resume context: All 31 SCSS modules converted to CSS modules. z-index custom properties correctly referenced in header/footer. sass removed. All CSS requirements complete. Ready for Tailwind v4 upgrade phase.
