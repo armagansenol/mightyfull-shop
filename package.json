@@ -64,15 +64,9 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "vite"
-      ]
+      "ignoreMissing": ["vite"]
     },
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
-      "sharp"
-    ]
+    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
