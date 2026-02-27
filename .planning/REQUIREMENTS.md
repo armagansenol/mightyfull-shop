@@ -24,10 +24,10 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 
 ### SCSS to CSS Modules Migration
 
-- [ ] **CSS-01**: Global `_functions.scss` analyzed — all functions/mixins documented with CSS equivalents
-- [ ] **CSS-02**: `_colors.scss` `@each` loop expanded into static `:root` CSS custom properties
-- [ ] **CSS-03**: z-index map extracted and converted to `:root` CSS custom properties
-- [ ] **CSS-04**: `global.scss` converted to `global.css` with all partials inlined
+- [x] **CSS-01**: Global `_functions.scss` analyzed — all functions/mixins documented with CSS equivalents
+- [x] **CSS-02**: `_colors.scss` `@each` loop expanded into static `:root` CSS custom properties
+- [x] **CSS-03**: z-index map extracted and converted to `:root` CSS custom properties
+- [x] **CSS-04**: `global.scss` converted to `global.css` with all partials inlined
 - [x] **CSS-05**: All `desktop-vw()` calls replaced with `calc(N / 1440 * 100vw)` across all modules
 - [x] **CSS-06**: All `mobile-vw()` calls replaced with `calc(N / 375 * 100vw)` across all modules
 - [x] **CSS-07**: All `@include mobile/desktop/hover` replaced with inline `@media` rules
@@ -35,11 +35,11 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [x] **CSS-09**: All `@include position()` calls replaced with expanded position properties
 - [x] **CSS-10**: All `z-index()` calls replaced with `var(--z-*)` references
 - [x] **CSS-11**: All SCSS nesting converted to valid native CSS nesting (& prefix for descendants)
-- [ ] **CSS-12**: `@extend` in global.scss replaced with inlined properties
+- [x] **CSS-12**: `@extend` in global.scss replaced with inlined properties
 - [x] **CSS-13**: All 31 `.module.scss` files renamed to `.module.css` with updated imports
-- [ ] **CSS-14**: `sassOptions` removed from `next.config.mjs`
-- [ ] **CSS-15**: `sass` package removed from `package.json`
-- [ ] **CSS-16**: `styles/buttons.module.scss` (shared module) converted with all button variants verified
+- [x] **CSS-14**: `sassOptions` removed from `next.config.mjs`
+- [x] **CSS-15**: `sass` package removed from `package.json`
+- [x] **CSS-16**: `styles/buttons.module.scss` (shared module) converted with all button variants verified
 
 ### Tailwind v4 Migration
 
@@ -112,10 +112,10 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DEP-10 | Phase 1 | Complete |
 | DEP-11 | Phase 1 | Complete |
 | DEP-12 | Phase 1 | Complete |
-| CSS-01 | Phase 2 | Pending |
-| CSS-02 | Phase 2 | Pending |
-| CSS-03 | Phase 2 | Pending |
-| CSS-04 | Phase 2 | Pending |
+| CSS-01 | Phase 2 | Complete |
+| CSS-02 | Phase 2 | Complete |
+| CSS-03 | Phase 2 | Complete |
+| CSS-04 | Phase 2 | Complete |
 | CSS-05 | Phase 2 | Complete |
 | CSS-06 | Phase 2 | Complete |
 | CSS-07 | Phase 2 | Complete |
@@ -123,11 +123,11 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CSS-09 | Phase 2 | Complete |
 | CSS-10 | Phase 2 | Complete |
 | CSS-11 | Phase 2 | Complete |
-| CSS-12 | Phase 2 | Pending |
+| CSS-12 | Phase 2 | Complete |
 | CSS-13 | Phase 2 | Complete |
-| CSS-14 | Phase 2 | Pending |
-| CSS-15 | Phase 2 | Pending |
-| CSS-16 | Phase 2 | Pending |
+| CSS-14 | Phase 2 | Complete |
+| CSS-15 | Phase 2 | Complete |
+| CSS-16 | Phase 2 | Complete |
 | TW-01 | Phase 3 | Pending |
 | TW-02 | Phase 3 | Pending |
 | TW-03 | Phase 3 | Pending |
