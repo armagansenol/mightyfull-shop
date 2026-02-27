@@ -4,7 +4,7 @@ import type { EmblaOptionsType } from 'embla-carousel';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import useEmblaCarousel from 'embla-carousel-react';
 import React, { type ReactNode, useEffect } from 'react';
-import s from './embla.module.scss';
+import s from './embla.module.css';
 
 type PropType = {
   children: ReactNode | ReactNode[];

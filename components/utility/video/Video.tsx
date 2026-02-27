@@ -1,6 +1,6 @@
 import cx from 'clsx';
 import { forwardRef } from 'react';
-import s from './video.module.scss';
+import s from './video.module.css';
 
 export interface VideoProps
   extends React.VideoHTMLAttributes<HTMLVideoElement> {

@@ -4,7 +4,7 @@ import cx from 'clsx';
 import type { ImageProps } from 'next/image';
 import NextImage from 'next/image';
 import { useState } from 'react';
-import s from './img.module.scss';
+import s from './img.module.css';
 
 const Img = (props: ImageProps) => {
   const {

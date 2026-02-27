@@ -2,7 +2,7 @@
 
 import cn from 'clsx';
 import { useEffect, useState } from 'react';
-import s from './price.module.scss';
+import s from './price.module.css';
 
 const LoadingPrice = ({
   className,

@@ -4,7 +4,7 @@ import cn from 'clsx';
 
 import * as React from 'react';
 import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
-import s from './horizontal-scroll.module.scss';
+import s from './horizontal-scroll.module.css';
 
 export default function HorizontalScroll() {
   const ref = React.useRef(null);

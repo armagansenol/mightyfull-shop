@@ -3,7 +3,7 @@ import Lenis from 'lenis';
 import { type ReactNode, useRef, useState } from 'react';
 import { useIsomorphicLayoutEffect } from 'usehooks-ts';
 import { gsap } from '@/components/gsap';
-import s from './scrollable-box.module.scss';
+import s from './scrollable-box.module.css';
 
 type Props = {
   children: ReactNode;
