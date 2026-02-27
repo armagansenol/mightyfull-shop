@@ -28,15 +28,15 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [ ] **CSS-02**: `_colors.scss` `@each` loop expanded into static `:root` CSS custom properties
 - [ ] **CSS-03**: z-index map extracted and converted to `:root` CSS custom properties
 - [ ] **CSS-04**: `global.scss` converted to `global.css` with all partials inlined
-- [ ] **CSS-05**: All `desktop-vw()` calls replaced with `calc(N / 1440 * 100vw)` across all modules
-- [ ] **CSS-06**: All `mobile-vw()` calls replaced with `calc(N / 375 * 100vw)` across all modules
-- [ ] **CSS-07**: All `@include mobile/desktop/hover` replaced with inline `@media` rules
-- [ ] **CSS-08**: All `@include dims()` calls replaced with expanded `width`/`height` properties
-- [ ] **CSS-09**: All `@include position()` calls replaced with expanded position properties
+- [x] **CSS-05**: All `desktop-vw()` calls replaced with `calc(N / 1440 * 100vw)` across all modules
+- [x] **CSS-06**: All `mobile-vw()` calls replaced with `calc(N / 375 * 100vw)` across all modules
+- [x] **CSS-07**: All `@include mobile/desktop/hover` replaced with inline `@media` rules
+- [x] **CSS-08**: All `@include dims()` calls replaced with expanded `width`/`height` properties
+- [x] **CSS-09**: All `@include position()` calls replaced with expanded position properties
 - [ ] **CSS-10**: All `z-index()` calls replaced with `var(--z-*)` references
-- [ ] **CSS-11**: All SCSS nesting converted to valid native CSS nesting (& prefix for descendants)
+- [x] **CSS-11**: All SCSS nesting converted to valid native CSS nesting (& prefix for descendants)
 - [ ] **CSS-12**: `@extend` in global.scss replaced with inlined properties
-- [ ] **CSS-13**: All 31 `.module.scss` files renamed to `.module.css` with updated imports
+- [x] **CSS-13**: All 31 `.module.scss` files renamed to `.module.css` with updated imports
 - [ ] **CSS-14**: `sassOptions` removed from `next.config.mjs`
 - [ ] **CSS-15**: `sass` package removed from `package.json`
 - [ ] **CSS-16**: `styles/buttons.module.scss` (shared module) converted with all button variants verified
@@ -116,15 +116,15 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CSS-02 | Phase 2 | Pending |
 | CSS-03 | Phase 2 | Pending |
 | CSS-04 | Phase 2 | Pending |
-| CSS-05 | Phase 2 | Pending |
-| CSS-06 | Phase 2 | Pending |
-| CSS-07 | Phase 2 | Pending |
-| CSS-08 | Phase 2 | Pending |
-| CSS-09 | Phase 2 | Pending |
+| CSS-05 | Phase 2 | Complete |
+| CSS-06 | Phase 2 | Complete |
+| CSS-07 | Phase 2 | Complete |
+| CSS-08 | Phase 2 | Complete |
+| CSS-09 | Phase 2 | Complete |
 | CSS-10 | Phase 2 | Pending |
-| CSS-11 | Phase 2 | Pending |
+| CSS-11 | Phase 2 | Complete |
 | CSS-12 | Phase 2 | Pending |
-| CSS-13 | Phase 2 | Pending |
+| CSS-13 | Phase 2 | Complete |
 | CSS-14 | Phase 2 | Pending |
 | CSS-15 | Phase 2 | Pending |
 | CSS-16 | Phase 2 | Pending |

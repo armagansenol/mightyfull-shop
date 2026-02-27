@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** The shopping experience must work flawlessly with visual polish that matches the brand
-**Current focus:** Phase 2 Plan 01 checkpoint — visual verification of global.css at 1440px and 375px required
+**Current focus:** Phase 2 Plan 02 checkpoint — visual verification of converted components at 1440px and 375px required
 
 ## Current Position
 
 Phase: 2 of 4 (SCSS to CSS Modules)
-Plan: 1 of 5 in Phase 2 — Tasks 1 and 2 complete, awaiting Task 3 visual verification (checkpoint:human-verify)
+Plan: 2 of 5 in Phase 2 — Tasks 1 and 2 complete (15 modules converted), awaiting Task 3 visual verification (checkpoint:human-verify)
 Status: In progress — checkpoint reached
-Last activity: 2026-02-27 — Completed Plan 02-01 Tasks 1-2: global.css created, SCSS partials deleted, build passes
+Last activity: 2026-02-27 — Completed Plan 02-02 Tasks 1-2: 9 Wave B + 6 Wave C modules converted, build passes
 
-Progress: [████░░░░░░] 30%
+Progress: [████░░░░░░] 35%
 
 ## Performance Metrics
 
@@ -73,6 +73,9 @@ Recent decisions affecting current work:
 - [02-01]: @import must precede all rules in CSS — Turbopack strictly enforces; okendo-widget.css import moved to top of global.css
 - [02-01]: @extend .remove-autofill-styles on input inlined directly — CSS Modules composes: cannot reference global utility classes
 - [02-01]: _functions.scss and _variables.scss preserved for sassOptions.prependData injection into remaining .module.scss files; delete in Plan 04
+- [02-02]: vw() in responsive CSS modules replaced with fixed px values in @media blocks (not Tailwind JSX classes) — cleaner co-location of responsive logic
+- [02-02]: scrollbar @media (--mobile) was non-standard custom media query — fixed to @media (max-width: 800px)
+- [02-02]: edit-quantity-button.module.scss converted even though no TSX imports it — file consistency for Plan 04 cleanup
 
 ### Pending Todos
 
@@ -86,6 +89,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Plan 02-01 checkpoint approved (user confirmed styling OK). Need to: 1) Complete 02-01 (SUMMARY + state updates), 2) Execute waves 2-4 (plans 02-02, 02-03, 02-04).
-Resume file: .planning/phases/02-scss-to-css-modules/02-01-PLAN.md
-Resume context: User confirmed styling looks correct. Routing issue reported but NOT caused by CSS migration — investigate separately. App runs on port 3001. Spawn continuation agent for 02-01 with user_response="approved" to finish SUMMARY/state, then execute remaining waves.
+Stopped at: Plan 02-02 Tasks 1-2 complete, awaiting human visual verification (Task 3 checkpoint). After user confirms visual OK, execute Plans 02-03 and 02-04.
+Resume file: .planning/phases/02-scss-to-css-modules/02-02-PLAN.md
+Resume context: 15 modules converted (9 Wave B + 6 Wave C batch 1). Build passes. Visual verification needed at 1440px and 375px: home page (noticebar, product-card, marquee), shop page, product detail page (quantity, scrollbar), cart drawer.
