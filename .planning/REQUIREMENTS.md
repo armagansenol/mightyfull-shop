@@ -13,10 +13,10 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [x] **DEP-02**: React and React DOM upgraded to latest 19.x stable
 - [x] **DEP-03**: All async `params` usage in dynamic routes updated to await pattern
 - [x] **DEP-04**: All async `cookies()` usage in cart operations updated to await pattern
-- [ ] **DEP-05**: GSAP, @gsap/react, Motion, Lenis, Embla Carousel upgraded to latest stable
-- [ ] **DEP-06**: Sanity, next-sanity, @portabletext/react upgraded to latest stable
-- [ ] **DEP-07**: Shopify Hydrogen React and Storefront API Client upgraded to latest compatible
-- [ ] **DEP-08**: Radix UI packages upgraded to latest stable
+- [x] **DEP-05**: GSAP, @gsap/react, Motion, Lenis, Embla Carousel upgraded to latest stable
+- [x] **DEP-06**: Sanity, next-sanity, @portabletext/react upgraded to latest stable
+- [x] **DEP-07**: Shopify Hydrogen React and Storefront API Client upgraded to latest compatible
+- [x] **DEP-08**: Radix UI packages upgraded to latest stable
 - [ ] **DEP-09**: TanStack React Query, Zustand, React Hook Form upgraded to latest stable
 - [ ] **DEP-10**: Zod, Sonner, Lucide React, and utility packages upgraded to latest stable
 - [ ] **DEP-11**: ESLint, TypeScript, and dev dependencies upgraded to latest stable
@@ -104,10 +104,10 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DEP-02 | Phase 1 | Complete |
 | DEP-03 | Phase 1 | Complete |
 | DEP-04 | Phase 1 | Complete |
-| DEP-05 | Phase 1 | Pending |
-| DEP-06 | Phase 1 | Pending |
-| DEP-07 | Phase 1 | Pending |
-| DEP-08 | Phase 1 | Pending |
+| DEP-05 | Phase 1 | Complete |
+| DEP-06 | Phase 1 | Complete |
+| DEP-07 | Phase 1 | Complete |
+| DEP-08 | Phase 1 | Complete |
 | DEP-09 | Phase 1 | Pending |
 | DEP-10 | Phase 1 | Pending |
 | DEP-11 | Phase 1 | Pending |

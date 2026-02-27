@@ -91,7 +91,7 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Dependency Upgrades | 1/3 | In Progress|  |
+| 1. Dependency Upgrades | 2/3 | In Progress|  |
 | 2. SCSS to CSS Modules | 0/4 | Not started | - |
 | 3. Tailwind v4 Migration | 0/2 | Not started | - |
 | 4. Visual Verification | 0/2 | Not started | - |

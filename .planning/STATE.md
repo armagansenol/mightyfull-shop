@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 1 of 4 (Dependency Upgrades)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-27 — Completed Plan 01-01: pnpm migration + async API verification
+Last activity: 2026-02-27 — Completed Plan 01-02: animation, CMS, Shopify, and Radix UI upgrades
 
-Progress: [█░░░░░░░░░] 8%
+Progress: [██░░░░░░░░] 17%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: ~3 minutes
-- Total execution time: ~3 minutes
+- Total plans completed: 2
+- Average duration: ~4 minutes
+- Total execution time: ~8 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| Phase 1 | 1/3 | ~3 min | ~3 min |
+| Phase 1 | 2/3 | ~8 min | ~4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (3 min)
-- Trend: Establishing baseline
+- Last 5 plans: 01-01 (3 min), 01-02 (5 min)
+- Trend: Fast — dependency upgrades completing quickly
 
 *Updated after each plan completion*
 
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - [01-01]: Added `onlyBuiltDependencies` for sharp/esbuild/@parcel/watcher to handle pnpm v10 build script security model
 - [01-01]: No codemod changes needed — Next.js codemod confirmed project already at v16.1.6 target
 - [01-01]: All async APIs already correct — no params or cookies() fixes needed
+- [01-02]: Sanity v3->v5, next-sanity v9->v12, @portabletext/react v3->v6: zero API migration needed — all existing import patterns still valid
+- [01-02]: ImageAsset from sanity v5 and PortableTextBlock/PortableTextComponents from @portabletext/react v6 work as type-only exports — no source changes required
+- [01-02]: Upgraded in 4 logical groups with individual commits — each group is a working build state
 
 ### Pending Todos
 
@@ -62,5 +65,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed Plan 01-01 — pnpm migration and async API verification complete
+Stopped at: Completed Plan 01-02 — animation, CMS, Shopify, and Radix UI library upgrades complete
 Resume file: None
