@@ -2,7 +2,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import s from '@/styles/buttons.module.scss';
+import s from '@/styles/buttons.module.css';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center rounded-xl font-bold whitespace-nowrap focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50',
@@ -14,9 +14,9 @@ const buttonVariants = cva(
         highlighted: s.highlighted
       },
       size: {
-        sm: s.sm,
-        md: s.md,
-        lg: s.lg
+        sm: cn(s.sm, 'text-base'),
+        md: cn(s.md, 'text-2xl'),
+        lg: cn(s.lg, 'text-3xl')
       },
       padding: {
         fat: 'px-6 lg:px-8 xl:px-12 rounded-lg',

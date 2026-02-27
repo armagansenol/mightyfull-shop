@@ -1,9 +1,4 @@
 /** @type {import('next').NextConfig} */
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename); // get the name of the directory
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -23,10 +18,6 @@ const nextConfig = {
         pathname: '**'
       }
     ]
-  },
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
-    prependData: `@import 'styles/_functions';`
   },
   redirects: async () => [
     {

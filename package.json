@@ -51,7 +51,6 @@
     "react-hook-form": "^7.71.2",
     "react-use": "^17.6.0",
     "sanity": "^5.12.0",
-    "sass": "^1.80.3",
     "sharp": "^0.34.5",
     "sonner": "^2.0.7",
     "tailwind-merge": "^2.5.4",
@@ -64,9 +63,15 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["vite"]
+      "ignoreMissing": [
+        "vite"
+      ]
     },
-    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
