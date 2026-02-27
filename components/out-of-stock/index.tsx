@@ -35,7 +35,7 @@ export interface OutOfStockProps {
 }
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' })
+  email: z.email({ message: 'Please enter a valid email address' })
 });
 
 type FormValues = z.infer<typeof formSchema>;
