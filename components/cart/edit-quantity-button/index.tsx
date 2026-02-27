@@ -5,7 +5,7 @@ import { Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 
 import { IconMinus, IconPlus } from '@/components/icons';
-import { CartItem } from '@/lib/shopify/types';
+import type { CartItem } from '@/lib/shopify/types';
 import {
   useDecrementCartItem,
   useIncrementCartItem

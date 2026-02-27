@@ -1,11 +1,9 @@
-import s from './our-story.module.scss';
-
-import { cn } from '@/lib/utils';
-
-import { IconLeftArm, IconRightArm, IconStar } from '@/components/icons';
-import { Img } from '@/components/utility/img';
+import { IconLeftArm, IconRightArm } from '@/components/icons';
 import { Marquee } from '@/components/marquee';
+import { Img } from '@/components/utility/img';
 import { Wrapper } from '@/components/wrapper';
+import { cn } from '@/lib/utils';
+import s from './our-story.module.scss';
 
 export default function Page() {
   return (
@@ -89,7 +87,7 @@ export default function Page() {
       <section className={s.fullImgC}>
         <Img
           className="object-cover"
-          src="/img/about.jpg"
+          src="/img/mighty-fam.jpg"
           fill
           sizes="100vw"
           alt="Lady holding a cookie"
@@ -159,8 +157,14 @@ export default function Page() {
           <Marquee repeat={4}>
             <div className="flex items-center gap-20 mr-20">
               <h2>What&apos;s Next for Mightyfull?</h2>
-              <span className={cn('block', s.iconC)}>
-                <IconStar fill="var(--nova-pink)" />
+              <span className={cn('block relative', s.iconC)}>
+                <Img
+                  className="w-full h-full object-contain"
+                  src="/img/c-pb-choco-oatie.png"
+                  alt="Cookie"
+                  fill
+                  sizes="20vw"
+                />
               </span>
             </div>
           </Marquee>

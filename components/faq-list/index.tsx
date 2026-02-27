@@ -1,5 +1,7 @@
 'use client';
 
+import { PortableText } from '@portabletext/react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
 import {
   Accordion,
@@ -7,9 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
-import { PortableText } from '@portabletext/react';
-import { FAQ } from '@/types';
-import { AnimatePresence, motion } from 'motion/react';
+import type { FAQ } from '@/types';
 
 interface FaqListProps {
   faq: FAQ[];

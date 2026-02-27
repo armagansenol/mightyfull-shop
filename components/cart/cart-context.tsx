@@ -1,13 +1,13 @@
 'use client';
 
+import { createContext, useContext } from 'react';
 import type {
   Cart,
   CartItem,
   Product,
   ProductVariant
 } from '@/lib/shopify/types';
-import { CartUpdateType } from '@/types';
-import { createContext, useContext } from 'react';
+import type { CartUpdateType } from '@/types';
 
 type CartAction =
   | {

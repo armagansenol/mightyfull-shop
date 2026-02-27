@@ -1,1 +1,1 @@
-export { default as FadeInOutCarousel } from "./FadeInOutCarousel"
+export { default as FadeInOutCarousel } from './FadeInOutCarousel';

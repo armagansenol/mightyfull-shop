@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from 'groq';
 
 export const PRODUCT_WITH_VARIANT_FIELDS = groq`
   _id,

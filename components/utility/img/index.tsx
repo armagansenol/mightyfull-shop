@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import s from "./img.module.scss"
-import cx from "clsx"
-import type { ImageProps } from "next/image"
-import NextImage from "next/image"
-import { useState } from "react"
+import cx from 'clsx';
+import type { ImageProps } from 'next/image';
+import NextImage from 'next/image';
+import { useState } from 'react';
+import s from './img.module.scss';
 
 const Img = (props: ImageProps) => {
   const {
@@ -13,22 +13,22 @@ const Img = (props: ImageProps) => {
     sizes,
     className,
     height,
-    loading = "eager",
+    loading = 'eager',
     priority = false,
     src,
     style,
     quality = 100,
     width,
     placeholder,
-    blurDataURL,
-  } = props
-  const [loaded, setLoaded] = useState(false)
+    blurDataURL
+  } = props;
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <NextImage
       alt={alt}
       className={cx(s.img, className, {
-        [s.loaded]: loaded,
+        [s.loaded]: loaded
       })}
       loading={loading}
       onLoad={() => setLoaded(true)}
@@ -36,8 +36,8 @@ const Img = (props: ImageProps) => {
       src={src}
       style={{
         ...style,
-        transition: "opacity 300ms ease-in-out",
-        opacity: loaded ? 1 : 0,
+        transition: 'opacity 300ms ease-in-out',
+        opacity: loaded ? 1 : 0
       }}
       quality={quality}
       {...(blurDataURL && { blurDataURL })}
@@ -47,7 +47,7 @@ const Img = (props: ImageProps) => {
       {...(fill && { fill })}
       {...(sizes && { sizes })}
     />
-  )
-}
+  );
+};
 
-export { Img }
+export { Img };

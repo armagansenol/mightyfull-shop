@@ -1,8 +1,9 @@
 'use client';
 
 import cn from 'clsx';
-import NextLink, { LinkProps as NextLinkProps } from 'next/link';
-import React, { forwardRef, useMemo } from 'react';
+import NextLink, { type LinkProps as NextLinkProps } from 'next/link';
+import type React from 'react';
+import { forwardRef, useMemo } from 'react';
 
 interface LinkProps
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,

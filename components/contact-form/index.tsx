@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
-import { Control, useForm } from 'react-hook-form';
+import { type Control, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';

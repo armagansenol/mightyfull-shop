@@ -1,6 +1,6 @@
-import groq from "groq"
-import { IMAGE } from "./fragments/image"
-import { COLOR_THEME } from "./fragments/colorTheme"
+import groq from 'groq';
+import { COLOR_THEME } from './fragments/colorTheme';
+import { IMAGE } from './fragments/image';
 
 export const FEATURE_HIGHLIGHT_QUERY = groq`
 *[_type == "layouts"] | order(_updatedAt desc) [0] {
@@ -18,4 +18,4 @@ export const FEATURE_HIGHLIGHT_QUERY = groq`
     }
   }
 }
-`
+`;

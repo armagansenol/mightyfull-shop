@@ -1,12 +1,12 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export interface OkendoWidgetProps {
   productId: string;
 }
 
-export default function OkendoWidget(props: OkendoWidgetProps) {
+export function OkendoWidget(props: OkendoWidgetProps) {
   return (
     <div>
       <div className="okendo-widget-container">
@@ -34,7 +34,7 @@ const OkendoReviewsWidget = ({ productId }: { productId: string }) => {
     return () => {
       document.removeEventListener('oke-script-loaded', initialiseWidget);
     };
-  }, [productId]);
+  }, [initialiseWidget]);
 
   return (
     <div

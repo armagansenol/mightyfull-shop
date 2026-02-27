@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useCart } from '../cart-context';
 import { createCartAndSetCookie } from '../actions';
+import { useCart } from '../cart-context';
 
 export function useCartInitialization() {
   const { cart } = useCart();

@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from 'groq';
 
 export const CUSTOM_PRODUCT_OPTIONS = groq`
   _key,

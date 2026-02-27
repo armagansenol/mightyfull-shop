@@ -1,9 +1,9 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { COLOR_THEME } from "../colorTheme"
-import { HERO_COLLECTION } from "../heroes/collection"
-import { MODULES } from "../modules"
-import { SEO_SHOPIFY } from "../seoShopify"
+import { COLOR_THEME } from '../colorTheme';
+import { HERO_COLLECTION } from '../heroes/collection';
+import { MODULES } from '../modules';
+import { SEO_SHOPIFY } from '../seoShopify';
 
 export const COLLECTION_PAGE = groq`
   _id,
@@ -22,4 +22,4 @@ export const COLLECTION_PAGE = groq`
   "slug": store.slug.current,
   "sortOrder": store.sortOrder,
   "title": store.title,
-`
+`;

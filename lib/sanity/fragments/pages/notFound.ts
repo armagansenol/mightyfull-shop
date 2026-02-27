@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { COLOR_THEME } from "../colorTheme";
+import { COLOR_THEME } from '../colorTheme';
 
 export const NOT_FOUND_PAGE = groq`
   body,

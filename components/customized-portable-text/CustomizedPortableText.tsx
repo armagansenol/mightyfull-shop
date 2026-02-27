@@ -1,11 +1,10 @@
-import { cn } from '@/lib/utils';
-import React from 'react';
-
 import {
   PortableText,
-  PortableTextBlock,
-  PortableTextComponents
+  type PortableTextBlock,
+  type PortableTextComponents
 } from '@portabletext/react';
+import type React from 'react';
+import { cn } from '@/lib/utils';
 
 export interface CustomizedPortableTextProps {
   wrapperClassName?: React.HTMLAttributes<HTMLDivElement>['className'];

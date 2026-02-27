@@ -1,4 +1,4 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const TESTIMONIALS_QUERY = groq`
   *[_type == "testimonial"]{
@@ -7,4 +7,4 @@ export const TESTIMONIALS_QUERY = groq`
     title,
     description
   }
-`
+`;

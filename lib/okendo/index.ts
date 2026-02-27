@@ -7,7 +7,7 @@ type FetchOptions = RequestInit & {
 
 export async function okendoFetch<T>(
   url: string,
-  options: FetchOptions = {},
+  options: FetchOptions = {}
 ): Promise<T> {
   if (!process.env.NEXT_PUBLIC_OKENDO_USER_ID) {
     throw new Error('NEXT_PUBLIC_OKENDO_USER_ID is not configured');
@@ -17,17 +17,17 @@ export async function okendoFetch<T>(
     cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
+      Accept: 'application/json'
+    }
   };
 
   const mergedOptions = {
     ...defaultOptions,
     headers: {
       ...defaultOptions.headers,
-      ...(options.headers || {}),
+      ...(options.headers || {})
     },
-    ...options,
+    ...options
   };
 
   try {

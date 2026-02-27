@@ -1,4 +1,4 @@
-import { ReviewData } from './types'; // Assuming the types are defined in a file named types
+import type { ReviewData } from './types'; // Assuming the types are defined in a file named types
 
 const mockReviewData: ReviewData = {
   areReviewsGrouped: false,

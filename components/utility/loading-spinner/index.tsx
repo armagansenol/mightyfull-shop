@@ -1,4 +1,4 @@
-import s from "./loading-spinner.module.scss"
+import s from './loading-spinner.module.scss';
 
 const LoadingSpinner = () => {
   return (
@@ -8,7 +8,7 @@ const LoadingSpinner = () => {
       <div></div>
       <div></div>
     </div>
-  )
-}
+  );
+};
 
-export { LoadingSpinner }
+export { LoadingSpinner };

@@ -1,7 +1,7 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { IMAGE } from "./image"
-import { MARK_DEFS } from "./portableText/markDefs"
+import { IMAGE } from './image';
+import { MARK_DEFS } from './portableText/markDefs';
 
 export const CREATOR = groq`
   _key,
@@ -19,4 +19,4 @@ export const CREATOR = groq`
       }
     }
   }
-`
+`;

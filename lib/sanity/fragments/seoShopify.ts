@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { IMAGE } from "./image";
+import { IMAGE } from './image';
 
 export const SEO_SHOPIFY = groq`
   "seo": {

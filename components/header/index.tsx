@@ -1,33 +1,31 @@
 'use client';
 
-import s from './header.module.scss';
-
-import { cn } from '@/lib/utils';
-import Lenis from 'lenis';
+import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+import type Lenis from 'lenis';
 import { useLenis } from 'lenis/react';
 import { CircleUserRound } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 import { Cart } from '@/components/cart/cart';
 import { IconLogo } from '@/components/icons';
 import { Noticebar } from '@/components/noticebar';
 import { Link } from '@/components/utility/link';
 import { useLayoutData } from '@/context/layout-data';
 import { routes } from '@/lib/constants';
-import { Cross1Icon, HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils';
+import s from './header.module.scss';
 
 export function Header() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [noticebarHidden, setNoticebarHidden] = useState(false);
   const [headerHidden, setHeaderHidden] = useState(false);
   const lenis = useLenis();
-  const pathname = usePathname();
+  const _pathname = usePathname();
   const { noticebar } = useLayoutData();
 
   useEffect(() => {
     setHamburgerOpen(false);
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
     return hamburgerOpen ? lenis?.stop() : lenis?.start();
@@ -85,10 +83,7 @@ export function Header() {
         </div>
       )}
       <header
-        className={cn(
-          s.header,
-          'container relative flex items-center justify-between'
-        )}
+        className={cn(s.header, 'relative flex items-center justify-between')}
       >
         <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
           <IconLogo
@@ -98,7 +93,9 @@ export function Header() {
           />
         </Link>
         <div className="flex items-center gap-5">
-          <div className="flex tablet:hidden">{/* <CartModal /> */}</div>
+          <div className="flex tablet:hidden">
+            <Cart />
+          </div>
           <div
             className={cn(s.trigger, 'block tablet:hidden', {
               [s.active]: hamburgerOpen

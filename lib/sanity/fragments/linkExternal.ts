@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from 'groq';
 
 export const LINK_EXTERNAL = groq`
     _key,

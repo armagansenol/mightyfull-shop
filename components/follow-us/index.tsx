@@ -1,15 +1,13 @@
 'use client';
 
-import s from './follow-us.module.scss';
-
 import cn from 'clsx';
-
 import { AutoScrollCarousel } from '@/components/auto-scroll-carousel';
 import { socialIcons } from '@/components/icons';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { useLayoutData } from '@/context/layout-data';
-import { SocialLink, SocialMedia } from '@/types';
+import type { SocialLink, SocialMedia } from '@/types';
+import s from './follow-us.module.scss';
 
 export interface FollowUsProps {
   socialLinks: SocialLink[];
@@ -18,8 +16,6 @@ export interface FollowUsProps {
 
 export function FollowUs() {
   const { imageCarousel, socialLinks } = useLayoutData();
-
-  console.log('imageCarousel', imageCarousel);
 
   return (
     <>

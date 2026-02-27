@@ -1,126 +1,21 @@
-.productHighlightCarousel {
-  @include dims(100vw, auto);
-  overflow: hidden;
+.slide {
+  width: 100vw;
+  padding: 0 mobile-vw(40px);
 
-  .slide {
-    @include dims(67vw, auto);
-    flex-shrink: 0;
+  .animation-c {
+    opacity: 0.8;
+    transition: 700ms all ease;
+    transform: scale(0.6);
+    pointer-events: none;
 
-    .cardC {
-      min-height: mobile-vw(440px);
-      opacity: 0.8;
-      transform: scale(0.8);
-      transition: 700ms all ease;
-      pointer-events: none;
-
-      &.active {
-        opacity: 1;
-        transform: scale(1);
-        pointer-events: auto;
-
-        .info {
-          opacity: 1;
-        }
-      }
-    }
-
-    .imgC {
-      @include dims(100%, auto);
-
-      @include mobile {
-        @include dims(mobile-vw(240px));
-      }
-    }
-
-    .text {
-      margin-top: desktop-vw(-10px);
-      color: var(--fuchsia-nebula);
-      font-family: var(--font-bomstad-display);
-      font-size: desktop-vw(40px);
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: desktop-vw(30px);
-      text-align: center;
-      transform: translateY(200%) scale(0.7);
-      z-index: 20;
-
-      @include mobile {
-        font-size: mobile-vw(30px);
-        margin-bottom: unset;
-        transform: unset;
-      }
-    }
-
-    .info {
-      opacity: 0;
-      transition: 700ms all ease;
-    }
-
-    .button {
-      @include dims(100%, desktop-vw(40px));
-      color: var(--sugar-milk);
-      font-size: desktop-vw(14px);
-      font-weight: 900;
-      padding: desktop-vw(8px) 0;
-      position: relative;
-      transition: 300ms all ease;
-
-      @include mobile {
-        @include dims(mobile-vw(140px), mobile-vw(40px));
-        font-size: mobile-vw(14px);
-        padding: mobile-vw(8px) 0;
-      }
-
-      span {
-        transition: 200ms all ease;
-      }
-
-      &::before {
-        content: '';
-        @include position(absolute, 0, 0, 0, 0);
-        background-color: var(--blue-ruin);
-        border-radius: desktop-vw(8px);
-        transition: 200ms all ease;
-        z-index: -1;
-
-        @include mobile {
-          border-radius: mobile-vw(8px);
-        }
-      }
-
-      &:nth-child(2) {
-        color: var(--blue-ruin);
-
-        &::before {
-          content: '';
-          background-color: transparent;
-          color: var(--blue-ruin);
-          border: 1px solid var(--blue-ruin);
-        }
-
-        @include hover {
-          &:hover {
-            span {
-              transform: scale(1.2);
-            }
-          }
-        }
-      }
-
-      @include hover {
-        &:hover {
-          color: var(--blue-ruin);
-
-          &::before {
-            background-color: transparent;
-            color: var(--blue-ruin);
-            border: 1px solid var(--blue-ruin);
-          }
-        }
-      }
+    &.active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
     }
   }
 }
+
 .nextButton,
 .prevButton {
   @include dims(mobile-vw(24px));

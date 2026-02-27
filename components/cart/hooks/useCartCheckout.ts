@@ -1,5 +1,5 @@
-import { useCartMutation } from './useCartMutation';
 import { redirectToCheckout } from '@/components/cart/actions';
+import { useCartMutation } from './useCartMutation';
 
 export function useCartCheckout() {
   return useCartMutation({

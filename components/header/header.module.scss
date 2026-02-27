@@ -21,6 +21,7 @@
 
 .header {
   @include dims(100%, var(--header-height));
+  padding: 0 desktop-vw(80px);
 
   &:after {
     content: '';

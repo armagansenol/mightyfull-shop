@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { PRODUCT_WITH_VARIANT_FIELDS } from "./productWithVariantFields";
+import { PRODUCT_WITH_VARIANT_FIELDS } from './productWithVariantFields';
 
 export const MATERIAL_UPSELLS = groq`*[
     _type == 'product'

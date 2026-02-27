@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { CartItem } from '@/lib/shopify/types';
+import type { CartItem } from '@/lib/shopify/types';
 
 function ResetButton({
   onClick,

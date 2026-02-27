@@ -1,9 +1,9 @@
 'use server';
 
-import { sanityFetch } from '@/lib/sanity/client';
 import { ANIMATED_CARDS_QUERY } from '@/lib/sanity/animatedCards';
+import { sanityFetch } from '@/lib/sanity/client';
 import { getProduct } from '@/lib/shopify';
-import { AnimatedCardProps } from '@/types';
+import type { AnimatedCardProps } from '@/types';
 
 export async function getAllProducts() {
   // First, fetch all the animated cards from Sanity

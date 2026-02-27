@@ -1,9 +1,9 @@
 .product-card {
-  @include dims(desktop-vw(280px), desktop-vw(360px));
+  @include dims(desktop-vw(280px), auto);
   gap: desktop-vw(32px);
 
   @include mobile {
-    @include dims(mobile-vw(280px), mobile-vw(360px));
+    @include dims(auto);
     gap: mobile-vw(20px);
   }
 

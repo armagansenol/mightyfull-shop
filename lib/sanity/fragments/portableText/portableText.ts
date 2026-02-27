@@ -1,11 +1,11 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { MODULE_ACCORDION } from "../modules/accordion"
-import { MODULE_CALLOUT } from "../modules/callout"
-import { MODULE_GRID } from "../modules/grid"
-import { MODULE_INSTAGRAM } from "../modules/instagram"
-import { MODULE_TAGGED_PRODUCTS } from "../modules/taggedProducts"
-import { MARK_DEFS } from "./markDefs"
+import { MODULE_ACCORDION } from '../modules/accordion';
+import { MODULE_CALLOUT } from '../modules/callout';
+import { MODULE_GRID } from '../modules/grid';
+import { MODULE_INSTAGRAM } from '../modules/instagram';
+import { MODULE_TAGGED_PRODUCTS } from '../modules/taggedProducts';
+import { MARK_DEFS } from './markDefs';
 
 // We check the _type for backwards compatibility with the old block type names.
 export const PORTABLE_TEXT = groq`
@@ -33,4 +33,4 @@ export const PORTABLE_TEXT = groq`
   markDefs[] {
     ${MARK_DEFS}
   }
-`
+`;

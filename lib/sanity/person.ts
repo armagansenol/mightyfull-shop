@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { PERSON_PAGE } from "./fragments/pages/person";
+import { PERSON_PAGE } from './fragments/pages/person';
 
 export const PERSON_QUERY = groq`
   *[

@@ -1,26 +1,26 @@
-import { createClient, QueryParams } from "@sanity/client"
+import { createClient, type QueryParams } from '@sanity/client';
 
 export const config = {
   projectId: process.env.SANITY_PROJECT_ID,
-  dataset: "production",
-  apiVersion: "2023-10-23",
+  dataset: 'production',
+  apiVersion: '2023-10-23',
   // set CDN to live API in development mode
-  useCdn: process.env.NODE_ENV === "development" ? true : false,
-}
+  useCdn: process.env.NODE_ENV === 'development'
+};
 
-export const client = createClient(config)
+export const client = createClient(config);
 
 export async function sanityFetch<QueryResponse>({
   query,
   qParams = {},
-  tags,
+  tags
 }: {
-  query: string
-  qParams?: QueryParams
-  tags: string[]
+  query: string;
+  qParams?: QueryParams;
+  tags: string[];
 }): Promise<QueryResponse> {
   return client.fetch<QueryResponse>(query, qParams, {
-    cache: process.env.NODE_ENV === "development" ? "no-store" : "force-cache",
-    next: { tags },
-  })
+    cache: process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache',
+    next: { tags }
+  });
 }

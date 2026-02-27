@@ -1,8 +1,8 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { IMAGE } from "../image"
-import { PRODUCT_HOTSPOT } from "../productHotspot"
-import { PRODUCT_WITH_VARIANT } from "../productWithVariant"
+import { IMAGE } from '../image';
+import { PRODUCT_HOTSPOT } from '../productHotspot';
+import { PRODUCT_WITH_VARIANT } from '../productWithVariant';
 
 export const MODULE_IMAGE = groq`
   image {
@@ -24,4 +24,4 @@ export const MODULE_IMAGE = groq`
     },
   },
   variant,
-`
+`;

@@ -1,5 +1,5 @@
-import { ensureStartsWith } from 'lib/utils';
 import { SHOPIFY_GRAPHQL_API_ENDPOINT } from 'lib/constants';
+import { ensureStartsWith } from 'lib/utils';
 
 export enum CacheStrategy {
   NO_CACHE = 'no-cache',

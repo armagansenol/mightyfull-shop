@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { COLLECTION } from "./collection";
+import { COLLECTION } from './collection';
 
 export const COLLECTION_GROUP = groq`
   _key,

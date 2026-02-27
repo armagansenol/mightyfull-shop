@@ -1,11 +1,11 @@
 'use client';
 
-import { AnimatePresence, motion } from 'framer-motion';
 import { ShoppingCartIcon } from 'lucide-react';
-import { CartItemsList } from '../cart-items-list';
+import { AnimatePresence, motion } from 'motion/react';
+import type { Cart } from '@/lib/shopify/types';
+import type { CartUpdateType } from '@/types';
 import { CartFooter } from '../cart-footer';
-import { Cart } from '@/lib/shopify/types';
-import { CartUpdateType } from '@/types';
+import { CartItemsList } from '../cart-items-list';
 
 interface CartContentProps {
   cart: Cart | undefined;

@@ -1,18 +1,13 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import {
-  AnimationOptionsWithValueOverrides,
-  motion,
-  stagger,
-  useAnimate
-} from 'motion/react';
-import React from 'react';
+import { motion, stagger, type Transition, useAnimate } from 'motion/react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface TextProps {
   label: string;
   reverse?: boolean;
-  transition?: AnimationOptionsWithValueOverrides;
+  transition?: Transition;
   staggerDuration?: number;
   staggerFrom?: 'first' | 'last' | 'center' | number;
   className?: string;
@@ -43,9 +38,7 @@ const LetterSwapForward = ({
     setBlocked(true);
 
     // Function to merge user transition with stagger and delay
-    const mergeTransition = (
-      baseTransition: AnimationOptionsWithValueOverrides
-    ) => ({
+    const mergeTransition = (baseTransition: Transition) => ({
       ...baseTransition,
       delay: stagger(staggerDuration, {
         from: staggerFrom

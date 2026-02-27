@@ -1,1 +1,1 @@
-export { default as PackageAnimation } from "./PackageAnimation"
+export { default as PackageAnimation } from './PackageAnimation';

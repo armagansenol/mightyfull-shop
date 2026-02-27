@@ -1,11 +1,10 @@
 'use client';
 
-import s from './embla.module.scss';
-
-import { EmblaOptionsType } from 'embla-carousel';
+import type { EmblaOptionsType } from 'embla-carousel';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import useEmblaCarousel from 'embla-carousel-react';
-import React, { ReactNode, useEffect } from 'react';
+import React, { type ReactNode, useEffect } from 'react';
+import s from './embla.module.scss';
 
 type PropType = {
   children: ReactNode | ReactNode[];

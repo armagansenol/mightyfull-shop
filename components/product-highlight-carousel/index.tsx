@@ -1,27 +1,33 @@
 'use client';
 
-import s from './product-highlight-carousel.module.scss';
-
-import { cn } from '@/lib/utils';
-import { EmblaOptionsType } from 'embla-carousel';
+import type { EmblaOptionsType } from 'embla-carousel';
 import useEmblaCarousel from 'embla-carousel-react';
-import React, { useCallback, useEffect, useState } from 'react';
-
-import { CustomizedPortableText } from '@/components/customized-portable-text';
+import { useCallback, useEffect, useState } from 'react';
 import { IconArrow } from '@/components/icons';
-import { Button } from '@/components/ui/button';
-import { Img } from '@/components/utility/img';
-import { Link } from '@/components/utility/link';
-import { routes } from '@/lib/constants';
-import { AnimatedCardProps, ColorTheme } from '@/types';
+import { ProductCard } from '@/components/product-card';
+import type { getProduct } from '@/lib/shopify';
+import { cn } from '@/lib/utils';
+import type { ProductHighlightQueryResult } from '@/types';
 import {
   NextButton,
   PrevButton,
   usePrevNextButtons
 } from './EmblaCarouselButtons';
+import s from './product-highlight-carousel.module.scss';
+
+// Define the enhanced type based on the structure returned by getProductHighlight
+type SanityItem =
+  ProductHighlightQueryResult['productHighlight']['items'][number];
+// Infer the return type of getProduct
+type ShopifyProductData = Awaited<ReturnType<typeof getProduct>>;
+
+type EnhancedItem = SanityItem & {
+  // Ensure this matches the actual structure; getProduct might return null
+  shopifyProduct: ShopifyProductData | null;
+};
 
 export interface ProductHighlightCarouselProps {
-  items: AnimatedCardProps[];
+  items: EnhancedItem[]; // Use the enhanced type
   options?: EmblaOptionsType;
 }
 
@@ -37,7 +43,8 @@ export function ProductHighlightCarousel({
     onNextButtonClick
   } = usePrevNextButtons(emblaApi);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [currentTheme, setCurrentTheme] = useState<ColorTheme>();
+
+  const currentColor = items[currentSlide].product.colorTheme.primary;
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -56,106 +63,46 @@ export function ProductHighlightCarousel({
     };
   }, [emblaApi, onSelect]);
 
-  useEffect(() => {
-    setCurrentTheme(items[currentSlide].product.colorTheme);
-  }, [currentSlide, items]);
-
   return (
-    <div className={s.productHighlightCarousel}>
-      <div className="relative">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex touch-pan-y touch-pinch-zoom">
-            {items.map((item, i) => {
-              return (
+    <div className="relative w-screen h-screen flex items-center border border-red-500">
+      <div className="flex-shrink-0" ref={emblaRef}>
+        <div className="flex touch-pan-y touch-pinch-zoom">
+          {items.map((item, index) => {
+            return (
+              <div className={cn(s.slide, 'flex-shrink-0')} key={item.id}>
                 <div
-                  className={cn(
-                    s.slide,
-                    'flex flex-col items-center justify-between gap-6'
-                  )}
-                  key={i}
+                  className={cn(s['animation-c'], {
+                    [s.active]: currentSlide === index
+                  })}
                 >
-                  <div
-                    className={cn(
-                      s.cardC,
-                      'flex flex-col items-center justify-between',
-                      {
-                        [s.active]: i === currentSlide
-                      }
-                    )}
-                  >
-                    <Link
-                      className={s.card}
-                      href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                      prefetch={true}
-                    >
-                      <div className={s.imgC}>
-                        <Img
-                          className="object-contain"
-                          src={item.imgPackage.url}
-                          height={item.imgPackage.height}
-                          width={item.imgPackage.width}
-                          alt="Picture of a Cookie Package"
-                        />
-                      </div>
-                    </Link>
-                    <div className={cn(s.info, 'space-y-5')}>
-                      <div
-                        className={cn(s.text, 'text')}
-                        style={{ color: item.product.colorTheme.primary }}
-                      >
-                        {item.displayTitle.length > 0 && (
-                          <CustomizedPortableText content={item.displayTitle} />
-                        )}
-                      </div>
-                      <div
-                        className={cn(
-                          s.buttons,
-                          'flex flex-col items-stretch gap-2'
-                        )}
-                        style={
-                          {
-                            '--text-color': `${item.product.colorTheme.primary}`
-                          } as React.CSSProperties
-                        }
-                      >
-                        <Button
-                          colorTheme="inverted-themed"
-                          asChild
-                          size="sm"
-                          padding="slim"
-                        >
-                          <Link
-                            href={`/${routes.shop.url}/${item.product.shopifySlug}`}
-                            prefetch={true}
-                          >
-                            SHOP NOW
-                          </Link>
-                        </Button>
-                        <Button colorTheme="themed" size="sm" padding="slim">
-                          ADD TO CART
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductCard
+                    id={item.id}
+                    animatedCard={item}
+                    variantId={item.shopifyProduct?.variants[0].id as string}
+                    availableForSale={
+                      item.shopifyProduct?.variants[0]
+                        .availableForSale as boolean
+                    }
+                  />
                 </div>
-              );
-            })}
-          </div>
-          <PrevButton
-            className={cn(s.prevButton, 'cursor-pointer')}
-            onClick={onPrevButtonClick}
-            disabled={prevBtnDisabled}
-          >
-            <IconArrow fill={`${currentTheme}`} rotate={180} />
-          </PrevButton>
-          <NextButton
-            className={cn(s.nextButton, 'cursor-pointer')}
-            onClick={onNextButtonClick}
-            disabled={nextBtnDisabled}
-          >
-            <IconArrow fill={`${currentTheme}`} />
-          </NextButton>
+              </div>
+            );
+          })}
         </div>
+        <PrevButton
+          className={cn(s.prevButton, 'cursor-pointer')}
+          onClick={onPrevButtonClick}
+          disabled={prevBtnDisabled}
+        >
+          <IconArrow fill={`${currentColor}`} rotate={180} />
+        </PrevButton>
+        <NextButton
+          className={cn(s.nextButton, 'cursor-pointer')}
+          onClick={onNextButtonClick}
+          disabled={nextBtnDisabled}
+        >
+          <IconArrow fill={`${currentColor}`} />
+        </NextButton>
       </div>
     </div>
   );

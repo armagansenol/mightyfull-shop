@@ -1,8 +1,8 @@
-import { MouseEvent } from 'react';
-import { clsx, type ClassValue } from 'clsx';
+import { type ClassValue, clsx } from 'clsx';
+import type { ReadonlyURLSearchParams } from 'next/navigation';
+import type { MouseEvent } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { ReadonlyURLSearchParams } from 'next/navigation';
-import { Connection } from './shopify/types';
+import type { Connection } from './shopify/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,7 +21,7 @@ export function truncateString(str: string, num: number) {
   if (str.length <= num) {
     return str;
   }
-  return str.slice(0, num) + '...';
+  return `${str.slice(0, num)}...`;
 }
 
 export function capitalize(sentence: string): string {
@@ -132,15 +132,11 @@ export const removeEdgesAndNodes = <T>(array: Connection<T>): T[] => {
 };
 
 export function parseISOToDate(isoString: string): Date {
-  try {
-    const date = new Date(isoString);
-    if (isNaN(date.getTime())) {
-      throw new Error('Invalid ISO date string');
-    }
-    return date;
-  } catch (error) {
-    throw error;
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) {
+    throw new Error('Invalid ISO date string');
   }
+  return date;
 }
 
 export function formatDate(

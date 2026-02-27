@@ -1,9 +1,9 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { IMAGE } from "../image";
-import { LINK_EXTERNAL } from "../linkExternal";
-import { LINK_INTERNAL } from "../linkInternal";
-import { PRODUCT_WITH_VARIANT } from "../productWithVariant";
+import { IMAGE } from '../image';
+import { LINK_EXTERNAL } from '../linkExternal';
+import { LINK_INTERNAL } from '../linkInternal';
+import { PRODUCT_WITH_VARIANT } from '../productWithVariant';
 
 export const MODULE_CALL_TO_ACTION = groq`
   body,

@@ -1,5 +1,6 @@
 'use client';
 
+import { AnimatePresence, motion } from 'motion/react';
 import { forwardRef } from 'react';
 import { IconCookieCart } from '@/components/icons';
 
@@ -23,12 +24,18 @@ export const CartTrigger = forwardRef<HTMLButtonElement, CartTriggerProps>(
       >
         <IconCookieCart fill="var(--primary)" />
         {totalQuantity && isInitialized ? (
-          <span
-            className="absolute -left-1 -bottom-1 tablet:-left-2 tablet:-bottom-2 h-5 w-5 tablet:h-6 tablet:w-6 rounded-full text-sm tablet:text-base font-bold text-[var(--primary)] bg-[var(--tertiary)] flex items-center justify-center"
-            aria-hidden="true"
-          >
-            {totalQuantity}
-          </span>
+          <AnimatePresence>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+              className="absolute -left-1 -bottom-1 tablet:-left-2 tablet:-bottom-2 h-5 w-5 tablet:h-6 tablet:w-6 rounded-full text-sm tablet:text-base font-bold text-[var(--primary)] bg-[var(--tertiary)] flex items-center justify-center"
+              aria-hidden="true"
+            >
+              {totalQuantity}
+            </motion.span>
+          </AnimatePresence>
         ) : null}
       </button>
     );

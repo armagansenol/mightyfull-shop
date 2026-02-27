@@ -1,14 +1,12 @@
 import { sanityFetch } from '@/lib/sanity/client';
 import { STORE_QUERY } from '@/lib/sanity/store';
-import { Store } from '@/types';
+import type { Store } from '@/types';
 
 export default async function StoreLocator() {
   const stores = await sanityFetch<Store[]>({
     query: STORE_QUERY,
     tags: ['store']
   });
-
-  console.log('stores', stores);
 
   return (
     <div>

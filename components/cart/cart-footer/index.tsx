@@ -2,7 +2,7 @@
 
 import { CheckoutButton } from '@/components/cart/checkout-button';
 import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
-import { Cart } from '@/lib/shopify/types';
+import type { Cart } from '@/lib/shopify/types';
 
 interface CartFooterProps {
   cart: Cart;

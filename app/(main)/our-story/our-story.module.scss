@@ -157,7 +157,7 @@
 }
 
 .fullImgC {
-  @include dims(100%, desktop-vw(550px));
+  @include dims(100%, desktop-vw(750px));
   position: relative;
 
   @include mobile {
@@ -295,7 +295,7 @@
     }
 
     .iconC {
-      @include dims(desktop-vw(22px), auto);
+      @include dims(desktop-vw(80px));
     }
   }
 

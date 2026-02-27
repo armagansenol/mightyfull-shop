@@ -1,12 +1,11 @@
 'use server';
 
-import { CartOperationType, TAGS } from '@/lib/constants';
-import { cartService } from '@/lib/shopify';
-import { Cart, CartLine } from '@/lib/shopify/types';
-
-import { revalidateTag } from 'next/cache';
+import { updateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { CartOperationType, TAGS } from '@/lib/constants';
+import { cartService } from '@/lib/shopify';
+import type { Cart, CartLine } from '@/lib/shopify/types';
 
 /**
  * Helper function to check for and remove any zero-quantity items from the cart
@@ -60,7 +59,7 @@ async function cleanupZeroQuantityItems(
 
       // Perform the removal
       await cartService.remove(cartId, lineIdsToRemove);
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
 
       // Verify removal was successful
       const updatedCart = await cartService.get(cartId);
@@ -160,8 +159,8 @@ function formatErrorForToast(error: unknown): string {
 /**
  * Utility function to get cart ID from cookies
  */
-function getCartId(): string | undefined {
-  return cookies().get('cartId')?.value;
+async function getCartId(): Promise<string | undefined> {
+  return (await cookies()).get('cartId')?.value;
 }
 
 /**
@@ -217,7 +216,7 @@ export async function addItem(
   quantity: number,
   sellingPlanId?: string
 ) {
-  const cartId = getCartId();
+  const cartId = await getCartId();
   const validation = validateCartId(cartId);
 
   if (!validation.success) {
@@ -253,7 +252,7 @@ export async function addItem(
         );
 
         // If we found an existing item, update it
-        if (existingItem && existingItem.id) {
+        if (existingItem?.id) {
           const newQuantity =
             (existingItem.quantity > 0 ? existingItem.quantity : 0) + quantity;
 
@@ -267,7 +266,7 @@ export async function addItem(
             }
           ]);
 
-          revalidateTag(TAGS.cart);
+          updateTag(TAGS.cart);
 
           return {
             success: true,
@@ -285,7 +284,7 @@ export async function addItem(
         }
       ]);
 
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
 
       return { success: true, message: 'Item added to cart successfully' };
     });
@@ -293,7 +292,7 @@ export async function addItem(
 }
 
 export async function removeItem(lineId: string) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -306,7 +305,7 @@ export async function removeItem(lineId: string) {
   try {
     return await withCartCleanup(cartId, async () => {
       await cartService.remove(cartId, [lineId]);
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
 
       return { success: true, message: 'Item removed from cart' };
     });
@@ -320,7 +319,7 @@ export async function updateItemQuantity(payload: {
   merchandiseId: string;
   quantity: number;
 }) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -344,7 +343,7 @@ export async function updateItemQuantity(payload: {
         (line) => line.merchandise.id === merchandiseId
       );
 
-      if (lineItem && lineItem.id) {
+      if (lineItem?.id) {
         if (quantity === 0) {
           await cartService.remove(cartId, [lineItem.id]);
         } else {
@@ -361,7 +360,7 @@ export async function updateItemQuantity(payload: {
         await cartService.add(cartId, [{ merchandiseId, quantity }]);
       }
 
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
       return { success: true, message: 'Cart updated successfully' };
     });
   } catch (e) {
@@ -372,7 +371,7 @@ export async function updateItemQuantity(payload: {
 
 export async function redirectToCheckout() {
   try {
-    const cartId = cookies().get('cartId')?.value;
+    const cartId = (await cookies()).get('cartId')?.value;
 
     if (!cartId) {
       throw new Error('No cart found. Please add items to your cart first.');
@@ -404,7 +403,7 @@ export async function redirectToCheckout() {
 }
 
 export async function createCartAndSetCookie() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const existingCartId = cookieStore.get('cartId')?.value;
 
   // Check if there's an existing cart first
@@ -443,7 +442,7 @@ export async function updateItemSellingPlanOption(payload: {
   lineId: string;
   sellingPlanId: string | null;
 }) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -473,7 +472,7 @@ export async function updateItemSellingPlanOption(payload: {
         }
       ]);
 
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
 
       return {
         success: true,
@@ -502,7 +501,7 @@ export async function batchUpdateCart(
     currentSellingPlanId?: string;
   }[]
 ) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return {
@@ -564,7 +563,7 @@ export async function batchUpdateCart(
                 (!sellingPlanId && !line.sellingPlanAllocation))
           );
 
-          if (existingLine && existingLine.id) {
+          if (existingLine?.id) {
             // If it exists and has an ID, update it instead of adding
             updateOperations.push({
               id: existingLine.id,
@@ -587,7 +586,7 @@ export async function batchUpdateCart(
                 (!currentSellingPlanId && !line.sellingPlanAllocation))
           );
 
-          if (lineItem && lineItem.id) {
+          if (lineItem?.id) {
             removeLineIds.push(lineItem.id);
           }
         } else if (type === CartOperationType.UPDATE) {
@@ -603,7 +602,7 @@ export async function batchUpdateCart(
                 (!currentSellingPlanId && !line.sellingPlanAllocation))
           );
 
-          if (lineItem && lineItem.id) {
+          if (lineItem?.id) {
             if (quantity === 0) {
               removeLineIds.push(lineItem.id);
             } else {
@@ -633,7 +632,7 @@ export async function batchUpdateCart(
           : null
       ]);
 
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
       return {
         success: true,
         message: 'Cart updated successfully',
@@ -657,7 +656,7 @@ export async function incrementItemQuantity(
   lineId: string,
   maxQuantity?: number
 ) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -701,7 +700,7 @@ export async function incrementItemQuantity(
         }
       ]);
 
-      revalidateTag(TAGS.cart);
+      updateTag(TAGS.cart);
       return {
         success: true,
         message: 'Quantity increased successfully',
@@ -715,7 +714,7 @@ export async function incrementItemQuantity(
 }
 
 export async function decrementItemQuantity(lineId: string) {
-  const cartId = cookies().get('cartId')?.value;
+  const cartId = (await cookies()).get('cartId')?.value;
 
   if (!cartId) {
     return 'Missing cart ID';
@@ -743,7 +742,7 @@ export async function decrementItemQuantity(lineId: string) {
       // If quantity is 1, remove the item
       if (lineItem.quantity <= 1) {
         await cartService.remove(cartId, [lineId]);
-        revalidateTag(TAGS.cart);
+        updateTag(TAGS.cart);
         return {
           success: true,
           message: 'Item removed from cart',
@@ -762,7 +761,7 @@ export async function decrementItemQuantity(lineId: string) {
           }
         ]);
 
-        revalidateTag(TAGS.cart);
+        updateTag(TAGS.cart);
         return {
           success: true,
           message: 'Quantity decreased successfully',

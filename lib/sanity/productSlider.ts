@@ -1,4 +1,4 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const PRODUCT_SLIDER_QUERY = groq`
 *[_type == "productSlider"]{
@@ -12,4 +12,4 @@ export const PRODUCT_SLIDER_QUERY = groq`
     mainImage
   }
 }
-`
+`;

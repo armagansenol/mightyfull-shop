@@ -1,8 +1,8 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { HERO_HOME } from "../heroes/home"
-import { MODULES } from "../modules"
-import { SEO } from "../seo"
+import { HERO_HOME } from '../heroes/home';
+import { MODULES } from '../modules';
+import { SEO } from '../seo';
 
 export const HOME_PAGE = groq`
   hero {
@@ -12,4 +12,4 @@ export const HOME_PAGE = groq`
     ${MODULES}
   },
   ${SEO}
-`
+`;

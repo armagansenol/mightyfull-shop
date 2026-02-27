@@ -13,8 +13,11 @@ import { getCartQuery } from './queries/cart';
 import { getProductQuery, getProductsQuery } from './queries/product';
 import { getShopQuery } from './queries/shop';
 import { ShopifyTransformer } from './transformers';
-import {
+import type {
   Cart,
+  CartLineItem,
+  CartSellingPlanUpdateLineItem,
+  CartUpdateLineItem,
   Product,
   ShopifyAddToCartOperation,
   ShopifyCart,
@@ -26,10 +29,7 @@ import {
   ShopifyShop,
   ShopifyShopOperation,
   ShopifyUpdateCartOperation,
-  ShopifyUpdateSellingPlanOperation,
-  CartLineItem,
-  CartUpdateLineItem,
-  CartSellingPlanUpdateLineItem
+  ShopifyUpdateSellingPlanOperation
 } from './types';
 
 type ExtractVariables<T> = T extends { variables: object }
@@ -188,7 +188,7 @@ const createCartService = () => {
 
     async get(cartId?: string): Promise<Cart | undefined> {
       if (!cartId) {
-        const existingCartId = await cookies().get('cartId')?.value;
+        const existingCartId = (await cookies()).get('cartId')?.value;
         if (!existingCartId) return undefined;
         cartId = existingCartId;
       }

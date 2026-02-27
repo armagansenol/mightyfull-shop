@@ -2,10 +2,9 @@
 
 import cn from 'clsx';
 import { Loader2Icon } from 'lucide-react';
-
+import { motion } from 'motion/react';
 import { Price } from '@/components/price';
 import { Button } from '@/components/ui/button';
-import { motion } from 'motion/react';
 
 interface CheckoutButtonProps {
   amount: string;

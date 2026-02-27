@@ -1,1 +1,1 @@
-export { default as CustomizedPortableText } from "./CustomizedPortableText"
+export { default as CustomizedPortableText } from './CustomizedPortableText';

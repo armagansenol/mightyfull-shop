@@ -1,4 +1,4 @@
-import groq from "groq"
+import groq from 'groq';
 
 export const PRODUCTS = groq`
 *[_type == "product"] {
@@ -7,4 +7,4 @@ export const PRODUCTS = groq`
     handle,
     description,
   }
-`
+`;

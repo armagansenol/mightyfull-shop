@@ -1,39 +1,48 @@
-import { forwardRef } from "react"
+import cx from 'clsx';
+import { forwardRef } from 'react';
+import s from './video.module.scss';
 
-import s from "./video.module.scss"
-
-import cx from "clsx"
-
-export interface VideoProps extends React.VideoHTMLAttributes<HTMLVideoElement> {
-  className?: string
-  primaryVideoUrl: string
-  primaryVideoType?: string
-  secondaryVideoUrl?: string
-  secondaryVideoType?: string
+export interface VideoProps
+  extends React.VideoHTMLAttributes<HTMLVideoElement> {
+  className?: string;
+  primaryVideoUrl: string;
+  primaryVideoType?: string;
+  secondaryVideoUrl?: string;
+  secondaryVideoType?: string;
 }
 
 const Video = forwardRef<HTMLVideoElement, VideoProps>((props, ref) => {
   const {
     className,
     primaryVideoUrl,
-    primaryVideoType = "video/mp4",
+    primaryVideoType = 'video/mp4',
     secondaryVideoUrl,
-    secondaryVideoType = "video/mp4",
+    secondaryVideoType = 'video/mp4',
     poster,
     ...rest
-  } = props
+  } = props;
 
-  const primaryVideoSource = primaryVideoUrl && <source src={primaryVideoUrl} type={primaryVideoType} />
-  const secondaryVideoSource = secondaryVideoUrl && <source src={secondaryVideoUrl} type={secondaryVideoType} />
+  const primaryVideoSource = primaryVideoUrl && (
+    <source src={primaryVideoUrl} type={primaryVideoType} />
+  );
+  const secondaryVideoSource = secondaryVideoUrl && (
+    <source src={secondaryVideoUrl} type={secondaryVideoType} />
+  );
 
   return (
-    <video ref={ref} className={cx(s.video, className)} poster={poster} aria-hidden {...rest}>
+    <video
+      ref={ref}
+      className={cx(s.video, className)}
+      poster={poster}
+      aria-hidden
+      {...rest}
+    >
       {primaryVideoSource}
       {secondaryVideoSource}
     </video>
-  )
-})
+  );
+});
 
-Video.displayName = "Video"
+Video.displayName = 'Video';
 
-export default Video
+export default Video;

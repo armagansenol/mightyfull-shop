@@ -1,11 +1,11 @@
-import { useCartMutation } from './useCartMutation';
 import {
-  removeItem,
-  incrementItemQuantity,
   decrementItemQuantity,
+  incrementItemQuantity,
+  removeItem,
   updateItemSellingPlanOption
 } from '@/components/cart/actions';
 import type { CartItem } from '@/lib/shopify/types';
+import { useCartMutation } from './useCartMutation';
 
 export function useDeleteCartItem(item: CartItem) {
   const lineId = item.id!;

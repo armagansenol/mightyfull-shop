@@ -1,12 +1,11 @@
 'use client';
 
-import s from './package-animation.module.scss';
-
-import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 import cn from 'clsx';
+import { useRef } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 
 import { Img } from '@/components/utility/img';
-import { useRef } from 'react';
+import s from './package-animation.module.scss';
 
 export default function PackageAnimation() {
   const ref = useRef(null);

@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { PRODUCT_PAGE } from "./fragments/pages/product";
+import { PRODUCT_PAGE } from './fragments/pages/product';
 
 export const PRODUCT_PAGE_QUERY = groq`
   *[

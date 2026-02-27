@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { createContext, useContext, useMemo, useOptimistic } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo, useOptimistic } from 'react';
 
 type ProductState = {
   [key: string]: string;
@@ -54,10 +55,12 @@ export function ProductProvider({ children }: { children: React.ReactNode }) {
       updateOption,
       updateImage
     }),
-    [state]
+    [state, updateImage, updateOption]
   );
 
-  return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
+  return (
+    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
+  );
 }
 
 export function useProduct() {

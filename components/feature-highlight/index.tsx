@@ -1,11 +1,9 @@
-import s from './feature-highlight.module.scss';
-
 import cn from 'clsx';
-
 import { FadeIn } from '@/components/fade-in';
 import { IconProtein8 } from '@/components/icons';
 import { Parallax } from '@/components/parallax';
 import { Img } from '@/components/utility/img';
+import s from './feature-highlight.module.scss';
 
 export function FeatureHighlight() {
   const items = [

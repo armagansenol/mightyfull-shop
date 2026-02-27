@@ -1,8 +1,9 @@
 'use client';
 
-import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 import { usePathname } from 'next/navigation';
-import React, { useRef } from 'react';
+import type React from 'react';
+import { useRef } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 
 interface FadeInProps {
   children: React.ReactNode;

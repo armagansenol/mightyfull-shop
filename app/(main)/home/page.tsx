@@ -1,7 +1,3 @@
-import s from './home.module.scss';
-
-import { cn } from '@/lib/utils';
-
 import { FadeInOutCarousel } from '@/components/fade-in-out-carousel';
 import { FeatureHighlight } from '@/components/feature-highlight';
 import { IconCloud2, IconLeftArm, IconRightArm } from '@/components/icons';
@@ -18,12 +14,13 @@ import { getProductHighlight } from '@/lib/actions/product-highlight';
 import { defaultColorTheme, routes } from '@/lib/constants';
 import { sanityFetch } from '@/lib/sanity/client';
 import { TESTIMONIALS_QUERY } from '@/lib/sanity/testimonials';
-import { Testimonial } from '@/types';
+import { cn } from '@/lib/utils';
+import type { Testimonial } from '@/types';
+import s from './home.module.scss';
 
 export default async function HomePage() {
   const [productHighlight, testimonials] = await Promise.all([
     getProductHighlight(),
-
     sanityFetch<Testimonial[]>({
       query: TESTIMONIALS_QUERY,
       tags: ['testmonials']
@@ -58,7 +55,7 @@ export default async function HomePage() {
           <p>Meet our mightyfull flavors</p>
           <Button
             asChild
-            className="h-16 mt-10 font-black"
+            className="h-10 lg:h-12 xl:h-16"
             size="md"
             padding="fat"
           >
@@ -110,42 +107,46 @@ export default async function HomePage() {
         </Marquee>
       </section>
       {Array.isArray(productHighlight) && productHighlight.length > 0 && (
-        <section className={cn(s.highlights, 'py-10 tablet:py-20')}>
+        <section className={s.highlights}>
           <section className={cn(s.shop, 'flex flex-col items-center')}>
             <h2>Impossible to Choose Just One!</h2>
             <p>
               Can&apos;t decide? Try them all and discover your new favorite!
             </p>
-            {/* MOBILE */}
-            <div className="block tablet:hidden">
-              <ProductHighlightCarousel
-                items={productHighlight}
-                options={{ loop: true }}
-              />
-            </div>
-            {/* DESKTOP */}
-            <div className="hidden tablet:block">
-              <div className="flex flex-col items-center tablet:grid grid-cols-4 gap-16 mt-10 tablet:mt-20 px-4 tablet:px-0">
-                {Array.isArray(productHighlight) &&
-                  productHighlight.length > 0 &&
-                  productHighlight.map((item) => {
-                    return (
-                      <ProductCard
-                        key={item.id}
-                        id={item.id}
-                        animatedCard={item}
-                        variantId={
-                          item.shopifyProduct?.variants[0].id as string
-                        }
-                        availableForSale={
-                          item.shopifyProduct?.variants[0]
-                            .availableForSale as boolean
-                        }
-                      />
-                    );
-                  })}
-              </div>
-            </div>
+            {Array.isArray(productHighlight) && productHighlight.length > 0 && (
+              <>
+                {/* MOBILE */}
+                <div className="block tablet:hidden">
+                  <ProductHighlightCarousel
+                    items={productHighlight}
+                    options={{ loop: true }}
+                  />
+                </div>
+                {/* DESKTOP */}
+                <div className="hidden tablet:block">
+                  <div className="flex flex-col items-center tablet:grid grid-cols-4 gap-16 tablet:gap-4 desktop:gap-4 mt-10 tablet:mt-16 px-4 tablet:px-0">
+                    {Array.isArray(productHighlight) &&
+                      productHighlight.length > 0 &&
+                      productHighlight.map((item) => {
+                        return (
+                          <ProductCard
+                            key={item.id}
+                            id={item.id}
+                            animatedCard={item}
+                            variantId={
+                              item.shopifyProduct?.variants[0].id as string
+                            }
+                            availableForSale={
+                              item.shopifyProduct?.variants[0]
+                                .availableForSale as boolean
+                            }
+                          />
+                        );
+                      })}
+                  </div>
+                </div>
+              </>
+            )}
           </section>
         </section>
       )}

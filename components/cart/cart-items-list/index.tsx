@@ -2,8 +2,8 @@
 
 import CartItem from '@/components/cart/cart-item';
 import { ScrollableBox } from '@/components/utility/scrollable-box';
-import { Cart } from '@/lib/shopify/types';
-import { CartUpdateType } from '@/types';
+import type { Cart } from '@/lib/shopify/types';
+import type { CartUpdateType } from '@/types';
 
 interface CartItemsListProps {
   cart: Cart;

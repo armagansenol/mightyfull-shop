@@ -1,14 +1,10 @@
-import s from './out-of-stock.module.scss';
-
-import { subscribeToBackInStock } from '@/lib/klaviyo/actions';
-import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BellRing, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { IconClose } from '@/components/icons';
+import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -27,7 +23,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Img } from '@/components/utility/img';
-import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
+import { subscribeToBackInStock } from '@/lib/klaviyo/actions';
+import { cn } from '@/lib/utils';
+import s from './out-of-stock.module.scss';
 
 export interface OutOfStockProps {
   variantId: string;
@@ -106,45 +104,43 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
                     stock.
                   </p>
                 ) : (
-                  <>
-                    <Form {...form}>
-                      <form
-                        onSubmit={form.handleSubmit(handleBackInStockSubmit)}
-                        className="flex flex-col gap-4"
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(handleBackInStockSubmit)}
+                      className="flex flex-col gap-4"
+                    >
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                className={cn(s.input)}
+                                placeholder="EMAIL ADDRESS"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <button
+                        className={cn(
+                          s.submitButton,
+                          'inline-flex items-center justify-center'
+                        )}
+                        type="submit"
+                        disabled={isSubmitting}
                       >
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormControl>
-                                <Input
-                                  className={cn(s.input)}
-                                  placeholder="EMAIL ADDRESS"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <button
-                          className={cn(
-                            s.submitButton,
-                            'inline-flex items-center justify-center'
-                          )}
-                          type="submit"
-                          disabled={isSubmitting}
-                        >
-                          {isSubmitting ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <LetterSwapOnHover label="SUBMIT" />
-                          )}
-                        </button>
-                      </form>
-                    </Form>
-                  </>
+                        {isSubmitting ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <LetterSwapOnHover label="SUBMIT" />
+                        )}
+                      </button>
+                    </form>
+                  </Form>
                 )}
               </DialogDescription>
             </div>

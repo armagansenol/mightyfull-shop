@@ -1,6 +1,6 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { PAGE } from "./fragments/pages/page"
+import { PAGE } from './fragments/pages/page';
 
 export const PAGE_QUERY = groq`
   *[
@@ -9,4 +9,4 @@ export const PAGE_QUERY = groq`
   ][0] {
     ${PAGE}
   }
-`
+`;

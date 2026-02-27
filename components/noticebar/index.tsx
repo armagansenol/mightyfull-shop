@@ -1,9 +1,7 @@
-import s from './noticebar.module.scss';
-
 import cn from 'clsx';
-
 import { IconAsterisk } from '@/components/icons';
 import { Marquee } from '@/components/marquee';
+import s from './noticebar.module.scss';
 
 export interface NoticebarProps {
   title: string;

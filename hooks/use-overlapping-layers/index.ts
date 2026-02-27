@@ -1,5 +1,5 @@
-import { ScrollTrigger, gsap } from '@/components/gsap';
 import { useGSAP } from '@gsap/react';
+import { gsap, ScrollTrigger } from '@/components/gsap';
 
 const useOverlappingLayers = () => {
   useGSAP(() => {
@@ -8,8 +8,6 @@ const useOverlappingLayers = () => {
     }
 
     const layers: HTMLDivElement[] = gsap.utils.toArray('.overlapping-layer');
-
-    console.log(layers);
 
     layers.forEach((layer, i) => {
       let tl;
@@ -34,7 +32,7 @@ const useOverlappingLayers = () => {
         animation: tl,
         id: `overlapping-layers-${i}`,
         trigger: layer,
-        start: `bottom ${i === 0 ? 'top+=' + layer.getBoundingClientRect().height : 'bottom'}`,
+        start: `bottom ${i === 0 ? `top+=${layer.getBoundingClientRect().height}` : 'bottom'}`,
         end: 'bottom top',
         pin: true,
         pinSpacing: false,

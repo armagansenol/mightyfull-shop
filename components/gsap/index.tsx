@@ -1,25 +1,25 @@
-"use client"
+'use client';
 
-import gsap from "gsap"
-import { useLayoutEffect } from "react"
-import Tempus from "tempus"
-import { ScrollTriggerConfig } from "./scroll-trigger"
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger"
-import { useGSAP } from "@gsap/react"
-import { CustomEase } from "gsap/all"
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { CustomEase } from 'gsap/all';
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
+import { useLayoutEffect } from 'react';
+import Tempus from 'tempus';
+import { ScrollTriggerConfig } from './scroll-trigger';
 
 function GSAP({ scrollTrigger = false }) {
   useLayoutEffect(() => {
-    gsap.defaults({ ease: "none" })
+    gsap.defaults({ ease: 'none' });
 
-    gsap.ticker.lagSmoothing(0)
-    gsap.ticker.remove(gsap.updateRoot)
+    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.remove(gsap.updateRoot);
     Tempus?.add((time: number) => {
-      gsap.updateRoot(time / 1000)
-    })
-  }, [])
+      gsap.updateRoot(time / 1000);
+    });
+  }, []);
 
-  return scrollTrigger ? <ScrollTriggerConfig /> : null
+  return scrollTrigger ? <ScrollTriggerConfig /> : null;
 }
 
-export { ScrollTrigger, gsap, useGSAP, CustomEase, GSAP }
+export { ScrollTrigger, gsap, useGSAP, CustomEase, GSAP };

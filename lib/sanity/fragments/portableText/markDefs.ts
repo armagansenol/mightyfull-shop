@@ -1,7 +1,7 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { LINK_EXTERNAL } from "../linkExternal"
-import { LINK_INTERNAL } from "../linkInternal"
+import { LINK_EXTERNAL } from '../linkExternal';
+import { LINK_INTERNAL } from '../linkInternal';
 
 export const MARK_DEFS = groq`
 	...,
@@ -11,4 +11,4 @@ export const MARK_DEFS = groq`
 	(_type == 'annotationLinkInternal') => {
 	${LINK_INTERNAL}
 	}
-`
+`;

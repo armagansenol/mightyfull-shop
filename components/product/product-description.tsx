@@ -1,6 +1,6 @@
+import type { Product } from 'lib/shopify/types';
 import { AddToCart } from '@/components/cart/add-to-cart';
 import { Price } from '@/components/price';
-import { Product } from 'lib/shopify/types';
 import { VariantSelector } from './variant-selector';
 
 export function ProductDescription({ product }: { product: Product }) {

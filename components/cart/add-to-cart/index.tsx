@@ -87,11 +87,14 @@ export function AddToCart({
           <>
             ADD TO CART{' '}
             <span>
-              {quantity && quantity > 0 && amount && !isNaN(Number(amount)) && (
-                <>
-                  ({(Number(amount) * quantity).toFixed(2)} {currencyCode})
-                </>
-              )}
+              {quantity &&
+                quantity > 0 &&
+                amount &&
+                !Number.isNaN(Number(amount)) && (
+                  <>
+                    ({(Number(amount) * quantity).toFixed(2)} {currencyCode})
+                  </>
+                )}
             </span>
           </>
         )}

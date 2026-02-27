@@ -7,8 +7,8 @@ import {
   createEmptyCart
 } from '@/components/cart/cart-context';
 
-import { Cart, Product, ProductVariant } from '@/lib/shopify/types';
-import { CartUpdateType } from '@/types';
+import type { Cart, Product, ProductVariant } from '@/lib/shopify/types';
+import type { CartUpdateType } from '@/types';
 
 export function CartProvider({
   children,
@@ -36,14 +36,14 @@ export function CartProvider({
         payload: { merchandiseId, updateType, sellingPlanId }
       });
     },
-    [dispatch]
+    []
   );
 
   const addCartItem = useCallback(
     (variant: ProductVariant, product: Product) => {
       dispatch({ type: 'ADD_ITEM', payload: { variant, product } });
     },
-    [dispatch]
+    []
   );
 
   const updateCartItemSellingPlan = useCallback(
@@ -58,7 +58,7 @@ export function CartProvider({
         payload: { merchandiseId, sellingPlanId, currentSellingPlanId }
       });
     },
-    [cart, dispatch]
+    [cart]
   );
 
   const value = useMemo(

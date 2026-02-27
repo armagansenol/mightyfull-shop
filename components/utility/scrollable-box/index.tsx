@@ -1,10 +1,9 @@
-import s from './scrollable-box.module.scss';
-
-import { gsap } from '@/components/gsap';
 import cn from 'clsx';
 import Lenis from 'lenis';
-import { ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 import { useIsomorphicLayoutEffect } from 'usehooks-ts';
+import { gsap } from '@/components/gsap';
+import s from './scrollable-box.module.scss';
 
 type Props = {
   children: ReactNode;
@@ -37,7 +36,7 @@ const ScrollableBox = ({
       wrapper: wrapperRef.current, // element which has overflow
       content: contentRef.current, // usually wrapper's direct child
       duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+      easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)), // https://www.desmos.com/calculator/brs54l4xou
       orientation: orientation,
       gestureOrientation: orientation,
       smoothWheel: true,

@@ -1,11 +1,9 @@
-import s from './shop.module.scss';
-
-import { cn } from '@/lib/utils';
-
 import { ProductCard } from '@/components/product-card';
 import { Wrapper } from '@/components/wrapper';
 import { getAllProducts } from '@/lib/actions/all-products';
 import { defaultColorTheme } from '@/lib/constants';
+import { cn } from '@/lib/utils';
+import s from './shop.module.scss';
 
 export default async function ShopPage() {
   const products = await getAllProducts();

@@ -1,7 +1,7 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { MODULE_IMAGE } from "./modules/image"
-import { PRODUCT_HOTSPOT } from "./productHotspot"
+import { MODULE_IMAGE } from './modules/image';
+import { PRODUCT_HOTSPOT } from './productHotspot';
 
 export const PRODUCT_GUIDE = groq`*[
     _type == 'guide'
@@ -27,4 +27,4 @@ export const PRODUCT_GUIDE = groq`*[
         ${MODULE_IMAGE}
       }
     ]
-  } [ count(images) > 1 ] | order(_updatedAt desc)[0]`
+  } [ count(images) > 1 ] | order(_updatedAt desc)[0]`;

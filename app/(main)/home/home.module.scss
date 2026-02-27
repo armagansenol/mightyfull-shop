@@ -12,13 +12,14 @@
 
   @include tablet {
     @include dims(auto, desktop-vw(700px));
-    padding: mobile-vw(50px) mobile-vw(16px);
-    padding-bottom: mobile-vw(50px);
+    padding: tablet-vw(50px) tablet-vw(16px);
+    padding-bottom: tablet-vw(50px);
   }
 
   @include mobile {
     @include dims(auto);
     max-height: none;
+    padding: mobile-vw(30px) mobile-vw(16px);
   }
 
   .text {
@@ -196,8 +197,14 @@
   }
 }
 
+.highlights {
+  padding: mobile-vw(50px) 0;
+  @include desktop {
+    padding: desktop-vw(50px) desktop-vw(16px);
+  }
+}
+
 .shop {
-  padding: desktop-vw(50px) desktop-vw(120px);
   position: relative;
   z-index: 100;
 

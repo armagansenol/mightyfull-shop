@@ -2,7 +2,7 @@ import { FaqList } from '@/components/faq-list';
 import { Wrapper } from '@/components/wrapper';
 import { sanityFetch } from '@/lib/sanity/client';
 import { FAQ_QUERY } from '@/lib/sanity/faq';
-import { FAQ } from '@/types';
+import type { FAQ } from '@/types';
 
 export default async function Page() {
   const faq = await sanityFetch<FAQ[]>({

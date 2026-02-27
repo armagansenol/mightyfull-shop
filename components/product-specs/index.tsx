@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import {
   Accordion,
@@ -6,7 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger
 } from '@/components/ui/accordion';
-import { SanityProductPage } from '@/lib/sanity/types';
+import type { SanityProductPage } from '@/lib/sanity/types';
+import { cn } from '@/lib/utils';
 
 interface ProductSpecsProps {
   className?: string;

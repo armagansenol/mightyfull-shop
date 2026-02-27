@@ -1,6 +1,6 @@
-import { ColorTheme } from '@/types';
 import type { PortableTextBlock } from '@portabletext/types';
 import type { Image, ImageAsset } from '@sanity/types';
+import type { ColorTheme } from '@/types';
 
 export interface SanityAssetImage extends Image {
   _type: 'image';

@@ -1,10 +1,10 @@
-import { SanityAssetImage } from '@/lib/sanity';
-import { PortableTextBlock } from '@portabletext/react';
-import {
+import type { PortableTextBlock } from '@portabletext/react';
+import type {
   ProductVariant,
   SellingPlanGroup
 } from '@shopify/hydrogen-react/storefront-api-types';
-import { ImageAsset } from 'sanity';
+import type { ImageAsset } from 'sanity';
+import type { SanityAssetImage } from '@/lib/sanity';
 
 export type ColorTheme = {
   primary: string;

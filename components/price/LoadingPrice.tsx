@@ -1,8 +1,8 @@
 'use client';
 
-import s from './price.module.scss';
 import cn from 'clsx';
 import { useEffect, useState } from 'react';
+import s from './price.module.scss';
 
 const LoadingPrice = ({
   className,

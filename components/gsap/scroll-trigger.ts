@@ -14,8 +14,8 @@ export function ScrollTriggerConfig() {
     });
   }, []);
 
-  const lenis = useLenis(ScrollTrigger.update);
-  useEffect(() => ScrollTrigger.refresh(), [lenis]);
+  const _lenis = useLenis(ScrollTrigger.update);
+  useEffect(() => ScrollTrigger.refresh(), []);
 
   return null;
 }

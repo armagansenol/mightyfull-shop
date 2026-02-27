@@ -1,4 +1,5 @@
-import {
+import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
+import type {
   Cart,
   Connection,
   Image,
@@ -6,7 +7,6 @@ import {
   ShopifyCart,
   ShopifyProduct
 } from './types';
-import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 
 export class ShopifyTransformer {
   static removeEdgesAndNodes<T>(array: Connection<T>): T[] {
@@ -23,12 +23,12 @@ export class ShopifyTransformer {
 
     return {
       ...cart,
-      lines: this.removeEdgesAndNodes(cart.lines)
+      lines: ShopifyTransformer.removeEdgesAndNodes(cart.lines)
     };
   }
 
   static reshapeImages(images: Connection<Image>, productTitle: string) {
-    const flattened = this.removeEdgesAndNodes(images);
+    const flattened = ShopifyTransformer.removeEdgesAndNodes(images);
 
     return flattened.map((image) => {
       const filename = image.url.match(/.*\/(.*)\..*/)?.[1];
@@ -54,15 +54,15 @@ export class ShopifyTransformer {
 
     return {
       ...rest,
-      images: this.reshapeImages(images, product.title),
-      variants: this.removeEdgesAndNodes(variants)
+      images: ShopifyTransformer.reshapeImages(images, product.title),
+      variants: ShopifyTransformer.removeEdgesAndNodes(variants)
     };
   }
 
   static reshapeProducts(products: ShopifyProduct[]): Product[] {
     return products
       .filter(Boolean)
-      .map((product) => this.reshapeProduct(product))
+      .map((product) => ShopifyTransformer.reshapeProduct(product))
       .filter((product): product is Product => product !== undefined);
   }
 

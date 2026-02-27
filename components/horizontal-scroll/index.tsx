@@ -3,9 +3,8 @@
 import cn from 'clsx';
 
 import * as React from 'react';
-
-import s from './horizontal-scroll.module.scss';
 import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
+import s from './horizontal-scroll.module.scss';
 
 export default function HorizontalScroll() {
   const ref = React.useRef(null);
@@ -96,13 +95,13 @@ export default function HorizontalScroll() {
 
       panelColors.forEach((triggerClass, i) => {
         ScrollTrigger.create({
-          trigger: '.' + triggerClass,
+          trigger: `.${triggerClass}`,
           containerAnimation: scrollTween,
           start: 'left 30%',
           end: i === 3 ? 'right right' : 'right 30%',
           markers: false,
           onToggle: (self) =>
-            gsap.to('.marker-' + (i + 1), {
+            gsap.to(`.marker-${i + 1}`, {
               duration: 0.25,
               autoAlpha: self.isActive ? 1 : 0
             })

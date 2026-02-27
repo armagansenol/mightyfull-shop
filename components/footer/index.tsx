@@ -1,20 +1,17 @@
 'use client';
 
-import s from './footer.module.scss';
-
-import cn from 'clsx';
-
 import { IconCloud, socialIcons } from '@/components/icons';
 import { Parallax } from '@/components/parallax';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import { useLayoutData } from '@/context/layout-data';
-import { SocialMedia } from '@/types';
-
+import { cn } from '@/lib/utils';
 import c1 from '@/public/img/c1.png';
 import c3 from '@/public/img/c3.png';
 import c4 from '@/public/img/c4.png';
 import c5 from '@/public/img/c5.png';
+import type { SocialMedia } from '@/types';
+import s from './footer.module.scss';
 
 export function Footer() {
   const { socialLinks } = useLayoutData();

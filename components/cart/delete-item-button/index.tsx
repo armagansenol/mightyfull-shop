@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 
 import { useDeleteCartItem } from '@/components/cart/hooks/useCartItemMutations';
-import { CartItem } from '@/lib/shopify/types';
+import type { CartItem } from '@/lib/shopify/types';
 
 export function DeleteItemButton({ item }: { item: CartItem }) {
   const { mutate, isPending: isProcessing } = useDeleteCartItem(item);

@@ -20,7 +20,7 @@
 
   @include mobile {
     --header-height: #{mobile-vw(60px)};
-    --noticebar-height: #{mobile-vw(18px)};
+    --noticebar-height: #{mobile-vw(22px)};
     --page-padding-top: #{mobile-vw(30px)};
   }
 }

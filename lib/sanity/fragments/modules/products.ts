@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { MODULE_PRODUCT } from "./product";
+import { MODULE_PRODUCT } from './product';
 
 export const MODULE_PRODUCTS = groq`
   layout,

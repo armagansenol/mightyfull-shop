@@ -1,14 +1,12 @@
-import s from './product-card.module.scss';
-
-import { cn } from '@/lib/utils';
-
 import { AnimatedCard } from '@/components/animated-card';
 import { AddToCart } from '@/components/cart/add-to-cart';
 import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
 import { routes } from '@/lib/constants';
-import { AnimatedCardProps } from '@/types';
+import { cn } from '@/lib/utils';
+import type { AnimatedCardProps } from '@/types';
+import s from './product-card.module.scss';
 
 export interface ProductCardProps {
   id: string;

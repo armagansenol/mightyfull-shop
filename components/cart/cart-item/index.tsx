@@ -3,10 +3,10 @@ import cn from 'clsx';
 import { DeleteItemButton } from '@/components/cart/delete-item-button';
 import { QuantityControl } from '@/components/cart/edit-quantity-button';
 import { EditSellingPlanButton } from '@/components/cart/edit-selling-plan-button';
+import { Price } from '@/components/price';
 import { Img } from '@/components/utility/img';
 import type { CartItem as CartLine } from '@/lib/shopify/types';
-import { Price } from '@/components/price';
-import { CartUpdateType } from '@/types';
+import type { CartUpdateType } from '@/types';
 
 interface CartItemProps {
   item: CartLine;

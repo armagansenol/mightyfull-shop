@@ -1,16 +1,15 @@
 'use client';
 
-import s from './wrapper.module.css';
-
 import cn from 'clsx';
 import type { LenisOptions } from 'lenis';
+import { useEffect } from 'react';
 
 import { Header } from '@/components/header';
 import { Lenis } from '@/components/lenis';
-import { ColorTheme } from '@/types';
 import { useLayoutData } from '@/context/layout-data';
 import { defaultColorTheme } from '@/lib/constants';
-import { useEffect } from 'react';
+import type { ColorTheme } from '@/types';
+import s from './wrapper.module.css';
 
 interface WrapperProps extends React.HTMLAttributes<HTMLDivElement> {
   lenis?: boolean | LenisOptions;

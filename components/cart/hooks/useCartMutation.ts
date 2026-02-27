@@ -1,7 +1,7 @@
-import { useCart } from '@/components/cart/cart-context';
-import { test } from '@/components/custom-toast/success';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { useCart } from '@/components/cart/cart-context';
+import { test } from '@/components/custom-toast/success';
 import type { Cart, CartItem } from '@/lib/shopify/types';
 
 type CartActionType = 'plus' | 'minus' | 'delete' | 'update-selling-plan';

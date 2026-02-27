@@ -1,48 +1,38 @@
-import s from './product-detail-page.module.scss';
-
-import { cn } from '@/lib/utils';
-
+import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
-import { IconCloud } from '@/components/icons';
 import { ProductCard } from '@/components/product-card';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
 import { ProductImages } from '@/components/product-images';
 import { ProductSpecs } from '@/components/product-specs';
 import { PurchasePanel } from '@/components/purchase-panel';
 import { Wrapper } from '@/components/wrapper';
-
 import { getRelatedProducts } from '@/lib/actions/related-products';
 import { sanityFetch } from '@/lib/sanity/client';
 import { PRODUCT_PAGE_QUERY } from '@/lib/sanity/productPage';
-import { SanityProductPage } from '@/lib/sanity/types';
+import type { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
-import { extractShopifyId } from '@/lib/utils';
-
-import OkendoWidget from '@/components/okendo-widget';
+import { cn, extractShopifyId } from '@/lib/utils';
 
 interface ProductDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProductDetialPage({
   params
 }: ProductDetailPageProps) {
-  const relatedProducts = await getRelatedProducts(params.slug);
+  const { slug } = await params;
+  const relatedProducts = await getRelatedProducts(slug);
   const sanityProduct = await sanityFetch<SanityProductPage>({
     query: PRODUCT_PAGE_QUERY,
     tags: ['productPage'],
-    qParams: { slug: params.slug }
+    qParams: { slug }
   });
 
-  const shopifyProduct = await getProduct(params.slug);
+  const shopifyProduct = await getProduct(slug);
   const productId = extractShopifyId(shopifyProduct?.id as string);
-
-  console.log('sanityProduct', sanityProduct);
-
-  // const imgs = [s1.src, s2.src, s3.src, s4.src, s1.src, s2.src, s3.src, s4.src];
 
   return (
     <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
@@ -79,21 +69,10 @@ export default async function ProductDetialPage({
         </div>
       </section>
       {/* product reviews */}
-      <section className={cn(s.reviews, 'my-24 tablet:my-32')}>
-        <div className={s.cloudTop}>
-          <IconCloud fill="var(--primary)" />
-        </div>
-        {/* {shopifyProduct && <CustomerReviews productId={productId} />} */}
-        <div className="h-[500px]">
-          <OkendoWidget productId={productId} />
-        </div>
-        <div className={s.cloudBottom}>
-          <IconCloud rotate={180} fill="var(--primary)" />
-        </div>
-      </section>
+      {shopifyProduct && <CustomerReviews productId={productId} />}
       {/* related products */}
       {relatedProducts.length > 0 && (
-        <section className={cn(s.highlights, 'pb-10 tablet:pb-20')}>
+        <section className="pb-10 tablet:pb-20">
           {/* MOBILE */}
           <div className="block tablet:hidden">
             <ProductHighlightCarousel
@@ -103,11 +82,11 @@ export default async function ProductDetialPage({
           </div>
           {/* DESKTOP */}
           <div className="hidden tablet:block">
-            <section
-              className={cn(s.relatedProducts, 'flex flex-col items-center')}
-            >
-              <h2>Impossible to Choose Just One!</h2>
-              <p>
+            <section className="flex flex-col items-center py-16">
+              <h2 className="text-blue-ruin font-bomstad-display text-6xl font-black max-w-xl text-center mb-4">
+                Impossible to Choose Just One!
+              </h2>
+              <p className="text-blue-ruin font-poppins text-lg font-normal max-w-xl text-center mb-16">
                 Can&apos;t decide? Try them all and discover your new favorite!
               </p>
               <div className="flex items-center justify-center gap-10 px-32">

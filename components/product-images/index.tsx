@@ -1,11 +1,10 @@
 'use client';
 
-import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'motion/react';
 import { useState } from 'react';
-import { ImageAsset } from 'sanity';
-
+import type { ImageAsset } from 'sanity';
 import { Img } from '@/components/utility/img';
+import { cn } from '@/lib/utils';
 
 export interface ProductImagesProps {
   images: ImageAsset[];

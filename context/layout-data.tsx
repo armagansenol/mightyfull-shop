@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-import { LayoutQueryResponse } from '@/types';
+import type { LayoutQueryResponse } from '@/types';
 
 type LayoutDataContextType = LayoutQueryResponse;
 

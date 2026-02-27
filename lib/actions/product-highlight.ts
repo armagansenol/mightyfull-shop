@@ -3,7 +3,7 @@
 import { sanityFetch } from '@/lib/sanity/client';
 import { PRODUCT_HIGHLIGHT_QUERY } from '@/lib/sanity/productHighlight';
 import { getProduct } from '@/lib/shopify';
-import { ProductHighlightQueryResult } from '@/types';
+import type { ProductHighlightQueryResult } from '@/types';
 
 export async function getProductHighlight() {
   // First, fetch the product highlight from Sanity

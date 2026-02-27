@@ -1,6 +1,6 @@
-import groq from "groq";
+import groq from 'groq';
 
-import { PRODUCT_WITH_VARIANT_FIELDS } from "../productWithVariantFields";
+import { PRODUCT_WITH_VARIANT_FIELDS } from '../productWithVariantFields';
 
 export const MODULE_TAGGED_PRODUCTS = groq`
   tag,

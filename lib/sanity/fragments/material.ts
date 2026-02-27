@@ -1,6 +1,6 @@
-import groq from "groq"
+import groq from 'groq';
 
-import { MARK_DEFS } from "./portableText/markDefs"
+import { MARK_DEFS } from './portableText/markDefs';
 
 export const MATERIAL = groq`
   _key,
@@ -15,4 +15,4 @@ export const MATERIAL = groq`
       }
     }
   }
-`
+`;
