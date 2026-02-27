@@ -10,7 +10,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.1",
+    "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^4.1.3",
     "@number-flow/react": "^0.5.7",
     "@portabletext/react": "^3.1.0",
@@ -33,15 +33,15 @@
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "embla-carousel": "^8.3.1",
-    "embla-carousel-auto-scroll": "^8.3.1",
-    "embla-carousel-fade": "^8.3.1",
-    "embla-carousel-react": "^8.3.1",
-    "gsap": "^3.12.5",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-auto-scroll": "^8.6.0",
+    "embla-carousel-fade": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
+    "gsap": "^3.14.2",
     "hamo": "^1.0.0-dev.6",
-    "lenis": "^1.2.3",
+    "lenis": "^1.3.17",
     "lucide-react": "^0.454.0",
-    "motion": "^12.6.3",
+    "motion": "^12.34.3",
     "next": "^16.1.6",
     "next-sanity": "^9.8.36",
     "next-themes": "^0.4.4",
@@ -63,19 +63,25 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["vite"]
+      "ignoreMissing": [
+        "vite"
+      ]
     },
-    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ]
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^16.1.6",
     "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "@next/eslint-plugin-next": "^16.1.6",
     "@typescript-eslint/eslint-plugin": "^8",
     "@typescript-eslint/parser": "^8",
+    "eslint": "^9",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
