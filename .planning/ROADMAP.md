@@ -13,7 +13,7 @@ This milestone modernizes the Mightyfull Shop build stack without changing any u
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Dependency Upgrades** - Upgrade Next.js, React, and all packages to latest stable with breaking changes resolved (completed 2026-02-27)
-- [ ] **Phase 2: SCSS to CSS Modules** - Convert all 31 `.module.scss` files to `.module.css`, remove SASS
+- [x] **Phase 2: SCSS to CSS Modules** - Convert all 31 `.module.scss` files to `.module.css`, remove SASS (completed 2026-02-27)
 - [ ] **Phase 3: Tailwind v4 Migration** - Replace `tailwind.config.ts` with `@theme` directive, update PostCSS plugin
 - [ ] **Phase 4: Visual Verification** - Manual verification of visual parity across all pages, viewports, and interactions
 
@@ -92,6 +92,6 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Dependency Upgrades | 3/3 | Complete    | 2026-02-27 |
-| 2. SCSS to CSS Modules | 3/4 | In Progress|  |
+| 2. SCSS to CSS Modules | 4/4 | Complete   | 2026-02-27 |
 | 3. Tailwind v4 Migration | 0/2 | Not started | - |
 | 4. Visual Verification | 0/2 | Not started | - |

@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T12:04:44.908Z"
+last_updated: "2026-02-27T12:47:25.371Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** The shopping experience must work flawlessly with visual polish that matches the brand
-**Current focus:** Phase 2 Plan 04 — final SCSS cleanup: buttons.module.scss conversion + delete _functions.scss and _variables.scss
+**Current focus:** Phase 3 — Tailwind v4 upgrade (phase 2 SCSS migration 100% complete)
 
 ## Current Position
 
-Phase: 2 of 4 (SCSS to CSS Modules)
-Plan: 4 of 4 in Phase 2 — Plan 02-03 complete (all 3 tasks including visual verification approved)
-Status: In progress
-Last activity: 2026-02-27 — Completed Plan 02-03: 30/31 SCSS modules converted, visual verification approved at 1440px and 375px. Advancing to Plan 02-04.
+Phase: 2 of 4 (SCSS to CSS Modules) — COMPLETE
+Plan: 4 of 4 in Phase 2 — Plan 02-04 complete (buttons.module.css, sass removed, zero SCSS files)
+Status: Phase 2 complete, ready for Phase 3
+Last activity: 2026-02-27 — Completed Plan 02-04: buttons.module.scss converted, sass removed, zero SCSS remains. Phase 2 fully complete.
 
-Progress: [█████░░░░░] 50%
+Progress: [█████░░░░░] 57%
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Progress: [█████░░░░░] 50%
 
 *Updated after each plan completion*
 | Phase 02-scss-to-css-modules P03 | 13 | 2 tasks | 39 files |
+| Phase 02-scss-to-css-modules P04 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,7 @@ Recent decisions affecting current work:
 - [Phase 02-03]: vw() calls replaced with fixed px values in CSS modules (consistent with 02-02) for co-located responsive logic
 - [Phase 02-03]: z-index('header')=180, z-index('footer')=110 computed from SCSS $z-indexes list formula
 - [Phase 02-03]: tablet-vw() in home module -> calc(N / 1024 * 100vw) fallback; @include tablet -> @media (max-width: 1024px)
+- [Phase 02-04]: Button font-size omitted from CSS module; applied via Tailwind text-base/text-2xl/text-3xl in JSX — consistent with locked decision for Tailwind font sizes
 
 ### Pending Todos
 
@@ -93,6 +95,6 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Plan 02-03 fully complete (visual verification approved). Ready to begin Plan 02-04.
-Resume file: .planning/phases/02-scss-to-css-modules/02-04-PLAN.md (Task 1)
-Resume context: 30/31 SCSS modules converted. Only styles/buttons.module.scss remains. Plan 02-04 handles buttons.module.scss conversion + delete _functions.scss and _variables.scss.
+Stopped at: Completed Plan 02-04 — Phase 2 SCSS migration 100% complete (zero SCSS files, sass removed).
+Resume file: .planning/phases/03-tailwind-v4/ (Phase 3, Plan 01)
+Resume context: All 31 SCSS modules converted to CSS modules. sass package removed. sassOptions removed from next.config.mjs. Ready for Tailwind v4 upgrade phase.
