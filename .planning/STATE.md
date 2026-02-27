@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** The shopping experience must work flawlessly with visual polish that matches the brand
-**Current focus:** Phase 1 complete — ready for Phase 2 (SCSS Migration)
+**Current focus:** Phase 2 Plan 01 checkpoint — visual verification of global.css at 1440px and 375px required
 
 ## Current Position
 
-Phase: 1 of 4 (Dependency Upgrades) — COMPLETE
-Plan: 3 of 3 in Phase 1 — all plans done
-Status: Phase 1 complete
-Last activity: 2026-02-27 — Completed Plan 01-03: state/form/utility upgrades, Zod v4 migration, Biome replacing ESLint+Prettier
+Phase: 2 of 4 (SCSS to CSS Modules)
+Plan: 1 of 5 in Phase 2 — Tasks 1 and 2 complete, awaiting Task 3 visual verification (checkpoint:human-verify)
+Status: In progress — checkpoint reached
+Last activity: 2026-02-27 — Completed Plan 02-01 Tasks 1-2: global.css created, SCSS partials deleted, build passes
 
-Progress: [███░░░░░░░] 25%
+Progress: [████░░░░░░] 30%
 
 ## Performance Metrics
 
@@ -70,6 +70,9 @@ Recent decisions affecting current work:
 - [01-03]: Biome v2 VCS integration handles .gitignore exclusions automatically — no manual ignore list needed
 - [01-03]: 14 Biome recommended rules disabled for codebase patterns — fresh start defaults without breaking working code
 - [01-03]: ESLint and Prettier fully removed; biome check/format replace lint/prettier scripts
+- [02-01]: @import must precede all rules in CSS — Turbopack strictly enforces; okendo-widget.css import moved to top of global.css
+- [02-01]: @extend .remove-autofill-styles on input inlined directly — CSS Modules composes: cannot reference global utility classes
+- [02-01]: _functions.scss and _variables.scss preserved for sassOptions.prependData injection into remaining .module.scss files; delete in Plan 04
 
 ### Pending Todos
 
@@ -83,5 +86,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed Plan 01-03 — Phase 1 complete. All dependency upgrades done, Biome installed, ESLint/Prettier removed.
+Stopped at: Plan 02-01 checkpoint:human-verify — Tasks 1+2 committed (a114428, 4016049). Need visual verification of global.css at 1440px and 375px viewports before marking plan complete.
 Resume file: None
