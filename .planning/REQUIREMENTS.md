@@ -33,7 +33,7 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [x] **CSS-07**: All `@include mobile/desktop/hover` replaced with inline `@media` rules
 - [x] **CSS-08**: All `@include dims()` calls replaced with expanded `width`/`height` properties
 - [x] **CSS-09**: All `@include position()` calls replaced with expanded position properties
-- [ ] **CSS-10**: All `z-index()` calls replaced with `var(--z-*)` references
+- [x] **CSS-10**: All `z-index()` calls replaced with `var(--z-*)` references
 - [x] **CSS-11**: All SCSS nesting converted to valid native CSS nesting (& prefix for descendants)
 - [ ] **CSS-12**: `@extend` in global.scss replaced with inlined properties
 - [x] **CSS-13**: All 31 `.module.scss` files renamed to `.module.css` with updated imports
@@ -121,7 +121,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CSS-07 | Phase 2 | Complete |
 | CSS-08 | Phase 2 | Complete |
 | CSS-09 | Phase 2 | Complete |
-| CSS-10 | Phase 2 | Pending |
+| CSS-10 | Phase 2 | Complete |
 | CSS-11 | Phase 2 | Complete |
 | CSS-12 | Phase 2 | Pending |
 | CSS-13 | Phase 2 | Complete |
