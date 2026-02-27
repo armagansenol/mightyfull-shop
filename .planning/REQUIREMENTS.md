@@ -9,10 +9,10 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 
 ### Dependency Upgrades
 
-- [ ] **DEP-01**: Next.js upgraded to latest stable version with codemod applied
-- [ ] **DEP-02**: React and React DOM upgraded to latest 19.x stable
-- [ ] **DEP-03**: All async `params` usage in dynamic routes updated to await pattern
-- [ ] **DEP-04**: All async `cookies()` usage in cart operations updated to await pattern
+- [x] **DEP-01**: Next.js upgraded to latest stable version with codemod applied
+- [x] **DEP-02**: React and React DOM upgraded to latest 19.x stable
+- [x] **DEP-03**: All async `params` usage in dynamic routes updated to await pattern
+- [x] **DEP-04**: All async `cookies()` usage in cart operations updated to await pattern
 - [ ] **DEP-05**: GSAP, @gsap/react, Motion, Lenis, Embla Carousel upgraded to latest stable
 - [ ] **DEP-06**: Sanity, next-sanity, @portabletext/react upgraded to latest stable
 - [ ] **DEP-07**: Shopify Hydrogen React and Storefront API Client upgraded to latest compatible
@@ -20,7 +20,7 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [ ] **DEP-09**: TanStack React Query, Zustand, React Hook Form upgraded to latest stable
 - [ ] **DEP-10**: Zod, Sonner, Lucide React, and utility packages upgraded to latest stable
 - [ ] **DEP-11**: ESLint, TypeScript, and dev dependencies upgraded to latest stable
-- [ ] **DEP-12**: Site builds successfully and runs without runtime errors after all upgrades
+- [x] **DEP-12**: Site builds successfully and runs without runtime errors after all upgrades
 
 ### SCSS to CSS Modules Migration
 
@@ -100,10 +100,10 @@ Deferred to future milestone. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DEP-01 | Phase 1 | Pending |
-| DEP-02 | Phase 1 | Pending |
-| DEP-03 | Phase 1 | Pending |
-| DEP-04 | Phase 1 | Pending |
+| DEP-01 | Phase 1 | Complete |
+| DEP-02 | Phase 1 | Complete |
+| DEP-03 | Phase 1 | Complete |
+| DEP-04 | Phase 1 | Complete |
 | DEP-05 | Phase 1 | Pending |
 | DEP-06 | Phase 1 | Pending |
 | DEP-07 | Phase 1 | Pending |
@@ -111,7 +111,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DEP-09 | Phase 1 | Pending |
 | DEP-10 | Phase 1 | Pending |
 | DEP-11 | Phase 1 | Pending |
-| DEP-12 | Phase 1 | Pending |
+| DEP-12 | Phase 1 | Complete |
 | CSS-01 | Phase 2 | Pending |
 | CSS-02 | Phase 2 | Pending |
 | CSS-03 | Phase 2 | Pending |
