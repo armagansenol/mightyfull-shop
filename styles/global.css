@@ -1,3 +1,6 @@
+/* Import okendo widget overrides */
+@import './okendo-widget.css';
+
 /* ==========================================================================
    Section 1 -- Fonts (from _fonts.scss)
    ========================================================================== */
@@ -591,7 +594,5 @@ sup {
 }
 
 /* ==========================================================================
-   Section 9 -- Okendo widget overrides (separate file imported below)
+   Section 9 -- Okendo widget overrides (imported at top of file)
    ========================================================================== */
-
-@import './okendo-widget.css';
