@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-28T15:05:04.472Z"
+status: in-progress
+last_updated: "2026-02-28T18:25:22Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 12
+  completed_plans: 11
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** The shopping experience must work flawlessly with visual polish that matches the brand
-**Current focus:** Phase 3 — Tailwind v4 upgrade (phase 2 SCSS migration 100% complete)
+**Current focus:** Phase 4 — Visual Verification (04-01 complete, awaiting checkpoint)
 
 ## Current Position
 
-Phase: 3 of 4 (Tailwind v4 Migration) — VERIFICATION BLOCKED
-Plan: 2 of 2 plans executed. Verification found critical layout regression.
-Status: Phase 3 plans complete but TW v4 responsive variants NOT generating. All layouts broken.
-Last activity: 2026-02-28 — Human verification revealed ALL grid/flex layouts broken. Root cause: TW v4 base utilities generate (742 rules) but responsive variants (md:, xl:) = 0 rules. @source "../" added but insufficient. Likely Turbopack + @tailwindcss/postcss integration issue with responsive variant generation.
+Phase: 4 of 4 (Visual Verification) — CHECKPOINT
+Plan: 1 of 2 plans executed. Task 3 is a human-verify checkpoint.
+Status: Plan 04-01 tasks complete — TW v4 CSS regression fixed, all 8 pages verified at desktop and mobile. Awaiting human visual parity confirmation before 04-02 interactive testing.
+Last activity: 2026-02-28 — TW v4 CSS cascade layer bug found and fixed: unlayered CSS reset was blocking all @layer utilities. fix(04-01): wrap CSS reset in @layer base. All 8 pages confirmed visually correct at 1440px and 375px.
 
-Progress: [███████░░░] 75%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [███████░░░] 75%
 | Phase 02-scss-to-css-modules P05 | 1 | 2 tasks | 4 files |
 | Phase 03-tailwind-v4-migration P01 | 25 | 2 tasks | 11 files |
 | Phase 03-tailwind-v4-migration P02 | 3 | 2 tasks | 38 files |
+| Phase 04-visual-verification P01 | 22 | 2 tasks | 59 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [Phase 03-02]: 800px -> 768px in CSS module @media rules: eliminates 32px gap between CSS modules and TW v4 md: breakpoint
 - [Phase 03-02]: tablet: -> md: in Tailwind class prefixes: matches TW v4 default breakpoint naming at 768px
 - [Phase 03-02]: desktop: -> xl: in Tailwind class prefixes: exact match with prior desktop: value at 1280px
+- [Phase 04-01]: CSS reset wrapped in @layer base: unlayered CSS wins over @layer utilities in TW v4 regardless of specificity; wrapping in @layer base restores all Tailwind display/layout utility class functionality
+- [Phase 04-01]: Production site Sanity CMS content gaps (contact/faq pages) are pre-existing, not CSS regression
 
 ### Pending Todos
 
@@ -101,11 +104,11 @@ None.
 
 ### Blockers/Concerns
 
-None. Phase 3 blockers resolved: tailwindcss-animate replaced with tw-animate-css; tailwind-merge v3 confirmed working with TW v4.
+None. TW v4 CSS cascade layer regression found and fixed in Plan 04-01. All pages verified visually correct.
 
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed Plan 03-02 — Breakpoint alignment complete. All @media 800px -> 768px, tablet: -> md:, desktop: -> xl:. pnpm build passes.
-Resume file: Phase 3 complete (2/2 plans done). Next: Phase 4 visual verification or confirm all phases done.
-Resume context: TW v4 fully migrated. CSS-first @theme in global.css. All breakpoints aligned to TW v4 defaults (768px md:, 1024px lg:, 1280px xl:). Build passes cleanly. Ready for visual verification.
+Stopped at: Plan 04-01 Task 3 (checkpoint:human-verify) — awaiting user visual parity confirmation
+Resume file: Phase 4 Plan 04-01 tasks 1+2 done. Task 3 is human-verify checkpoint. After confirmation, proceed to 04-02 interactive verification.
+Resume context: TW v4 fully functional after CSS @layer fix. All 8 pages confirmed correct at 1440px and 375px. pnpm build passes. Fix: styles/global.css Section 2 (CSS reset) wrapped in @layer base.

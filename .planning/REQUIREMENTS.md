@@ -48,12 +48,12 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 - [x] **TW-03**: `tailwind-merge` updated to v4-compatible version
 - [x] **TW-04**: `tailwindcss-animate` audited and updated or replaced with native CSS animations
 - [x] **TW-05**: `tailwind.config.ts` file removed after migration
-- [ ] **TW-06**: All Tailwind utility classes verified working with v4
+- [x] **TW-06**: All Tailwind utility classes verified working with v4
 
 ### Visual Verification
 
-- [ ] **VER-01**: All pages verified at desktop viewport (1440px+) — visual parity confirmed
-- [ ] **VER-02**: All pages verified at mobile viewport (375px) — visual parity confirmed
+- [x] **VER-01**: All pages verified at desktop viewport (1440px+) — visual parity confirmed
+- [x] **VER-02**: All pages verified at mobile viewport (375px) — visual parity confirmed
 - [ ] **VER-03**: All GSAP animations, scroll triggers, and Lenis smooth scrolling work correctly
 - [ ] **VER-04**: All Embla carousels (product highlight, etc.) function correctly
 - [ ] **VER-05**: Cart operations (add, remove, update, open/close) work correctly
@@ -133,9 +133,9 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | TW-03 | Phase 3 | Complete |
 | TW-04 | Phase 3 | Complete |
 | TW-05 | Phase 3 | Complete |
-| TW-06 | Phase 3 | Pending |
-| VER-01 | Phase 4 | Pending |
-| VER-02 | Phase 4 | Pending |
+| TW-06 | Phase 3 | Complete |
+| VER-01 | Phase 4 | Complete |
+| VER-02 | Phase 4 | Complete |
 | VER-03 | Phase 4 | Pending |
 | VER-04 | Phase 4 | Pending |
 | VER-05 | Phase 4 | Pending |
