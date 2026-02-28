@@ -22,7 +22,7 @@
   height: 24px;
   z-index: 10;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     width: 30px;
     height: 30px;
   }
@@ -35,7 +35,7 @@
   left: auto;
   transform: translateY(-50%);
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     right: 40px;
   }
 }
@@ -47,7 +47,7 @@
   left: 0;
   transform: translateY(-50%);
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     left: 40px;
   }
 }

@@ -20,7 +20,7 @@
     cursor: grab;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     display: none;
   }
 }

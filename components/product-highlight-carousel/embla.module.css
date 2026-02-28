@@ -11,7 +11,7 @@
 .emblaSlide {
   flex-shrink: 0;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     width: 100vw;
     height: auto;
   }
@@ -22,7 +22,7 @@
   height: 24px;
   z-index: 10;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     width: 24px;
     height: 24px;
   }
@@ -35,7 +35,7 @@
   left: auto;
   transform: translateY(-50%);
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     right: 16px;
   }
 }
@@ -47,7 +47,7 @@
   left: 0;
   transform: translateY(-50%);
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     left: 16px;
   }
 }

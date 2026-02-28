@@ -435,7 +435,7 @@ meter {
   --oke-shadingColor: transparent;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   :root {
     --header-height: calc(60 / 375 * 100vw);
     --noticebar-height: calc(22 / 375 * 100vw);
@@ -484,13 +484,13 @@ meter {
 }
 
 .hide-on-desktop {
-  @media (min-width: 800px) {
+  @media (min-width: 768px) {
     display: none;
   }
 }
 
 .hide-on-mobile {
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     display: none;
   }
 }
@@ -685,7 +685,7 @@ sup {
   font-size: 1.1em;
   padding-right: 0.1ch;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     font-size: 1em;
     font-weight: 500;
     padding-right: unset;
@@ -715,7 +715,7 @@ sup {
 [data-radix-popper-content-wrapper] {
   z-index: var(--z-preloader) !important;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     max-height: calc(160 / 375 * 100vw);
   }
 }

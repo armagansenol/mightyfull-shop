@@ -8,7 +8,7 @@
     --duration: 50s !important;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     .inner {
       animation: marquee-inverted calc(var(--duration) / 100) linear infinite;
     }

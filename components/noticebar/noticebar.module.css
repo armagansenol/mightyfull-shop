@@ -9,14 +9,14 @@
   text-transform: uppercase;
   transition: 400ms background-color ease;
 
-  @media (max-width: 800px) {
+  @media (max-width: 768px) {
     font-size: 0.75rem;
   }
 
   .iconC {
     margin-bottom: 0.125rem;
 
-    @media (max-width: 800px) {
+    @media (max-width: 768px) {
       margin-bottom: calc(2 / 375 * 100vw);
     }
   }
