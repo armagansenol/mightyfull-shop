@@ -65,8 +65,8 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 03-01: Tailwind v4 upgrade (PostCSS plugin swap, @theme migration, tailwind.config.ts removal)
-- [ ] 03-02: Ecosystem audit and fix (tailwind-merge v4 compat, tailwindcss-animate v4 compat or replacement)
+- [ ] 03-01: TW v4 core migration (codemod, PostCSS swap, @theme consolidation, tw-animate-css, tailwind-merge v3, delete tailwind.config.ts + tailwind-initial.css)
+- [ ] 03-02: Breakpoint sync (800px->768px in CSS modules, tablet:->md: and desktop:->xl: in JSX, build verification)
 
 ### Phase 4: Visual Verification
 **Goal**: The upgraded site is confirmed visually identical to the pre-migration baseline across all pages, viewports, and interactive states
@@ -93,5 +93,5 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 |-------|----------------|--------|-----------|
 | 1. Dependency Upgrades | 3/3 | Complete    | 2026-02-27 |
 | 2. SCSS to CSS Modules | 5/5 | Complete   | 2026-02-27 |
-| 3. Tailwind v4 Migration | 0/2 | Not started | - |
+| 3. Tailwind v4 Migration | 1/2 | In Progress|  |
 | 4. Visual Verification | 0/2 | Not started | - |

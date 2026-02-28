@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-27T13:47:41.403Z"
+status: in-progress
+last_updated: "2026-02-28T08:17:00Z"
 progress:
-  total_phases: 2
+  total_phases: 4
   completed_phases: 2
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 13
+  completed_plans: 9
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 
 ## Current Position
 
-Phase: 2 of 4 (SCSS to CSS Modules) — COMPLETE
-Plan: 5 of 5 in Phase 2 — Plan 02-05 complete (z-index vars fixed, stale import fixed, all 16 CSS requirements marked complete)
-Status: Phase 2 fully closed, ready for Phase 3
-Last activity: 2026-02-27 — Completed Plan 02-05: gap closure complete. All verification truths satisfied. REQUIREMENTS.md fully updated.
+Phase: 3 of 4 (Tailwind v4 Migration) — IN PROGRESS
+Plan: 1 of 5 in Phase 3 — Plan 03-01 complete (TW v4 infrastructure: packages, PostCSS, @theme, deleted JS config)
+Status: Phase 3 plan 1 complete; ready for Plan 03-02 (utility class migration / visual verification)
+Last activity: 2026-02-28 — Completed Plan 03-01: Tailwind v4 infrastructure migration. pnpm build passes. All 5 TW requirements marked complete.
 
-Progress: [█████░░░░░] 57%
+Progress: [██████░░░░] 69%
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [█████░░░░░] 57%
 | Phase 02-scss-to-css-modules P03 | 13 | 2 tasks | 39 files |
 | Phase 02-scss-to-css-modules P04 | 5 | 2 tasks | 7 files |
 | Phase 02-scss-to-css-modules P05 | 1 | 2 tasks | 4 files |
+| Phase 03-tailwind-v4-migration P01 | 25 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,11 @@ Recent decisions affecting current work:
 - [Phase 02-03]: tablet-vw() in home module -> calc(N / 1024 * 100vw) fallback; @include tablet -> @media (max-width: 1024px)
 - [Phase 02-04]: Button font-size omitted from CSS module; applied via Tailwind text-base/text-2xl/text-3xl in JSX — consistent with locked decision for Tailwind font sizes
 - [Phase 02-05]: z-index 180/110 replaced with var(--z-header)/var(--z-footer) — top-level component z-index uses CSS custom properties; local stacking context integers are correct
+- [03-01]: CSS-first @theme replaces tailwind.config.ts as the single source of design token truth in global.css
+- [03-01]: Backward-compat :root aliases kept for --blue-ruin etc. so CSS modules and GSAP don't break without mass refactor
+- [03-01]: tw-animate-css replaces tailwindcss-animate; @import tw-animate-css provides accordion animations
+- [03-01]: Official @tailwindcss/upgrade codemod failed (missing tailwindcss-animate + unbalanced paren in chart color); manual migration performed
+- [03-01]: outline-none -> outline-hidden and shadow-sm -> shadow-xs applied to all Shadcn UI components for TW v4 compatibility
 
 ### Pending Todos
 
@@ -91,12 +97,11 @@ None.
 
 ### Blockers/Concerns
 
-- [Phase 3]: Audit `tailwindcss-animate` v4 compatibility before committing — likely incompatible, may need native CSS @keyframes replacement
-- [Phase 3]: Confirm exact `tailwind-merge` version that supports Tailwind v4 class name format
+None. Phase 3 blockers resolved: tailwindcss-animate replaced with tw-animate-css; tailwind-merge v3 confirmed working with TW v4.
 
 ## Session Continuity
 
-Last session: 2026-02-27
-Stopped at: Completed Plan 02-05 — Phase 2 gap closure complete. All 5 verification truths satisfied. All 16 CSS requirements marked complete.
-Resume file: .planning/phases/03-tailwind-v4/ (Phase 3, Plan 01)
-Resume context: All 31 SCSS modules converted to CSS modules. z-index custom properties correctly referenced in header/footer. sass removed. All CSS requirements complete. Ready for Tailwind v4 upgrade phase.
+Last session: 2026-02-28
+Stopped at: Completed Plan 03-01 — Tailwind v4 infrastructure migration complete. pnpm build passes. @theme in global.css is source of truth.
+Resume file: .planning/phases/03-tailwind-v4-migration/03-02-PLAN.md (Phase 3, Plan 02)
+Resume context: TW v4 installed with CSS-first @theme config. tailwind.config.ts and tailwind-initial.css deleted. tw-animate-css and tailwind-merge v3 in place. All Shadcn UI components updated for v4 class renames. Ready for Plan 02 (utility class audit / visual verification).

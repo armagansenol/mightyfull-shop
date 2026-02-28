@@ -43,11 +43,11 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 
 ### Tailwind v4 Migration
 
-- [ ] **TW-01**: `tailwind.config.ts` custom theme values migrated to CSS `@theme` directive
-- [ ] **TW-02**: PostCSS config updated from `tailwindcss` to `@tailwindcss/postcss` plugin
-- [ ] **TW-03**: `tailwind-merge` updated to v4-compatible version
-- [ ] **TW-04**: `tailwindcss-animate` audited and updated or replaced with native CSS animations
-- [ ] **TW-05**: `tailwind.config.ts` file removed after migration
+- [x] **TW-01**: `tailwind.config.ts` custom theme values migrated to CSS `@theme` directive
+- [x] **TW-02**: PostCSS config updated from `tailwindcss` to `@tailwindcss/postcss` plugin
+- [x] **TW-03**: `tailwind-merge` updated to v4-compatible version
+- [x] **TW-04**: `tailwindcss-animate` audited and updated or replaced with native CSS animations
+- [x] **TW-05**: `tailwind.config.ts` file removed after migration
 - [ ] **TW-06**: All Tailwind utility classes verified working with v4
 
 ### Visual Verification
@@ -128,11 +128,11 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CSS-14 | Phase 2 | Complete |
 | CSS-15 | Phase 2 | Complete |
 | CSS-16 | Phase 2 | Complete |
-| TW-01 | Phase 3 | Pending |
-| TW-02 | Phase 3 | Pending |
-| TW-03 | Phase 3 | Pending |
-| TW-04 | Phase 3 | Pending |
-| TW-05 | Phase 3 | Pending |
+| TW-01 | Phase 3 | Complete |
+| TW-02 | Phase 3 | Complete |
+| TW-03 | Phase 3 | Complete |
+| TW-04 | Phase 3 | Complete |
+| TW-05 | Phase 3 | Complete |
 | TW-06 | Phase 3 | Pending |
 | VER-01 | Phase 4 | Pending |
 | VER-02 | Phase 4 | Pending |
