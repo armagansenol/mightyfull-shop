@@ -1,5 +1,4 @@
 import 'styles/global.css';
-import 'styles/tailwind-initial.css';
 
 import { cookies } from 'next/headers';
 import { cache } from 'react';

@@ -1,5 +1,131 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "tw-animate-css";
+
 /* Import okendo widget overrides */
 @import './okendo-widget.css';
+
+/* ==========================================================================
+   Tailwind v4 Theme Tokens
+   ========================================================================== */
+
+@theme {
+  /* Brand Colors */
+  --color-white: rgb(255, 255, 255);
+  --color-black: rgb(21, 24, 25);
+  --color-error: rgb(229, 72, 77);
+  --color-blue-ruin: rgb(0, 119, 224);
+  --color-cerulean: rgb(85, 177, 242);
+  --color-sugar-milk: rgb(255, 250, 243);
+  --color-nova-pink: rgb(220, 79, 149);
+  --color-nova-pink-light: rgba(220, 79, 149, 0.15);
+  --color-cherry-blush: rgb(255, 199, 224);
+  --color-fuchsia-nebula: rgb(124, 30, 179);
+  --color-rose-dragee: rgb(233, 206, 255);
+  --color-lavender-blossom: rgb(185, 122, 221);
+  --color-columbia-blue: rgb(152, 225, 255);
+  --color-highlighter-lilac: rgb(211, 49, 130);
+  --color-highlighter-lilac-light: rgba(211, 49, 130, 0.15);
+  --color-silverback: rgb(203, 203, 203);
+
+  /* Shadcn Semantic Colors */
+  --color-background: hsl(0 0% 100%);
+  --color-foreground: hsl(240 10% 3.9%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(240 10% 3.9%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(240 10% 3.9%);
+  --color-primary: hsl(240 5.9% 10%);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-secondary: hsl(240 4.8% 95.9%);
+  --color-secondary-foreground: hsl(240 5.9% 10%);
+  --color-muted: hsl(240 4.8% 95.9%);
+  --color-muted-foreground: hsl(240 3.8% 46.1%);
+  --color-accent: hsl(240 4.8% 95.9%);
+  --color-accent-foreground: hsl(240 5.9% 10%);
+  --color-destructive: hsl(0 84.2% 60.2%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  --color-border: hsl(240 5.9% 90%);
+  --color-input: hsl(240 5.9% 90%);
+  --color-ring: hsl(240 10% 3.9%);
+  --color-chart-1: hsl(12 76% 61%);
+  --color-chart-2: hsl(173 58% 39%);
+  --color-chart-3: hsl(197 37% 24%);
+  --color-chart-4: hsl(43 74% 66%);
+  --color-chart-5: hsl(27 87% 67%);
+
+  /* Fonts */
+  --font-bomstad-display: BomstadDisplay, sans-serif;
+  --font-poppins: Poppins, sans-serif;
+
+  /* Border Radius */
+  --radius: 0.5rem;
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Grid */
+  --grid-template-columns-24: repeat(24, minmax(0, 1fr));
+  --grid-template-rows-24: repeat(24, minmax(0, 1fr));
+
+  /* Grid Column Spans (13-24) */
+  --grid-column-span-13: span 13 / span 13;
+  --grid-column-span-14: span 14 / span 14;
+  --grid-column-span-15: span 15 / span 15;
+  --grid-column-span-16: span 16 / span 16;
+  --grid-column-span-17: span 17 / span 17;
+  --grid-column-span-18: span 18 / span 18;
+  --grid-column-span-19: span 19 / span 19;
+  --grid-column-span-20: span 20 / span 20;
+  --grid-column-span-21: span 21 / span 21;
+  --grid-column-span-22: span 22 / span 22;
+  --grid-column-span-23: span 23 / span 23;
+  --grid-column-span-24: span 24 / span 24;
+
+  /* Accordion Animations */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+
+  /* Z-Index Tokens */
+  --z-index-preloader: 300;
+  --z-index-gsap-markers: 290;
+  --z-index-modal-content: 280;
+  --z-index-modal: 270;
+  --z-index-cursor: 260;
+  --z-index-privacy-popup: 250;
+  --z-index-sticky: 240;
+  --z-index-error: 230;
+  --z-index-navigation: 220;
+  --z-index-hamburger: 210;
+  --z-index-menu: 200;
+  --z-index-menu-bg: 190;
+  --z-index-navigation-mobile: 180;
+  --z-index-header: 170;
+  --z-index-loading-screen: 160;
+  --z-index-logo: 150;
+  --z-index-img: 140;
+  --z-index-main: 130;
+  --z-index-language-select: 120;
+  --z-index-footer-overlay: 110;
+  --z-index-footer: 100;
+  --z-index-bg: 100;
+}
+
+/* Container utility */
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
 
 /* ==========================================================================
    Section 1 -- Fonts (from _fonts.scss)
@@ -198,41 +324,46 @@ meter {
 }
 
 /* ==========================================================================
-   Section 3 -- Colors (from _colors.scss)
+   Section 3 -- Color custom properties for CSS modules and GSAP
+   Solid colors: aliases to @theme --color-* values for backward compatibility
+   Transparent variants: for GSAP animation start/end states
    ========================================================================== */
 
 :root {
-  --white: rgb(255, 255, 255);
+  /* Solid brand color aliases (CSS modules use var(--blue-ruin) etc.) */
+  --white: var(--color-white);
+  --black: var(--color-black);
+  --error: var(--color-error);
+  --blue-ruin: var(--color-blue-ruin);
+  --cerulean: var(--color-cerulean);
+  --sugar-milk: var(--color-sugar-milk);
+  --nova-pink: var(--color-nova-pink);
+  --nova-pink-light: var(--color-nova-pink-light);
+  --cherry-blush: var(--color-cherry-blush);
+  --fuchsia-nebula: var(--color-fuchsia-nebula);
+  --rose-dragee: var(--color-rose-dragee);
+  --lavender-blossom: var(--color-lavender-blossom);
+  --columbia-blue: var(--color-columbia-blue);
+  --highlighter-lilac: var(--color-highlighter-lilac);
+  --highlighter-lilac-light: var(--color-highlighter-lilac-light);
+  --silverback: var(--color-silverback);
+
+  /* Transparent variants */
   --white-transparent: rgb(255 255 255 / 0);
-  --black: rgb(21, 24, 25);
   --black-transparent: rgb(21 24 25 / 0);
-  --error: rgb(229, 72, 77);
   --error-transparent: rgb(229 72 77 / 0);
-  --blue-ruin: rgb(0, 119, 224);
   --blue-ruin-transparent: rgb(0 119 224 / 0);
-  --cerulean: rgb(85, 177, 242);
   --cerulean-transparent: rgb(85 177 242 / 0);
-  --sugar-milk: rgb(255, 250, 243);
   --sugar-milk-transparent: rgb(255 250 243 / 0);
-  --nova-pink: rgb(220, 79, 149);
   --nova-pink-transparent: rgb(220 79 149 / 0);
-  --nova-pink-light: rgba(220, 79, 149, 0.15);
   --nova-pink-light-transparent: rgb(220 79 149 / 0);
-  --cherry-blush: rgb(255, 199, 224);
   --cherry-blush-transparent: rgb(255 199 224 / 0);
-  --fuchsia-nebula: rgb(124, 30, 179);
   --fuchsia-nebula-transparent: rgb(124 30 179 / 0);
-  --rose-dragee: rgb(233, 206, 255);
   --rose-dragee-transparent: rgb(233 206 255 / 0);
-  --lavender-blossom: rgb(185, 122, 221);
   --lavender-blossom-transparent: rgb(185 122 221 / 0);
-  --columbia-blue: rgb(152, 225, 255);
   --columbia-blue-transparent: rgb(152 225 255 / 0);
-  --highlighter-lilac: rgb(211, 49, 130);
   --highlighter-lilac-transparent: rgb(211 49 130 / 0);
-  --highlighter-lilac-light: rgba(211, 49, 130, 0.15);
   --highlighter-lilac-light-transparent: rgb(211 49 130 / 0);
-  --silverback: rgb(203, 203, 203);
   --silverback-transparent: rgb(203 203 203 / 0);
 }
 
@@ -467,7 +598,7 @@ body {
 }
 
 body {
-  background-color: var(--sugar-milk);
+  background-color: var(--color-sugar-milk);
   line-height: 1;
   min-height: 100vh;
   transition-property: opacity;
@@ -490,8 +621,8 @@ select {
 }
 
 *::selection {
-  background-color: var(--blue-ruin);
-  color: var(--sugar-milk);
+  background-color: var(--color-blue-ruin);
+  color: var(--color-sugar-milk);
 }
 
 input {
@@ -525,11 +656,11 @@ sup {
 }
 
 .input-required {
-  color: var(--error) !important;
+  color: var(--color-error) !important;
   transition: 200ms all ease;
 
   & * {
-    color: var(--error) !important;
+    color: var(--color-error) !important;
     transition: 200ms all ease;
   }
 }
@@ -548,7 +679,7 @@ sup {
 }
 
 .text-highlight {
-  color: var(--white);
+  color: var(--color-white);
   font-style: italic;
   font-weight: 600;
   font-size: 1.1em;
@@ -564,9 +695,9 @@ sup {
 .buttonStyle {
   width: calc(220 / 1440 * 100vw);
   height: calc(65 / 1440 * 100vw);
-  border: 1px solid var(--blue-ruin);
+  border: 1px solid var(--color-blue-ruin);
   border-radius: calc(8 / 1440 * 100vw);
-  color: var(--blue-ruin);
+  color: var(--color-blue-ruin);
   flex-shrink: 0;
   font-family: var(--font-bomstad-display);
   font-size: calc(24 / 1440 * 100vw);
