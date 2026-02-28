@@ -59,7 +59,7 @@ export function FeatureHighlight() {
       )}
     >
       <h2 className={s.heading}>What Makes Mightyfull Truly Mighty?</h2>
-      <div className="flex flex-col items-center tablet:grid grid-cols-2 gap-14">
+      <div className="flex flex-col items-center md:grid grid-cols-2 gap-14">
         {items.map((item, i) => {
           return (
             <div

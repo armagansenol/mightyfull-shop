@@ -32,13 +32,13 @@ export default async function HomePage() {
       <section
         className={cn(
           s.intro,
-          'flex flex-col items-stretch tablet:grid grid-cols-12'
+          'flex flex-col items-stretch md:grid grid-cols-12'
         )}
       >
         <div
           className={cn(
             s.text,
-            'col-span-6 flex flex-col items-center tablet:items-start justify-center'
+            'col-span-6 flex flex-col items-center md:items-start justify-center'
           )}
         >
           <h1>
@@ -116,15 +116,15 @@ export default async function HomePage() {
             {Array.isArray(productHighlight) && productHighlight.length > 0 && (
               <>
                 {/* MOBILE */}
-                <div className="block tablet:hidden">
+                <div className="block md:hidden">
                   <ProductHighlightCarousel
                     items={productHighlight}
                     options={{ loop: true }}
                   />
                 </div>
                 {/* DESKTOP */}
-                <div className="hidden tablet:block">
-                  <div className="flex flex-col items-center tablet:grid grid-cols-4 gap-16 tablet:gap-4 desktop:gap-4 mt-10 tablet:mt-16 px-4 tablet:px-0">
+                <div className="hidden md:block">
+                  <div className="flex flex-col items-center md:grid grid-cols-4 gap-16 md:gap-4 xl:gap-4 mt-10 md:mt-16 px-4 md:px-0">
                     {Array.isArray(productHighlight) &&
                       productHighlight.length > 0 &&
                       productHighlight.map((item) => {
@@ -150,15 +150,15 @@ export default async function HomePage() {
           </section>
         </section>
       )}
-      <div className="bg-[var(--blue-ruin)] p-2 tablet:p-5">
+      <div className="bg-[var(--blue-ruin)] p-2 md:p-5">
         <FeatureHighlight />
       </div>
-      <div className="relative bg-[var(--blue-ruin)] p-2 tablet:p-5 overflow-hidden">
-        <div className="absolute bottom-0 left-0 right-0 h-2 tablet:h-5 bg-[var(--blue-ruin)] z-50"></div>
+      <div className="relative bg-[var(--blue-ruin)] p-2 md:p-5 overflow-hidden">
+        <div className="absolute bottom-0 left-0 right-0 h-2 md:h-5 bg-[var(--blue-ruin)] z-50"></div>
         <section
           className={cn(
             s.theStory,
-            'flex flex-col items-stretch p-5 pt-24 tablet:pt-60 bg-[var(--sugar-milk)]'
+            'flex flex-col items-stretch p-5 pt-24 md:pt-60 bg-[var(--sugar-milk)]'
           )}
         >
           <div className={cn('flex flex-col items-center flex-1')}>
@@ -215,7 +215,7 @@ export default async function HomePage() {
       <section
         className={cn(
           s.testimonials,
-          'flex flex-col-reverse tablet:grid grid-cols-12'
+          'flex flex-col-reverse md:grid grid-cols-12'
         )}
       >
         <div className="col-span-5">
@@ -229,7 +229,7 @@ export default async function HomePage() {
             />
           </div>
         </div>
-        <div className="col-span-7 py-20 tablet:py-0 flex items-center justify-center">
+        <div className="col-span-7 py-20 md:py-0 flex items-center justify-center">
           <div className={s.sliderC}>
             <FadeInOutCarousel options={{ loop: true }}>
               {Array.isArray(testimonials) &&

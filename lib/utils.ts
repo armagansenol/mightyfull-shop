@@ -9,8 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const breakpoints = {
-  mobile: 800,
-  tablet: 1024
+  mobile: 768,
+  md: 768
 };
 
 export function lineBreak(text: string) {

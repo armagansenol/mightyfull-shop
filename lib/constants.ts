@@ -15,8 +15,8 @@ export const SHOPIFY_GRAPHQL_API_VERSION = '2024-10';
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2024-10/graphql.json';
 
 export const breakpoints = {
-  mobile: 800,
-  tablet: 1024
+  mobile: 768,
+  md: 768
 };
 
 export const defaultColorTheme = {

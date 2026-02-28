@@ -101,7 +101,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
   console.log('popop', document.querySelector('.popop'));
 
   return (
-    <div className="tablet:flex-1" ref={triggerRef}>
+    <div className="md:flex-1" ref={triggerRef}>
       <div className="w-full" ref={boxRef}>
         {shopifyProduct?.availableForSale ? (
           <div className="w-full">
@@ -268,15 +268,15 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
             <Label className="block text-primary font-poppins font-semibold text-sm mb-1 ml-1">
               QUANTITY
             </Label>
-            <div className="flex flex-col items-center tablet:grid grid-cols-12 gap-4 tablet:gap-3 tablet:h-14">
+            <div className="flex flex-col items-center md:grid grid-cols-12 gap-4 md:gap-3 md:h-14">
               <Quantity
-                className="w-32 tablet:w-auto h-10 tablet:h-full tablet:col-span-4"
+                className="w-32 md:w-auto h-10 md:h-full md:col-span-4"
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
               <AddToCart
                 buttonTheme="inverted-themed"
-                className="w-full tablet:w-auto h-12 tablet:h-full tablet:col-span-8"
+                className="w-full md:w-auto h-12 md:h-full md:col-span-8"
                 availableForSale={shopifyProduct.availableForSale}
                 variantId={shopifyProduct.variants[0].id}
                 quantity={quantity}

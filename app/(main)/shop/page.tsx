@@ -16,7 +16,7 @@ export default async function ShopPage() {
         <div
           className={cn(
             s.productContainer,
-            'flex flex-col items-center tablet:grid grid-cols-4'
+            'flex flex-col items-center md:grid grid-cols-4'
           )}
         >
           {products.map((item) => {

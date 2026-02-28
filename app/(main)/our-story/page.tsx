@@ -43,7 +43,7 @@ export default function Page() {
         <div
           className={cn(
             s.bottom,
-            'flex flex-col items-center tablet:grid grid-cols-12 gap-5 tablet:gap-20'
+            'flex flex-col items-center md:grid grid-cols-12 gap-5 md:gap-20'
           )}
         >
           <div className="col-span-6">
@@ -95,7 +95,7 @@ export default function Page() {
       </section>
       <section className={s.differences}>
         <h2>The Mightyfull Difference</h2>
-        <div className="flex flex-col items-center tablet:items-start tablet:grid grid-cols-2 gap-5 tablet:gap-28">
+        <div className="flex flex-col items-center md:items-start md:grid grid-cols-2 gap-5 md:gap-28">
           <div>
             <p className={s.p}>
               Mightyfull Cookies are all about flavor, without the fuss.
@@ -117,13 +117,13 @@ export default function Page() {
       <section
         className={cn(
           s.mission,
-          'flex flex-col-reverse items-stretch tablet:grid grid-cols-12'
+          'flex flex-col-reverse items-stretch md:grid grid-cols-12'
         )}
       >
         <div
           className={cn(
             s.text,
-            'col-span-6 border:none tablet:border-r-[5px] tablet:border-r-solid tablet:border-r-[var(--nova-pink)]'
+            'col-span-6 border:none md:border-r-[5px] md:border-r-solid md:border-r-[var(--nova-pink)]'
           )}
         >
           <h2>Our Mission</h2>

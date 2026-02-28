@@ -38,17 +38,17 @@ export default async function ProductDetialPage({
     <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
       <section
         className={cn(
-          'container flex flex-col items-center gap-5 tablet:gap-0 tablet:grid grid-cols-24 tablet:items-stretch justify-stretch py-6 tablet:py-12 mb-20'
+          'container flex flex-col items-center gap-5 md:gap-0 md:grid grid-cols-24 md:items-stretch justify-stretch py-6 md:py-12 mb-20'
         )}
       >
         <div className="col-span-12 space-y-10">
           <ProductImages images={sanityProduct.images} />
           <ProductSpecs
-            className="hidden tablet:grid"
+            className="hidden md:grid"
             specs={sanityProduct.productSpecifications}
           />
         </div>
-        <div className="col-span-12 flex flex-col items-stretch px-0 tablet:pl-20 tablet:pr-14 text-center tablet:text-left">
+        <div className="col-span-12 flex flex-col items-stretch px-0 md:pl-20 md:pr-14 text-center md:text-left">
           <h1 className="text-primary font-bomstad-display text-4xl font-black">
             {sanityProduct.title}
           </h1>
@@ -63,7 +63,7 @@ export default async function ProductDetialPage({
           {shopifyProduct && <PurchasePanel shopifyProduct={shopifyProduct} />}
           {/* product specs */}
           <ProductSpecs
-            className="grid tablet:hidden mt-10"
+            className="grid md:hidden mt-10"
             specs={sanityProduct.productSpecifications}
           />
         </div>
@@ -72,16 +72,16 @@ export default async function ProductDetialPage({
       {shopifyProduct && <CustomerReviews productId={productId} />}
       {/* related products */}
       {relatedProducts.length > 0 && (
-        <section className="pb-10 tablet:pb-20">
+        <section className="pb-10 md:pb-20">
           {/* MOBILE */}
-          <div className="block tablet:hidden">
+          <div className="block md:hidden">
             <ProductHighlightCarousel
               items={relatedProducts}
               options={{ loop: true }}
             />
           </div>
           {/* DESKTOP */}
-          <div className="hidden tablet:block">
+          <div className="hidden md:block">
             <section className="flex flex-col items-center py-16">
               <h2 className="text-blue-ruin font-bomstad-display text-6xl font-black max-w-xl text-center mb-4">
                 Impossible to Choose Just One!

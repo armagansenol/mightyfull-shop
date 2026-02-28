@@ -68,7 +68,7 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
       <div
         className={cn(
           'font-poppins text-primary text-base font-bold',
-          'flex justify-center tablet:justify-start mb-10 tablet:mb-20 py-2'
+          'flex justify-center md:justify-start mb-10 md:mb-20 py-2'
         )}
       >
         OUT OF STOCK

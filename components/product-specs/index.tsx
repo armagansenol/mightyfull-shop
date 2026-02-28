@@ -20,7 +20,7 @@ export function ProductSpecs({ specs, className }: ProductSpecsProps) {
     <div className={cn('grid grid-cols-12 gap-5', className)}>
       <Accordion
         className={cn(
-          'col-span-12 tablet:col-span-10 tablet:col-start-3',
+          'col-span-12 md:col-span-10 md:col-start-3',
           '[&>div]:border-b [&>div]:border-neutral-200 border-opacity-10 [&>div:last-child]:border-b-0'
         )}
         type="multiple"
@@ -30,7 +30,7 @@ export function ProductSpecs({ specs, className }: ProductSpecsProps) {
             <AccordionTrigger
               className={cn(
                 'flex items-center justify-between py-10 w-full',
-                'font-bomstad-display font-black text-primary text-3xl tablet:text-4xl'
+                'font-bomstad-display font-black text-primary text-3xl md:text-4xl'
               )}
             >
               {item.title}

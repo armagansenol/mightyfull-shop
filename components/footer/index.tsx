@@ -57,7 +57,7 @@ export function Footer() {
       <div className={s.cloud}>
         <IconCloud fill="var(--blue-ruin)" />
       </div>
-      <div className="flex flex-col tablet:flex-row items-center tablet:items-end justify-between">
+      <div className="flex flex-col md:flex-row items-center md:items-end justify-between">
         <div className={cn(s.actions, 'col-span-6')}>
           <h6>
             Stay mighty. <br />
@@ -68,7 +68,7 @@ export function Footer() {
             events, and more!
           </p>
         </div>
-        <nav className={cn(s.nav, 'flex flex-col gap-10 tablet:gap-5')}>
+        <nav className={cn(s.nav, 'flex flex-col gap-10 md:gap-5')}>
           <Link href={`/shop`} className={s.navItem}>
             Shop
           </Link>
@@ -86,7 +86,7 @@ export function Footer() {
       <div
         className={cn(
           s.copyright,
-          'flex flex-col items-center tablet:flex-row tablet:items-center justify-between gap-10 tablet:gap-20'
+          'flex flex-col items-center md:flex-row md:items-center justify-between gap-10 md:gap-20'
         )}
       >
         <span className={s.c}>
@@ -106,7 +106,7 @@ export function Footer() {
             );
           })}
         </div>
-        <span className={cn(s.signature, 'ml-0 tablet:ml-auto')}>
+        <span className={cn(s.signature, 'ml-0 md:ml-auto')}>
           Credited to{' '}
           <Link
             className={cn(s.link, 'underline')}

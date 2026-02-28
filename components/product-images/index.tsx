@@ -14,17 +14,17 @@ export function ProductImages({ images }: ProductImagesProps) {
   const [currentItem, setCurrentItem] = useState(0);
 
   return (
-    <div className="flex flex-col-reverse items-center tablet:items-start tablet:grid grid-cols-12 gap-3 tablet:gap-5">
+    <div className="flex flex-col-reverse items-center md:items-start md:grid grid-cols-12 gap-3 md:gap-5">
       <div
         className={cn(
-          'col-span-2 flex flex-row tablet:flex-col justify-center tablet:justify-start gap-2'
+          'col-span-2 flex flex-row md:flex-col justify-center md:justify-start gap-2'
         )}
       >
         {images.map((item, i) => {
           return (
             <div
               className={cn(
-                'w-[70px] tablet:w-full aspect-square rounded-xl p-2 tablet:p-3 cursor-pointer',
+                'w-[70px] md:w-full aspect-square rounded-xl p-2 md:p-3 cursor-pointer',
                 {
                   'border border-tertiary': currentItem === i
                 }
@@ -45,7 +45,7 @@ export function ProductImages({ images }: ProductImagesProps) {
         })}
       </div>
       <div className="col-span-10">
-        <div className="w-full aspect-square border border-tertiary rounded-xl p-8 tablet:p-16">
+        <div className="w-full aspect-square border border-tertiary rounded-xl p-8 md:p-16">
           <AnimatePresence mode="popLayout">
             <motion.div
               className="w-full h-full"

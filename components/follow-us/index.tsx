@@ -19,11 +19,11 @@ export function FollowUs() {
 
   return (
     <>
-      <div className="tablet:border-y-[5px] tablet:border-solid tablet:border-[var(--blue-ruin)] flex flex-col tablet:flex-row items-stretch mb-8 tablet:mb-16">
+      <div className="md:border-y-[5px] md:border-solid md:border-[var(--blue-ruin)] flex flex-col md:flex-row items-stretch mb-8 md:mb-16">
         <p
           className={cn(
             s.title,
-            'tablet:border-r-[5px] tablet:border-solid tablet:border-[var(--blue-ruin)] flex items-center justify-center'
+            'md:border-r-[5px] md:border-solid md:border-[var(--blue-ruin)] flex items-center justify-center'
           )}
         >
           Join Our Family
@@ -31,7 +31,7 @@ export function FollowUs() {
         <div
           className={cn(
             s.social,
-            'col-span-9 flex items-center justify-center tablet:justify-start gap-4 tablet:gap-8'
+            'col-span-9 flex items-center justify-center md:justify-start gap-4 md:gap-8'
           )}
         >
           {socialLinks.map((item, i) => {

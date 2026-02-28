@@ -93,11 +93,11 @@ export function Header() {
           />
         </Link>
         <div className="flex items-center gap-5">
-          <div className="flex tablet:hidden">
+          <div className="flex md:hidden">
             <Cart />
           </div>
           <div
-            className={cn(s.trigger, 'block tablet:hidden', {
+            className={cn(s.trigger, 'block md:hidden', {
               [s.active]: hamburgerOpen
             })}
             onClick={() => setHamburgerOpen((prev) => !prev)}
@@ -112,7 +112,7 @@ export function Header() {
         <nav
           className={cn(
             s.navC,
-            'flex flex-col tablet:flex-row items-center justify-center tablet:justify-between flex-1 gap-5 tablet:gap-0',
+            'flex flex-col md:flex-row items-center justify-center md:justify-between flex-1 gap-5 md:gap-0',
             {
               [s.active]: hamburgerOpen
             }
@@ -121,7 +121,7 @@ export function Header() {
           <div
             className={cn(
               s.nav,
-              'flex flex-col tablet:flex-row items-center justify-between gap-5 tablet:gap-20'
+              'flex flex-col md:flex-row items-center justify-between gap-5 md:gap-20'
             )}
           >
             <div className={s.navItem}>
@@ -134,7 +134,7 @@ export function Header() {
           <div
             className={cn(
               s.nav,
-              'flex flex-col tablet:flex-row items-center justify-between gap-14'
+              'flex flex-col md:flex-row items-center justify-between gap-14'
             )}
           >
             <div className={cn(s.navItem, 'cursor-pointer')}>
@@ -146,7 +146,7 @@ export function Header() {
               </Link>
             </div>
             <div
-              className="hidden tablet:block cursor-pointer"
+              className="hidden md:block cursor-pointer"
               // onClick={() => setOpen(true)}
             >
               <Cart />
