@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A headless Shopify e-commerce storefront for Mightyfull cookies, built with Next.js and React. The site combines Shopify Storefront API for product catalog and cart operations with Sanity CMS for content management. It features rich animations (GSAP, Motion), smooth scrolling (Lenis), and a polished UI with Radix UI primitives and Tailwind utilities.
+A headless Shopify e-commerce storefront for Mightyfull cookies, built with Next.js 16 and React 19. The site combines Shopify Storefront API for product catalog and cart operations with Sanity CMS (v5) for content management. It features rich animations (GSAP, Motion), smooth scrolling (Lenis), and a polished UI with Radix UI primitives and Tailwind CSS v4 utilities alongside plain CSS modules.
 
 ## Core Value
 
@@ -11,8 +11,6 @@ The shopping experience must work flawlessly — browsing products, adding to ca
 ## Requirements
 
 ### Validated
-
-<!-- Inferred from existing codebase -->
 
 - ✓ Product catalog with Shopify Storefront API integration — existing
 - ✓ Product detail pages with variant selection — existing
@@ -27,54 +25,50 @@ The shopping experience must work flawlessly — browsing products, adding to ca
 - ✓ Customer reviews via Okendo widget — existing
 - ✓ Noticebar and header with scroll behavior — existing
 - ✓ Revalidation webhook for Sanity content updates — existing
+- ✓ All dependencies upgraded to latest stable versions — v1.0
+- ✓ SCSS modules migrated to plain CSS modules with native nesting — v1.0
+- ✓ SASS dependency removed from project — v1.0
+- ✓ Tailwind CSS v4 with CSS-first @theme configuration — v1.0
+- ✓ Visual parity confirmed across all pages and viewports — v1.0
 
 ### Active
 
-<!-- Current scope: upgrade and migration -->
-
-- [ ] Upgrade Next.js, React, and all dependencies to latest stable versions
-- [ ] Migrate all SCSS modules (.module.scss) to plain CSS modules (.module.css)
-- [ ] Convert SCSS-specific syntax (nesting, variables, mixins) to vanilla CSS equivalents
-- [ ] Remove SASS dependency from the project
-- [ ] Ensure visual parity with current site after migration
-- [ ] Remove clearly unused packages during upgrade (minimal cleanup)
-- [ ] Keep Tailwind CSS coexisting with CSS modules
+(None — plan next milestone)
 
 ### Out of Scope
 
 - Full Tailwind migration (replacing CSS modules with Tailwind classes) — keeping both systems
 - Major dependency consolidation (e.g., merging 3 hooks libraries) — minimal cleanup only
-- New features — will be decided after upgrade is complete
-- Test coverage additions — not part of this milestone
-- Fixing tech debt / security concerns — separate future work
+- Test coverage additions — not part of current scope
 - Performance optimization — separate future work
 
 ## Context
 
-- Project is ~1.5 years old, built on Next.js with SCSS modules and Tailwind CSS
-- Currently on Next.js 16.1.6, React 19, Tailwind CSS 3.4.1, SASS 1.80.3
-- Dual backend: Shopify Storefront API for e-commerce, Sanity CMS for content
-- Heavy animation layer: GSAP, Motion (Framer Motion), Embla Carousel, Lenis
+- Shipped v1.0 stack upgrade milestone on 2026-03-01
+- Tech stack: Next.js 16.1.6, React 19.2.4, Tailwind CSS v4.2.1, Biome 2.4.4, TypeScript 5.9.3
+- Dual backend: Shopify Storefront API for e-commerce, Sanity CMS v5 for content
+- Animation layer: GSAP 3.14.2, Motion 12.34.3, Embla Carousel 8.6.0, Lenis 1.3.17
+- Styling: Plain CSS modules (.module.css) with native nesting + Tailwind v4 utilities
 - No test suite exists — zero test coverage
-- Codebase map available at `.planning/codebase/` with detailed analysis
-- Key concern: SCSS nesting, variables, and mixins need vanilla CSS equivalents (custom properties, native nesting)
-- Tailwind v4 introduced significant changes (CSS-first config, no more tailwind.config.ts)
+- Build tool: pnpm with lockfile v9.0
 
 ## Constraints
 
-- **Visual parity**: Site must look identical after migration — pixel-level match matters
+- **Visual parity**: Site must look identical after any migration
 - **Tailwind coexistence**: CSS modules and Tailwind must work together
-- **Minimal disruption**: Only remove packages that are clearly unused
-- **No new features**: This milestone is purely about modernizing the stack
+- **No test coverage**: Manual verification is required for any changes
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Plain CSS modules over SCSS | Reduce build complexity, leverage native CSS nesting and custom properties | — Pending |
-| Keep Tailwind alongside CSS modules | Both serve different purposes — utilities vs component styles | — Pending |
-| Minimal package cleanup | Avoid scope creep, focus on the migration | — Pending |
-| Visual parity as success criteria | Ensures no regressions from the migration | — Pending |
+| Plain CSS modules over SCSS | Reduce build complexity, leverage native CSS nesting and custom properties | ✓ Good — 31 modules converted, SASS removed, zero regressions |
+| Keep Tailwind alongside CSS modules | Both serve different purposes — utilities vs component styles | ✓ Good — coexistence works with @layer base fix |
+| Biome replacing ESLint + Prettier | Single tool for linting and formatting | ✓ Good — checks 223 files with no issues |
+| Visual parity as success criteria | Ensures no regressions from the migration | ✓ Good — 58 screenshots captured, human-verified |
+| CSS-first @theme for TW v4 | Eliminates tailwind.config.ts, all tokens in CSS | ✓ Good — backward-compat aliases bridge CSS module var() refs |
+| @layer base for CSS reset | Unlayered reset beat TW v4 utilities in cascade | ✓ Good — critical fix discovered during visual verification |
+| Remove stale var() refs (not add definitions) | Git history confirmed vars were intentionally deleted or never defined | ✓ Good — 4 stale refs removed, no new definitions needed |
 
 ---
-*Last updated: 2026-02-27 after initialization*
+*Last updated: 2026-03-01 after v1.0 milestone*
