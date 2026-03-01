@@ -98,8 +98,6 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
     }
   );
 
-  console.log('popop', document.querySelector('.popop'));
-
   return (
     <div className="md:flex-1" ref={triggerRef}>
       <div className="w-full" ref={boxRef}>

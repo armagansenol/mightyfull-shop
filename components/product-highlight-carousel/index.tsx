@@ -64,7 +64,7 @@ export function ProductHighlightCarousel({
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative w-screen h-screen flex items-center border border-red-500">
+    <div className="relative w-screen h-screen flex items-center">
       <div className="flex-shrink-0" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom">
           {items.map((item, index) => {
