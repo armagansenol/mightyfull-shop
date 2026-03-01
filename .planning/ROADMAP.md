@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: SCSS to CSS Modules** - Convert all 31 `.module.scss` files to `.module.css`, remove SASS (completed 2026-02-27)
 - [x] **Phase 3: Tailwind v4 Migration** - Replace `tailwind.config.ts` with `@theme` directive, update PostCSS plugin (completed 2026-02-28)
 - [x] **Phase 4: Visual Verification** - Manual verification of visual parity across all pages, viewports, and interactions (completed 2026-03-01)
-- [ ] **Phase 5: CSS Custom Property Gap Closure** - Add 4 missing CSS custom property definitions to styles/global.css
+- [x] **Phase 5: CSS Custom Property Gap Closure** - Removed 4 stale undefined var() references from header, footer, and wrapper CSS modules (completed 2026-03-01)
 
 ## Phase Details
 
@@ -99,7 +99,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 05-01-PLAN.md — Remove 4 stale undefined var() references from header, footer, and wrapper CSS modules
+- [x] 05-01-PLAN.md — Remove 4 stale undefined var() references from header, footer, and wrapper CSS modules (completed 2026-03-01)
 
 ## Progress
 
@@ -112,4 +112,4 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 | 2. SCSS to CSS Modules | 5/5 | Complete   | 2026-02-27 |
 | 3. Tailwind v4 Migration | 2/2 | Complete   | 2026-02-28 |
 | 4. Visual Verification | 2/2 | Complete   | 2026-03-01 |
-| 5. CSS Custom Property Gap Closure | 0/1 | Not started | - |
+| 5. CSS Custom Property Gap Closure | 1/1 | Complete    | 2026-03-01 |

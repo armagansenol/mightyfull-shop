@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-03-01T09:16:23.248Z"
+status: in_progress
+last_updated: "2026-03-01T09:53:00Z"
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 4
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 13
+  completed_plans: 13
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** The shopping experience must work flawlessly with visual polish that matches the brand
-**Current focus:** MILESTONE COMPLETE — all 4 phases and 12 plans done, human signed off 2026-03-01
+**Current focus:** Phase 5 gap closure — 4 undefined CSS custom property references removed (05-01 COMPLETE)
 
 ## Current Position
 
-Phase: 4 of 4 (Visual Verification) — COMPLETE
-Plan: 2 of 2 — 04-02 COMPLETE, human approved 2026-03-01.
-Status: All plans complete. Milestone v1.0 (stack upgrade + CSS migration) finished. Human confirmed all interactive states correct.
-Last activity: 2026-03-01 — Human approved Task 3 (interactive verification sign-off). Phase 4 and Milestone v1.0 fully complete.
+Phase: 5 of 5 (CSS Custom Property Gap Closure) — COMPLETE
+Plan: 1 of 1 — 05-01 COMPLETE, 2026-03-01.
+Status: All plans complete. Milestone v1.0 + gap closure fully done. Zero undefined var() references in any .module.css file.
+Last activity: 2026-03-01 — Removed 4 stale var() references (--laurens-lace, --padding-x, --purple-cactus-flower, --z-content). pnpm build passes.
 
 Progress: [██████████] 100%
 
@@ -54,6 +54,7 @@ Progress: [██████████] 100%
 | Phase 03-tailwind-v4-migration P02 | 3 | 2 tasks | 38 files |
 | Phase 04-visual-verification P01 | 22 | 2 tasks | 59 files |
 | Phase 04-visual-verification P02 | 18 | 2 tasks | 2 files |
+| Phase 05-css-custom-property-gap-closure P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,8 @@ Recent decisions affecting current work:
 - [Phase 04-01]: Production site Sanity CMS content gaps (contact/faq pages) are pre-existing, not CSS regression
 - [Phase 04-02]: Debug artifacts (border-red-500 on carousel, console.log in purchase-panel) removed as Rule 1 auto-fixes: leftover dev debugging code
 - [Phase 04-02]: cart.module.css does not exist: Cart component uses Shadcn Sheet with Tailwind classes, never had a dedicated CSS module — not a regression
+- [Phase 05-01]: Removed var() references rather than adding new definitions — git history confirms all 4 were intentionally deleted or never defined
+- [Phase 05-01]: Removed entire .categories block (only contained padding: var(--padding-x)) and hover color block in footer (only had color: var(--purple-cactus-flower)) — meaningless without the var values
 
 ### Pending Todos
 
@@ -112,6 +115,6 @@ None. TW v4 CSS cascade layer regression found and fixed in Plan 04-01. All page
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: COMPLETE — Plan 04-02 Task 3 (human sign-off checkpoint) approved. All plans executed. Milestone v1.0 done.
+Stopped at: COMPLETE — Plan 05-01 executed. All 4 undefined CSS custom property references removed. pnpm build passes.
 Resume file: N/A — project complete.
-Resume context: All 4 phases complete. Stack upgraded (Next.js 15, Sanity v5, TW v4, Zod v4, Biome v2). SCSS fully migrated to CSS modules. Visual + interactive parity confirmed by human. pnpm build passes.
+Resume context: All 5 phases complete. Stack upgraded (Next.js 15, Sanity v5, TW v4, Zod v4, Biome v2). SCSS fully migrated to CSS modules. Visual + interactive parity confirmed by human. Zero undefined var() references in any .module.css file. pnpm build passes.
