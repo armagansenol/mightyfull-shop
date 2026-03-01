@@ -16,6 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: SCSS to CSS Modules** - Convert all 31 `.module.scss` files to `.module.css`, remove SASS (completed 2026-02-27)
 - [x] **Phase 3: Tailwind v4 Migration** - Replace `tailwind.config.ts` with `@theme` directive, update PostCSS plugin (completed 2026-02-28)
 - [x] **Phase 4: Visual Verification** - Manual verification of visual parity across all pages, viewports, and interactions (completed 2026-03-01)
+- [ ] **Phase 5: CSS Custom Property Gap Closure** - Add 4 missing CSS custom property definitions to styles/global.css
 
 ## Phase Details
 
@@ -84,6 +85,22 @@ Plans:
 - [x] 04-01: Desktop and mobile visual sweep (all pages at 1440px and 375px, layout parity check) — completed 2026-03-01
 - [ ] 04-02: Interactive state verification (animations, carousels, cart operations, contact form, hover states)
 
+### Phase 5: CSS Custom Property Gap Closure
+**Goal**: All CSS custom properties referenced in component modules have definitions in styles/global.css
+**Depends on**: Phase 4
+**Requirements**: CSS-02, CSS-03, CSS-10, VER-07
+**Gap Closure:** Closes gaps from v1.0 milestone audit
+**Success Criteria** (what must be TRUE):
+  1. `var(--purple-cactus-flower)` resolves to a valid color value (footer signature hover)
+  2. `var(--laurens-lace)` resolves to a valid color value (mobile nav text)
+  3. `var(--padding-x)` resolves to a valid dimension value (header categories padding)
+  4. `var(--z-content)` resolves to a valid z-index value (main content stacking)
+  5. `pnpm build` passes cleanly
+**Plans**: TBD
+
+Plans:
+- [ ] 05-01: Add missing CSS custom property definitions to global.css
+
 ## Progress
 
 **Execution Order:**
@@ -95,3 +112,4 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 | 2. SCSS to CSS Modules | 5/5 | Complete   | 2026-02-27 |
 | 3. Tailwind v4 Migration | 2/2 | Complete   | 2026-02-28 |
 | 4. Visual Verification | 2/2 | Complete   | 2026-03-01 |
+| 5. CSS Custom Property Gap Closure | 0/1 | Not started | - |
