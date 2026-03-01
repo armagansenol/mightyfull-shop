@@ -54,11 +54,11 @@ Requirements for stack upgrade milestone. Each maps to roadmap phases.
 
 - [x] **VER-01**: All pages verified at desktop viewport (1440px+) — visual parity confirmed
 - [x] **VER-02**: All pages verified at mobile viewport (375px) — visual parity confirmed
-- [ ] **VER-03**: All GSAP animations, scroll triggers, and Lenis smooth scrolling work correctly
-- [ ] **VER-04**: All Embla carousels (product highlight, etc.) function correctly
-- [ ] **VER-05**: Cart operations (add, remove, update, open/close) work correctly
-- [ ] **VER-06**: Contact form submission works correctly
-- [ ] **VER-07**: All hover states and transitions work correctly
+- [x] **VER-03**: All GSAP animations, scroll triggers, and Lenis smooth scrolling work correctly
+- [x] **VER-04**: All Embla carousels (product highlight, etc.) function correctly
+- [x] **VER-05**: Cart operations (add, remove, update, open/close) work correctly
+- [x] **VER-06**: Contact form submission works correctly
+- [x] **VER-07**: All hover states and transitions work correctly
 
 ## v2 Requirements
 
@@ -136,11 +136,11 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | TW-06 | Phase 3 | Complete |
 | VER-01 | Phase 4 | Complete |
 | VER-02 | Phase 4 | Complete |
-| VER-03 | Phase 4 | Pending |
-| VER-04 | Phase 4 | Pending |
-| VER-05 | Phase 4 | Pending |
-| VER-06 | Phase 4 | Pending |
-| VER-07 | Phase 4 | Pending |
+| VER-03 | Phase 4 | Complete |
+| VER-04 | Phase 4 | Complete |
+| VER-05 | Phase 4 | Complete |
+| VER-06 | Phase 4 | Complete |
+| VER-07 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 41 total
