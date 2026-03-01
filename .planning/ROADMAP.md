@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Dependency Upgrades** - Upgrade Next.js, React, and all packages to latest stable with breaking changes resolved (completed 2026-02-27)
 - [x] **Phase 2: SCSS to CSS Modules** - Convert all 31 `.module.scss` files to `.module.css`, remove SASS (completed 2026-02-27)
-- [ ] **Phase 3: Tailwind v4 Migration** - Replace `tailwind.config.ts` with `@theme` directive, update PostCSS plugin
+- [x] **Phase 3: Tailwind v4 Migration** - Replace `tailwind.config.ts` with `@theme` directive, update PostCSS plugin (completed 2026-02-28)
 - [ ] **Phase 4: Visual Verification** - Manual verification of visual parity across all pages, viewports, and interactions
 
 ## Phase Details
@@ -81,7 +81,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 04-01: Desktop and mobile visual sweep (all pages at 1440px and 375px, layout parity check)
+- [x] 04-01: Desktop and mobile visual sweep (all pages at 1440px and 375px, layout parity check) — completed 2026-03-01
 - [ ] 04-02: Interactive state verification (animations, carousels, cart operations, contact form, hover states)
 
 ## Progress
@@ -93,5 +93,5 @@ Phases execute strictly in sequence: 1 → 2 → 3 → 4 (PostCSS pipeline const
 |-------|----------------|--------|-----------|
 | 1. Dependency Upgrades | 3/3 | Complete    | 2026-02-27 |
 | 2. SCSS to CSS Modules | 5/5 | Complete   | 2026-02-27 |
-| 3. Tailwind v4 Migration | 1/2 | In Progress|  |
+| 3. Tailwind v4 Migration | 2/2 | Complete   | 2026-02-28 |
 | 4. Visual Verification | 1/2 | In Progress|  |
