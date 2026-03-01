@@ -96,10 +96,10 @@ Plans:
   3. `var(--padding-x)` resolves to a valid dimension value (header categories padding)
   4. `var(--z-content)` resolves to a valid z-index value (main content stacking)
   5. `pnpm build` passes cleanly
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 05-01: Add missing CSS custom property definitions to global.css
+- [ ] 05-01-PLAN.md — Remove 4 stale undefined var() references from header, footer, and wrapper CSS modules
 
 ## Progress
 
