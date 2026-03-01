@@ -198,12 +198,6 @@
 
       .link {
         transition: 200ms color ease;
-
-        @media (hover: hover) {
-          &:hover {
-            color: var(--purple-cactus-flower);
-          }
-        }
       }
     }
   }

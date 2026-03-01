@@ -11,6 +11,5 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  z-index: var(--z-content);
   /* overflow: hidden; */
 }

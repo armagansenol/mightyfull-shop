@@ -104,7 +104,6 @@
     transition: 300ms all ease;
 
     @media (max-width: 768px) {
-      color: var(--laurens-lace);
       font-size: 25px;
     }
 
@@ -161,8 +160,5 @@
     left: 0;
     background-color: var(--sugar-milk);
 
-    .categories {
-      padding: var(--padding-x);
-    }
   }
 }
