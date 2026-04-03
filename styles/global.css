@@ -25,6 +25,7 @@
   --color-rose-dragee: rgb(233, 206, 255);
   --color-lavender-blossom: rgb(185, 122, 221);
   --color-columbia-blue: rgb(152, 225, 255);
+  --color-tertiary: rgb(152, 225, 255);
   --color-highlighter-lilac: rgb(211, 49, 130);
   --color-highlighter-lilac-light: rgba(211, 49, 130, 0.15);
   --color-silverback: rgb(203, 203, 203);
@@ -97,6 +98,17 @@
     to { height: 0; }
   }
 
+  /* Marquee Keyframes */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(-100% - var(--gap))); }
+  }
+
+  @keyframes marquee-vertical {
+    from { transform: translateY(0); }
+    to { transform: translateY(calc(-100% - var(--gap))); }
+  }
+
   /* Z-Index Tokens */
   --z-index-preloader: 300;
   --z-index-gsap-markers: 290;
@@ -126,6 +138,15 @@
 @utility container {
   margin-inline: auto;
   padding-inline: 1rem;
+}
+
+/* Marquee utilities */
+@utility animate-marquee {
+  animation: marquee var(--duration) linear infinite;
+}
+
+@utility animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
 }
 
 /* ==========================================================================
@@ -616,14 +637,16 @@ body {
   opacity: 0;
 }
 
-a,
-button,
-input,
-label,
-textarea,
-select {
-  color: inherit;
-  cursor: pointer;
+@layer base {
+  a,
+  button,
+  input,
+  label,
+  textarea,
+  select {
+    color: inherit;
+    cursor: pointer;
+  }
 }
 
 *::selection {
@@ -733,3 +756,4 @@ sup {
 /* ==========================================================================
    Section 9 -- Okendo widget overrides (imported at top of file)
    ========================================================================== */
+
