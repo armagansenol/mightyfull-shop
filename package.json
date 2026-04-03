@@ -64,21 +64,16 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": [
-        "vite"
-      ]
+      "ignoreMissing": ["vite"]
     },
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "esbuild",
-      "sharp"
-    ]
+    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
     "@types/node": "^25.3.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "lefthook": "^2.1.4",
     "postcss": "^8",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3"
