@@ -4,7 +4,7 @@ import { COLOR_THEME } from './colorTheme';
 import { IMAGE } from './image';
 
 export const ANIMATED_CARD = groq`
-  _id,
+  "id": _id,
   displayTitle,
   imgCookie {
     ${IMAGE}
