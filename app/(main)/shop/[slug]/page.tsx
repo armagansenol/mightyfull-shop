@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
@@ -36,9 +37,10 @@ export default async function ProductDetialPage({
 
   return (
     <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
-      <section
+      <Container
+        as="section"
         className={cn(
-          'container flex flex-col items-center gap-5 md:gap-0 md:grid grid-cols-24 md:items-stretch justify-stretch py-6 md:py-12 mb-20'
+          'flex flex-col items-center gap-5 md:gap-0 md:grid grid-cols-24 md:items-stretch justify-stretch py-6 md:py-12 px-4 md:px-16 mb-20'
         )}
       >
         <div className="col-span-12 space-y-10">
@@ -67,12 +69,12 @@ export default async function ProductDetialPage({
             specs={sanityProduct.productSpecifications}
           />
         </div>
-      </section>
+      </Container>
       {/* product reviews */}
       {shopifyProduct && <CustomerReviews productId={productId} />}
       {/* related products */}
       {relatedProducts.length > 0 && (
-        <section className="pb-10 md:pb-20">
+        <Container as="section" className="pb-10 md:pb-20">
           {/* MOBILE */}
           <div className="block md:hidden">
             <ProductHighlightCarousel
@@ -107,7 +109,7 @@ export default async function ProductDetialPage({
               </div>
             </section>
           </div>
-        </section>
+        </Container>
       )}
       <FollowUs />
     </Wrapper>

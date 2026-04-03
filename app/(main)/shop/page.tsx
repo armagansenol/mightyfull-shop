@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { ProductCard } from '@/components/product-card';
 import { Wrapper } from '@/components/wrapper';
 import { getAllProducts } from '@/lib/actions/all-products';
@@ -10,7 +11,10 @@ export default async function ShopPage() {
 
   return (
     <Wrapper colorTheme={defaultColorTheme}>
-      <section className={cn(s.shop, 'flex flex-col items-center')}>
+      <Container
+        as="section"
+        className={cn(s.shop, 'flex flex-col items-center')}
+      >
         <h2>Impossible to Choose Just One!</h2>
         <p>Can&apos;t decide? Try them all and discover your new favorite!</p>
         <div
@@ -34,7 +38,7 @@ export default async function ShopPage() {
             );
           })}
         </div>
-      </section>
+      </Container>
     </Wrapper>
   );
 }

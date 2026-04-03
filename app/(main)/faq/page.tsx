@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { FaqList } from '@/components/faq-list';
 import { Wrapper } from '@/components/wrapper';
 import { sanityFetch } from '@/lib/sanity/client';
@@ -12,7 +13,10 @@ export default async function Page() {
 
   return (
     <Wrapper className="space-y-14 remaining-height">
-      <section className="container mx-auto px-4 pt-20 flex flex-col items-center">
+      <Container
+        as="section"
+        className="px-4 pt-20 flex flex-col items-center"
+      >
         <h1 className="font-bomstad-display text-5xl font-black mb-8 text-blue-ruin text-center">
           FAQ
         </h1>
@@ -20,10 +24,10 @@ export default async function Page() {
           Quick and clear answers to the most frequently asked questions are
           here!
         </p>
-      </section>
-      <section className="container px-0 lg:px-24 xl:px-48 pb-48">
+      </Container>
+      <Container as="section" className="px-0 lg:px-24 xl:px-48 pb-48">
         <FaqList faq={faq} />
-      </section>
+      </Container>
     </Wrapper>
   );
 }

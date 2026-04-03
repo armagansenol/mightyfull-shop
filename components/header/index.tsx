@@ -7,6 +7,7 @@ import { CircleUserRound } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Cart } from '@/components/cart/cart';
+import { Container } from '@/components/container';
 import { IconLogo } from '@/components/icons';
 import { Noticebar } from '@/components/noticebar';
 import { Link } from '@/components/utility/link';
@@ -82,77 +83,79 @@ export function Header() {
           <Noticebar title={noticebar.title} />
         </div>
       )}
-      <header
-        className={cn(s.header, 'relative flex items-center justify-between')}
-      >
-        <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
-          <IconLogo
-            primary="var(--primary)"
-            secondary="var(--secondary)"
-            tertiary="var(--tertiary)"
-          />
-        </Link>
-        <div className="flex items-center gap-5">
-          <div className="flex md:hidden">
-            <Cart />
-          </div>
-          <div
-            className={cn(s.trigger, 'block md:hidden', {
-              [s.active]: hamburgerOpen
-            })}
-            onClick={() => setHamburgerOpen((prev) => !prev)}
-          >
-            {hamburgerOpen ? (
-              <Cross1Icon className="w-full h-full" />
-            ) : (
-              <HamburgerMenuIcon className="w-full h-full" />
-            )}
-          </div>
-        </div>
-        <nav
-          className={cn(
-            s.navC,
-            'flex flex-col md:flex-row items-center justify-center md:justify-between flex-1 gap-5 md:gap-0',
-            {
-              [s.active]: hamburgerOpen
-            }
-          )}
-        >
-          <div
-            className={cn(
-              s.nav,
-              'flex flex-col md:flex-row items-center justify-between gap-5 md:gap-20'
-            )}
-          >
-            <div className={s.navItem}>
-              <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
-            </div>
-            <div className={s.navItem}>
-              <Link href={`/${routes.ourStory.url}`}>{routes.ourStory.ui}</Link>
-            </div>
-          </div>
-          <div
-            className={cn(
-              s.nav,
-              'flex flex-col md:flex-row items-center justify-between gap-14'
-            )}
-          >
-            <div className={cn(s.navItem, 'cursor-pointer')}>
-              <Link href={`/${routes.contact.url}`}>{routes.contact.ui}</Link>
-            </div>
-            <div className={cn(s.navItem, 'cursor-pointer')}>
-              <Link href="https://shopify.com/67633938584/account">
-                <CircleUserRound className="w-9 h-9" />
-              </Link>
-            </div>
-            <div
-              className="hidden md:block cursor-pointer"
-              // onClick={() => setOpen(true)}
-            >
+      <header className={cn(s.header, 'relative')}>
+        <Container className="relative flex items-center justify-between h-full">
+          <Link href="/" className={cn(s.logoC, 'cursor-pointer')}>
+            <IconLogo
+              primary="var(--primary)"
+              secondary="var(--secondary)"
+              tertiary="var(--tertiary)"
+            />
+          </Link>
+          <div className="flex items-center gap-5">
+            <div className="flex md:hidden">
               <Cart />
             </div>
+            <div
+              className={cn(s.trigger, 'block md:hidden', {
+                [s.active]: hamburgerOpen
+              })}
+              onClick={() => setHamburgerOpen((prev) => !prev)}
+            >
+              {hamburgerOpen ? (
+                <Cross1Icon className="w-full h-full" />
+              ) : (
+                <HamburgerMenuIcon className="w-full h-full" />
+              )}
+            </div>
           </div>
-        </nav>
+          <nav
+            className={cn(
+              s.navC,
+              'flex flex-col md:flex-row items-center justify-center md:justify-between flex-1 gap-5 md:gap-0',
+              {
+                [s.active]: hamburgerOpen
+              }
+            )}
+          >
+            <div
+              className={cn(
+                s.nav,
+                'flex flex-col md:flex-row items-center justify-between gap-5 md:gap-20'
+              )}
+            >
+              <div className={s.navItem}>
+                <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
+              </div>
+              <div className={s.navItem}>
+                <Link href={`/${routes.ourStory.url}`}>
+                  {routes.ourStory.ui}
+                </Link>
+              </div>
+            </div>
+            <div
+              className={cn(
+                s.nav,
+                'flex flex-col md:flex-row items-center justify-between gap-14'
+              )}
+            >
+              <div className={cn(s.navItem, 'cursor-pointer')}>
+                <Link href={`/${routes.contact.url}`}>{routes.contact.ui}</Link>
+              </div>
+              <div className={cn(s.navItem, 'cursor-pointer')}>
+                <Link href="https://shopify.com/67633938584/account">
+                  <CircleUserRound className="w-9 h-9" />
+                </Link>
+              </div>
+              <div
+                className="hidden md:block cursor-pointer"
+                // onClick={() => setOpen(true)}
+              >
+                <Cart />
+              </div>
+            </div>
+          </nav>
+        </Container>
       </header>
     </div>
   );

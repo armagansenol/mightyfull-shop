@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { sanityFetch } from '@/lib/sanity/client';
 import { STORE_QUERY } from '@/lib/sanity/store';
 import type { Store } from '@/types';
@@ -9,7 +10,7 @@ export default async function StoreLocator() {
   });
 
   return (
-    <div>
+    <Container>
       <h1>STORE LOCATOR</h1>
       <div>
         {stores.map((store) => (
@@ -21,6 +22,6 @@ export default async function StoreLocator() {
           </div>
         ))}
       </div>
-    </div>
+    </Container>
   );
 }

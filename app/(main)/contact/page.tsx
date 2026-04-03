@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { ContactForm } from '@/components/contact-form';
 import { Link } from '@/components/utility/link';
 import { Wrapper } from '@/components/wrapper';
@@ -5,7 +6,10 @@ import { Wrapper } from '@/components/wrapper';
 export default function Page() {
   return (
     <Wrapper>
-      <section className="container grid grid-cols-24 gap-0 md:gap-8 py-12 md:py-20 space-y-10 md:space-y-0 mx-auto mb-48">
+      <Container
+        as="section"
+        className="grid grid-cols-24 gap-0 md:gap-8 py-12 md:py-20 px-4 md:px-16 space-y-10 md:space-y-0 mb-48"
+      >
         <div className="col-span-24 md:col-span-12 space-y-12">
           <div className="space-y-3">
             <h1 className="text-4xl font-black font-bomstad-display text-blue-ruin">
@@ -38,7 +42,7 @@ export default function Page() {
         <div className="col-span-24 md:col-span-12 pt-14">
           <ContactForm />
         </div>
-      </section>
+      </Container>
     </Wrapper>
   );
 }

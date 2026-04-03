@@ -474,6 +474,9 @@
 }
 
 .testimonials {
+  background-color: var(--sugar-milk);
+  overflow: hidden;
+
   .imgC {
     width: auto;
     height: 600px;

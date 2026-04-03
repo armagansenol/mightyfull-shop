@@ -1,3 +1,4 @@
+import { Container } from '@/components/container';
 import { IconLeftArm, IconRightArm } from '@/components/icons';
 import { Marquee } from '@/components/marquee';
 import { Img } from '@/components/utility/img';
@@ -8,82 +9,87 @@ import s from './our-story.module.css';
 export default function Page() {
   return (
     <Wrapper>
+      {/* Section 1: Intro */}
       <section className={cn(s.intro, 'flex flex-col items-stretch')}>
-        <div className={cn('flex flex-col items-center')}>
-          <div className={cn(s.titleC, 'flex items-center gap-3')}>
-            <div className={s.iconC}>
-              <IconLeftArm />
-            </div>
-            <h1 className={s.title}>
-              <span>The</span>
-              <span>Mightyfull</span>
-              <span>Story</span>
-              <div className={s.bg}>
-                <div className={s.transform}>
-                  <Img
-                    className="object-contain"
-                    src="/img/lightrays.png"
-                    height={1000}
-                    width={1000}
-                    alt="Lightrays Background Image"
-                  />
-                </div>
+        <Container>
+          <div className={cn('flex flex-col items-center')}>
+            <div className={cn(s.titleC, 'flex items-center gap-3')}>
+              <div className={s.iconC}>
+                <IconLeftArm />
               </div>
-            </h1>
-            <div className={s.iconC}>
-              <IconRightArm />
+              <h1 className={s.title}>
+                <span>The</span>
+                <span>Mightyfull</span>
+                <span>Story</span>
+                <div className={s.bg}>
+                  <div className={s.transform}>
+                    <Img
+                      className="object-contain"
+                      src="/img/lightrays.png"
+                      height={1000}
+                      width={1000}
+                      alt="Lightrays Background Image"
+                    />
+                  </div>
+                </div>
+              </h1>
+              <div className={s.iconC}>
+                <IconRightArm />
+              </div>
             </div>
-          </div>
-          <p className={cn(s.p, s.desc)}>
-            At Mightyfull, we believe snacking should do more than just satisfy
-            cravings—it should fuel your body, uplift your day, and taste
-            incredible. Our journey began with a simple moment in the kitchen.
-          </p>
-        </div>
-        <div
-          className={cn(
-            s.bottom,
-            'flex flex-col items-center md:grid grid-cols-12 gap-5 md:gap-20'
-          )}
-        >
-          <div className="col-span-6">
-            <div className={s.imgC}>
-              <Img
-                className="object-contain"
-                src="/img/mom-n-son.png"
-                height={1000}
-                width={1000}
-                alt="Mom and Son"
-              />
-            </div>
-          </div>
-          <div className={cn(s.p, s.textC, 'col-span-6')}>
-            <p>
-              When my son casually said,{' '}
-              <strong className="italic">
-                “Mom, I need to bulk up for football!”
-              </strong>{' '}
-              I realized that ‘bulking up’ wasn’t about buying bigger clothes—it
-              was about nourishing him properly.
-              <br />
-              <br />
-              Frustrated by protein snacks that were tasteless or overly
-              processed, I set out to create something better: a cookie that not
-              only packs a nutritional punch but also tastes like a homemade
-              treat.
+            <p className={cn(s.p, s.desc)}>
+              At Mightyfull, we believe snacking should do more than just
+              satisfy cravings—it should fuel your body, uplift your day, and
+              taste incredible. Our journey began with a simple moment in the
+              kitchen.
             </p>
           </div>
-        </div>
-        <div className={cn(s.cookieC, 'z-10')}>
-          <Img
-            className="object-contain"
-            src="/img/c-pb-choco-oatie.png"
-            height={500}
-            width={500}
-            alt="Cookie"
-          />
-        </div>
+          <div
+            className={cn(
+              s.bottom,
+              'flex flex-col items-center md:grid grid-cols-12 gap-5 md:gap-20'
+            )}
+          >
+            <div className="col-span-6">
+              <div className={s.imgC}>
+                <Img
+                  className="object-contain"
+                  src="/img/mom-n-son.png"
+                  height={1000}
+                  width={1000}
+                  alt="Mom and Son"
+                />
+              </div>
+            </div>
+            <div className={cn(s.p, s.textC, 'col-span-6')}>
+              <p>
+                When my son casually said,{' '}
+                <strong className="italic">
+                  "Mom, I need to bulk up for football!"
+                </strong>{' '}
+                I realized that 'bulking up' wasn't about buying bigger
+                clothes—it was about nourishing him properly.
+                <br />
+                <br />
+                Frustrated by protein snacks that were tasteless or overly
+                processed, I set out to create something better: a cookie that
+                not only packs a nutritional punch but also tastes like a
+                homemade treat.
+              </p>
+            </div>
+          </div>
+          <div className={cn(s.cookieC, 'z-10')}>
+            <Img
+              className="object-contain"
+              src="/img/c-pb-choco-oatie.png"
+              height={500}
+              width={500}
+              alt="Cookie"
+            />
+          </div>
+        </Container>
       </section>
+      {/* Section 2: Full Image */}
       <section className={s.fullImgC}>
         <Img
           className="object-cover"
@@ -93,63 +99,64 @@ export default function Page() {
           alt="Lady holding a cookie"
         />
       </section>
-      <section className={s.differences}>
+      {/* Section 3: Differences */}
+      <Container as="section" className={s.differences}>
         <h2>The Mightyfull Difference</h2>
         <div className="flex flex-col items-center md:items-start md:grid grid-cols-2 gap-5 md:gap-28">
           <div>
             <p className={s.p}>
               Mightyfull Cookies are all about flavor, without the fuss.
-              They’re gluten-free, dairy-free, whey-free, and soy-free, so you
-              can snack with confidence. These chewy, indulgent cookies deliver
-              everything you crave—no artificial junk, just pure deliciousness.
+              They&apos;re gluten-free, dairy-free, whey-free, and soy-free, so
+              you can snack with confidence. These chewy, indulgent cookies
+              deliver everything you crave—no artificial junk, just pure
+              deliciousness.
             </p>
           </div>
           <div>
             <p className={s.p}>
-              With just the right touch of sweetness and a satisfying bite, each
-              cookie is packed with enough protein to keep you fueled all day.
-              They’re perfect for anyone who wants to snack smarter without
+              With just the right touch of sweetness and a satisfying bite, each
+              cookie is packed with enough protein to keep you fueled all day.
+              They&apos;re perfect for anyone who wants to snack smarter without
               sacrificing taste.
             </p>
           </div>
         </div>
-      </section>
-      <section
-        className={cn(
-          s.mission,
-          'flex flex-col-reverse items-stretch md:grid grid-cols-12'
-        )}
-      >
-        <div
+      </Container>
+      {/* Section 4: Mission */}
+      <section className={s.missionWrapper}>
+        <Container
           className={cn(
-            s.text,
-            'col-span-6 border:none md:border-r-[5px] md:border-r-solid md:border-r-[var(--nova-pink)]'
+            s.mission,
+            'flex flex-col-reverse items-stretch md:grid grid-cols-12'
           )}
         >
-          <h2>Our Mission</h2>
-          <p>
-            We’re on a mission to make healthy snacking easy, delicious, and
-            accessible for everyone.
-            <br />
-            <br />
-            Whether you’re hitting the gym, powering through a busy workday, or
-            simply craving something sweet, Mightyfull’s got you. We believe
-            that when you feel good about what you’re eating, you feel ready to
-            take on anything.
-          </p>
-        </div>
-        <div className="col-span-6">
-          <div className={cn(s.imgC, 'relative w-full h-full')}>
-            <Img
-              className="w-full h-full object-cover"
-              src="/img/mightyfull-helmet.jpg"
-              alt="Mightyfull Helmet"
-              fill
-              sizes="50vw"
-            />
+          <div className={cn(s.text, 'col-span-6')}>
+            <h2>Our Mission</h2>
+            <p>
+              We&apos;re on a mission to make healthy snacking easy, delicious,
+              and accessible for everyone.
+              <br />
+              <br />
+              Whether you&apos;re hitting the gym, powering through a busy
+              workday, or simply craving something sweet, Mightyfull&apos;s got
+              you. We believe that when you feel good about what you&apos;re
+              eating, you feel ready to take on anything.
+            </p>
           </div>
-        </div>
+          <div className={cn(s.imageCol, 'col-span-6')}>
+            <div className={cn(s.imgC, 'relative w-full h-full')}>
+              <Img
+                className="w-full h-full object-cover"
+                src="/img/mightyfull-helmet.jpg"
+                alt="Mightyfull Helmet"
+                fill
+                sizes="50vw"
+              />
+            </div>
+          </div>
+        </Container>
       </section>
+      {/* Section 5: What's Next */}
       <section className={cn(s.whatsNext, 'flex flex-col items-center')}>
         <div
           className={cn(s.titleC, 'w-full flex items-center justify-center')}
@@ -169,20 +176,22 @@ export default function Page() {
             </div>
           </Marquee>
         </div>
-        <p>
-          We’re committed to growing our community and empowering others. As
-          a women-owned brand, we believe in supporting fellow women
-          entrepreneurs and giving back. As we scale, we plan to partner with
-          small, women-owned businesses to help drive growth and create new
-          opportunities in the industry.
-        </p>
-        <p>
-          <strong>
-            So, the next time you&apos;re looking for a snack that&apos;s free
-            of everything you don&apos;t want and packed with everything you do,
-            remember Mightyfull.
-          </strong>
-        </p>
+        <Container className="flex flex-col items-center">
+          <p>
+            We&apos;re committed to growing our community and empowering
+            others. As a women-owned brand, we believe in supporting fellow
+            women entrepreneurs and giving back. As we scale, we plan to
+            partner with small, women-owned businesses to help drive growth and
+            create new opportunities in the industry.
+          </p>
+          <p>
+            <strong>
+              So, the next time you&apos;re looking for a snack that&apos;s
+              free of everything you don&apos;t want and packed with everything
+              you do, remember Mightyfull.
+            </strong>
+          </p>
+        </Container>
       </section>
     </Wrapper>
   );

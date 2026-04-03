@@ -230,17 +230,33 @@
   }
 }
 
-.mission {
+.missionWrapper {
   border-bottom: 5px solid var(--nova-pink);
   border-top: 5px solid var(--nova-pink);
+  overflow: hidden;
 
   @media (max-width: 768px) {
     border-top: none;
   }
+}
 
+.mission {
   .text {
-    background-color: var(--cherry-blush);
+    position: relative;
     padding: 120px 90px 120px 80px;
+    z-index: 1;
+
+    /* Bleed cherry-blush to left viewport edge */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: -100vw;
+      background-color: var(--cherry-blush);
+      z-index: -1;
+    }
 
     @media (max-width: 768px) {
       padding: 50px 16px;
@@ -278,6 +294,22 @@
         margin-bottom: 30px;
         text-align: center;
       }
+    }
+  }
+
+  .imageCol {
+    position: relative;
+
+    /* Bleed sugar-milk to right viewport edge */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -100vw;
+      bottom: 0;
+      left: 0;
+      background-color: var(--sugar-milk);
+      z-index: -1;
     }
   }
 
@@ -325,9 +357,8 @@
     }
   }
 
-  > p {
-    width: 800px;
-    height: auto;
+  p {
+    max-width: 800px;
     color: var(--nova-pink);
     font-family: var(--font-poppins);
     font-size: 18px;
@@ -337,8 +368,7 @@
     text-align: center;
 
     @media (max-width: 768px) {
-      width: 330px;
-      height: auto;
+      max-width: 330px;
       font-size: 18px;
       line-height: 1.5;
       margin-bottom: 30px;

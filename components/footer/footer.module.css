@@ -1,7 +1,7 @@
 .footer {
   background-color: var(--blue-ruin);
   color: var(--sugar-milk);
-  padding: 30px 180px 60px 60px;
+  padding-block: 30px 60px;
   position: relative;
   z-index: var(--z-footer);
 
@@ -229,15 +229,13 @@
       top: -100px;
       right: auto;
       bottom: auto;
-      left: 50px;
+      left: 3%;
       width: 100px;
       height: 100px;
 
       @media (max-width: 768px) {
         position: absolute;
         top: 50px;
-        right: auto;
-        bottom: auto;
         left: 10px;
         width: 40px;
         height: 40px;
@@ -249,16 +247,14 @@
       top: -125px;
       right: auto;
       bottom: auto;
-      left: 800px;
+      left: 55%;
       width: 120px;
       height: 120px;
 
       @media (max-width: 768px) {
         position: absolute;
         top: 300px;
-        right: auto;
-        bottom: auto;
-        left: 300px;
+        left: 80%;
         width: 40px;
         height: 40px;
       }
@@ -267,7 +263,7 @@
     &.cookie3 {
       position: absolute;
       top: 0;
-      right: 300px;
+      right: 20%;
       bottom: auto;
       left: auto;
       width: 94px;
@@ -277,8 +273,7 @@
         position: absolute;
         top: 510px;
         right: auto;
-        bottom: auto;
-        left: 310px;
+        left: 82%;
         width: 50px;
         height: 50px;
       }
@@ -287,7 +282,7 @@
     &.cookie4 {
       position: absolute;
       top: -75px;
-      right: -100px;
+      right: -2%;
       bottom: auto;
       left: auto;
       width: 260px;
@@ -297,8 +292,6 @@
         position: absolute;
         top: 20px;
         right: -20px;
-        bottom: auto;
-        left: auto;
         width: 60px;
         height: 60px;
       }
@@ -309,15 +302,13 @@
       top: 50px;
       right: auto;
       bottom: auto;
-      left: 750px;
+      left: 52%;
       width: 100px;
       height: 100px;
 
       @media (max-width: 768px) {
         position: absolute;
         top: 480px;
-        right: auto;
-        bottom: auto;
         left: 10px;
         width: 40px;
         height: 40px;
