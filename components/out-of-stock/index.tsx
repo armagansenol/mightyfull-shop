@@ -97,7 +97,7 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
                 this product is{' '}
                 <span className="underline">back in stock!</span>
               </DialogTitle>
-              <DialogDescription className="text-sm font-normal text-[var(--nova-pink)]">
+              <DialogDescription className="text-sm font-normal text-nova-pink">
                 {isSuccess ? (
                   <p className="text-green-600 py-4">
                     Thanks! We&apos;ll notify you when this product is back in

@@ -30,7 +30,7 @@ export const CartTrigger = forwardRef<HTMLButtonElement, CartTriggerProps>(
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.2 }}
-              className="absolute -left-1 -bottom-1 md:-left-2 md:-bottom-2 h-5 w-5 md:h-6 md:w-6 rounded-full text-sm md:text-base font-bold text-[var(--primary)] bg-[var(--tertiary)] flex items-center justify-center"
+              className="absolute -left-1 -bottom-1 md:-left-2 md:-bottom-2 h-5 w-5 md:h-6 md:w-6 rounded-full text-sm md:text-base font-bold text-primary bg-tertiary flex items-center justify-center"
               aria-hidden="true"
             >
               {totalQuantity}

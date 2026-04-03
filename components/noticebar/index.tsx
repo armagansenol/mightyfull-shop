@@ -10,9 +10,9 @@ export interface NoticebarProps {
 export function Noticebar(props: NoticebarProps) {
   return (
     <div className={cn(s.noticebar, 'flex items-center text-sm')}>
-      <Marquee duration={10} repeat={20}>
+      <Marquee className="[--duration:10s]" repeat={20}>
         <div className="flex items-center">
-          <div className="mx-5 md:mx-10 text-[var(--primary)]">
+          <div className="mx-5 md:mx-10 text-primary">
             {props.title}
           </div>
           <div className={cn(s.iconC, 'flex w-[6px] h-[6px]')}>

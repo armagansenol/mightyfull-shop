@@ -29,11 +29,18 @@ export function Wrapper({
     document.body.style.setProperty('--primary', colorTheme?.primary);
     document.body.style.setProperty('--secondary', colorTheme?.secondary);
     document.body.style.setProperty('--tertiary', colorTheme?.tertiary);
+    // Tailwind v4 resolves utilities like text-primary to --color-primary
+    document.body.style.setProperty('--color-primary', colorTheme?.primary);
+    document.body.style.setProperty('--color-secondary', colorTheme?.secondary);
+    document.body.style.setProperty('--color-tertiary', colorTheme?.tertiary);
 
     return () => {
       document.body.style.removeProperty('--primary');
       document.body.style.removeProperty('--secondary');
       document.body.style.removeProperty('--tertiary');
+      document.body.style.removeProperty('--color-primary');
+      document.body.style.removeProperty('--color-secondary');
+      document.body.style.removeProperty('--color-tertiary');
     };
   }, [colorTheme]);
 
@@ -46,7 +53,10 @@ export function Wrapper({
         {
           '--primary': colorTheme.primary,
           '--secondary': colorTheme.secondary,
-          '--tertiary': colorTheme.tertiary
+          '--tertiary': colorTheme.tertiary,
+          '--color-primary': colorTheme.primary,
+          '--color-secondary': colorTheme.secondary,
+          '--color-tertiary': colorTheme.tertiary
         } as React.CSSProperties
       }
     >
