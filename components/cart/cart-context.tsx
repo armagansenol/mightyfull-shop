@@ -44,6 +44,7 @@ type CartContextType = {
     merchandiseId: string,
     sellingPlanId: string | null
   ) => void;
+  setCart: (cart: Cart | undefined) => void;
 };
 
 export const CartContext = createContext<CartContextType | undefined>(
@@ -139,8 +140,6 @@ function updateCartTotals(
 }
 
 export function createEmptyCart(): Cart {
-  console.log('createEmptyCart');
-
   return {
     id: undefined,
     checkoutUrl: '',
@@ -174,7 +173,7 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
         .filter(Boolean) as CartItem[];
 
       if (updatedLines.length === 0) {
-        const emptyCart = {
+        return {
           ...currentCart,
           lines: [],
           totalQuantity: 0,
@@ -183,26 +182,13 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
             totalAmount: { ...currentCart.cost.totalAmount, amount: '0' }
           }
         };
-        console.log('Cart updated (UPDATE_ITEM - now empty):', emptyCart);
-        return emptyCart;
       }
 
-      const updatedCart = {
+      return {
         ...currentCart,
         ...updateCartTotals(updatedLines),
         lines: updatedLines
       };
-      console.log('Cart updated (UPDATE_ITEM):', {
-        totalQuantity: updatedCart.totalQuantity,
-        totalAmount: updatedCart.cost.totalAmount.amount,
-        items: updatedCart.lines.map((item) => ({
-          id: item.merchandise.id,
-          title: item.merchandise.product.title,
-          quantity: item.quantity,
-          amount: item.cost.totalAmount.amount
-        }))
-      });
-      return updatedCart;
     }
     case 'ADD_ITEM': {
       const { variant, product } = action.payload;
@@ -221,37 +207,14 @@ export function cartReducer(state: Cart | undefined, action: CartAction): Cart {
           )
         : [...currentCart.lines, updatedItem];
 
-      const updatedCart = {
+      return {
         ...currentCart,
         ...updateCartTotals(updatedLines),
         lines: updatedLines
       };
-      console.log('Cart updated (ADD_ITEM):', {
-        totalQuantity: updatedCart.totalQuantity,
-        totalAmount: updatedCart.cost.totalAmount.amount,
-        items: updatedCart.lines.map((item) => ({
-          id: item.merchandise.id,
-          title: item.merchandise.product.title,
-          quantity: item.quantity,
-          amount: item.cost.totalAmount.amount
-        }))
-      });
-      return updatedCart;
     }
     case 'SET_INITIAL_CART': {
-      const initialCart = action.payload || createEmptyCart();
-      console.log('Cart initialized:', {
-        totalQuantity: initialCart.totalQuantity,
-        totalAmount: initialCart.cost.totalAmount.amount,
-        items: initialCart.lines.map((item) => ({
-          id: item.merchandise.id,
-          title: item.merchandise.product.title,
-          quantity: item.quantity,
-          amount: item.cost.totalAmount.amount,
-          sellingPlanId: item.sellingPlanAllocation?.sellingPlan?.id
-        }))
-      });
-      return initialCart;
+      return action.payload || createEmptyCart();
     }
     case 'UPDATE_SELLING_PLAN': {
       const { merchandiseId, sellingPlanId, currentSellingPlanId } =

@@ -1,41 +1,22 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { getCart } from '@/components/cart/actions';
 import { useCart } from '@/components/cart/cart-context';
 import { test } from '@/components/custom-toast/success';
-import type { Cart, CartItem } from '@/lib/shopify/types';
+import type { Cart } from '@/lib/shopify/types';
 
 type CartActionType = 'plus' | 'minus' | 'delete' | 'update-selling-plan';
 type MutationResult = { success: boolean; message?: string } | string;
 
 interface UseCartMutationOptions<TVariables extends Record<string, unknown>> {
-  // The function that performs the actual mutation
   mutationFn: (variables: TVariables) => Promise<MutationResult>;
-
-  // The action type to perform on success
   actionType: CartActionType;
-
-  // The line ID to update (instead of merchandise ID)
-  lineId: string;
-
-  // The merchandise ID (optional, for context updates)
-  merchandiseId?: string;
-
-  // Optional selling plan ID
+  merchandiseId: string;
   sellingPlanId?: string | null;
-
-  // Product title for error messages
   productTitle?: string;
-
-  // Custom success message
   successMessage?: string;
-
-  // Custom error message
   errorMessage?: string;
-
-  // Optional callback for success
   onSuccess?: (result: MutationResult, variables: TVariables) => void;
-
-  // Optional callback for error
   onError?: (error: Error, variables: TVariables) => void;
 }
 
@@ -44,7 +25,7 @@ export function useCartMutation<
 >({
   mutationFn,
   actionType,
-  lineId,
+  merchandiseId,
   sellingPlanId,
   productTitle = 'Item',
   successMessage,
@@ -52,109 +33,95 @@ export function useCartMutation<
   onSuccess,
   onError
 }: UseCartMutationOptions<TVariables>) {
-  const { updateCartItem, updateCartItemSellingPlan } = useCart();
-  const queryClient = useQueryClient();
+  const { cart, updateCartItem, updateCartItemSellingPlan, setCart } =
+    useCart();
 
   return useMutation({
     mutationFn,
 
-    // Default success handler with customization options
+    // Optimistic update: fire BEFORE the server call
+    onMutate: async (variables) => {
+      const previousCart = cart
+        ? { ...cart, lines: [...cart.lines] }
+        : undefined;
+
+      // Apply optimistic update immediately
+      if (
+        actionType === 'update-selling-plan' &&
+        'newSellingPlanId' in variables
+      ) {
+        updateCartItemSellingPlan(
+          merchandiseId,
+          variables.newSellingPlanId as string | null
+        );
+      } else if (actionType !== 'update-selling-plan') {
+        updateCartItem(merchandiseId, actionType, sellingPlanId || null);
+      }
+
+      return { previousCart };
+    },
+
     onSuccess: (result, variables) => {
-      if (result && typeof result === 'object' && 'success' in result) {
-        if (result.success) {
-          // Update the cart context
-          if (
-            actionType === 'update-selling-plan' &&
-            'newSellingPlanId' in variables
-          ) {
-            // Get the current cart state
-            const currentCart = queryClient.getQueryData(['cart']) as
-              | Cart
-              | undefined;
-            if (currentCart) {
-              // Find the current line item
-              const currentLine = currentCart.lines.find(
-                (line: CartItem) => line.id === lineId
-              );
+      const isSuccess =
+        result &&
+        typeof result === 'object' &&
+        'success' in result &&
+        result.success;
 
-              if (currentLine) {
-                // Update the cart item with the new selling plan while preserving quantity
-                updateCartItemSellingPlan(
-                  lineId,
-                  variables.newSellingPlanId as string | null
-                );
-              }
-            }
-          } else {
-            updateCartItem(
-              lineId,
-              actionType as 'plus' | 'minus' | 'delete',
-              sellingPlanId || null
-            );
-          }
+      if (isSuccess) {
+        const message =
+          (typeof result === 'object' && 'message' in result
+            ? result.message
+            : undefined) ||
+          successMessage ||
+          `${productTitle} updated successfully`;
+        test(message);
 
-          // Show success message
-          const message =
-            result.message ||
-            successMessage ||
-            `${productTitle} updated successfully`;
-
-          test(message);
-
-          // Invalidate cart queries after a short delay to ensure our local state is updated
-          setTimeout(() => {
-            queryClient.invalidateQueries({ queryKey: ['cart'] });
-          }, 100);
-
-          // Call custom onSuccess if provided
-          if (onSuccess) {
-            onSuccess(result, variables);
-          }
-        } else {
-          // Show error message
-          const message =
-            result.message ||
-            errorMessage ||
-            `Failed to update ${productTitle}`;
-          toast.error(message);
-          console.error('Error from Shopify:', result.message);
+        if (onSuccess) {
+          onSuccess(result, variables);
         }
-      } else if (typeof result === 'string') {
-        // Handle string error results
-        toast.error(result);
-        console.error('Error from Shopify:', result);
       } else {
-        // Handle unexpected response format
-        toast.error('Unexpected response from server');
-        console.error('Unexpected response format:', result);
+        // Server returned a failure — rollback will happen in onSettled via sync
+        const message =
+          (typeof result === 'object' && 'message' in result
+            ? result.message
+            : undefined) ||
+          (typeof result === 'string' ? result : undefined) ||
+          errorMessage ||
+          `Failed to update ${productTitle}`;
+        toast.error(message);
       }
     },
 
-    // Default error handler with customization options
-    onError:
-      onError ||
-      ((error) => {
-        // Extract error message
-        const message =
-          error instanceof Error
-            ? error.message
-            : errorMessage || `Failed to update ${productTitle}`;
+    onError: (error, variables, context) => {
+      // Rollback to previous cart state immediately
+      if (context?.previousCart) {
+        setCart(context.previousCart as Cart);
+      }
 
-        // Show error toast
-        toast.error(`Error updating ${productTitle}: ${message}`);
-        console.error('Error updating cart:', error);
+      if (onError) {
+        onError(error, variables);
+        return;
+      }
 
-        // Suggest page refresh for persistent errors
-        toast.error(
-          'There was an issue updating your cart. Please refresh the page.',
-          {
-            duration: 5000,
-            action: {
-              label: 'Refresh',
-              onClick: () => window.location.reload()
-            }
-          }
-        );
-      })
+      const message =
+        error instanceof Error
+          ? error.message
+          : errorMessage || `Failed to update ${productTitle}`;
+
+      toast.error(`Error updating ${productTitle}: ${message}`);
+    },
+
+    // Always sync with server after mutation settles
+    onSettled: async (_result, error) => {
+      try {
+        const serverCart = await getCart();
+        setCart(serverCart);
+      } catch {
+        // If sync fails after an error, the rollback from onError is still in effect
+        if (error) return;
+        // If sync fails after success, the optimistic state is close enough
+      }
+    }
   });
 }

@@ -211,6 +211,12 @@ function findLineItem(
   );
 }
 
+export async function getCart(): Promise<Cart | undefined> {
+  const cartId = await getCartId();
+  if (!cartId) return undefined;
+  return cartService.get(cartId);
+}
+
 export async function addItem(
   selectedVariantId: string | undefined,
   quantity: number,

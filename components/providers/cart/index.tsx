@@ -48,7 +48,6 @@ export function CartProvider({
 
   const updateCartItemSellingPlan = useCallback(
     (merchandiseId: string, sellingPlanId: string | null) => {
-      // Get the current selling plan ID for this item
       const currentSellingPlanId =
         cart?.lines.find((line) => line.merchandise.id === merchandiseId)
           ?.sellingPlanAllocation?.sellingPlan?.id || null;
@@ -61,14 +60,19 @@ export function CartProvider({
     [cart]
   );
 
+  const setCart = useCallback((newCart: Cart | undefined) => {
+    dispatch({ type: 'SET_INITIAL_CART', payload: newCart });
+  }, []);
+
   const value = useMemo(
     () => ({
       cart,
       updateCartItem,
       addCartItem,
-      updateCartItemSellingPlan
+      updateCartItemSellingPlan,
+      setCart
     }),
-    [cart, updateCartItem, addCartItem, updateCartItemSellingPlan]
+    [cart, updateCartItem, addCartItem, updateCartItemSellingPlan, setCart]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

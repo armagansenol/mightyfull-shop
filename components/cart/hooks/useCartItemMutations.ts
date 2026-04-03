@@ -18,7 +18,6 @@ export function useDeleteCartItem(item: CartItem) {
       return removeItem(lineId);
     },
     actionType: 'delete',
-    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle,
@@ -37,7 +36,6 @@ export function useIncrementCartItem(item: CartItem, maxQuantity?: number) {
       return incrementItemQuantity(lineId, maxQuantity);
     },
     actionType: 'plus',
-    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
@@ -55,7 +53,6 @@ export function useDecrementCartItem(item: CartItem) {
       return decrementItemQuantity(lineId);
     },
     actionType: 'minus',
-    lineId,
     merchandiseId,
     sellingPlanId,
     productTitle
@@ -64,6 +61,7 @@ export function useDecrementCartItem(item: CartItem) {
 
 export function useUpdateSellingPlan(item: CartItem) {
   const lineId = item.id!;
+  const merchandiseId = item.merchandise.id;
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
 
@@ -77,7 +75,6 @@ export function useUpdateSellingPlan(item: CartItem) {
         sellingPlanId: newSellingPlanId || null
       });
 
-      // Call the onSuccess callback if provided and the operation was successful
       if (onSuccess && typeof result === 'object' && result.success) {
         onSuccess();
       }
@@ -85,8 +82,7 @@ export function useUpdateSellingPlan(item: CartItem) {
       return result;
     },
     actionType: 'update-selling-plan',
-    lineId,
-    merchandiseId: item.merchandise.id,
+    merchandiseId,
     sellingPlanId: currentSellingPlanId,
     successMessage: 'Subscription option updated'
   });
