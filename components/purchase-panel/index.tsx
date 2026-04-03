@@ -12,13 +12,6 @@ import { Quantity } from '@/components/quantity';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import {
   Tooltip,
   TooltipProvider,
   TooltipTrigger
@@ -26,7 +19,7 @@ import {
 import { Link } from '@/components/utility/link';
 import type { Product } from '@/lib/shopify/types';
 import { cn } from '@/lib/utils';
-import { type DeliveryInterval, PurchaseOption } from '@/types';
+import { PurchaseOption } from '@/types';
 
 export interface PurchasePanelProps {
   shopifyProduct: Product;
@@ -46,22 +39,11 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
   const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(
     PurchaseOption.oneTime
   );
-  const [sellingPlanId, setSellingPlanId] = useState<string>('');
-
-  useEffect(() => {
-    if (purchaseOption === PurchaseOption.oneTime) {
-      setSellingPlanId('');
-    } else if (
-      purchaseOption === PurchaseOption.subscription &&
-      shopifyProduct.sellingPlanGroups.nodes.length > 0
-    ) {
-      if (!sellingPlanId) {
-        setSellingPlanId(
-          shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
-        );
-      }
-    }
-  }, [purchaseOption, shopifyProduct.sellingPlanGroups.nodes, sellingPlanId]);
+  const sellingPlanId =
+    purchaseOption === PurchaseOption.subscription &&
+    shopifyProduct.sellingPlanGroups.nodes.length > 0
+      ? shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
+      : '';
 
   useEffect(() => {
     if (boxRef.current) {
@@ -187,79 +169,25 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
 
                 <div
                   className={cn(
-                    'font-poppins font-normal text-primary mt-10 opacity-30 transition-opacity duration-500 ease-in-out',
+                    'max-w-md overflow-hidden max-h-[0px] transition-all duration-700 ease-in-out',
                     {
-                      'opacity-100':
+                      'max-h-[400px]':
                         purchaseOption === PurchaseOption.subscription
                     }
                   )}
                 >
-                  <p className="block text-primary font-poppins font-semibold text-sm mb-1 ml-2">
-                    DELIVERY INTERVAL
-                  </p>
-                  <Select
-                    disabled={purchaseOption !== PurchaseOption.subscription}
-                    defaultValue={
-                      shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans
-                        .nodes[0].id
-                    }
-                    value={sellingPlanId}
-                    onValueChange={(value: DeliveryInterval) =>
-                      setSellingPlanId(value)
-                    }
-                  >
-                    <SelectTrigger
-                      className={cn(
-                        'w-10/12 max-w-sm border border-primary rounded-lg p-3',
-                        'text-primary font-poppins font-semibold text-sm',
-                        "appearance-none bg-[url(\"data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FFFAF3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e\")] bg-no-repeat bg-[right_0.5rem_center] bg-[length:1.5em_1.5em]"
-                      )}
-                    >
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent
-                      className="bg-sugar-milk border border-primary rounded-lg"
-                      data-lenis-prevent
-                    >
-                      {shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes.map(
-                        (option, i) => {
-                          return (
-                            <SelectItem
-                              className="font-poppins font-semibold py-4 text-primary text-base hover:bg-primary hover:text-sugar-milk transition-all duration-300 ease-in-out"
-                              value={option.id}
-                              key={i}
-                            >
-                              {option.name}
-                            </SelectItem>
-                          );
-                        }
-                      )}
-                    </SelectContent>
-                  </Select>
-                  <div
-                    className={cn(
-                      'max-w-md overflow-hidden max-h-[0px] transition-all duration-700 ease-in-out',
-                      {
-                        'max-h-[400px]':
-                          purchaseOption === PurchaseOption.subscription
-                      }
-                    )}
-                  >
-                    <article className="font-poppins font-normal text-primary text-[0.7rem] mt-4">
-                      When you subscribe to a product, you&apos;ll receive
-                      repeat deliveries based on the schedule you choose.
-                      Payments will be processed automatically through your
-                      selected payment method at checkout. Subscriptions renew
-                      automatically at the end of their term. Your order
-                      confirmation email includes links to manage or cancel your
-                      subscription easily. For any further questions, check out
-                      our{' '}
-                      <Link className="underline" href="/faq">
-                        FAQ
-                      </Link>{' '}
-                      or contact us directly!
-                    </article>
-                  </div>
+                  <article className="font-poppins font-normal text-primary text-[0.7rem] mt-4">
+                    Delivered monthly. Payments will be processed automatically
+                    through your selected payment method at checkout.
+                    Subscriptions renew automatically at the end of their term.
+                    Your order confirmation email includes links to manage or
+                    cancel your subscription easily. For any further questions,
+                    check out our{' '}
+                    <Link className="underline" href="/faq">
+                      FAQ
+                    </Link>{' '}
+                    or contact us directly!
+                  </article>
                 </div>
               </RadioGroup>
             </div>

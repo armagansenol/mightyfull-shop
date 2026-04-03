@@ -8,13 +8,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
 import { IconClose } from '@/components/icons';
 import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
 import type { CartItem } from '@/lib/shopify/types';
 
 function ResetButton({
@@ -85,66 +78,37 @@ function UpgradeButton({
   );
 }
 
-function SubscriptionSelector({
-  currentSellingPlanId,
+function SubscriptionLabel({
   currentSellingPlanName,
-  sellingPlans,
   isUpdating,
-  onSellingPlanChange,
   onReset,
   item
 }: {
-  currentSellingPlanId: string | null;
-  currentSellingPlanName: string | undefined;
-  sellingPlans: { id: string; name: string }[];
+  currentSellingPlanName: string;
   isUpdating: boolean;
-  onSellingPlanChange: (id: string) => void;
   onReset: () => void;
   item: CartItem;
 }) {
   return (
     <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
-      <div className="flex-1">
-        <Select
-          value={currentSellingPlanId || ''}
-          disabled={isUpdating}
-          onValueChange={onSellingPlanChange}
-        >
-          <SelectTrigger
-            className={cn(
-              'w-full h-12 bg-white border border-blue-ruin rounded-lg justify-center gap-2',
-              'text-lg font-bomstad-display font-medium text-blue-ruin'
-            )}
-          >
-            <SelectValue placeholder={currentSellingPlanName}>
-              {currentSellingPlanName}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            {sellingPlans.map((plan) => (
-              <SelectItem
-                className={cn(
-                  'w-full h-12',
-                  'text-lg font-bomstad-display font-medium text-blue-ruin'
-                )}
-                key={plan.id}
-                value={plan.id}
-              >
-                {plan.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div
+        className={cn(
+          'flex-1 h-12 bg-white border border-blue-ruin rounded-lg',
+          'flex items-center justify-center',
+          'text-lg font-bomstad-display font-medium text-blue-ruin'
+        )}
+      >
+        {currentSellingPlanName}
       </div>
 
       <ResetButton
         onClick={onReset}
-        disabled={isUpdating || !currentSellingPlanId}
-        isLoading={isUpdating && currentSellingPlanId === null}
+        disabled={isUpdating}
+        isLoading={isUpdating}
         ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
       />
 
-      {isUpdating && currentSellingPlanId !== null && (
+      {isUpdating && (
         <motion.div
           className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
           initial={{ opacity: 0 }}
@@ -174,7 +138,6 @@ export function EditSellingPlanButton({
     };
   }[];
 }) {
-  // Extract selling plans for easier access
   const sellingPlans = useMemo(
     () => sellingPlanGroups[0]?.sellingPlans.nodes || [],
     [sellingPlanGroups]
@@ -182,42 +145,33 @@ export function EditSellingPlanButton({
   const hasSellingPlans = sellingPlans.length > 0;
   const defaultSellingPlan = useMemo(() => sellingPlans[0]?.id, [sellingPlans]);
 
-  // Get the current selling plan ID from the cart item
   const currentSellingPlanId =
     item.sellingPlanAllocation?.sellingPlan?.id || null;
 
-  // State for the select dropdown visibility
   const [selectActive, setSelectActive] = useState(
     currentSellingPlanId !== null
   );
 
-  // Update selectActive when currentSellingPlanId changes
   useEffect(() => {
     setSelectActive(currentSellingPlanId !== null);
   }, [currentSellingPlanId]);
 
-  // Use the hook for updating the selling plan
   const { mutate: updateSellingPlan, isPending: isUpdating } =
     useUpdateSellingPlan(item);
 
-  // Find the current selling plan name for display
   const currentSellingPlanName = useMemo(
     () =>
       currentSellingPlanId
         ? sellingPlans.find((plan) => plan.id === currentSellingPlanId)?.name ||
-          'Selected plan'
-        : sellingPlans[0]?.name,
+          'Monthly subscription'
+        : sellingPlans[0]?.name || 'Monthly subscription',
     [currentSellingPlanId, sellingPlans]
   );
 
-  // Handler functions
-  const handleUpdateSellingPlan = useCallback(
-    (sellingPlanId: string) => {
-      if (sellingPlanId === currentSellingPlanId || isUpdating) return;
-      updateSellingPlan({ newSellingPlanId: sellingPlanId });
-    },
-    [currentSellingPlanId, updateSellingPlan, isUpdating]
-  );
+  const handleUpgrade = useCallback(() => {
+    if (isUpdating) return;
+    updateSellingPlan({ newSellingPlanId: defaultSellingPlan });
+  }, [defaultSellingPlan, updateSellingPlan, isUpdating]);
 
   const handleResetToOneTime = useCallback(() => {
     if (!currentSellingPlanId || isUpdating) return;
@@ -227,7 +181,7 @@ export function EditSellingPlanButton({
   if (!hasSellingPlans) return null;
 
   const showUpgradeButton = !selectActive && !currentSellingPlanId;
-  const showSelectionUI = selectActive || currentSellingPlanId !== null;
+  const showSubscriptionLabel = selectActive || currentSellingPlanId !== null;
 
   return (
     <div
@@ -244,29 +198,21 @@ export function EditSellingPlanButton({
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            <UpgradeButton
-              isUpdating={isUpdating}
-              onClick={() =>
-                !isUpdating && handleUpdateSellingPlan(defaultSellingPlan)
-              }
-            />
+            <UpgradeButton isUpdating={isUpdating} onClick={handleUpgrade} />
           </motion.div>
         )}
 
-        {showSelectionUI && (
+        {showSubscriptionLabel && (
           <motion.div
-            key="subscription-selector"
+            key="subscription-label"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            <SubscriptionSelector
-              currentSellingPlanId={currentSellingPlanId}
+            <SubscriptionLabel
               currentSellingPlanName={currentSellingPlanName}
-              sellingPlans={sellingPlans}
               isUpdating={isUpdating}
-              onSellingPlanChange={handleUpdateSellingPlan}
               onReset={handleResetToOneTime}
               item={item}
             />
