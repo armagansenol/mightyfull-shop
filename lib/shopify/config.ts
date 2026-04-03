@@ -7,16 +7,30 @@ export enum CacheStrategy {
   FORCE_CACHE = 'force-cache'
 }
 
+const domain = process.env.SHOPIFY_STORE_DOMAIN;
+const accessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+if (!domain) {
+  throw new Error(
+    'Missing SHOPIFY_STORE_DOMAIN environment variable. Your site will not work without it.'
+  );
+}
+
+if (!accessToken) {
+  throw new Error(
+    'Missing SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable. Your site will not work without it.'
+  );
+}
+
+const shopifyDomain = ensureStartsWith(domain, 'https://');
+
 export const SHOPIFY_CONFIG = {
-  domain: process.env.SHOPIFY_STORE_DOMAIN
-    ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
-    : '',
-  endpoint: `${process.env.SHOPIFY_STORE_DOMAIN ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://') : ''}${SHOPIFY_GRAPHQL_API_ENDPOINT}`,
-  accessToken: process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
+  domain: shopifyDomain,
+  endpoint: `${shopifyDomain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`,
+  accessToken,
   defaultCache: CacheStrategy.NO_CACHE,
   defaultHeaders: {
     'Content-Type': 'application/json',
-    'X-Shopify-Storefront-Access-Token':
-      process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!
+    'X-Shopify-Storefront-Access-Token': accessToken
   }
 } as const;

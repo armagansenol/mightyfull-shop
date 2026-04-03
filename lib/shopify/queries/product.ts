@@ -34,11 +34,3 @@ export const getProductRecommendationsQuery = /* GraphQL */ `
   }
   ${productFragment}
 `;
-
-export const getProductQueryTest = /* GraphQL */ `
-  query getProduct($handle: String!) {
-    product(handle: $handle) {
-      title
-    }
-  }
-`;

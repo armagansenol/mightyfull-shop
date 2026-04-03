@@ -41,8 +41,6 @@ export async function subscribeToBackInStock(
       }
     };
 
-    console.log('Sending request to Klaviyo:', JSON.stringify(requestBody));
-
     const options = {
       method: 'POST',
       headers: {
@@ -54,23 +52,7 @@ export async function subscribeToBackInStock(
       body: JSON.stringify(requestBody)
     };
 
-    // Log request details (excluding sensitive info)
-    console.log('Request URL:', url);
-    console.log('Request headers:', {
-      accept: options.headers.accept,
-      revision: options.headers.revision,
-      'content-type': options.headers['content-type'],
-      // Don't log the full Authorization header
-      Authorization: 'Klaviyo-API-Key [REDACTED]'
-    });
-
     const response = await fetch(url, options);
-
-    console.log('Response status:', response.status);
-    console.log(
-      'Response headers:',
-      Object.fromEntries([...response.headers.entries()])
-    );
 
     // Handle different response status codes
     if (response.status === 202) {
@@ -86,19 +68,11 @@ export async function subscribeToBackInStock(
         message: 'Your back in stock request has been submitted successfully.'
       };
     } else if (!response.ok) {
-      // Handle error responses
-      let errorText = '';
-      try {
-        const errorData = await response.json();
-        errorText = JSON.stringify(errorData);
-      } catch {
-        errorText =
-          (await response.text()) || `Status code: ${response.status}`;
-      }
-
+      const errorText = await response
+        .text()
+        .catch(() => `Status code: ${response.status}`);
       throw new Error(`Klaviyo API error: ${errorText}`);
     } else {
-      // Handle other successful responses (200 OK, etc.)
       const responseText = await response.text();
       const data = responseText ? JSON.parse(responseText) : {};
 

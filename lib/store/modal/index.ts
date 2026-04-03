@@ -14,12 +14,10 @@ export const useStore = create<State>((set) => ({
   isOpen: false,
   setIsOpen: (status) => set({ isOpen: status }),
   setContent: (node) => {
-    set({ content: node });
-    set({ isOpen: true });
+    set({ content: node, isOpen: true });
   },
   closeModal: () => {
-    set({ isOpen: false });
-    set({ content: null });
+    set({ isOpen: false, content: null });
   }
 }));
 

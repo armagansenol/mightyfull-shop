@@ -8,6 +8,8 @@ interface LogEntry {
   duration?: number;
 }
 
+const MAX_LOG_ENTRIES = 1000;
+
 class ShopifyLogger {
   private static instance: ShopifyLogger;
   private logs: LogEntry[] = [];
@@ -35,28 +37,35 @@ class ShopifyLogger {
     };
   }
 
+  private addLog(log: LogEntry): void {
+    this.logs.push(log);
+    if (this.logs.length > MAX_LOG_ENTRIES) {
+      this.logs = this.logs.slice(-MAX_LOG_ENTRIES);
+    }
+  }
+
   info(message: string, data?: unknown): void {
     const log = this.formatLog('info', message, data);
-    this.logs.push(log);
+    this.addLog(log);
     console.log(`[Shopify] ${message}`, data || '');
   }
 
   warn(message: string, data?: unknown): void {
     const log = this.formatLog('warn', message, data);
-    this.logs.push(log);
+    this.addLog(log);
     console.warn(`[Shopify] ${message}`, data || '');
   }
 
   error(message: string, data?: unknown): void {
     const log = this.formatLog('error', message, data);
-    this.logs.push(log);
+    this.addLog(log);
     console.error(`[Shopify] ${message}`, data || '');
   }
 
   debug(message: string, data?: unknown): void {
     if (!this.isDebugEnabled) return;
     const log = this.formatLog('debug', message, data);
-    this.logs.push(log);
+    this.addLog(log);
     console.debug(`[Shopify] ${message}`, data || '');
   }
 
@@ -65,7 +74,7 @@ class ShopifyLogger {
       ...this.formatLog('info', `API Call: ${operation}`, data),
       duration
     };
-    this.logs.push(log);
+    this.addLog(log);
     console.log(`[Shopify] ${operation} took ${duration}ms`, data || '');
   }
 

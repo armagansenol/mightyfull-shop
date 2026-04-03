@@ -46,22 +46,63 @@ type ShopifyResponse = {
   };
 };
 
+export class ShopifyApiError extends Error {
+  status: number;
+  query?: string;
+
+  constructor(message: string, status: number, query?: string) {
+    super(message);
+    this.name = 'ShopifyApiError';
+    this.status = status;
+    this.query = query;
+  }
+}
+
+const RETRY_STATUS_CODES = [429, 500, 502, 503, 504];
+const MAX_RETRIES = 3;
+const BASE_DELAY_MS = 500;
+
+async function withRetry<T>(
+  fn: () => Promise<T>,
+  retries = MAX_RETRIES
+): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      const status = error instanceof ShopifyApiError ? error.status : 0;
+      const isRetryable = RETRY_STATUS_CODES.includes(status);
+
+      if (!isRetryable || attempt === retries) {
+        throw error;
+      }
+
+      const delay = BASE_DELAY_MS * 2 ** attempt;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+
+  throw new Error(
+    'Unexpected: retry loop exited without returning or throwing'
+  );
+}
+
 const handleShopifyError = (error: unknown, query?: string): never => {
   if (isShopifyError(error)) {
     shopifyLogger.error('Shopify API Error', { error, query });
-    throw {
-      cause: error.cause?.toString() || 'unknown',
-      status: error.status || 500,
-      message: error.message,
+    throw new ShopifyApiError(
+      error.message?.toString() || 'Unknown Shopify error',
+      error.status || 500,
       query
-    };
+    );
   }
 
   shopifyLogger.error('Unexpected Error', { error, query });
-  throw {
-    error,
+  throw new ShopifyApiError(
+    error instanceof Error ? error.message : 'Unknown error',
+    500,
     query
-  };
+  );
 };
 
 export async function shopifyFetch<T>({
@@ -77,38 +118,40 @@ export async function shopifyFetch<T>({
   tags?: string[];
   variables?: ExtractVariables<T>;
 }): Promise<{ status: number; body: T }> {
-  const startTime = performance.now();
-  try {
-    const result = await fetch(SHOPIFY_CONFIG.endpoint, {
-      method: 'POST',
-      headers: {
-        ...SHOPIFY_CONFIG.defaultHeaders,
-        ...headers
-      },
-      body: JSON.stringify({
-        ...(query && { query }),
-        ...(variables && { variables })
-      }),
-      cache,
-      ...(tags && { next: { tags } })
-    });
+  return withRetry(async () => {
+    const startTime = performance.now();
+    try {
+      const result = await fetch(SHOPIFY_CONFIG.endpoint, {
+        method: 'POST',
+        headers: {
+          ...SHOPIFY_CONFIG.defaultHeaders,
+          ...headers
+        },
+        body: JSON.stringify({
+          ...(query && { query }),
+          ...(variables && { variables })
+        }),
+        cache,
+        ...(tags && { next: { tags } })
+      });
 
-    const body = await result.json();
+      const body = await result.json();
 
-    if (body.errors) {
-      throw body.errors[0];
+      if (body.errors) {
+        throw body.errors[0];
+      }
+
+      const duration = performance.now() - startTime;
+      shopifyLogger.logApiCall(query, duration, { variables });
+
+      return {
+        status: result.status,
+        body
+      };
+    } catch (e) {
+      return handleShopifyError(e, query);
     }
-
-    const duration = performance.now() - startTime;
-    shopifyLogger.logApiCall(query, duration, { variables });
-
-    return {
-      status: result.status,
-      body
-    };
-  } catch (e) {
-    return handleShopifyError(e, query);
-  }
+  });
 }
 
 const createCartService = () => {
@@ -248,46 +291,6 @@ export async function getProducts({
     ShopifyTransformer.removeEdgesAndNodes(res.body.data.products)
   );
 }
-
-// This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
-// export async function revalidate(req: NextRequest): Promise<NextResponse> {
-//   // We always need to respond with a 200 status code to Shopify,
-//   // otherwise it will continue to retry the request.
-//   const collectionWebhooks = [
-//     'collections/create',
-//     'collections/delete',
-//     'collections/update'
-//   ];
-//   const productWebhooks = [
-//     'products/create',
-//     'products/delete',
-//     'products/update'
-//   ];
-//   const topic = (await headers()).get('x-shopify-topic') || 'unknown';
-//   const secret = req.nextUrl.searchParams.get('secret');
-//   const isCollectionUpdate = collectionWebhooks.includes(topic);
-//   const isProductUpdate = productWebhooks.includes(topic);
-
-//   if (!secret || secret !== process.env.SHOPIFY_REVALIDATION_SECRET) {
-//     console.error('Invalid revalidation secret.');
-//     return NextResponse.json({ status: 401 });
-//   }
-
-//   if (!isCollectionUpdate && !isProductUpdate) {
-//     // We don't need to revalidate anything for any other topics.
-//     return NextResponse.json({ status: 200 });
-//   }
-
-//   if (isCollectionUpdate) {
-//     revalidateTag(TAGS.collections);
-//   }
-
-//   if (isProductUpdate) {
-//     revalidateTag(TAGS.products);
-//   }
-
-//   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
-// }
 
 export async function getShop(): Promise<ShopifyShop> {
   const res = await shopifyFetch<ShopifyShopOperation>({

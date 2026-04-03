@@ -6,24 +6,27 @@ import { getProduct } from '@/lib/shopify';
 import type { ProductHighlightQueryResult } from '@/types';
 
 export async function getProductHighlight() {
-  // First, fetch the product highlight from Sanity
   const result = await sanityFetch<ProductHighlightQueryResult>({
     query: PRODUCT_HIGHLIGHT_QUERY,
     tags: ['productHighlight']
   });
 
-  // Then, fetch the corresponding Shopify product data for each card
-  const cardsWithProducts = await Promise.all(
+  const results = await Promise.allSettled(
     result.productHighlight.items.map(async (card) => {
       const shopifyProduct = await getProduct(card.product.shopifySlug);
-
-      // Return a combined object with both Sanity and Shopify data
-      return {
-        ...card,
-        shopifyProduct
-      };
+      return { ...card, shopifyProduct };
     })
   );
 
-  return cardsWithProducts;
+  return results
+    .filter(
+      (
+        result
+      ): result is PromiseFulfilledResult<
+        (typeof results)[number] extends PromiseSettledResult<infer T>
+          ? T
+          : never
+      > => result.status === 'fulfilled'
+    )
+    .map((result) => result.value);
 }

@@ -6,24 +6,27 @@ import { getProduct } from '@/lib/shopify';
 import type { AnimatedCardProps } from '@/types';
 
 export async function getAllProducts() {
-  // First, fetch all the animated cards from Sanity
   const cards = await sanityFetch<AnimatedCardProps[]>({
     query: ANIMATED_CARDS_QUERY,
     tags: ['animatedCards']
   });
 
-  // Then, fetch the corresponding Shopify product data for each card
-  const cardsWithProducts = await Promise.all(
+  const results = await Promise.allSettled(
     cards.map(async (card) => {
       const shopifyProduct = await getProduct(card.product.shopifySlug);
-
-      // Return a combined object with both Sanity and Shopify data
-      return {
-        ...card,
-        shopifyProduct
-      };
+      return { ...card, shopifyProduct };
     })
   );
 
-  return cardsWithProducts;
+  return results
+    .filter(
+      (
+        result
+      ): result is PromiseFulfilledResult<
+        (typeof results)[number] extends PromiseSettledResult<infer T>
+          ? T
+          : never
+      > => result.status === 'fulfilled'
+    )
+    .map((result) => result.value);
 }
