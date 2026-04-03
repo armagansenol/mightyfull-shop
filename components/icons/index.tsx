@@ -1,3 +1,4 @@
+import type React from 'react';
 import { SocialMedia } from 'types';
 
 interface Props {
@@ -748,7 +749,10 @@ export const IconAsterisk = (props: Props) => {
   );
 };
 
-export const socialIcons: Record<SocialMedia, (fill: string) => JSX.Element> = {
+export const socialIcons: Record<
+  SocialMedia,
+  (fill: string) => React.JSX.Element
+> = {
   [SocialMedia.tiktok]: (fill) => <IconTiktok fill={fill} />,
   [SocialMedia.facebook]: (fill) => <IconFacebook fill={fill} />,
   [SocialMedia.instagram]: (fill) => <IconInstagram fill={fill} />,
