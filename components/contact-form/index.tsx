@@ -13,6 +13,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -30,11 +31,12 @@ const getFormSchema = () =>
 type FormValues = z.infer<ReturnType<typeof getFormSchema>>;
 
 const commonInputStyles =
-  'bg-transparent border border-blue-ruin rounded-lg px-0 transition-colors duration-300 ease-in-out px-4 py-6 placeholder:text-blue-ruin placeholder:font-bold text-blue-ruin font-medium focus:placeholder:opacity-30 placeholder:transition-opacity duration-300 ease-in-out';
+  'bg-transparent border border-blue-ruin rounded-lg px-4 py-6 transition-colors duration-300 ease-in-out placeholder:text-blue-ruin/50 placeholder:font-bold text-blue-ruin font-medium focus:placeholder:opacity-20 placeholder:transition-opacity duration-300 ease-in-out';
 
 interface FormInputProps {
   name: keyof FormValues;
   control: Control<FormValues>;
+  label: string;
   placeholder: string;
   type?: string;
   className?: string;
@@ -43,6 +45,7 @@ interface FormInputProps {
 const FormInput = ({
   name,
   control,
+  label,
   placeholder,
   type = 'text',
   className
@@ -52,6 +55,9 @@ const FormInput = ({
     name={name}
     render={({ field }) => (
       <FormItem className={className}>
+        <FormLabel className="font-poppins font-semibold text-sm text-blue-ruin">
+          {label}
+        </FormLabel>
         <FormControl>
           <Input
             placeholder={placeholder}
@@ -148,12 +154,14 @@ export function ContactForm() {
             className="col-span-6"
             control={form.control}
             name="name"
+            label="NAME"
             placeholder="NAME"
           />
           <FormInput
             className="col-span-6"
             control={form.control}
             name="surname"
+            label="SURNAME"
             placeholder="SURNAME"
           />
         </div>
@@ -163,6 +171,7 @@ export function ContactForm() {
             className="col-span-6"
             control={form.control}
             name="email"
+            label="EMAIL"
             type="email"
             placeholder="EMAIL"
           />
@@ -170,6 +179,7 @@ export function ContactForm() {
             className="col-span-6"
             control={form.control}
             name="phone"
+            label="PHONE NUMBER"
             type="tel"
             placeholder="PHONE NUMBER"
           />
@@ -179,6 +189,9 @@ export function ContactForm() {
           name="message"
           render={({ field }) => (
             <FormItem className="col-span-12">
+              <FormLabel className="font-poppins font-semibold text-sm text-blue-ruin">
+                MESSAGE
+              </FormLabel>
               <FormControl>
                 <Textarea
                   {...field}
