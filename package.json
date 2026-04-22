@@ -1,0 +1,15 @@
+{
+  "name": "mightyfull-shop",
+  "private": true,
+  "scripts": {
+    "dev:storefront": "pnpm --filter storefront dev",
+    "dev:studio": "pnpm --filter studio dev",
+    "build:storefront": "pnpm --filter storefront build",
+    "build:studio": "pnpm --filter studio build",
+    "deploy:studio": "pnpm --filter studio deploy"
+  },
+  "engines": {
+    "node": ">=22.12",
+    "pnpm": ">=10"
+  }
+}
