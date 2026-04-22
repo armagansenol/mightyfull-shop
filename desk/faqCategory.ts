@@ -3,8 +3,8 @@ import defineStructure from '../utils/defineStructure'
 
 export default defineStructure((S, context) =>
   orderableDocumentListDeskItem({
-    type: 'faq',
-    title: 'FAQ Questions',
+    type: 'faqCategory',
+    title: 'FAQ Categories',
     S,
     context,
   }),

@@ -1,3 +1,5 @@
+import {EarthGlobeIcon} from '@sanity/icons'
+import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 const TITLE = 'Layout'
@@ -8,16 +10,27 @@ export default defineType({
   type: 'document',
   groups: [
     {
-      name: 'home',
-      title: 'HOME',
+      name: 'homePage',
+      title: 'HOME PAGE',
+    },
+    {
+      name: 'productPage',
+      title: 'PRODUCT PAGE',
     },
   ],
   fields: [
+    // Noticebar
+    defineField({
+      name: 'noticebar',
+      title: 'Noticebar',
+      type: 'noticebar',
+    }),
+    // Product Highlight
     defineField({
       name: 'productHighlight',
       title: 'Product Highlight Section',
       type: 'object',
-      group: 'home',
+      group: 'homePage',
       fields: [
         {
           name: 'items',
@@ -31,45 +44,72 @@ export default defineType({
         },
       ],
     }),
+    // Image Carousel
     defineField({
-      name: 'featureHighlight',
-      title: 'Feature Highlight Section',
-      type: 'object',
-      group: 'home',
-      fields: [
+      name: 'imageCarousel',
+      title: 'Image Carousel',
+      type: 'array',
+      icon: ImageIcon,
+      group: 'productPage',
+      of: [
         {
-          name: 'items',
-          type: 'array',
-          of: [
-            {
-              name: 'card',
-              title: 'Card',
-              type: 'object',
-              fields: [
-                {
-                  name: 'title',
-                  title: 'Title',
-                  type: 'string',
-                },
-                {
-                  name: 'description',
-                  title: 'Description',
-                  type: 'string',
-                },
-                {
-                  name: 'icon',
-                  title: 'Card Icon',
-                  type: 'image',
-                },
-                {
-                  name: 'colorTheme',
-                  title: 'Color Theme',
-                  type: 'reference',
-                  to: [{type: 'colorTheme'}],
-                },
-              ],
-            },
+          type: 'image',
+          name: 'image',
+          title: 'Image',
+        },
+      ],
+    }),
+    // Social Links
+    defineField({
+      name: 'socialLinks',
+      title: 'Social Media Links',
+      type: 'array',
+      icon: EarthGlobeIcon,
+      of: [
+        {
+          type: 'object',
+          name: 'socialLink',
+          title: 'Social Link',
+          fields: [
+            defineField({
+              name: 'platform',
+              title: 'Platform',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Facebook', value: 'facebook'},
+                  {title: 'Twitter', value: 'twitter'},
+                  {title: 'Instagram', value: 'instagram'},
+                  {title: 'LinkedIn', value: 'linkedin'},
+                  {title: 'YouTube', value: 'youtube'},
+                  {title: 'TikTok', value: 'tiktok'},
+                  {title: 'Other', value: 'other'},
+                ],
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              validation: (Rule) =>
+                Rule.required().uri({
+                  scheme: ['http', 'https'],
+                }),
+            }),
           ],
+          preview: {
+            select: {
+              title: 'platform',
+              subtitle: 'url',
+            },
+            prepare({title, subtitle}) {
+              return {
+                title: title === 'other' ? 'Other' : title.charAt(0).toUpperCase() + title.slice(1),
+                subtitle: subtitle,
+              }
+            },
+          },
         },
       ],
     }),

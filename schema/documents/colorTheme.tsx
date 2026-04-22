@@ -17,16 +17,16 @@ export default defineType({
   fields: [
     // Text color
     defineField({
-      name: 'text',
-      title: 'Text',
+      name: 'primary',
+      title: 'Primary',
       type: 'color',
       options: {disableAlpha: true},
       validation: (rule) => rule.required(),
     }),
     // Background color
     defineField({
-      name: 'background',
-      title: 'Background',
+      name: 'secondary',
+      title: 'Secondary',
       type: 'color',
       options: {disableAlpha: true},
       validation: (rule) => rule.required(),
@@ -41,17 +41,17 @@ export default defineType({
   ],
   preview: {
     select: {
-      backgroundColor: 'background.hex',
-      textColor: 'text.hex',
-      tertiary: 'tertiary.hex',
+      secondaryColor: 'secondary.hex',
+      primaryColor: 'primary.hex',
+      tertiaryColor: 'tertiary.hex',
       title: 'title',
     },
     prepare(selection) {
-      const {backgroundColor, textColor, tertiary} = selection
+      const {secondaryColor, primaryColor, tertiaryColor} = selection
 
       return {
-        media: <ColorTheme background={backgroundColor} text={textColor} />,
-        title: `${textColor || '(No color)'} / ${backgroundColor || '(No color)'} / ${tertiary || '(No color)'}`,
+        media: <ColorTheme background={secondaryColor} text={primaryColor} />,
+        title: `${primaryColor || '(No color)'} / ${secondaryColor || '(No color)'} / ${tertiaryColor || '(No color)'}`,
       }
     },
   },

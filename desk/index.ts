@@ -1,14 +1,18 @@
 import {StructureResolver} from 'sanity/structure'
 
+import {EnvelopeIcon, BulbOutlineIcon} from '@sanity/icons'
 import animatedCards from './animatedCards'
 import colorThemes from './colorThemes'
+import faq from './faq'
 import layouts from './layouts'
 import products from './products'
 import settings from './settings'
+import stores from './stores'
 import testimonials from './testimonials'
-import faq from './faq'
-
+import faqCategory from './faqCategory'
+import productPageFaq from './product-page-faq'
 /**
+import faqCategory from '../schema/documents/faqCategory'
  * Desk structure overrides
  *
  * Sanity Studio automatically lists document types out of the box.
@@ -40,12 +44,26 @@ export const structure: StructureResolver = (S, context) =>
       layouts(S, context),
       S.divider(),
       products(S, context),
-      S.divider(),
       colorThemes(S, context),
       animatedCards(S, context),
       testimonials(S, context),
-      S.divider(),
+      stores(S, context),
       settings(S, context),
-      S.divider(),
-      faq(S, context),
+      S.listItem()
+        .title('FAQ')
+        .icon(BulbOutlineIcon)
+        .child(
+          S.list()
+            .title('FAQ')
+            .items([faqCategory(S, context), faq(S, context), productPageFaq(S, context)]),
+        ),
+      S.listItem()
+        .title('Contact Form Submissions')
+        .icon(EnvelopeIcon)
+        .child(
+          S.documentList()
+            .title('Contact Form Submissions')
+            .filter('_type == "contactForm"')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+        ),
     ])

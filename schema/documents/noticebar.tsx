@@ -1,34 +1,32 @@
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
-  name: 'faq',
-  title: 'FAQ',
+  name: 'noticebar',
+  title: 'Noticebar',
   type: 'document',
   fields: [
     defineField({
-      name: 'question',
-      title: 'Question',
+      name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'answer',
-      title: 'Answer',
-      type: 'array',
-      of: [{type: 'block'}],
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
       validation: (rule) => rule.required(),
     }),
   ],
   preview: {
     select: {
-      question: 'question',
-      answer: 'answer',
+      title: 'title',
+      active: 'active',
     },
     prepare(selection) {
-      const {question, answer} = selection
+      const {title} = selection
       return {
-        title: question,
-        subtitle: answer,
+        title: title,
       }
     },
   },

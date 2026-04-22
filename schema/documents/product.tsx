@@ -75,16 +75,38 @@ export default defineType({
       group: 'editorial',
     }),
     defineField({
+      name: 'productPageFaq',
+      title: 'Product Page FAQ',
+      type: 'productPageFaq',
+      group: 'editorial',
+      readOnly: true,
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'array',
-      of: [{type: 'block'}],
       group: 'editorial',
+      of: [
+        {
+          type: 'block',
+          styles: [{title: 'Normal', value: 'normal'}],
+          marks: {
+            decorators: [
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Underline', value: 'underline'},
+            ],
+            annotations: [],
+          },
+          lists: [],
+        },
+      ],
     }),
     defineField({
-      name: 'specs',
-      title: 'Product Specs',
-      type: 'specs',
+      name: 'productSpecifications',
+      title: 'Product Specifications',
+      type: 'array',
+      of: [{type: 'productSpecification'}],
       group: 'editorial',
     }),
     defineField({

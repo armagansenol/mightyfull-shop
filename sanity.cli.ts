@@ -5,5 +5,5 @@ export default defineCliConfig({
     projectId: process.env.SANITY_STUDIO_PROJECT_ID!,
     dataset: process.env.SANITY_STUDIO_DATASET!,
   },
-  autoUpdates: true,
+  deployment: {autoUpdates: true, appId: 'm3qd6abdtd45f10iz7cqpder'},
 })

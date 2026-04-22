@@ -9,6 +9,12 @@ import colorTheme from './documents/colorTheme'
 import product from './documents/product'
 import productCollection from './documents/productCollection'
 import faq from './documents/faq'
+import productPageFaq from './documents/product-page-faq'
+import store from './documents/store'
+import noticebar from './documents/noticebar'
+import contactForm from './documents/contactForm'
+import productSpecification from './documents/productSpecification'
+import faqCategory from './documents/faqCategory'
 
 // Singleton document types
 import settings from './singletons/settings'
@@ -27,7 +33,6 @@ import moduleInstagram from './objects/module/instagram'
 import moduleTaggedProducts from './objects/module/taggedProducts'
 import placeholderString from './objects/placeholderString'
 import productOption from './objects/productOption'
-import productSpecs from './objects/productSpecs'
 import proxyString from './objects/proxyString'
 import seoHome from './objects/seo/home'
 import seoPage from './objects/seo/page'
@@ -35,14 +40,15 @@ import seoShopify from './objects/seo/shopify'
 import shopifyCollection from './objects/shopifyCollection'
 import shopifyCollectionRule from './objects/shopifyCollectionRule'
 import shopifyProduct from './objects/shopifyProduct'
+import shopifyProductVariant from './objects/shopifyProductVariant'
 
 // Block content
 import body from './blocks/body'
 import simpleBlockContent from './blocks/simpleBlockContent'
 import animatedCard from './documents/animatedCard'
 import testimonial from './documents/testimonial'
-import shopifyProductVariant from './objects/shopifyProductVariant'
 import layouts from './singletons/layouts'
+
 const annotations = [annotationLinkEmail, annotationLinkExternal, annotationLinkInternal]
 
 const documents = [
@@ -53,6 +59,11 @@ const documents = [
   productCollection,
   testimonial,
   faq,
+  faqCategory,
+  store,
+  noticebar,
+  productSpecification,
+  productPageFaq,
 ]
 
 const singletons = [settings, layouts]
@@ -62,7 +73,6 @@ const blocks = [body, simpleBlockContent]
 const objects = [
   customProductOptionColor,
   customProductOptionSize,
-  productSpecs,
   label,
   linkExternal,
   linkInternal,
@@ -82,6 +92,7 @@ const objects = [
   shopifyCollectionRule,
   shopifyProduct,
   shopifyProductVariant,
+  contactForm,
 ]
 
 export const types = [...annotations, ...documents, ...singletons, ...objects, ...blocks]
