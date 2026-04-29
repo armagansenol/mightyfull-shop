@@ -57,8 +57,6 @@ export async function subscribeToBackInStock(
     // Handle different response status codes
     if (response.status === 202) {
       // 202 Accepted - Request was successful but no content returned
-      console.log('Back in stock subscription request accepted by Klaviyo');
-
       if (revalidationPath) {
         revalidatePath(revalidationPath);
       }

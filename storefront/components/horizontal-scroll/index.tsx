@@ -75,11 +75,6 @@ export default function HorizontalScroll() {
         containerAnimation: scrollTween,
         start: 'center 65%',
         end: 'center 51%',
-        onEnter: () => console.log('enter'),
-        onLeave: () => console.log('leave'),
-        onEnterBack: () => console.log('enterBack'),
-        onLeaveBack: () => console.log('leaveBack'),
-        onToggle: (self) => console.log('active', self.isActive),
         id: '4'
       });
 

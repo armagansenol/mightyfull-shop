@@ -14,7 +14,7 @@ export function successToast(toast: Omit<ToastProps, 'id'>) {
         toast.button
           ? {
               label: toast.button.label,
-              onClick: () => console.log('Button clicked')
+              onClick: () => {}
             }
           : undefined
       }

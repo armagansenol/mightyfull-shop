@@ -26,22 +26,6 @@ async function cleanupZeroQuantityItems(
     // Find any line items with zero quantity
     const zeroQuantityItems = cart.lines.filter((line) => line.quantity === 0);
 
-    // Debug: Log zero quantity items if found
-    if (zeroQuantityItems.length > 0) {
-      console.log(
-        `Found ${zeroQuantityItems.length} zero-quantity items to remove:`,
-        JSON.stringify(
-          zeroQuantityItems.map((item) => ({
-            id: item.id,
-            merchandiseId: item.merchandise.id,
-            quantity: item.quantity
-          })),
-          null,
-          2
-        )
-      );
-    }
-
     if (zeroQuantityItems.length === 0) {
       return false; // No cleanup needed
     }
@@ -52,11 +36,6 @@ async function cleanupZeroQuantityItems(
       .map((item) => item.id as string);
 
     if (lineIdsToRemove.length > 0) {
-      console.log(
-        `Removing ${lineIdsToRemove.length} zero-quantity items:`,
-        lineIdsToRemove
-      );
-
       // Perform the removal
       await cartService.remove(cartId, lineIdsToRemove);
       updateTag(TAGS.cart);
@@ -67,19 +46,12 @@ async function cleanupZeroQuantityItems(
         updatedCart?.lines.filter((line) => line.quantity === 0) || [];
 
       if (remainingZeroItems.length > 0) {
-        console.log(
-          `Warning: ${remainingZeroItems.length} zero-quantity items still remain after cleanup`
-        );
-
         // If we still have retries left, try again
         if (maxRetries > 0) {
-          console.log(`Retrying cleanup (${maxRetries} retries left)...`);
           // Wait a short time before retrying to allow Shopify to process the previous request
           await new Promise((resolve) => setTimeout(resolve, 500));
           return await cleanupZeroQuantityItems(cartId, maxRetries - 1);
         }
-      } else {
-        console.log('Successfully removed all zero-quantity items');
       }
 
       return true;
@@ -110,21 +82,12 @@ async function withCartCleanup<T>(
     // Perform the requested operation
     const result = await operation();
 
-    console.log('Operation completed, running cart cleanup...');
-
     // Clean up any zero-quantity items
-    const cleanupResult = await cleanupZeroQuantityItems(cartId);
-
-    if (cleanupResult) {
-      console.log('Cart cleanup completed: items were removed');
-    } else {
-      console.log('Cart cleanup completed: no items needed removal');
-    }
+    await cleanupZeroQuantityItems(cartId);
 
     return result;
   } catch (error) {
     // If the operation fails, still try to clean up the cart
-    console.log('Operation failed, attempting cart cleanup anyway...');
 
     try {
       await cleanupZeroQuantityItems(cartId);

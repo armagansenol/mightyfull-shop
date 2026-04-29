@@ -50,8 +50,6 @@ export function ProductHighlightCarousel({
     if (!emblaApi) return;
     setCurrentSlide(emblaApi.selectedScrollSnap());
 
-    // Add any other logic you want to execute when the slide changes
-    // console.log("Slide changed to:", emblaApi.selectedScrollSnap())
   }, [emblaApi]);
 
   useEffect(() => {
