@@ -18,6 +18,7 @@ import faqCategory from './documents/faqCategory'
 
 // Singleton document types
 import settings from './singletons/settings'
+import policy from './singletons/policy'
 
 // Object types
 import customProductOptionColor from './objects/customProductOption/color'
@@ -66,7 +67,7 @@ const documents = [
   productPageFaq,
 ]
 
-const singletons = [settings, layouts]
+const singletons = [settings, layouts, policy]
 
 const blocks = [body, simpleBlockContent]
 

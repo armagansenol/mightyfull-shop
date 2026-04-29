@@ -6,14 +6,14 @@ import { POLICY_IDS, POLICY_QUERY } from '@/lib/sanity/policy';
 import type { Policy } from '@/types';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | MIGHTYFULL'
+  title: 'Refund Policy | MIGHTYFULL'
 };
 
-export default async function PrivacyPolicyRoute() {
+export default async function RefundPolicyRoute() {
   const policy = await sanityFetch<Policy | null>({
     query: POLICY_QUERY,
-    qParams: { id: POLICY_IDS.privacyPolicy },
-    tags: ['policy', `policy:${POLICY_IDS.privacyPolicy}`]
+    qParams: { id: POLICY_IDS.refundPolicy },
+    tags: ['policy', `policy:${POLICY_IDS.refundPolicy}`]
   });
 
   return <PolicyPage policy={policy} />;

@@ -6,14 +6,14 @@ import { POLICY_IDS, POLICY_QUERY } from '@/lib/sanity/policy';
 import type { Policy } from '@/types';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | MIGHTYFULL'
+  title: 'Terms of Service | MIGHTYFULL'
 };
 
-export default async function PrivacyPolicyRoute() {
+export default async function TermsOfServiceRoute() {
   const policy = await sanityFetch<Policy | null>({
     query: POLICY_QUERY,
-    qParams: { id: POLICY_IDS.privacyPolicy },
-    tags: ['policy', `policy:${POLICY_IDS.privacyPolicy}`]
+    qParams: { id: POLICY_IDS.termsOfService },
+    tags: ['policy', `policy:${POLICY_IDS.termsOfService}`]
   });
 
   return <PolicyPage policy={policy} />;

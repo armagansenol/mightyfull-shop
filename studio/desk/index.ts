@@ -5,6 +5,7 @@ import animatedCards from './animatedCards'
 import colorThemes from './colorThemes'
 import faq from './faq'
 import layouts from './layouts'
+import policies from './policies'
 import products from './products'
 import settings from './settings'
 import stores from './stores'
@@ -48,6 +49,7 @@ export const structure: StructureResolver = (S, context) =>
       animatedCards(S, context),
       testimonials(S, context),
       stores(S, context),
+      policies(S, context),
       settings(S, context),
       S.listItem()
         .title('FAQ')

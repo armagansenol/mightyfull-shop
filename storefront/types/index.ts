@@ -122,6 +122,13 @@ export interface FAQ {
   };
 }
 
+export interface Policy {
+  _id: string;
+  title: string;
+  lastUpdated?: string;
+  body: PortableTextBlock[];
+}
+
 export type SellingPlanGroups = {
   nodes: SellingPlanGroup[];
 };

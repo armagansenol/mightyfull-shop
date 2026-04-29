@@ -83,6 +83,15 @@ export function Footer() {
             <Link href={`/faq`} className={s.navItem}>
               FAQ
             </Link>
+            <Link href={`/privacy-policy`} className={s.navItem}>
+              Privacy Policy
+            </Link>
+            <Link href={`/refund-policy`} className={s.navItem}>
+              Refund Policy
+            </Link>
+            <Link href={`/terms-of-service`} className={s.navItem}>
+              Terms of Service
+            </Link>
           </nav>
         </div>
         <div
