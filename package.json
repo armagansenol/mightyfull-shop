@@ -10,7 +10,6 @@
     "deploy:studio": "pnpm --filter studio deploy"
   },
   "engines": {
-    "node": ">=22.12",
-    "pnpm": ">=10"
+    "node": ">=22.12"
   }
 }
