@@ -1,6 +1,7 @@
 {
   "name": "mightyfull-shop",
   "private": true,
+  "packageManager": "pnpm@10.22.0",
   "scripts": {
     "dev:storefront": "pnpm --filter storefront dev",
     "dev:studio": "pnpm --filter studio dev",
