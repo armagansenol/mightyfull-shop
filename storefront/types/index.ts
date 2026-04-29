@@ -176,10 +176,20 @@ export type CartUpdateType = 'plus' | 'minus' | 'delete';
 
 export interface Store {
   _id: string;
-  title: string;
-  address: string;
-  city: string;
-  country: string;
+  retailer?: string;
+  title?: string;
+  address?: string;
+  addressLine2?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+  phone?: string;
+  website?: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface SeoSettings {

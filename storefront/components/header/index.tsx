@@ -132,6 +132,11 @@ export function Header() {
                   {routes.ourStory.ui}
                 </Link>
               </div>
+              <div className={s.navItem}>
+                <Link href={`/${routes.storeLocator.url}`}>
+                  {routes.storeLocator.ui}
+                </Link>
+              </div>
             </div>
             <div
               className={cn(
