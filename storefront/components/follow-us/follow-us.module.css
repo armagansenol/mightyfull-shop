@@ -1,0 +1,49 @@
+.title {
+  color: var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 30px 80px;
+
+  @media (max-width: 768px) {
+    font-size: 40px;
+    padding: 20px 16px;
+  }
+}
+
+.social {
+  padding: 50px 80px;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+
+  * {
+    fill: var(--blue-ruin);
+  }
+}
+
+.iconC {
+  width: 50px;
+  height: 50px;
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.imgC {
+  width: 350px;
+  height: 240px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 240px;
+    height: 160px;
+    border-radius: 8px;
+  }
+}

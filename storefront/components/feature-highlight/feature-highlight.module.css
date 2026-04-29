@@ -1,0 +1,270 @@
+.featureHighlight {
+  border-radius: 60px;
+  font-family: var(--font-poppins);
+  padding-bottom: 400px;
+  padding-top: 100px;
+  position: relative;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    border-radius: 16px;
+    padding-bottom: 400px;
+  }
+
+  .heading {
+    width: 710px;
+    height: auto;
+    color: var(--blue-ruin);
+    font-family: var(--font-bomstad-display);
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 50px;
+    text-align: center;
+
+    @media (max-width: 768px) {
+      width: auto;
+      height: auto;
+      font-size: 45px;
+      line-height: 1.1;
+      margin-bottom: 150px;
+      padding: 0 16px;
+    }
+  }
+
+  .stickerC {
+    position: absolute;
+    top: 100px;
+    right: 150px;
+    bottom: auto;
+    left: auto;
+    width: 380px;
+    height: 380px;
+    transform: translate(25%, 25%);
+
+    @media (max-width: 768px) {
+      position: absolute;
+      top: 160px;
+      right: 16px;
+      bottom: auto;
+      left: auto;
+      width: 180px;
+      height: 180px;
+      transform: translate(15%, 25%);
+    }
+  }
+
+  .cardC {
+    &:nth-child(4n + 2),
+    &:nth-child(4n + 3) {
+      transform: rotate(8deg);
+
+      @media (max-width: 768px) {
+        transform: rotate(-8deg);
+      }
+    }
+
+    &:nth-child(2n) {
+      margin-top: 200px;
+
+      @media (max-width: 768px) {
+        margin-top: 0;
+        transform: rotate(8deg);
+        z-index: 10;
+      }
+    }
+  }
+
+  .card {
+    width: 360px;
+    height: 380px;
+    background-color: var(--tertiary);
+    border: 2px solid var(--primary);
+    border-radius: 32px;
+    position: relative;
+    transform: rotate(-6deg);
+    margin-bottom: -200px;
+    padding: 30px 20px;
+    text-align: left;
+
+    @media (max-width: 768px) {
+      width: 300px;
+      height: auto;
+      border-radius: 16px;
+      margin-bottom: -200px;
+      padding: 30px 20px;
+      padding-bottom: 100px;
+    }
+
+    .title {
+      color: var(--primary);
+      font-family: var(--font-bomstad-display);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 30px;
+      position: relative;
+
+      @media (max-width: 768px) {
+        font-size: 28px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .desc {
+      color: var(--primary);
+      font-family: var(--font-poppins);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.5;
+
+      @media (max-width: 768px) {
+        font-size: 16px;
+      }
+    }
+
+    .iconC {
+      position: absolute;
+      top: auto;
+      right: 0;
+      bottom: 0;
+      left: auto;
+      width: 190px;
+      height: 190px;
+      transform: translate(20%, 20%);
+
+      @media (max-width: 768px) {
+        width: 120px;
+        height: 120px;
+        transform: translate(20%, 20%);
+      }
+    }
+  }
+
+  .cookie {
+    z-index: 100;
+
+    &.cookie1 {
+      position: absolute;
+      top: 200px;
+      right: auto;
+      bottom: auto;
+      left: 50px;
+      width: 120px;
+      height: 120px;
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 250px;
+        right: auto;
+        bottom: auto;
+        left: 10px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    &.cookie2 {
+      position: absolute;
+      top: 50px;
+      right: auto;
+      bottom: auto;
+      left: 1200px;
+      width: 132px;
+      height: 132px;
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 750px;
+        right: auto;
+        bottom: auto;
+        left: 10px;
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    &.cookie3 {
+      position: absolute;
+      top: 1200px;
+      right: auto;
+      bottom: auto;
+      left: 1200px;
+      width: 120px;
+      height: 120px;
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 540px;
+        right: auto;
+        bottom: auto;
+        left: 310px;
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    &.cookie4 {
+      position: absolute;
+      top: 1100px;
+      right: auto;
+      bottom: auto;
+      left: -150px;
+      width: 260px;
+      height: 260px;
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 1090px;
+        right: auto;
+        bottom: auto;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    &.cookie5 {
+      position: absolute;
+      top: 1000px;
+      right: auto;
+      bottom: auto;
+      left: 1300px;
+      width: 160px;
+      height: 160px;
+
+      @media (max-width: 768px) {
+        position: absolute;
+        top: 880px;
+        right: auto;
+        bottom: auto;
+        left: 300px;
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+
+  .flyingCookie {
+    position: absolute;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 50px;
+    width: 520px;
+    height: 520px;
+    transform: translateY(50%);
+    z-index: 100;
+
+    @media (max-width: 768px) {
+      position: absolute;
+      top: auto;
+      right: auto;
+      bottom: -10px;
+      left: 50%;
+      width: 340px;
+      height: 340px;
+      transform: translateX(-50%);
+    }
+  }
+}

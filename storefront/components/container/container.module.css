@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+/* Size variants */
+.sm {
+  max-width: 640px;
+}
+
+.md {
+  max-width: 960px;
+}
+
+.lg {
+  max-width: 1200px;
+}
+
+.full {
+  max-width: 1600px;
+}
+
+/* Bleed — full viewport width, breaks out of parent */
+.bleed {
+  max-width: none;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}

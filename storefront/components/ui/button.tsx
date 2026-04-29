@@ -1,0 +1,87 @@
+import { Slot } from '@radix-ui/react-slot';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+import s from '@/styles/buttons.module.css';
+
+const buttonVariants = cva(
+  'inline-flex items-center justify-center rounded-xl font-bold whitespace-nowrap focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        link: 'underline-offset-4 hover:underline',
+        default: s.default,
+        highlighted: s.highlighted
+      },
+      size: {
+        sm: cn(s.sm, 'text-base'),
+        md: cn(s.md, 'text-2xl'),
+        lg: cn(s.lg, 'text-3xl')
+      },
+      padding: {
+        fat: 'px-6 lg:px-8 xl:px-12 rounded-lg',
+        slim: 'px-5 lg:px-none w-full rounded-md lg:rounded-lg',
+        none: 'w-full h-full rounded-lg',
+        square: 'p-4'
+      },
+      colorTheme: {
+        'blue-ruin': s['blue-ruin'],
+        'inverted-blue-ruin': s['inverted-blue-ruin'],
+        'inverted-themed': s['inverted-themed'],
+        'naked-blue-ruin': s['naked-blue-ruin'],
+        'naked-themed': s['naked-themed'],
+        'naked-full': s['naked-full'],
+        themed: s.themed
+      }
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'md'
+    }
+  }
+);
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+  hoverAnimation?: boolean;
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      hoverAnimation = true,
+      variant = 'default',
+      size = 'md',
+      padding = 'none',
+      colorTheme = 'themed',
+      asChild = false,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : 'button';
+    return (
+      <Comp
+        className={cn(
+          'cursor-pointer',
+          { [s['hover-animation']]: hoverAnimation },
+          buttonVariants({
+            variant,
+            size,
+            padding,
+            colorTheme
+          }),
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
+);
+Button.displayName = 'Button';
+
+export { Button, buttonVariants };

@@ -1,0 +1,56 @@
+.embla {
+  --slide-size: 100%;
+}
+.emblaViewport {
+  overflow: hidden;
+}
+.emblaContainer {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+.emblaSlide {
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    height: auto;
+  }
+}
+.nextButton,
+.prevButton {
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    width: 24px;
+    height: 24px;
+  }
+}
+.nextButton {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  transform: translateY(-50%);
+
+  @media (max-width: 768px) {
+    right: 16px;
+  }
+}
+.prevButton {
+  position: absolute;
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: 0;
+  transform: translateY(-50%);
+
+  @media (max-width: 768px) {
+    left: 16px;
+  }
+}
+.emblaButtonDisabled {
+  opacity: 0.3;
+}

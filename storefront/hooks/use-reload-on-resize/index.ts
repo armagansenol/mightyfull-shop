@@ -1,0 +1,22 @@
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { gsap, ScrollTrigger } from '@/components/gsap';
+
+const useReloadOnResize = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (ScrollTrigger.isTouch) return;
+
+    function callAfterResize(func: () => void, delay: number) {
+      const dc = gsap.delayedCall(delay || 0.2, func).pause(),
+        handler = () => dc.restart(true);
+      window.addEventListener('resize', handler);
+      return handler; // in case you want to window.removeEventListener() later
+    }
+
+    callAfterResize(() => router.reload(), 0);
+  }, [router]);
+};
+
+export default useReloadOnResize;

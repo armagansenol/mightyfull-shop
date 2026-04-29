@@ -1,0 +1,26 @@
+.scrollbar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+
+  .inner {
+    height: 100%;
+    position: relative;
+  }
+
+  .thumb {
+    min-height: 80px;
+    width: 8px;
+    background-color: var(--blue-ruin);
+    border-radius: 12px;
+    position: absolute;
+    right: 0;
+    cursor: grab;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}

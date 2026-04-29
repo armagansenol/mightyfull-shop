@@ -1,0 +1,44 @@
+import { Container } from '@/components/container';
+import { ProductCard } from '@/components/product-card';
+import { Wrapper } from '@/components/wrapper';
+import { getAllProducts } from '@/lib/actions/all-products';
+import { defaultColorTheme } from '@/lib/constants';
+import { cn } from '@/lib/utils';
+import s from './shop.module.css';
+
+export default async function ShopPage() {
+  const products = await getAllProducts();
+
+  return (
+    <Wrapper colorTheme={defaultColorTheme}>
+      <Container
+        as="section"
+        className={cn(s.shop, 'flex flex-col items-center')}
+      >
+        <h2>Impossible to Choose Just One!</h2>
+        <p>Can&apos;t decide? Try them all and discover your new favorite!</p>
+        <div
+          className={cn(
+            s.productContainer,
+            'flex flex-col items-center md:grid grid-cols-4'
+          )}
+        >
+          {products.map((item) => {
+            const product = item.shopifyProduct;
+            return (
+              <ProductCard
+                key={item.id}
+                id={item.id}
+                animatedCard={item}
+                variantId={product?.variants[0].id as string}
+                availableForSale={
+                  product?.variants[0].availableForSale as boolean
+                }
+              />
+            );
+          })}
+        </div>
+      </Container>
+    </Wrapper>
+  );
+}

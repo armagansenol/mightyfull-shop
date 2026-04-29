@@ -1,0 +1,14 @@
+.editQuantityButton {
+  width: 34px;
+  height: 34px;
+  color: var(--blue-ruin);
+  font-family: var(--font-bomstad-display);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+
+  .icon {
+    width: 10px;
+    height: 10px;
+  }
+}
