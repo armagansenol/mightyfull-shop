@@ -5,9 +5,13 @@
   "scripts": {
     "dev:storefront": "pnpm --filter storefront dev",
     "dev:studio": "pnpm --filter studio dev",
+    "build": "pnpm --filter storefront build",
     "build:storefront": "pnpm --filter storefront build",
     "build:studio": "pnpm --filter studio build",
     "deploy:studio": "pnpm --filter studio deploy"
+  },
+  "dependencies": {
+    "next": "^16.1.6"
   },
   "engines": {
     "node": ">=22.12"
