@@ -76,10 +76,24 @@ export default defineType({
     }),
     defineField({
       name: 'productPageFaq',
-      title: 'Product Page FAQ',
+      title: 'Product Page FAQ (legacy)',
       type: 'productPageFaq',
       group: 'editorial',
       readOnly: true,
+      hidden: true,
+    }),
+    defineField({
+      name: 'faqs',
+      title: 'FAQs',
+      description: 'Product-specific FAQs shown on the product detail page.',
+      type: 'array',
+      group: 'editorial',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'faq'}],
+        },
+      ],
     }),
     defineField({
       name: 'description',

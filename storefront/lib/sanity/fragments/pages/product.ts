@@ -25,6 +25,15 @@ export const PRODUCT_PAGE = groq`
     title,
     description
   },
+  "faqs": faqs[]->{
+    _id,
+    question,
+    answer,
+    "category": {
+      "_id": category->_id,
+      "title": category->title
+    }
+  },
   "customProductOptions": *[_type == 'settings'][0].customProductOptions[] {
     ${CUSTOM_PRODUCT_OPTIONS}
   },

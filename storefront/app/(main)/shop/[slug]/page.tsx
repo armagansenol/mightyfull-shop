@@ -3,6 +3,7 @@ import { CustomerReviews } from '@/components/customer-reviews';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import { FollowUs } from '@/components/follow-us';
 import { ProductCard } from '@/components/product-card';
+import { ProductFaq } from '@/components/product-faq';
 import { ProductHighlightCarousel } from '@/components/product-highlight-carousel';
 import { ProductImages } from '@/components/product-images';
 import { ProductSpecs } from '@/components/product-specs';
@@ -72,6 +73,8 @@ export default async function ProductDetialPage({
       </Container>
       {/* product reviews */}
       {shopifyProduct && <CustomerReviews productId={productId} />}
+      {/* product faq */}
+      <ProductFaq faqs={sanityProduct.faqs} />
       {/* related products */}
       {relatedProducts.length > 0 && (
         <Container as="section" className="pb-10 md:pb-20">
