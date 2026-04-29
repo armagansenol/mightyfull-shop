@@ -61,3 +61,41 @@
 #oke-sortSelect--reviews {
   outline: none !important;
 }
+
+button[class*="show-more"],
+button[class*="load-more"],
+button[class*="loadMore"],
+button[class*="showMore"],
+button[class*="paginate"],
+button[class*="Paginate"],
+.oke-w-loadMore,
+.oke-w-paginate-button,
+[class*="show-more-button"] button {
+  background-color: var(--primary) !important;
+  color: var(--sugar-milk) !important;
+  font-family: var(--font-bomstad-display) !important;
+  font-weight: 900 !important;
+  font-size: 18px !important;
+  border: 1px solid var(--primary) !important;
+  outline: none !important;
+  border-radius: 8px !important;
+  padding: 12px 32px !important;
+  cursor: pointer !important;
+  transition:
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--tertiary) !important;
+      color: var(--primary) !important;
+      border-color: var(--primary) !important;
+    }
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: 0 !important;
+    box-shadow: none !important;
+  }
+}
