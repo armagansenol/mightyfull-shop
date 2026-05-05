@@ -30,6 +30,7 @@ import s from './out-of-stock.module.css';
 export interface OutOfStockProps {
   variantId: string;
   revalidationPath?: string;
+  showLabel?: boolean;
 }
 
 const formSchema = z.object({
@@ -38,7 +39,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
+export function OutOfStock({
+  variantId,
+  revalidationPath,
+  showLabel = true
+}: OutOfStockProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -65,14 +70,16 @@ export function OutOfStock({ variantId, revalidationPath }: OutOfStockProps) {
 
   return (
     <div className="flex flex-col items-stretch">
-      <div
-        className={cn(
-          'font-poppins text-primary text-base font-bold',
-          'flex justify-center md:justify-start mb-10 md:mb-20 py-2'
-        )}
-      >
-        OUT OF STOCK
-      </div>
+      {showLabel && (
+        <div
+          className={cn(
+            'font-poppins text-primary text-base font-bold',
+            'flex justify-center md:justify-start mb-10 md:mb-20 py-2'
+          )}
+        >
+          OUT OF STOCK
+        </div>
+      )}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="h-12 flex gap-4" colorTheme="themed" size="sm">

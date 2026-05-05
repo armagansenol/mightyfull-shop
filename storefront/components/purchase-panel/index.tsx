@@ -6,6 +6,7 @@ import { BadgeInfo } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useMedia } from 'react-use';
 import { AddToCart } from '@/components/cart/add-to-cart';
+import { CancellationPolicyDialog } from '@/components/cancellation-policy-dialog';
 import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
 import { OutOfStock } from '@/components/out-of-stock';
 import { Quantity } from '@/components/quantity';
@@ -17,6 +18,7 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { Link } from '@/components/utility/link';
+import { formatSellingPlanName } from '@/lib/shopify/selling-plan';
 import type { Product } from '@/lib/shopify/types';
 import { cn } from '@/lib/utils';
 import { PurchaseOption } from '@/types';
@@ -39,11 +41,15 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
   const [purchaseOption, setPurchaseOption] = useState<PurchaseOption>(
     PurchaseOption.oneTime
   );
+
+  const sellingPlans =
+    shopifyProduct.sellingPlanGroups.nodes[0]?.sellingPlans.nodes ?? [];
+  const [selectedSellingPlanId, setSelectedSellingPlanId] = useState<string>(
+    sellingPlans[0]?.id ?? ''
+  );
+
   const sellingPlanId =
-    purchaseOption === PurchaseOption.subscription &&
-    shopifyProduct.sellingPlanGroups.nodes.length > 0
-      ? shopifyProduct.sellingPlanGroups.nodes[0].sellingPlans.nodes[0].id
-      : '';
+    purchaseOption === PurchaseOption.subscription ? selectedSellingPlanId : '';
 
   useEffect(() => {
     if (boxRef.current) {
@@ -85,9 +91,6 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
       <div className="w-full" ref={boxRef}>
         {shopifyProduct?.availableForSale ? (
           <div className="w-full">
-            <Label className="block text-primary font-poppins font-semibold text-sm mb-1 ml-2">
-              PURCHASE OPTIONS
-            </Label>
             <div className="border border-primary rounded-xl mb-10 p-5">
               <RadioGroup
                 value={purchaseOption}
@@ -95,27 +98,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                   setPurchaseOption(value)
                 }
               >
-                <div className="space-y-5">
-                  <div className={cn('flex items-center gap-2 group')}>
-                    <RadioGroupItem
-                      className={cn(
-                        'w-6 h-6 p-1.5',
-                        'data-[state=checked]:bg-primary data-[state=checked]:text-sugar-milk',
-                        'data-[state=unchecked]:bg-transparent',
-                        'group-hover:data-[state=unchecked]:bg-tertiary',
-                        'transition-all duration-300 ease-in-out'
-                      )}
-                      value={PurchaseOption.oneTime}
-                      id={PurchaseOption.oneTime}
-                    />
-
-                    <Label
-                      className="font-poppins font-semibold text-primary text-lg cursor-pointer"
-                      htmlFor={PurchaseOption.oneTime}
-                    >
-                      One-time purchase
-                    </Label>
-                  </div>
+                <div>
                   <div className={cn('flex items-center gap-2 group')}>
                     <RadioGroupItem
                       className={cn(
@@ -133,7 +116,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                       htmlFor={PurchaseOption.subscription}
                     >
                       <span className="font-poppins font-semibold text-primary text-lg cursor-pointer">
-                        Subscribe - 10% off
+                        Subscribe &amp; save 10%
                       </span>
                     </Label>
                     <span>
@@ -165,29 +148,74 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                       </TooltipProvider>
                     </span>
                   </div>
-                </div>
 
-                <div
-                  className={cn(
-                    'max-w-md overflow-hidden max-h-[0px] transition-all duration-700 ease-in-out',
-                    {
-                      'max-h-[400px]':
-                        purchaseOption === PurchaseOption.subscription
-                    }
-                  )}
-                >
-                  <article className="font-poppins font-normal text-primary text-[0.7rem] mt-4">
-                    Delivered monthly. Payments will be processed automatically
-                    through your selected payment method at checkout.
-                    Subscriptions renew automatically at the end of their term.
-                    Your order confirmation email includes links to manage or
-                    cancel your subscription easily. For any further questions,
-                    check out our{' '}
-                    <Link className="underline" href="/faq">
-                      FAQ
-                    </Link>{' '}
-                    or contact us directly!
-                  </article>
+                  <div
+                    className={cn(
+                      'overflow-hidden max-h-[0px] transition-all duration-700 ease-in-out',
+                      {
+                        'max-h-[600px]':
+                          purchaseOption === PurchaseOption.subscription
+                      }
+                    )}
+                  >
+                    {sellingPlans.length > 0 && (
+                      <RadioGroup
+                        className="mt-4 ml-8 space-y-2"
+                        value={selectedSellingPlanId}
+                        onValueChange={setSelectedSellingPlanId}
+                        aria-label="Delivery frequency"
+                      >
+                        {sellingPlans.map((plan) => {
+                          const inputId = `selling-plan-${plan.id}`;
+                          return (
+                            <div
+                              key={plan.id}
+                              className="flex items-center gap-2 group"
+                            >
+                              <RadioGroupItem
+                                className={cn(
+                                  'w-5 h-5 p-1',
+                                  'data-[state=checked]:bg-primary data-[state=checked]:text-sugar-milk',
+                                  'data-[state=unchecked]:bg-transparent',
+                                  'group-hover:data-[state=unchecked]:bg-tertiary',
+                                  'transition-all duration-300 ease-in-out'
+                                )}
+                                value={plan.id}
+                                id={inputId}
+                              />
+                              <Label
+                                className="font-poppins font-medium text-primary text-base cursor-pointer"
+                                htmlFor={inputId}
+                              >
+                                {formatSellingPlanName(plan.name)}
+                              </Label>
+                            </div>
+                          );
+                        })}
+                      </RadioGroup>
+                    )}
+                  </div>
+
+                  <div className={cn('flex items-center gap-2 group mt-5')}>
+                    <RadioGroupItem
+                      className={cn(
+                        'w-6 h-6 p-1.5',
+                        'data-[state=checked]:bg-primary data-[state=checked]:text-sugar-milk',
+                        'data-[state=unchecked]:bg-transparent',
+                        'group-hover:data-[state=unchecked]:bg-tertiary',
+                        'transition-all duration-300 ease-in-out'
+                      )}
+                      value={PurchaseOption.oneTime}
+                      id={PurchaseOption.oneTime}
+                    />
+
+                    <Label
+                      className="font-poppins font-semibold text-primary text-lg cursor-pointer"
+                      htmlFor={PurchaseOption.oneTime}
+                    >
+                      One-time purchase
+                    </Label>
+                  </div>
                 </div>
               </RadioGroup>
             </div>
@@ -209,12 +237,73 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                 sellingPlanId={sellingPlanId}
               />
             </div>
+            <div
+              className={cn(
+                'overflow-hidden max-h-0 transition-all duration-500 ease-in-out',
+                {
+                  'max-h-40': purchaseOption === PurchaseOption.subscription
+                }
+              )}
+            >
+              <p className="font-poppins text-[0.65rem] leading-relaxed text-cookie-brown/70 mt-3">
+                This item is a recurring subscription purchase. By continuing, I
+                agree to the{' '}
+                <Link className="underline" href="/terms-of-service">
+                  Subscription terms
+                </Link>{' '}
+                and{' '}
+                <CancellationPolicyDialog
+                  trigger={
+                    <button
+                      type="button"
+                      className="underline cursor-pointer"
+                    >
+                      Cancellation Policy
+                    </button>
+                  }
+                />{' '}
+                and authorize Mightyfull LLC to charge my payment method at the
+                prices, billing frequency, and dates shown on this page
+                (including applicable taxes and shipping) until I cancel, as
+                outlined in the{' '}
+                <Link className="underline" href="/terms-of-service">
+                  Terms of Service
+                </Link>
+                .
+              </p>
+            </div>
           </div>
         ) : (
-          <OutOfStock
-            variantId={shopifyProduct.variants[0].id}
-            revalidationPath={`/shop/${shopifyProduct.handle}`}
-          />
+          <div className="w-full">
+            <Label className="block text-primary font-poppins font-semibold text-sm mb-1 ml-1">
+              QUANTITY
+            </Label>
+            <div className="flex flex-col items-center md:grid grid-cols-12 gap-4 md:gap-3 md:h-14">
+              <Quantity
+                className="w-32 md:w-auto h-10 md:h-full md:col-span-4"
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
+              <div
+                className={cn(
+                  'w-full md:w-auto h-12 md:h-full md:col-span-8',
+                  'flex items-center justify-center',
+                  'border border-primary rounded-xl',
+                  'font-poppins font-semibold text-primary text-sm tracking-widest'
+                )}
+                aria-label="Product sold out"
+              >
+                SOLD OUT
+              </div>
+            </div>
+            <div className="mt-4">
+              <OutOfStock
+                showLabel={false}
+                variantId={shopifyProduct.variants[0].id}
+                revalidationPath={`/shop/${shopifyProduct.handle}`}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

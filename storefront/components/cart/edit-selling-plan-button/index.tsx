@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
 import { IconClose } from '@/components/icons';
 import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
+import { formatSellingPlanName } from '@/lib/shopify/selling-plan';
 import type { CartItem } from '@/lib/shopify/types';
 
 function ResetButton({
@@ -57,11 +58,11 @@ function UpgradeButton({
       )}
       onClick={onClick}
       tabIndex={0}
-      aria-label="Upgrade to subscription and save 10%"
+      aria-label="Subscribe and save 10%"
       type="button"
     >
       <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
-        <LetterSwapOnHover label="Upgrade to Subscription and Save 10%" />
+        <LetterSwapOnHover label="Subscribe & save 10%" />
       </span>
       {isUpdating && (
         <motion.div
@@ -159,14 +160,14 @@ export function EditSellingPlanButton({
   const { mutate: updateSellingPlan, isPending: isUpdating } =
     useUpdateSellingPlan(item);
 
-  const currentSellingPlanName = useMemo(
-    () =>
-      currentSellingPlanId
-        ? sellingPlans.find((plan) => plan.id === currentSellingPlanId)?.name ||
-          'Monthly subscription'
-        : sellingPlans[0]?.name || 'Monthly subscription',
-    [currentSellingPlanId, sellingPlans]
-  );
+  const currentSellingPlanName = useMemo(() => {
+    const planName = currentSellingPlanId
+      ? sellingPlans.find((plan) => plan.id === currentSellingPlanId)?.name ||
+        'Monthly subscription'
+      : sellingPlans[0]?.name || 'Monthly subscription';
+
+    return formatSellingPlanName(planName);
+  }, [currentSellingPlanId, sellingPlans]);
 
   const handleUpgrade = useCallback(() => {
     if (isUpdating) return;
