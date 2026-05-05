@@ -63,7 +63,12 @@ export default async function ProductDetialPage({
             </div>
           )}
           {/* purchase panel */}
-          {shopifyProduct && <PurchasePanel shopifyProduct={shopifyProduct} />}
+          {shopifyProduct && (
+            <PurchasePanel
+              shopifyProduct={shopifyProduct}
+              subscriptionBenefits={sanityProduct.subscriptionBenefits}
+            />
+          )}
           {/* product specs */}
           <ProductSpecs
             className="grid md:hidden mt-10"

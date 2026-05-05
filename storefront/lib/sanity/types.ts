@@ -211,6 +211,7 @@ export type SanityProductPage = {
   available: boolean;
   colorTheme: ColorTheme;
   customProductOptions?: SanityCustomProductOption[];
+  subscriptionBenefits?: string[];
   gid: string;
   slug?: string;
   seo: SanitySeo;

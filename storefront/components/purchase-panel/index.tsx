@@ -24,11 +24,22 @@ import type { Product } from '@/lib/shopify/types';
 import { cn } from '@/lib/utils';
 import { PurchaseOption } from '@/types';
 
+const DEFAULT_SUBSCRIPTION_BENEFITS = [
+  'Save 10% on every order',
+  'Free Shipping',
+  'Pause or Cancel Anytime'
+];
+
 export interface PurchasePanelProps {
   shopifyProduct: Product;
+  subscriptionBenefits?: string[];
 }
 
-export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
+export function PurchasePanel({ shopifyProduct, subscriptionBenefits }: PurchasePanelProps) {
+  const benefits =
+    subscriptionBenefits && subscriptionBenefits.length > 0
+      ? subscriptionBenefits
+      : DEFAULT_SUBSCRIPTION_BENEFITS;
   const isWiderThanTablet = useMedia('(min-width: 800px)');
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -151,11 +162,7 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                   </div>
 
                   <div className="flex flex-wrap gap-2 mt-3 ml-8">
-                    {[
-                      'Save 10% on every order',
-                      'Free Shipping',
-                      'Pause or Cancel Anytime'
-                    ].map((benefit) => (
+                    {benefits.map((benefit) => (
                       <span
                         key={benefit}
                         className="inline-flex items-center gap-1.5 bg-primary/10 text-primary font-poppins font-medium text-xs px-3 py-1.5 rounded-full"

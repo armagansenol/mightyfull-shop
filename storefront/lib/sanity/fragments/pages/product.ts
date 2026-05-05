@@ -37,6 +37,7 @@ export const PRODUCT_PAGE = groq`
   "customProductOptions": *[_type == 'settings'][0].customProductOptions[] {
     ${CUSTOM_PRODUCT_OPTIONS}
   },
+  "subscriptionBenefits": *[_type == 'settings'][0].subscriptionBenefits,
   "gid": store.gid,
   ${SEO_SHOPIFY},
   "slug": store.slug.current,

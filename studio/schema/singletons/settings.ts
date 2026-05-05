@@ -14,6 +14,10 @@ export default defineType({
       title: 'Layout',
     },
     {
+      name: 'subscription',
+      title: 'Subscription',
+    },
+    {
       name: 'seo',
       title: 'SEO',
     },
@@ -33,6 +37,17 @@ export default defineType({
           to: [{type: 'productCollection'}],
         },
       ],
+    }),
+
+    // Subscription Benefits
+    defineField({
+      name: 'subscriptionBenefits',
+      title: 'Subscription Benefits',
+      description: 'Benefit chips shown under the Subscribe & Save option on product pages.',
+      type: 'array',
+      group: 'subscription',
+      of: [{type: 'string'}],
+      options: {layout: 'list'},
     }),
 
     // SEO
