@@ -8,7 +8,6 @@ import layouts from './layouts'
 import policies from './policies'
 import products from './products'
 import settings from './settings'
-import stores from './stores'
 import testimonials from './testimonials'
 import faqCategory from './faqCategory'
 import productPageFaq from './product-page-faq'
@@ -48,7 +47,6 @@ export const structure: StructureResolver = (S, context) =>
       colorThemes(S, context),
       animatedCards(S, context),
       testimonials(S, context),
-      stores(S, context),
       policies(S, context),
       settings(S, context),
       S.listItem()

@@ -72,15 +72,5 @@ export const routes = {
       title: 'Contact Us | MIGHTYFULL',
       description: 'This might be the best cookie ever!'
     }
-  },
-  storeLocator: {
-    ariaLabel: 'Store Locator',
-    name: 'store-locator',
-    url: 'store-locator',
-    ui: 'Store Locator',
-    seo: {
-      title: 'Store Locator | MIGHTYFULL',
-      description: 'Find Mightyfull cookies in stores near you.'
-    }
   }
 };

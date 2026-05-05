@@ -10,7 +10,6 @@ import product from './documents/product'
 import productCollection from './documents/productCollection'
 import faq from './documents/faq'
 import productPageFaq from './documents/product-page-faq'
-import store from './documents/store'
 import noticebar from './documents/noticebar'
 import contactForm from './documents/contactForm'
 import productSpecification from './documents/productSpecification'
@@ -61,7 +60,6 @@ const documents = [
   testimonial,
   faq,
   faqCategory,
-  store,
   noticebar,
   productSpecification,
   productPageFaq,

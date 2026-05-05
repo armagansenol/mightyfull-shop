@@ -2,7 +2,7 @@
 
 The customer-facing ecommerce site for Mightyfull, a protein cookie brand.
 
-This app owns the buying experience: homepage, shop listing, product detail pages, cart, checkout handoff, reviews, contact, FAQs, policies, and store locator.
+This app owns the buying experience: homepage, shop listing, product detail pages, cart, checkout handoff, reviews, contact, FAQs, and policies.
 
 ## Stack
 
@@ -153,7 +153,7 @@ Sanity is the source of truth for:
 - FAQs
 - Testimonials
 - Policy content
-- Store locator and contact submissions
+- Contact submissions
 
 Next.js composes those systems into the storefront and handles cache revalidation through `app/api/revalidate`.
 
