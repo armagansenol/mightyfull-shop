@@ -8,6 +8,7 @@ import { useMedia } from 'react-use';
 import { AddToCart } from '@/components/cart/add-to-cart';
 import { CancellationPolicyDialog } from '@/components/cancellation-policy-dialog';
 import { gsap, ScrollTrigger, useGSAP } from '@/components/gsap';
+import { IconCheck } from '@/components/icons';
 import { OutOfStock } from '@/components/out-of-stock';
 import { Quantity } from '@/components/quantity';
 import { Label } from '@/components/ui/label';
@@ -147,6 +148,24 @@ export function PurchasePanel({ shopifyProduct }: PurchasePanelProps) {
                         </Tooltip>
                       </TooltipProvider>
                     </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mt-3 ml-8">
+                    {[
+                      'Save 10% on every order',
+                      'Free Shipping',
+                      'Pause or Cancel Anytime'
+                    ].map((benefit) => (
+                      <span
+                        key={benefit}
+                        className="inline-flex items-center gap-1.5 bg-primary/10 text-primary font-poppins font-medium text-xs px-3 py-1.5 rounded-full"
+                      >
+                        <span className="w-2.5 h-2.5 shrink-0">
+                          <IconCheck />
+                        </span>
+                        {benefit}
+                      </span>
+                    ))}
                   </div>
 
                   <div
