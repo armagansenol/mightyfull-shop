@@ -11,13 +11,16 @@ export default function Page() {
         className="grid grid-cols-24 gap-0 md:gap-8 py-12 md:py-20 px-4 md:px-16 space-y-10 md:space-y-0 mb-48"
       >
         <div className="col-span-24 md:col-span-12 space-y-12">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h1 className="text-4xl font-black font-bomstad-display text-blue-ruin">
               Contact Us
             </h1>
-            <p className="text-lg font-normal font-poppins max-w-md leading-snug text-blue-ruin">
-              Have questions or need assistance? We&apos;re here to help—reach
-              out anytime!
+            <p className="text-lg font-bold font-bomstad-display text-blue-ruin leading-snug">
+              Drop us a line. We promise the only thing we bite is cookies.
+            </p>
+            <p className="text-base font-normal font-poppins max-w-md leading-relaxed text-blue-ruin">
+              Got a question, a flavor idea, or just want to say hi? We&apos;d
+              love to hear it. We read every message. What&apos;s on your mind?
             </p>
           </div>
           <div className="grid grid-cols-12 gap-5 font-poppins text-blue-ruin">
