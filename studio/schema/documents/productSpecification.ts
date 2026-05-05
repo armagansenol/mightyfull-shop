@@ -29,7 +29,13 @@ export default defineType({
           },
         },
       ],
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Image (e.g. Nutrition Facts Panel)',
+      description: 'When provided, the image is shown instead of the description text.',
+      type: 'image',
+      options: {hotspot: true},
     }),
   ],
   preview: {

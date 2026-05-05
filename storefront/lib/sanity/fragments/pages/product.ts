@@ -22,7 +22,8 @@ export const PRODUCT_PAGE = groq`
   productSpecifications[] {
     "id": _key,
     title,
-    description
+    description,
+    "image": image.asset->url
   },
   "faqs": faqs[]->{
     _id,

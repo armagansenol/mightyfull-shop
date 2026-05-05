@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { CustomizedPortableText } from '@/components/customized-portable-text';
 import {
   Accordion,
@@ -36,10 +37,22 @@ export function ProductSpecs({ specs, className }: ProductSpecsProps) {
               {item.title}
             </AccordionTrigger>
             <AccordionContent className="pb-10">
-              <CustomizedPortableText
-                wrapperClassName="prose font-poppins font-normal text-primary text-sm text-left"
-                content={item.description}
-              />
+              {item.image ? (
+                <div className="relative w-full max-w-xs">
+                  <Image
+                    src={item.image}
+                    alt={`${item.title} panel`}
+                    width={400}
+                    height={600}
+                    className="object-contain w-full h-auto"
+                  />
+                </div>
+              ) : item.description ? (
+                <CustomizedPortableText
+                  wrapperClassName="prose font-poppins font-normal text-primary text-sm text-left"
+                  content={item.description}
+                />
+              ) : null}
             </AccordionContent>
           </AccordionItem>
         ))}

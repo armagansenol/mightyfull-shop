@@ -217,7 +217,8 @@ export type SanityProductPage = {
   productSpecifications: {
     id: string;
     title: string;
-    description: PortableTextBlock[];
+    description?: PortableTextBlock[];
+    image?: string;
   }[];
   images: ImageAsset[];
   faqs?: FAQ[];
