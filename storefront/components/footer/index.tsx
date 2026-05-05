@@ -66,7 +66,7 @@ export function Footer() {
               Stay full.
             </h6>
             <p>
-              Be the first to know about new products, brand uptades, exclusive
+              Be the first to know about new products, brand updates, exclusive
               events, and more!
             </p>
           </div>
