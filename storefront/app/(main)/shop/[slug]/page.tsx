@@ -58,7 +58,7 @@ export default async function ProductDetialPage({
             1 BOX ( 6 COOKIES )
           </small>
           {shopifyProduct?.description && (
-            <div className="prose text-primary font-poppins text-sm font-normal mb-10">
+            <div className="prose text-cookie-brown font-poppins text-sm font-normal mb-10">
               <p>{shopifyProduct.description}</p>
             </div>
           )}
