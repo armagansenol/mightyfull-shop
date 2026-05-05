@@ -16,6 +16,23 @@ import type { SanityProductPage } from '@/lib/sanity/types';
 import { getProduct } from '@/lib/shopify';
 import { cn, extractShopifyId } from '@/lib/utils';
 
+const CHOCOLATE_CHIP_DESCRIPTION: SanityProductPage['description'] = [
+  {
+    _key: 'chocolate-chip-description',
+    _type: 'block',
+    children: [
+      {
+        _key: 'chocolate-chip-description-text',
+        _type: 'span',
+        marks: [],
+        text: 'This is the one that disappears first. Soft, chewy, and loaded with melty chocolate. It tastes like the cookie you were never supposed to eat before dinner and absolutely did anyway. Every bite hits that classic, straight out of the oven feel, just with 10g of protein tagging along like it owns the place. No drama, no weird aftertaste, just a really good cookie doing a little extra.'
+      }
+    ],
+    markDefs: [],
+    style: 'normal'
+  }
+];
+
 interface ProductDetailPageProps {
   params: Promise<{
     slug: string;
@@ -35,6 +52,10 @@ export default async function ProductDetialPage({
 
   const shopifyProduct = await getProduct(slug);
   const productId = extractShopifyId(shopifyProduct?.id as string);
+  const productDescription =
+    slug === 'chocolate-chip'
+      ? CHOCOLATE_CHIP_DESCRIPTION
+      : sanityProduct.description;
 
   return (
     <Wrapper className="mb-48" colorTheme={sanityProduct.colorTheme}>
@@ -56,11 +77,11 @@ export default async function ProductDetialPage({
             {sanityProduct.title}
           </h1>
           <small className="text-primary font-bomstad-display text-lg font-medium mb-8">
-            1 PACK ( 12 COOKIES )
+            1 BOX ( 6 COOKIES )
           </small>
           <CustomizedPortableText
             wrapperClassName="prose text-primary font-poppins text-sm font-normal mb-10"
-            content={sanityProduct.description}
+            content={productDescription}
           />
           {/* purchase panel */}
           {shopifyProduct && <PurchasePanel shopifyProduct={shopifyProduct} />}

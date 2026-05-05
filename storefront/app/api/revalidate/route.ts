@@ -4,6 +4,16 @@ import { parseBody } from 'next-sanity/webhook';
 
 const secret = process.env.SANITY_HOOK_SECRET;
 
+const getRevalidationTags = (documentType: string) => {
+  const tags = new Set([documentType]);
+
+  if (documentType === 'product') {
+    tags.add('productPage');
+  }
+
+  return [...tags];
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { body, isValidSignature } = await parseBody<{
@@ -19,10 +29,16 @@ export async function POST(req: NextRequest) {
       return new Response('Bad Request', { status: 400 });
     }
 
-    revalidateTag(body._type, 'default');
+    const revalidatedTags = getRevalidationTags(body._type);
+
+    for (const tag of revalidatedTags) {
+      revalidateTag(tag, 'default');
+    }
+
     return NextResponse.json({
       status: 200,
       revalidated: true,
+      revalidatedTags,
       now: Date.now(),
       body
     });
