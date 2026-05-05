@@ -5,6 +5,5 @@ export const PRODUCTS = groq`
     _id,
     title,
     handle,
-    description,
   }
 `;

@@ -7,6 +7,5 @@ export const PRODUCTS_QUERY = groq`
   "shopifyId": store.id,
   "shopifyDescription": store.description,
   colorTheme,
-  description,
 }
 `;

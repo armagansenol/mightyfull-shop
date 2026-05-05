@@ -19,7 +19,6 @@ export const PRODUCT_PAGE = groq`
   colorTheme->{
     ${COLOR_THEME}
   },
-  description,
   productSpecifications[] {
     "id": _key,
     title,

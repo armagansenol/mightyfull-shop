@@ -208,7 +208,6 @@ export type SanityProductPage = {
   _id: string;
   title: string;
   displayTitle: string;
-  description: PortableTextBlock[];
   available: boolean;
   colorTheme: ColorTheme;
   customProductOptions?: SanityCustomProductOption[];

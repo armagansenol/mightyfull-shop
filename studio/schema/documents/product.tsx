@@ -96,27 +96,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'array',
-      group: 'editorial',
-      of: [
-        {
-          type: 'block',
-          styles: [{title: 'Normal', value: 'normal'}],
-          marks: {
-            decorators: [
-              {title: 'Strong', value: 'strong'},
-              {title: 'Emphasis', value: 'em'},
-              {title: 'Underline', value: 'underline'},
-            ],
-            annotations: [],
-          },
-          lists: [],
-        },
-      ],
-    }),
-    defineField({
       name: 'productSpecifications',
       title: 'Product Specifications',
       type: 'array',
