@@ -15,5 +15,6 @@ export const LAYOUT_QUERY = groq`
     imageCarousel[] {
       ${IMAGE}
     },
+    "welcomePopupImage": welcomePopupImage.asset->url,
   }
 `;

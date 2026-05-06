@@ -6,6 +6,7 @@ import { GSAP } from '@/components/gsap';
 import { CartProvider } from '@/components/providers/cart';
 import { ReactQueryProvider } from '@/components/providers/react-query';
 import { Toaster } from '@/components/ui/sonner';
+import { WelcomePopup } from '@/components/welcome-popup';
 import { LayoutDataProvider } from '@/context/layout-data';
 import { sanityFetch } from '@/lib/sanity/client';
 import { LAYOUT_QUERY } from '@/lib/sanity/layout';
@@ -43,6 +44,7 @@ export default async function RootLayout({
           <CartProvider cartPromise={cartPromise}>
             <LayoutDataProvider value={layoutData}>
               {children}
+              <WelcomePopup />
               <Toaster position="bottom-left" />
               <GSAP />
             </LayoutDataProvider>

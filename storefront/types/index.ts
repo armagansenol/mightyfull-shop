@@ -195,6 +195,7 @@ export interface LayoutQueryResponse {
   noticebar: Noticebar;
   socialLinks: SocialLink[];
   imageCarousel: ImageAsset[];
+  welcomePopupImage?: string;
 }
 
 export interface Noticebar {

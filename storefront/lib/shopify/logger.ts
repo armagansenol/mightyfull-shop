@@ -45,6 +45,7 @@ class ShopifyLogger {
   }
 
   info(message: string, data?: unknown): void {
+    if (!this.isDebugEnabled) return;
     const log = this.formatLog('info', message, data);
     this.addLog(log);
     console.log(`[Shopify] ${message}`, data || '');
@@ -70,6 +71,7 @@ class ShopifyLogger {
   }
 
   logApiCall(operation: string, duration: number, data?: unknown): void {
+    if (!this.isDebugEnabled) return;
     const log = {
       ...this.formatLog('info', `API Call: ${operation}`, data),
       duration

@@ -17,6 +17,10 @@ export default defineType({
       name: 'productPage',
       title: 'PRODUCT PAGE',
     },
+    {
+      name: 'popup',
+      title: 'WELCOME POPUP',
+    },
   ],
   fields: [
     // Noticebar
@@ -112,6 +116,15 @@ export default defineType({
           },
         },
       ],
+    }),
+    // Welcome Popup Image
+    defineField({
+      name: 'welcomePopupImage',
+      title: 'Welcome Popup Image',
+      description: 'Lifestyle photo shown on the right side of the welcome popup.',
+      type: 'image',
+      group: 'popup',
+      options: {hotspot: true},
     }),
   ],
   preview: {
