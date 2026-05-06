@@ -3,7 +3,23 @@ import { NextResponse } from 'next/server';
 type WelcomeEmailResponse = {
   success: boolean;
   message: string;
+  alreadySubscribed?: boolean;
 };
+
+const KLAVIYO_HEADERS = {
+  accept: 'application/vnd.api+json',
+  revision: '2025-01-15',
+  'content-type': 'application/vnd.api+json',
+  Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_API_KEY}`
+};
+
+async function isAlreadySubscribed(email: string, listId: string): Promise<boolean> {
+  const url = `https://a.klaviyo.com/api/lists/${listId}/profiles/?filter=equals(email,"${encodeURIComponent(email)}")`;
+  const res = await fetch(url, { headers: KLAVIYO_HEADERS });
+  if (!res.ok) return false;
+  const data = await res.json();
+  return Array.isArray(data.data) && data.data.length > 0;
+}
 
 export async function POST(
   request: Request
@@ -28,16 +44,20 @@ export async function POST(
       );
     }
 
+    const alreadySubscribed = await isAlreadySubscribed(email, listId);
+
+    if (alreadySubscribed) {
+      return NextResponse.json(
+        { success: true, alreadySubscribed: true, message: "You're already subscribed!" },
+        { status: 200 }
+      );
+    }
+
     const res = await fetch(
       'https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/',
       {
         method: 'POST',
-        headers: {
-          accept: 'application/vnd.api+json',
-          revision: '2025-01-15',
-          'content-type': 'application/vnd.api+json',
-          Authorization: `Klaviyo-API-Key ${process.env.KLAVIYO_PRIVATE_API_KEY}`
-        },
+        headers: KLAVIYO_HEADERS,
         body: JSON.stringify({
           data: {
             type: 'profile-subscription-bulk-create-job',
