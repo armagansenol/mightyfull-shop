@@ -17,7 +17,7 @@ const NAV_ITEMS: AccountNavItem[] = [
   { label: 'Overview', href: '/account', prefetch: true },
   { label: 'Orders', href: '/account/orders', prefetch: false },
   { label: 'Subscriptions', href: '/account/subscriptions', prefetch: false },
-  { label: 'Addresses', href: '/account/addresses', prefetch: false },
+  { label: 'Addresses', href: '/account/addresses', prefetch: true },
   { label: 'Profile', href: '/account/profile', prefetch: true }
 ];
 
