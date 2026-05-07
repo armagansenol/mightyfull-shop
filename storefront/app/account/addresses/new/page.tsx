@@ -14,7 +14,7 @@ export default async function NewAddressPage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
           New address
         </h1>
       </header>

@@ -107,7 +107,7 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
         />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-blue-ruin">Email</p>
-          <p className="text-sm text-blue-ruin/70">{email}</p>
+          <p className="text-sm text-blue-ruin/80">{email}</p>
           <p className="text-xs text-blue-ruin/60 mt-1">
             Email changes are managed via Shopify. Contact support if you need
             to update.

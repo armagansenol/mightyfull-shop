@@ -143,8 +143,12 @@ export function Header() {
                 <Link href={`/${routes.contact.url}`}>{routes.contact.ui}</Link>
               </div>
               <div className={cn(s.navItem, 'cursor-pointer')}>
-                <Link href="/account" prefetch={false}>
-                  <CircleUserRound className="w-9 h-9" />
+                <Link
+                  href="/account"
+                  prefetch={false}
+                  ariaLabel="Account"
+                >
+                  <CircleUserRound className="w-9 h-9" aria-hidden="true" />
                 </Link>
               </div>
               <div

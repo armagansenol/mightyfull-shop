@@ -189,7 +189,7 @@ export default async function OrderDetailPage({
     return (
       <>
         <header>
-          <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
             Order
           </h1>
         </header>
@@ -228,10 +228,10 @@ export default async function OrderDetailPage({
         </Button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
               {order.name}
             </h1>
-            <p className="text-sm text-blue-ruin/70">
+            <p className="text-sm text-blue-ruin/80">
               Placed on {formatDate(order.processedAt)}
             </p>
           </div>
@@ -274,11 +274,11 @@ export default async function OrderDetailPage({
               <div className="flex-1 min-w-0 flex flex-col gap-1">
                 <p className="font-semibold">{item.title}</p>
                 {item.variantTitle && (
-                  <p className="text-sm text-blue-ruin/70">
+                  <p className="text-sm text-blue-ruin/80">
                     {item.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/70">
+                <p className="text-sm text-blue-ruin/80">
                   Qty {item.quantity}
                 </p>
               </div>
@@ -299,15 +299,15 @@ export default async function OrderDetailPage({
           </CardHeader>
           <CardContent className="flex flex-col gap-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-blue-ruin/70">Subtotal</span>
+              <span className="text-blue-ruin/80">Subtotal</span>
               <span>{formatMoney(order.subtotal)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-blue-ruin/70">Shipping</span>
+              <span className="text-blue-ruin/80">Shipping</span>
               <span>{formatMoney(order.totalShipping)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-blue-ruin/70">Tax</span>
+              <span className="text-blue-ruin/80">Tax</span>
               <span>{formatMoney(order.totalTax)}</span>
             </div>
             <div className="flex justify-between text-base font-semibold border-t border-blue-ruin/10 pt-2 mt-1">
@@ -349,13 +349,13 @@ export default async function OrderDetailPage({
                   <span>{order.shippingAddress.territoryCode}</span>
                 )}
                 {order.shippingAddress.phoneNumber && (
-                  <span className="text-blue-ruin/70 mt-1">
+                  <span className="text-blue-ruin/80 mt-1">
                     {order.shippingAddress.phoneNumber}
                   </span>
                 )}
               </address>
             ) : (
-              <p className="text-sm text-blue-ruin/70">
+              <p className="text-sm text-blue-ruin/80">
                 No shipping address on file.
               </p>
             )}

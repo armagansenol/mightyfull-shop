@@ -61,7 +61,7 @@ export default async function ProfilePage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
           Profile
         </h1>
       </header>
@@ -85,7 +85,7 @@ export default async function ProfilePage() {
               email={customer.emailAddress?.emailAddress ?? ''}
             />
           ) : (
-            <p className="text-sm text-blue-ruin/70">
+            <p className="text-sm text-blue-ruin/80">
               Couldn’t load your profile. Refresh to try again.
             </p>
           )}

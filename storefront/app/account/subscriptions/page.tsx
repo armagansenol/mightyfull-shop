@@ -104,7 +104,7 @@ export default async function SubscriptionsPage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
           Subscriptions
         </h1>
       </header>
@@ -127,7 +127,7 @@ export default async function SubscriptionsPage() {
       {!error && contracts.length === 0 ? (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardContent className="py-8 flex flex-col items-start gap-3">
-            <p className="text-sm text-blue-ruin/70">
+            <p className="text-sm text-blue-ruin/80">
               You don&apos;t have any subscriptions yet.
             </p>
             <Button
@@ -161,7 +161,7 @@ export default async function SubscriptionsPage() {
                         {summary || 'Subscription'}
                       </CardTitle>
                       {contract.nextBillingDate && (
-                        <p className="text-sm text-blue-ruin/70">
+                        <p className="text-sm text-blue-ruin/80">
                           Next renewal {formatDate(contract.nextBillingDate)}
                         </p>
                       )}

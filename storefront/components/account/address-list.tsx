@@ -53,7 +53,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
     return (
       <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
         <CardContent className="py-8">
-          <p className="text-sm text-blue-ruin/70">
+          <p className="text-sm text-blue-ruin/80">
             You don&apos;t have any saved addresses yet.
           </p>
         </CardContent>
@@ -115,7 +115,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                 </span>
                 {addr.territoryCode && <span>{addr.territoryCode}</span>}
                 {addr.phoneNumber && (
-                  <span className="text-blue-ruin/70 mt-1">
+                  <span className="text-blue-ruin/80 mt-1">
                     {addr.phoneNumber}
                   </span>
                 )}

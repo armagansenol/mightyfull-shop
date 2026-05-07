@@ -94,7 +94,7 @@ export default async function OrdersPage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
           Orders
         </h1>
       </header>
@@ -106,7 +106,7 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardContent className="py-8 flex flex-col items-start gap-3">
-            <p className="text-sm text-blue-ruin/70">
+            <p className="text-sm text-blue-ruin/80">
               You don&apos;t have any orders yet.
             </p>
             <Button
@@ -133,7 +133,7 @@ export default async function OrdersPage() {
                   <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin">
                     {order.name}
                   </CardTitle>
-                  <p className="text-sm text-blue-ruin/70">
+                  <p className="text-sm text-blue-ruin/80">
                     {formatDate(order.processedAt)}
                   </p>
                 </div>

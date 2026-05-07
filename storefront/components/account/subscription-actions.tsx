@@ -42,7 +42,7 @@ export function SubscriptionActions({
 
   if (isTerminated) {
     return (
-      <p className="text-sm text-blue-ruin/70">
+      <p className="text-sm text-blue-ruin/80">
         This subscription has ended.
       </p>
     );

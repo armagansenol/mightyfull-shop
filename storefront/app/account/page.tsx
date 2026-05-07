@@ -180,10 +180,10 @@ export default async function AccountOverviewPage() {
   return (
     <>
       <header className="flex flex-col gap-2">
-        <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
           Hi, {greetingName}.
         </h1>
-        <p className="text-sm text-blue-ruin/70">
+        <p className="text-sm text-blue-ruin/80">
           {customer?.emailAddress?.emailAddress}
         </p>
       </header>
@@ -215,7 +215,7 @@ export default async function AccountOverviewPage() {
             {recentOrder ? (
               <div className="flex flex-col gap-1">
                 <p className="text-base font-semibold">{recentOrder.name}</p>
-                <CardDescription className="text-blue-ruin/70">
+                <CardDescription className="text-blue-ruin/80">
                   {formatDate(recentOrder.processedAt)} ·{' '}
                   {formatMoney(
                     recentOrder.totalPrice.amount,
@@ -230,7 +230,7 @@ export default async function AccountOverviewPage() {
               </div>
             ) : (
               <div className="flex flex-col items-start gap-3">
-                <CardDescription className="text-blue-ruin/70">
+                <CardDescription className="text-blue-ruin/80">
                   No orders yet.
                 </CardDescription>
                 <CardActionLink href="/shop">Browse the shop</CardActionLink>
@@ -254,13 +254,13 @@ export default async function AccountOverviewPage() {
                   {activeSubscriptions.length === 1 ? '' : 's'}
                 </p>
                 {nextRenewal && (
-                  <CardDescription className="text-blue-ruin/70">
+                  <CardDescription className="text-blue-ruin/80">
                     Next renewal: {formatDate(nextRenewal)}
                   </CardDescription>
                 )}
               </div>
             ) : (
-              <CardDescription className="text-blue-ruin/70">
+              <CardDescription className="text-blue-ruin/80">
                 No active subscriptions.
               </CardDescription>
             )}
@@ -300,14 +300,14 @@ export default async function AccountOverviewPage() {
                   <span>{customer.defaultAddress.territoryCode}</span>
                 )}
                 {customer.defaultAddress.phoneNumber && (
-                  <span className="text-blue-ruin/70 mt-1">
+                  <span className="text-blue-ruin/80 mt-1">
                     {customer.defaultAddress.phoneNumber}
                   </span>
                 )}
               </address>
             ) : (
               <div className="flex flex-col items-start gap-3">
-                <CardDescription className="text-blue-ruin/70">
+                <CardDescription className="text-blue-ruin/80">
                   No default address on file.
                 </CardDescription>
                 <CardActionLink href="/account/addresses/new">

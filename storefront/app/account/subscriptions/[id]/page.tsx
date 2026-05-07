@@ -147,7 +147,7 @@ export default async function SubscriptionDetailPage({
     return (
       <>
         <header>
-          <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
             Subscription
           </h1>
         </header>
@@ -186,10 +186,10 @@ export default async function SubscriptionDetailPage({
         </Button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
               Subscription
             </h1>
-            <p className="text-sm text-blue-ruin/70">
+            <p className="text-sm text-blue-ruin/80">
               Started {formatDate(contract.createdAt)}
               {contract.nextBillingDate &&
                 ` · Next renewal ${formatDate(contract.nextBillingDate)}`}
@@ -214,11 +214,11 @@ export default async function SubscriptionDetailPage({
               <div className="flex flex-col gap-1 min-w-0">
                 <p className="font-semibold">{line.title}</p>
                 {line.variantTitle && (
-                  <p className="text-sm text-blue-ruin/70">
+                  <p className="text-sm text-blue-ruin/80">
                     {line.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/70">Qty {line.quantity}</p>
+                <p className="text-sm text-blue-ruin/80">Qty {line.quantity}</p>
               </div>
               <p className="font-semibold shrink-0">
                 {formatMoney(line.currentPrice)}
@@ -260,7 +260,7 @@ export default async function SubscriptionDetailPage({
                 <span>{contract.deliveryAddress.territoryCode}</span>
               )}
               {contract.deliveryAddress.phoneNumber && (
-                <span className="text-blue-ruin/70 mt-1">
+                <span className="text-blue-ruin/80 mt-1">
                   {contract.deliveryAddress.phoneNumber}
                 </span>
               )}
