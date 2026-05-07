@@ -1,4 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
+import { SubscriptionActions } from '@/components/account/subscription-actions';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -275,10 +276,10 @@ export default async function SubscriptionDetailPage({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-blue-ruin/70">
-            Pause, resume, skip the next delivery, or cancel — coming next
-            chunk.
-          </p>
+          <SubscriptionActions
+            contractId={contract.id}
+            status={contract.status}
+          />
         </CardContent>
       </Card>
     </>

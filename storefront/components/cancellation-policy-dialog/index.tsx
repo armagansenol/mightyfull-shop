@@ -49,8 +49,15 @@ export function CancellationPolicyDialog({
               <p className="text-sm leading-relaxed text-primary/80">
                 Subscriptions deliver at your selected frequency and are charged
                 automatically on each renewal date until you cancel. You can
-                cancel or pause anytime before your next renewal date via your
-                account dashboard.
+                cancel or pause anytime before your next renewal date from your{' '}
+                <Link
+                  href="/account/subscriptions"
+                  prefetch={false}
+                  className="underline"
+                >
+                  account dashboard
+                </Link>
+                .
               </p>
             </section>
 
