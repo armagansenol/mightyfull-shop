@@ -1,12 +1,19 @@
 import { redirect } from 'next/navigation';
-import { AccountCard } from '@/components/account/account-card';
-import { AccountEmptyState } from '@/components/account/account-empty-state';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import {
   CustomerAccountAPIError,
   customerQuery
 } from '@/lib/shopify/customer-account/client';
 import { getSession } from '@/lib/shopify/customer-account/session';
+import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -91,6 +98,30 @@ interface OverviewData {
   } | null;
 }
 
+const cardClasses =
+  'rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin';
+
+function CardActionLink({
+  href,
+  children
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Button
+      asChild
+      variant="link"
+      size="sm"
+      colorTheme="naked-blue-ruin"
+      hoverAnimation={false}
+      className="h-auto p-0 underline text-sm font-medium"
+    >
+      <Link href={href}>{children}</Link>
+    </Button>
+  );
+}
+
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {
     month: 'short',
@@ -151,140 +182,134 @@ export default async function AccountOverviewPage() {
       </header>
 
       {error && (
-        <AccountCard title="Something went wrong">
-          <pre className="text-sm whitespace-pre-wrap text-red-700">
-            {error}
-          </pre>
-        </AccountCard>
+        <Card className={cardClasses}>
+          <CardHeader>
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin">
+              Something went wrong
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <pre className="text-sm whitespace-pre-wrap text-red-700">
+              {error}
+            </pre>
+          </CardContent>
+        </Card>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-        <AccountCard
-          title="Recent order"
-          action={
-            <Link
-              href="/account/orders"
-              className="text-sm font-medium underline"
-            >
-              View all
-            </Link>
-          }
-        >
-          {recentOrder ? (
-            <div className="flex flex-col gap-1">
-              <p className="text-base font-semibold">{recentOrder.name}</p>
-              <p className="text-sm text-blue-ruin/70">
-                {formatDate(recentOrder.processedAt)} ·{' '}
-                {formatMoney(
-                  recentOrder.totalPrice.amount,
-                  recentOrder.totalPrice.currencyCode
+        <Card className={cardClasses}>
+          <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+              Recent order
+            </CardTitle>
+            <CardActionLink href="/account/orders">View all</CardActionLink>
+          </CardHeader>
+          <CardContent>
+            {recentOrder ? (
+              <div className="flex flex-col gap-1">
+                <p className="text-base font-semibold">{recentOrder.name}</p>
+                <CardDescription className="text-blue-ruin/70">
+                  {formatDate(recentOrder.processedAt)} ·{' '}
+                  {formatMoney(
+                    recentOrder.totalPrice.amount,
+                    recentOrder.totalPrice.currencyCode
+                  )}
+                </CardDescription>
+                {recentOrder.fulfillmentStatus && (
+                  <p className="text-xs uppercase tracking-wider mt-1">
+                    {recentOrder.fulfillmentStatus.replace(/_/g, ' ')}
+                  </p>
                 )}
-              </p>
-              {recentOrder.fulfillmentStatus && (
-                <p className="text-xs uppercase tracking-wider mt-1">
-                  {recentOrder.fulfillmentStatus.replace(/_/g, ' ')}
-                </p>
-              )}
-            </div>
-          ) : (
-            <AccountEmptyState
-              message="No orders yet."
-              action={
-                <Link
-                  href="/shop"
-                  className="text-sm font-medium underline"
-                >
-                  Browse the shop
-                </Link>
-              }
-            />
-          )}
-        </AccountCard>
+              </div>
+            ) : (
+              <div className="flex flex-col items-start gap-3">
+                <CardDescription className="text-blue-ruin/70">
+                  No orders yet.
+                </CardDescription>
+                <CardActionLink href="/shop">Browse the shop</CardActionLink>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-        <AccountCard
-          title="Subscriptions"
-          action={
-            <Link
-              href="/account/subscriptions"
-              className="text-sm font-medium underline"
-            >
-              Manage
-            </Link>
-          }
-        >
-          {activeSubscriptions.length > 0 ? (
-            <div className="flex flex-col gap-1">
-              <p className="text-base font-semibold">
-                {activeSubscriptions.length} active subscription
-                {activeSubscriptions.length === 1 ? '' : 's'}
-              </p>
-              {nextRenewal && (
-                <p className="text-sm text-blue-ruin/70">
-                  Next renewal: {formatDate(nextRenewal)}
+        <Card className={cardClasses}>
+          <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+              Subscriptions
+            </CardTitle>
+            <CardActionLink href="/account/subscriptions">Manage</CardActionLink>
+          </CardHeader>
+          <CardContent>
+            {activeSubscriptions.length > 0 ? (
+              <div className="flex flex-col gap-1">
+                <p className="text-base font-semibold">
+                  {activeSubscriptions.length} active subscription
+                  {activeSubscriptions.length === 1 ? '' : 's'}
                 </p>
-              )}
-            </div>
-          ) : (
-            <AccountEmptyState message="No active subscriptions." />
-          )}
-        </AccountCard>
+                {nextRenewal && (
+                  <CardDescription className="text-blue-ruin/70">
+                    Next renewal: {formatDate(nextRenewal)}
+                  </CardDescription>
+                )}
+              </div>
+            ) : (
+              <CardDescription className="text-blue-ruin/70">
+                No active subscriptions.
+              </CardDescription>
+            )}
+          </CardContent>
+        </Card>
 
-        <AccountCard
-          title="Default address"
-          action={
-            <Link
-              href="/account/addresses"
-              className="text-sm font-medium underline"
-            >
-              Manage
-            </Link>
-          }
-          className="md:col-span-2"
-        >
-          {customer?.defaultAddress ? (
-            <address className="not-italic flex flex-col gap-0.5 text-sm">
-              <span className="font-semibold text-base">
-                {customer.defaultAddress.firstName}{' '}
-                {customer.defaultAddress.lastName}
-              </span>
-              {customer.defaultAddress.address1 && (
-                <span>{customer.defaultAddress.address1}</span>
-              )}
-              {customer.defaultAddress.address2 && (
-                <span>{customer.defaultAddress.address2}</span>
-              )}
-              <span>
-                {[
-                  customer.defaultAddress.city,
-                  customer.defaultAddress.zoneCode,
-                  customer.defaultAddress.zip
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
-              </span>
-              {customer.defaultAddress.territoryCode && (
-                <span>{customer.defaultAddress.territoryCode}</span>
-              )}
-              {customer.defaultAddress.phoneNumber && (
-                <span className="text-blue-ruin/70 mt-1">
-                  {customer.defaultAddress.phoneNumber}
+        <Card className={cn(cardClasses, 'md:col-span-2')}>
+          <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+              Default address
+            </CardTitle>
+            <CardActionLink href="/account/addresses">Manage</CardActionLink>
+          </CardHeader>
+          <CardContent>
+            {customer?.defaultAddress ? (
+              <address className="not-italic flex flex-col gap-0.5 text-sm">
+                <span className="font-semibold text-base">
+                  {customer.defaultAddress.firstName}{' '}
+                  {customer.defaultAddress.lastName}
                 </span>
-              )}
-            </address>
-          ) : (
-            <AccountEmptyState
-              message="No default address on file."
-              action={
-                <Link
-                  href="/account/addresses/new"
-                  className="text-sm font-medium underline"
-                >
+                {customer.defaultAddress.address1 && (
+                  <span>{customer.defaultAddress.address1}</span>
+                )}
+                {customer.defaultAddress.address2 && (
+                  <span>{customer.defaultAddress.address2}</span>
+                )}
+                <span>
+                  {[
+                    customer.defaultAddress.city,
+                    customer.defaultAddress.zoneCode,
+                    customer.defaultAddress.zip
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </span>
+                {customer.defaultAddress.territoryCode && (
+                  <span>{customer.defaultAddress.territoryCode}</span>
+                )}
+                {customer.defaultAddress.phoneNumber && (
+                  <span className="text-blue-ruin/70 mt-1">
+                    {customer.defaultAddress.phoneNumber}
+                  </span>
+                )}
+              </address>
+            ) : (
+              <div className="flex flex-col items-start gap-3">
+                <CardDescription className="text-blue-ruin/70">
+                  No default address on file.
+                </CardDescription>
+                <CardActionLink href="/account/addresses/new">
                   Add one
-                </Link>
-              }
-            />
-          )}
-        </AccountCard>
+                </CardActionLink>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </>
   );

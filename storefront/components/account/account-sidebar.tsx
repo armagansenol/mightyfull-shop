@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
-import { cn } from '@/lib/utils';
 
 interface AccountNavItem {
   label: string;
@@ -33,27 +33,29 @@ export function AccountSidebar() {
       {NAV_ITEMS.map((item) => {
         const active = isActive(item.href);
         return (
-          <Link
+          <Button
             key={item.href}
-            href={item.href}
-            aria-current={active ? 'page' : undefined}
-            className={cn(
-              'shrink-0 md:shrink rounded-lg px-4 py-2.5 text-sm font-poppins font-medium transition-colors whitespace-nowrap',
-              active
-                ? 'bg-blue-ruin text-sugar-milk'
-                : 'text-blue-ruin hover:bg-blue-ruin/10'
-            )}
+            asChild
+            size="sm"
+            colorTheme={active ? 'blue-ruin' : 'naked-blue-ruin'}
+            hoverAnimation={false}
+            className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink"
           >
-            {item.label}
-          </Link>
+            <Link href={item.href} aria-current={active ? 'page' : undefined}>
+              {item.label}
+            </Link>
+          </Button>
         );
       })}
-      <Link
-        href="/account/logout"
-        className="shrink-0 md:shrink md:mt-4 rounded-lg px-4 py-2.5 text-sm font-poppins font-medium border border-blue-ruin/20 text-blue-ruin hover:bg-blue-ruin hover:text-sugar-milk transition-colors whitespace-nowrap text-center md:text-left"
+      <Button
+        asChild
+        size="sm"
+        colorTheme="inverted-blue-ruin"
+        hoverAnimation={false}
+        className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink md:mt-4"
       >
-        Log out
-      </Link>
+        <Link href="/account/logout">Log out</Link>
+      </Button>
     </nav>
   );
 }
