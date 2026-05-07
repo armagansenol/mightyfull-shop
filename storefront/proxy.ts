@@ -6,7 +6,7 @@ export const config = {
   matcher: ['/account/((?!login|callback|logout).*)', '/account']
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const cookie = request.cookies.get(SESSION_COOKIE);
 
   if (!cookie?.value) {
