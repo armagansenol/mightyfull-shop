@@ -333,6 +333,7 @@ export function AddressForm({
             type="submit"
             colorTheme="blue-ruin"
             size="sm"
+            padding="fat"
             hoverAnimation={false}
             disabled={isPending}
             className="h-10 min-w-[160px]"
@@ -349,6 +350,7 @@ export function AddressForm({
             type="button"
             colorTheme="naked-blue-ruin"
             size="sm"
+            padding="fat"
             hoverAnimation={false}
             disabled={isPending}
             onClick={() => router.push('/account/addresses')}

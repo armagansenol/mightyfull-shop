@@ -127,7 +127,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                   variant="link"
                   colorTheme="naked-blue-ruin"
                   hoverAnimation={false}
-                  className="h-9 underline px-2"
+                  className="h-9 w-auto underline px-2"
                 >
                   <Link
                     href={`/account/addresses/${encodeURIComponent(addr.id)}/edit`}
@@ -145,7 +145,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                     hoverAnimation={false}
                     disabled={isPending}
                     onClick={() => handleSetDefault(addr.id)}
-                    className="h-9 underline px-2"
+                    className="h-9 w-auto underline px-2"
                   >
                     Set as default
                   </Button>
@@ -159,7 +159,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                       colorTheme="naked-blue-ruin"
                       hoverAnimation={false}
                       disabled={isPending || isDefault}
-                      className="h-9 underline px-2 ml-auto"
+                      className="h-9 w-auto underline px-2 ml-auto"
                     >
                       Delete
                     </Button>
@@ -178,6 +178,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                           type="button"
                           colorTheme="naked-blue-ruin"
                           size="sm"
+                          padding="fat"
                           hoverAnimation={false}
                           className="h-10"
                         >
@@ -188,6 +189,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                         type="button"
                         colorTheme="blue-ruin"
                         size="sm"
+                        padding="fat"
                         hoverAnimation={false}
                         disabled={isPending}
                         onClick={() => handleDelete(addr.id)}
