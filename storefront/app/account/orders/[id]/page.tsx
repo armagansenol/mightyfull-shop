@@ -157,6 +157,7 @@ export default async function OrderDetailPage({
   const id = decodeURIComponent(encodedId);
 
   let data: OrderData | null = null;
+  let error: string | null = null;
   try {
     data = await customerQuery<OrderData>({
       query: ORDER_QUERY,
@@ -169,12 +170,38 @@ export default async function OrderDetailPage({
       );
     }
     if (e instanceof CustomerAccountAPIError) {
-      throw new Error(`${e.status ?? 'unknown'}: ${e.message}`);
+      error = `${e.status ?? 'unknown'}: ${e.message}`;
+    } else {
+      error = e instanceof Error ? e.message : 'Failed to load order';
     }
-    throw e;
   }
 
   const order = data?.customer?.order;
+
+  if (error) {
+    return (
+      <>
+        <header>
+          <h1 className="font-bomstad-display text-3xl md:text-5xl font-bold text-blue-ruin">
+            Order
+          </h1>
+        </header>
+        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
+          <CardHeader>
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin">
+              Couldn’t load this order
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <pre className="text-sm whitespace-pre-wrap text-red-700">
+              {error}
+            </pre>
+          </CardContent>
+        </Card>
+      </>
+    );
+  }
+
   if (!order) {
     notFound();
   }
