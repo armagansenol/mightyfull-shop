@@ -31,7 +31,7 @@ const ORDER_QUERY = `
             amount
             currencyCode
           }
-          subtotalPrice {
+          subtotal {
             amount
             currencyCode
           }
@@ -39,7 +39,7 @@ const ORDER_QUERY = `
             amount
             currencyCode
           }
-          totalShippingPrice {
+          totalShipping {
             amount
             currencyCode
           }
@@ -93,9 +93,9 @@ interface OrderDetail {
   financialStatus: string | null;
   fulfillmentStatus: string | null;
   totalPrice: MoneyV2;
-  subtotalPrice: MoneyV2 | null;
+  subtotal: MoneyV2 | null;
   totalTax: MoneyV2 | null;
-  totalShippingPrice: MoneyV2 | null;
+  totalShipping: MoneyV2 | null;
   shippingAddress: {
     firstName: string | null;
     lastName: string | null;
@@ -300,11 +300,11 @@ export default async function OrderDetailPage({
           <CardContent className="flex flex-col gap-2 text-sm">
             <div className="flex justify-between">
               <span className="text-blue-ruin/70">Subtotal</span>
-              <span>{formatMoney(order.subtotalPrice)}</span>
+              <span>{formatMoney(order.subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-blue-ruin/70">Shipping</span>
-              <span>{formatMoney(order.totalShippingPrice)}</span>
+              <span>{formatMoney(order.totalShipping)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-blue-ruin/70">Tax</span>
