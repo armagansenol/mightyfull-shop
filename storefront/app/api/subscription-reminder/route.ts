@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 const SHOPIFY_API_VERSION = '2026-04';
-const KLAVIYO_REVISION = '2024-02-15';
+const KLAVIYO_REVISION = '2025-01-15';
 const REMINDER_DAYS_AHEAD = 5;
 const SUBSCRIPTION_PAGE_SIZE = 250;
 
