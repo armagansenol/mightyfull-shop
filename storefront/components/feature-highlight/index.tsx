@@ -8,9 +8,9 @@ import s from './feature-highlight.module.css';
 export function FeatureHighlight() {
   const items = [
     {
-      title: 'Gluten-Free',
+      title: 'Gluten Free',
       description:
-        'Baked for everyone—crafted to perfection, no gluten needed.',
+        'Easy on the stomach, so you can focus on the cookie, not the aftermath.',
       icon: '/img/gluten-free.png',
       colorTheme: {
         primary: '#0077E0',
@@ -19,18 +19,20 @@ export function FeatureHighlight() {
       }
     },
     {
+      title: 'Fiber Boost',
+      description:
+        'Keeps things moving and helps you stay full, like a quiet overachiever.',
       icon: '/img/dairy-free.png',
       colorTheme: {
         primary: '#9114D3',
         secondary: '#C277EC',
         tertiary: '#E9CEFF'
-      },
-      title: 'Dairy-Free',
-      description: 'Skip the dairy, dodge the bloat—snack smarter, feel better.'
+      }
     },
     {
-      title: 'Soy-Free',
-      description: 'Soy-long! We’ve moved on to better, cleaner snacking.',
+      title: 'Collagen',
+      description:
+        'A little extra support for your skin, hair, and joints, all while you’re just enjoying a cookie.',
       icon: '/img/soy-free.png',
       colorTheme: {
         primary: '#D43584',
@@ -39,14 +41,36 @@ export function FeatureHighlight() {
       }
     },
     {
-      title: 'Whey-Free',
+      title: 'Avocado Oil',
       description:
-        'Whey out? More like way better! All the flavor, none of the hassle.',
+        'Packed with heart-healthy fats that help support cholesterol levels and keep every bite smooth and satisfying.',
       icon: '/img/whey-free.png',
       colorTheme: {
         primary: '#BC701E',
         secondary: '#D39E63',
         tertiary: '#F7DBB5'
+      }
+    },
+    {
+      title: 'Coconut Butter',
+      description:
+        'Adds natural fats for steady energy, plus that soft, melt-in-your-mouth texture you notice right away.',
+      icon: '/img/dairy-free.png',
+      colorTheme: {
+        primary: '#9114D3',
+        secondary: '#C277EC',
+        tertiary: '#E9CEFF'
+      }
+    },
+    {
+      title: 'Indulgent Taste',
+      description:
+        'Rich, chewy, and satisfying, so you are not circling back five minutes later looking for something else.',
+      icon: '/img/soy-free.png',
+      colorTheme: {
+        primary: '#D43584',
+        secondary: '#E36CA6',
+        tertiary: '#FFC7E0'
       }
     }
   ];
