@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { SESSION_COOKIE } from '@/lib/shopify/customer-account/session';
+import { SESSION_COOKIE } from '@/lib/shopify/customer-account/cookies';
 
 export const config = {
   matcher: ['/account/((?!login|callback|logout).*)', '/account']

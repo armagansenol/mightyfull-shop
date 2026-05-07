@@ -5,14 +5,14 @@ import {
 } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { customerAccountConfig } from './config';
+import { FLOW_COOKIE, SESSION_COOKIE } from './cookies';
 import type { AuthorizationFlowState, CustomerSession } from './types';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;
 const TAG_LENGTH = 16;
 
-export const SESSION_COOKIE = '__mf_customer_session';
-export const FLOW_COOKIE = '__mf_oauth_flow';
+export { FLOW_COOKIE, SESSION_COOKIE };
 
 const baseCookieOptions = {
   httpOnly: true,
