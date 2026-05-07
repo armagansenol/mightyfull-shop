@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
+import { cn } from '@/lib/utils';
 
 interface AccountNavItem {
   label: string;
@@ -43,7 +44,10 @@ export function AccountSidebar() {
             size="sm"
             colorTheme={active ? 'blue-ruin' : 'naked-blue-ruin'}
             hoverAnimation={false}
-            className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink"
+            className={cn(
+              'h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink transition-colors',
+              !active && 'hover:bg-blue-ruin/5'
+            )}
           >
             <Link
               href={item.href}
