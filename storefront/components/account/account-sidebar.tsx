@@ -45,7 +45,7 @@ export function AccountSidebar() {
             colorTheme={active ? 'blue-ruin' : 'naked-blue-ruin'}
             hoverAnimation={false}
             className={cn(
-              'h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink transition-colors',
+              'h-10 justify-start whitespace-nowrap text-sm px-4 shrink-0 md:shrink transition-colors',
               !active && 'hover:bg-blue-ruin/5'
             )}
           >
@@ -64,7 +64,7 @@ export function AccountSidebar() {
         size="sm"
         colorTheme="inverted-blue-ruin"
         hoverAnimation={false}
-        className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink md:mt-4"
+        className="h-10 justify-start whitespace-nowrap text-sm px-4 shrink-0 md:shrink md:mt-4"
       >
         <Link href="/account/logout" prefetch={false}>
           Log out
