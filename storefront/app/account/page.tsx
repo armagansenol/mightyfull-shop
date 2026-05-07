@@ -103,10 +103,12 @@ const cardClasses =
 
 function CardActionLink({
   href,
-  children
+  children,
+  prefetch = false
 }: {
   href: string;
   children: React.ReactNode;
+  prefetch?: boolean;
 }) {
   return (
     <Button
@@ -117,7 +119,9 @@ function CardActionLink({
       hoverAnimation={false}
       className="h-auto p-0 underline text-sm font-medium"
     >
-      <Link href={href}>{children}</Link>
+      <Link href={href} prefetch={prefetch}>
+        {children}
+      </Link>
     </Button>
   );
 }

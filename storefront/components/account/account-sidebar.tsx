@@ -7,14 +7,18 @@ import { Link } from '@/components/utility/link';
 interface AccountNavItem {
   label: string;
   href: string;
+  prefetch?: boolean;
 }
 
+// prefetch is set to true only for pages that exist; false for stubs
+// that haven't been built yet so we don't pollute the console with 404s
+// on sidebar render.
 const NAV_ITEMS: AccountNavItem[] = [
-  { label: 'Overview', href: '/account' },
-  { label: 'Orders', href: '/account/orders' },
-  { label: 'Subscriptions', href: '/account/subscriptions' },
-  { label: 'Addresses', href: '/account/addresses' },
-  { label: 'Profile', href: '/account/profile' }
+  { label: 'Overview', href: '/account', prefetch: true },
+  { label: 'Orders', href: '/account/orders', prefetch: false },
+  { label: 'Subscriptions', href: '/account/subscriptions', prefetch: false },
+  { label: 'Addresses', href: '/account/addresses', prefetch: false },
+  { label: 'Profile', href: '/account/profile', prefetch: true }
 ];
 
 export function AccountSidebar() {
@@ -41,7 +45,11 @@ export function AccountSidebar() {
             hoverAnimation={false}
             className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink"
           >
-            <Link href={item.href} aria-current={active ? 'page' : undefined}>
+            <Link
+              href={item.href}
+              prefetch={item.prefetch}
+              aria-current={active ? 'page' : undefined}
+            >
               {item.label}
             </Link>
           </Button>
