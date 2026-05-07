@@ -18,59 +18,61 @@ import { getSession } from '@/lib/shopify/customer-account/session';
 export const dynamic = 'force-dynamic';
 
 const ORDER_QUERY = `
-  query AccountOrder($id: ID!) {
+  query AccountOrder($idQuery: String!) {
     customer {
-      order(id: $id) {
-        id
-        name
-        processedAt
-        financialStatus
-        fulfillmentStatus
-        totalPrice {
-          amount
-          currencyCode
-        }
-        subtotalPrice {
-          amount
-          currencyCode
-        }
-        totalTax {
-          amount
-          currencyCode
-        }
-        totalShippingPrice {
-          amount
-          currencyCode
-        }
-        shippingAddress {
-          firstName
-          lastName
-          address1
-          address2
-          city
-          zoneCode
-          zip
-          territoryCode
-          phoneNumber
-        }
-        lineItems(first: 50) {
-          nodes {
-            title
-            quantity
-            variantTitle
-            image {
-              url
-              altText
-              width
-              height
-            }
-            price {
-              amount
-              currencyCode
-            }
-            totalPrice {
-              amount
-              currencyCode
+      orders(first: 1, query: $idQuery) {
+        nodes {
+          id
+          name
+          processedAt
+          financialStatus
+          fulfillmentStatus
+          totalPrice {
+            amount
+            currencyCode
+          }
+          subtotalPrice {
+            amount
+            currencyCode
+          }
+          totalTax {
+            amount
+            currencyCode
+          }
+          totalShippingPrice {
+            amount
+            currencyCode
+          }
+          shippingAddress {
+            firstName
+            lastName
+            address1
+            address2
+            city
+            zoneCode
+            zip
+            territoryCode
+            phoneNumber
+          }
+          lineItems(first: 50) {
+            nodes {
+              title
+              quantity
+              variantTitle
+              image {
+                url
+                altText
+                width
+                height
+              }
+              price {
+                amount
+                currencyCode
+              }
+              totalPrice {
+                amount
+                currencyCode
+              }
             }
           }
         }
@@ -123,7 +125,9 @@ interface OrderDetail {
 }
 
 interface OrderData {
-  customer: { order: OrderDetail | null } | null;
+  customer: {
+    orders: { nodes: OrderDetail[] };
+  } | null;
 }
 
 function formatDate(iso: string): string {
@@ -155,13 +159,16 @@ export default async function OrderDetailPage({
 
   const { id: encodedId } = await params;
   const id = decodeURIComponent(encodedId);
+  // Customer Account API doesn't expose customer.order(id:); we filter
+  // through customer.orders(query:) using the numeric portion of the GID.
+  const numericId = id.split('/').pop() ?? id;
 
   let data: OrderData | null = null;
   let error: string | null = null;
   try {
     data = await customerQuery<OrderData>({
       query: ORDER_QUERY,
-      variables: { id }
+      variables: { idQuery: `id:${numericId}` }
     });
   } catch (e) {
     if (e instanceof CustomerAccountAPIError && e.status === 401) {
@@ -176,7 +183,7 @@ export default async function OrderDetailPage({
     }
   }
 
-  const order = data?.customer?.order;
+  const order = data?.customer?.orders.nodes[0] ?? null;
 
   if (error) {
     return (
