@@ -18,6 +18,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+const inputClasses =
+  'h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
+
 const profileSchema = z.object({
   firstName: z
     .string()
@@ -75,7 +78,11 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
             <FormItem>
               <FormLabel className="text-blue-ruin">First name</FormLabel>
               <FormControl>
-                <Input {...field} disabled={isPending} />
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,7 +95,11 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
             <FormItem>
               <FormLabel className="text-blue-ruin">Last name</FormLabel>
               <FormControl>
-                <Input {...field} disabled={isPending} />
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

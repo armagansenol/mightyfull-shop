@@ -31,6 +31,9 @@ import {
   SelectValue
 } from '@/components/ui/select';
 
+const inputClasses =
+  'h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
+
 const COUNTRIES: Array<{ code: string; name: string }> = [
   { code: 'US', name: 'United States' },
   { code: 'CA', name: 'Canada' },
@@ -157,7 +160,11 @@ export function AddressForm({
               <FormItem>
                 <FormLabel className="text-blue-ruin">First name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} />
+                  <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -170,7 +177,11 @@ export function AddressForm({
               <FormItem>
                 <FormLabel className="text-blue-ruin">Last name</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} />
+                  <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -189,6 +200,7 @@ export function AddressForm({
                   {...field}
                   disabled={isPending}
                   placeholder="Street address"
+                  className={inputClasses}
                 />
               </FormControl>
               <FormMessage />
@@ -205,7 +217,11 @@ export function AddressForm({
                 Apartment, suite, etc. (optional)
               </FormLabel>
               <FormControl>
-                <Input {...field} disabled={isPending} />
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -220,7 +236,11 @@ export function AddressForm({
               <FormItem>
                 <FormLabel className="text-blue-ruin">City</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} />
+                  <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -239,6 +259,7 @@ export function AddressForm({
                     {...field}
                     disabled={isPending}
                     placeholder="e.g. CA, NY, ON"
+                    className={inputClasses}
                   />
                 </FormControl>
                 <FormMessage />
@@ -252,7 +273,11 @@ export function AddressForm({
               <FormItem>
                 <FormLabel className="text-blue-ruin">Postal code</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} />
+                  <Input
+                  {...field}
+                  disabled={isPending}
+                  className={inputClasses}
+                />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -272,7 +297,9 @@ export function AddressForm({
                 disabled={isPending}
               >
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger
+                    className="h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin focus:border-blue-ruin focus:ring-2 focus:ring-blue-ruin/20"
+                  >
                     <SelectValue placeholder="Select a country" />
                   </SelectTrigger>
                 </FormControl>
@@ -302,6 +329,7 @@ export function AddressForm({
                   {...field}
                   disabled={isPending}
                   placeholder="+1 555 0100"
+                  className={inputClasses}
                 />
               </FormControl>
               <FormMessage />
