@@ -46,6 +46,9 @@ export default async function ProfilePage() {
   try {
     data = await customerQuery<ProfileData>({ query: PROFILE_QUERY });
   } catch (e) {
+    if (e instanceof CustomerAccountAPIError && e.status === 401) {
+      redirect('/account/login?return_to=/account/profile');
+    }
     if (e instanceof CustomerAccountAPIError) {
       error = `${e.status ?? 'unknown'}: ${e.message}`;
     } else {

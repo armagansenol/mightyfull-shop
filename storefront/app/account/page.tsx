@@ -154,6 +154,9 @@ export default async function AccountOverviewPage() {
   try {
     data = await customerQuery<OverviewData>({ query: OVERVIEW_QUERY });
   } catch (e) {
+    if (e instanceof CustomerAccountAPIError && e.status === 401) {
+      redirect('/account/login?return_to=/account');
+    }
     if (e instanceof CustomerAccountAPIError) {
       error = `${e.status ?? 'unknown'}: ${e.message}`;
     } else {

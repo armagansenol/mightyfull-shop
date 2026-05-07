@@ -70,6 +70,11 @@ export default async function EditAddressPage({
   try {
     data = await customerQuery<AddressesData>({ query: ADDRESSES_QUERY });
   } catch (e) {
+    if (e instanceof CustomerAccountAPIError && e.status === 401) {
+      redirect(
+        `/account/login?return_to=${encodeURIComponent(`/account/addresses/${encodedId}/edit`)}`
+      );
+    }
     if (e instanceof CustomerAccountAPIError) {
       throw new Error(`${e.status ?? 'unknown'}: ${e.message}`);
     }

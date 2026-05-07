@@ -66,6 +66,9 @@ export default async function AddressesPage() {
   try {
     data = await customerQuery<AddressesData>({ query: ADDRESSES_QUERY });
   } catch (e) {
+    if (e instanceof CustomerAccountAPIError && e.status === 401) {
+      redirect('/account/login?return_to=/account/addresses');
+    }
     if (e instanceof CustomerAccountAPIError) {
       error = `${e.status ?? 'unknown'}: ${e.message}`;
     } else {
