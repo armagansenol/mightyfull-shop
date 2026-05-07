@@ -23,6 +23,10 @@
           "zod": "*"
         }
       }
-    }
+    },
+    "peerDependencyRules": {
+      "ignoreMissing": ["vite"]
+    },
+    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
   }
 }
