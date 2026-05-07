@@ -15,5 +15,14 @@
   },
   "engines": {
     "node": "22.x"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "@hookform/resolvers": {
+        "peerDependencies": {
+          "zod": "*"
+        }
+      }
+    }
   }
 }

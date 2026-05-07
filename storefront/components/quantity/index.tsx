@@ -7,6 +7,7 @@ interface QuantityProps {
   quantity: number;
   setQuantity: (val: number) => void;
   maxQuantity?: number;
+  disabled?: boolean;
 }
 
 export function Quantity(props: QuantityProps) {
@@ -29,11 +30,16 @@ export function Quantity(props: QuantityProps) {
   };
 
   return (
-    <div className={cn(s.quantity, 'grid grid-cols-12', props.className)}>
+    <div
+      className={cn(s.quantity, 'grid grid-cols-12', props.className, {
+        'opacity-50 pointer-events-none': props.disabled
+      })}
+      aria-disabled={props.disabled || undefined}
+    >
       <button
         className="cursor-pointer col-span-4 flex items-center justify-center disabled:opacity-50"
         onClick={() => safeSetQuantity(props.quantity - 1)}
-        disabled={props.quantity <= 1}
+        disabled={props.disabled || props.quantity <= 1}
       >
         <div className={s.iconC}>
           <IconMinus fill="var(--primary)" />
@@ -46,7 +52,9 @@ export function Quantity(props: QuantityProps) {
         className="cursor-pointer col-span-4 flex items-center justify-center disabled:opacity-50"
         onClick={() => safeSetQuantity(props.quantity + 1)}
         disabled={
-          props.maxQuantity !== undefined && props.quantity >= props.maxQuantity
+          props.disabled ||
+          (props.maxQuantity !== undefined &&
+            props.quantity >= props.maxQuantity)
         }
       >
         <div className={s.iconC}>

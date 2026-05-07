@@ -1,5 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { BellRing, Loader2 } from 'lucide-react';
+import { Notification01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -77,14 +79,26 @@ export function OutOfStock({
             'flex justify-center md:justify-start mb-10 md:mb-20 py-2'
           )}
         >
-          OUT OF STOCK
+          SOLD OUT
         </div>
       )}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="h-12 flex gap-4" colorTheme="themed" size="sm">
-            <BellRing className="w-5 h-5" />
+          <Button
+            className={cn(s.notifyButton, 'h-12 inline-flex items-center')}
+            colorTheme="blue-ruin"
+            hoverAnimation={false}
+            size="sm"
+          >
             <span>NOTIFY ME WHEN BACK IN STOCK</span>
+            <span className={s.bellWrapper} aria-hidden="true">
+              <HugeiconsIcon
+                icon={Notification01Icon}
+                size={20}
+                strokeWidth={2}
+                className={s.bellIcon}
+              />
+            </span>
           </Button>
         </DialogTrigger>
         <DialogContent className={cn(s['notify-me-content'])}>
@@ -155,7 +169,7 @@ export function OutOfStock({
               <Img
                 className="object-cover"
                 src="/img/lady.jpg"
-                alt="Out of stock"
+                alt="Sold out"
                 width={1000}
                 height={1000}
               />

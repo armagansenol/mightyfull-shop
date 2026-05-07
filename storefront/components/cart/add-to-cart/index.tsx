@@ -42,7 +42,7 @@ export function AddToCart({
             <IconClose fill="var(--blue-ruin)" />
           </div>
           <div className="flex flex-col gap-2 relative">
-            <div>This product is currently out of stock.</div>
+            <div>This product is currently sold out.</div>
             <div>Please check back soon.</div>
             <button className="flex gap-4">
               <span>
@@ -64,7 +64,7 @@ export function AddToCart({
   if (!availableForSale)
     return (
       <Button className={className} colorTheme={buttonTheme} size="sm" disabled>
-        OUT OF STOCK
+        SOLD OUT
       </Button>
     );
 

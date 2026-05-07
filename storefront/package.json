@@ -19,6 +19,8 @@
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
+    "@hugeicons/core-free-icons": "^4.1.1",
+    "@hugeicons/react": "^1.1.6",
     "@number-flow/react": "^0.5.14",
     "@portabletext/react": "^6.0.2",
     "@portabletext/types": "^4.0.2",
@@ -74,9 +76,15 @@
   },
   "pnpm": {
     "peerDependencyRules": {
-      "ignoreMissing": ["vite"]
+      "ignoreMissing": [
+        "vite"
+      ]
     },
-    "onlyBuiltDependencies": ["@parcel/watcher", "esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "esbuild",
+      "sharp"
+    ]
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",

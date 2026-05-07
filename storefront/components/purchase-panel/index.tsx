@@ -301,12 +301,13 @@ export function PurchasePanel({ shopifyProduct, subscriptionBenefits }: Purchase
                 className="w-32 md:w-auto h-10 md:h-full md:col-span-4"
                 quantity={quantity}
                 setQuantity={setQuantity}
+                disabled
               />
               <div
                 className={cn(
                   'w-full md:w-auto h-12 md:h-full md:col-span-8',
                   'flex items-center justify-center',
-                  'border border-primary rounded-xl',
+                  'border border-primary rounded-lg',
                   'font-poppins font-semibold text-primary text-sm tracking-widest'
                 )}
                 aria-label="Product sold out"
