@@ -54,7 +54,9 @@ export function AccountSidebar() {
         hoverAnimation={false}
         className="h-10 justify-start whitespace-nowrap text-sm shrink-0 md:shrink md:mt-4"
       >
-        <Link href="/account/logout">Log out</Link>
+        <Link href="/account/logout" prefetch={false}>
+          Log out
+        </Link>
       </Button>
     </nav>
   );
