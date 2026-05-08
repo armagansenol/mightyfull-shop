@@ -1,5 +1,11 @@
 'use client';
 
+import {
+  CheckmarkCircle02Icon,
+  Delete02Icon,
+  Edit02Icon
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Loader2, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
@@ -139,15 +145,21 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                 <Button
                   asChild
                   size="sm"
-                  variant="link"
-                  colorTheme="naked-blue-ruin"
+                  colorTheme="inverted-blue-ruin"
+                  padding="fat"
                   hoverAnimation={false}
-                  className="h-9 w-auto underline px-2"
+                  className="h-9 w-auto inline-flex items-center gap-1.5 text-sm"
                 >
                   <Link
                     href={`/account/addresses/${encodeURIComponent(addr.id)}/edit`}
                     prefetch={false}
                   >
+                    <HugeiconsIcon
+                      icon={Edit02Icon}
+                      size={14}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
                     Edit
                   </Link>
                 </Button>
@@ -155,13 +167,19 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                   <Button
                     type="button"
                     size="sm"
-                    variant="link"
-                    colorTheme="naked-blue-ruin"
+                    colorTheme="inverted-blue-ruin"
+                    padding="fat"
                     hoverAnimation={false}
                     disabled={isPending}
                     onClick={() => handleSetDefault(addr.id)}
-                    className="h-9 w-auto underline px-2"
+                    className="h-9 w-auto inline-flex items-center gap-1.5 text-sm"
                   >
+                    <HugeiconsIcon
+                      icon={CheckmarkCircle02Icon}
+                      size={14}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
                     Set as default
                   </Button>
                 )}
@@ -170,12 +188,18 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                     <Button
                       type="button"
                       size="sm"
-                      variant="link"
-                      colorTheme="naked-blue-ruin"
+                      colorTheme="inverted-blue-ruin"
+                      padding="fat"
                       hoverAnimation={false}
                       disabled={isPending || isDefault}
-                      className="h-9 w-auto underline px-2 ml-auto"
+                      className="h-9 w-auto inline-flex items-center gap-1.5 text-sm ml-auto"
                     >
+                      <HugeiconsIcon
+                        icon={Delete02Icon}
+                        size={14}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
                       Delete
                     </Button>
                   </DialogTrigger>
