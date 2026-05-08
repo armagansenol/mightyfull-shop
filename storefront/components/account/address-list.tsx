@@ -106,25 +106,24 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
     });
   };
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {addresses.map((addr) => {
-        const isDefault = addr.id === defaultId;
-        return (
-          <Card
-            key={addr.id}
-            className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
-          >
-            <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-              <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
-                {addr.firstName} {addr.lastName}
-              </CardTitle>
-              {isDefault && (
-                <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-ruin text-sugar-milk shrink-0">
-                  Default
-                </span>
-              )}
-            </CardHeader>
+  const defaultAddress = addresses.find((a) => a.id === defaultId) ?? null;
+  const otherAddresses = addresses.filter((a) => a.id !== defaultId);
+
+  const renderCard = (addr: AddressNode, isDefault: boolean) => (
+    <Card
+      key={addr.id}
+      className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
+    >
+      <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
+        <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+          {addr.firstName} {addr.lastName}
+        </CardTitle>
+        {isDefault && (
+          <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-ruin text-sugar-milk shrink-0">
+            Default
+          </span>
+        )}
+      </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <address className="not-italic flex flex-col gap-0.5 text-sm">
                 {addr.address1 && <span>{addr.address1}</span>}
@@ -252,8 +251,52 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
               )}
             </CardContent>
           </Card>
-        );
-      })}
+  );
+
+  // No default set — show every address in one bucket
+  if (!defaultAddress) {
+    return (
+      <section className="flex flex-col gap-3">
+        <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+          Saved addresses
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {otherAddresses.map((addr) => renderCard(addr, false))}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-8 md:gap-10">
+      <section className="flex flex-col gap-3">
+        <header className="flex flex-col gap-1">
+          <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+            Default address
+          </h2>
+          <p className="text-sm text-blue-ruin/80">
+            Used at checkout unless you choose another.
+          </p>
+        </header>
+        {renderCard(defaultAddress, true)}
+      </section>
+
+      {otherAddresses.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <header className="flex items-center gap-3">
+            <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+              Other addresses
+            </h2>
+            <span
+              className="h-px flex-1 bg-blue-ruin/15"
+              aria-hidden="true"
+            />
+          </header>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {otherAddresses.map((addr) => renderCard(addr, false))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
