@@ -12,7 +12,6 @@ import type { IconSvgElement } from '@hugeicons/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { usePathname } from 'next/navigation';
 import { AccountThemeToggle } from '@/components/account/account-theme-toggle';
-import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
 import { cn } from '@/lib/utils';
 
@@ -111,23 +110,31 @@ export function AccountSidebar() {
 
       <AccountThemeToggle />
 
-      <Button
-        asChild
-        size="sm"
-        colorTheme="inverted-blue-ruin"
-        hoverAnimation={false}
-        className="h-11 md:h-10 w-auto md:w-full justify-start whitespace-nowrap text-sm px-4 md:px-3 shrink-0 md:shrink inline-flex items-center gap-2.5"
+      {/*
+        Logout MUST be a hard browser navigation: /account/logout is a
+        route handler that issues Set-Cookie headers and then redirects
+        the browser through Shopify's logout endpoint. Next.js Link does
+        client-side routing which doesn't reliably persist Set-Cookie
+        nor follow cross-origin redirects, so we use a plain anchor.
+      */}
+      <a
+        href="/account/logout"
+        className={cn(
+          'inline-flex items-center gap-2.5 shrink-0 md:shrink',
+          'h-11 md:h-10 px-4 md:px-3 rounded-lg whitespace-nowrap',
+          'text-sm font-bold cursor-pointer transition-colors duration-200',
+          'border border-blue-ruin/40 text-blue-ruin hover:bg-blue-ruin hover:text-sugar-milk',
+          'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'
+        )}
       >
-        <Link href="/account/logout" prefetch={false}>
-          <HugeiconsIcon
-            icon={Logout03Icon}
-            size={18}
-            strokeWidth={1.75}
-            aria-hidden="true"
-          />
-          <span>Log out</span>
-        </Link>
-      </Button>
+        <HugeiconsIcon
+          icon={Logout03Icon}
+          size={18}
+          strokeWidth={1.75}
+          aria-hidden="true"
+        />
+        <span>Log out</span>
+      </a>
     </nav>
   );
 }
