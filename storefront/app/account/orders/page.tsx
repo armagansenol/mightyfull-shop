@@ -1,6 +1,7 @@
 import { Package } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
+import { CardActionLink } from '@/components/account/card-action-link';
 import { OrderStatusBadge } from '@/components/account/order-status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -157,21 +158,11 @@ export default async function OrdersPage() {
                 </div>
               </CardHeader>
               <CardContent className="flex justify-end">
-                <Button
-                  asChild
-                  variant="link"
-                  size="sm"
-                  colorTheme="naked-blue-ruin"
-                  hoverAnimation={false}
-                  className="h-auto w-auto p-0 underline text-sm font-medium"
+                <CardActionLink
+                  href={`/account/orders/${encodeURIComponent(order.id)}`}
                 >
-                  <Link
-                    href={`/account/orders/${encodeURIComponent(order.id)}`}
-                    prefetch={false}
-                  >
-                    View details
-                  </Link>
-                </Button>
+                  View details
+                </CardActionLink>
               </CardContent>
             </Card>
           ))}

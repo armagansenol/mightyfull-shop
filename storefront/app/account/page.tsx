@@ -1,7 +1,5 @@
-import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
 import { redirect } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { CardActionLink } from '@/components/account/card-action-link';
 import {
   Card,
   CardContent,
@@ -9,7 +7,6 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import { Link } from '@/components/utility/link';
 import {
   CustomerAccountAPIError,
   customerQuery
@@ -102,37 +99,6 @@ interface OverviewData {
 
 const cardClasses =
   'rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin';
-
-function CardActionLink({
-  href,
-  children,
-  prefetch = false
-}: {
-  href: string;
-  children: React.ReactNode;
-  prefetch?: boolean;
-}) {
-  return (
-    <Button
-      asChild
-      variant="link"
-      size="sm"
-      colorTheme="naked-blue-ruin"
-      hoverAnimation={false}
-      className="h-auto w-auto p-0 underline underline-offset-4 text-sm font-medium inline-flex items-center gap-1 text-blue-ruin/80 hover:text-blue-ruin transition-colors"
-    >
-      <Link href={href} prefetch={prefetch}>
-        <span>{children}</span>
-        <HugeiconsIcon
-          icon={ArrowRight01Icon}
-          size={14}
-          strokeWidth={2}
-          aria-hidden="true"
-        />
-      </Link>
-    </Button>
-  );
-}
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {

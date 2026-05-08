@@ -1,6 +1,7 @@
 import { Repeat } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
+import { CardActionLink } from '@/components/account/card-action-link';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -182,21 +183,11 @@ export default async function SubscriptionsPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex justify-end">
-                    <Button
-                      asChild
-                      variant="link"
-                      size="sm"
-                      colorTheme="naked-blue-ruin"
-                      hoverAnimation={false}
-                      className="h-auto w-auto p-0 underline text-sm font-medium"
+                    <CardActionLink
+                      href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
                     >
-                      <Link
-                        href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
-                        prefetch={false}
-                      >
-                        Manage
-                      </Link>
-                    </Button>
+                      Manage
+                    </CardActionLink>
                   </CardContent>
                 </Card>
               );
