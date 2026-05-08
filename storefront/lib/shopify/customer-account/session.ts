@@ -1,18 +1,14 @@
-import {
-  createCipheriv,
-  createDecipheriv,
-  randomBytes
-} from 'node:crypto';
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { cookies } from 'next/headers';
 import { customerAccountConfig } from './config';
-import { FLOW_COOKIE, SESSION_COOKIE } from './cookies';
+import { FLOW_COOKIE, FORCE_REAUTH_COOKIE, SESSION_COOKIE } from './cookies';
 import type { AuthorizationFlowState, CustomerSession } from './types';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;
 const TAG_LENGTH = 16;
 
-export { FLOW_COOKIE, SESSION_COOKIE };
+export { FLOW_COOKIE, FORCE_REAUTH_COOKIE, SESSION_COOKIE };
 
 const baseCookieOptions = {
   httpOnly: true,
@@ -44,7 +40,8 @@ function base64UrlEncode(buf: Buffer): string {
 
 function base64UrlDecode(str: string): Buffer {
   const padding = (4 - (str.length % 4)) % 4;
-  const padded = str.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat(padding);
+  const padded =
+    str.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat(padding);
   return Buffer.from(padded, 'base64');
 }
 
@@ -104,7 +101,9 @@ export async function getFlowState(): Promise<AuthorizationFlowState | null> {
   return decrypt<AuthorizationFlowState>(cookie.value);
 }
 
-export async function setFlowState(state: AuthorizationFlowState): Promise<void> {
+export async function setFlowState(
+  state: AuthorizationFlowState
+): Promise<void> {
   const store = await cookies();
   store.set(FLOW_COOKIE, encrypt(state), {
     ...baseCookieOptions,

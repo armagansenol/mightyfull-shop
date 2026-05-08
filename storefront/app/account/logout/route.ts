@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   clearSession,
   FLOW_COOKIE,
+  FORCE_REAUTH_COOKIE,
   getSession,
   SESSION_COOKIE
 } from '@/lib/shopify/customer-account/session';
@@ -31,5 +32,14 @@ export async function GET(request: Request) {
   const response = NextResponse.redirect(target);
   response.cookies.delete(SESSION_COOKIE);
   response.cookies.delete(FLOW_COOKIE);
+  // Mark the next /account/login attempt as post-logout so it forces a
+  // fresh credential prompt at Shopify regardless of SSO state.
+  response.cookies.set(FORCE_REAUTH_COOKIE, '1', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 5
+  });
   return response;
 }
