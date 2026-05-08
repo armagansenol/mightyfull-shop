@@ -396,6 +396,36 @@
 }
 
 /* ==========================================================================
+   Section 3b -- Scoped account-dashboard dark theme
+   Swaps blue-ruin and sugar-milk so the entire /account surface inverts:
+   cream becomes blue and blue becomes cream. All Tailwind utilities and
+   CSS modules that reference these tokens flip automatically.
+   ========================================================================== */
+
+[data-account-theme='dark'] {
+  --color-blue-ruin: rgb(255, 250, 243);
+  --color-sugar-milk: rgb(0, 119, 224);
+  --blue-ruin: rgb(255, 250, 243);
+  --sugar-milk: rgb(0, 119, 224);
+  --blue-ruin-transparent: rgb(255 250 243 / 0);
+  --sugar-milk-transparent: rgb(0 119 224 / 0);
+}
+
+/* Smooth the swap so cards/buttons transition rather than snap. */
+[data-account-theme] {
+  color-scheme: light;
+}
+[data-account-theme='dark'] {
+  color-scheme: dark;
+}
+[data-account-theme],
+[data-account-theme] * {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+/* ==========================================================================
    Section 4 -- Easings (from _easings.scss)
    ========================================================================== */
 

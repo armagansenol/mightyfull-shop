@@ -11,6 +11,7 @@ import {
 import type { IconSvgElement } from '@hugeicons/react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { usePathname } from 'next/navigation';
+import { AccountThemeToggle } from '@/components/account/account-theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
 import { cn } from '@/lib/utils';
@@ -107,6 +108,8 @@ export function AccountSidebar() {
         className="hidden md:block h-px bg-blue-ruin/15 my-2"
         aria-hidden="true"
       />
+
+      <AccountThemeToggle />
 
       <Button
         asChild
