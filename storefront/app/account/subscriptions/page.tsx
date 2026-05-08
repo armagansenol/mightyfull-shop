@@ -107,7 +107,7 @@ export default async function SubscriptionsPage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
           Subscriptions
         </h1>
       </header>
@@ -115,7 +115,7 @@ export default async function SubscriptionsPage() {
       {error && (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin tracking-tight leading-tight">
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
               Couldn’t load subscriptions
             </CardTitle>
           </CardHeader>
@@ -164,7 +164,7 @@ export default async function SubscriptionsPage() {
                 >
                   <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
                     <div className="flex flex-col gap-1 min-w-0">
-                      <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin tracking-tight leading-tight truncate">
+                      <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight truncate">
                         {summary || 'Subscription'}
                       </CardTitle>
                       {contract.nextBillingDate && (

@@ -82,7 +82,7 @@ export default async function AddressesPage() {
   return (
     <>
       <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
           Addresses
         </h1>
         <Button

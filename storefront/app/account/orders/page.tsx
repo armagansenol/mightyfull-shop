@@ -97,7 +97,7 @@ export default async function OrdersPage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
           Orders
         </h1>
       </header>
@@ -137,7 +137,7 @@ export default async function OrdersPage() {
             >
               <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
                 <div className="flex flex-col gap-1">
-                  <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin tracking-tight leading-tight">
+                  <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
                     {order.name}
                   </CardTitle>
                   <p className="text-sm text-blue-ruin/80">

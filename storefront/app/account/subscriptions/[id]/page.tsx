@@ -147,13 +147,13 @@ export default async function SubscriptionDetailPage({
     return (
       <>
         <header>
-          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
+          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
             Subscription
           </h1>
         </header>
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin tracking-tight leading-tight">
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
               Couldn’t load this subscription
             </CardTitle>
           </CardHeader>
@@ -186,7 +186,7 @@ export default async function SubscriptionDetailPage({
         </Button>
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
+            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
               Subscription
             </h1>
             <p className="text-sm text-blue-ruin/80">
@@ -201,7 +201,7 @@ export default async function SubscriptionDetailPage({
 
       <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
         <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin tracking-tight leading-tight">
+          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight">
             Items
           </CardTitle>
         </CardHeader>
@@ -231,7 +231,7 @@ export default async function SubscriptionDetailPage({
       {contract.deliveryAddress && (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin tracking-tight leading-tight">
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
               Delivery address
             </CardTitle>
           </CardHeader>
@@ -271,7 +271,7 @@ export default async function SubscriptionDetailPage({
 
       <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
         <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl text-blue-ruin tracking-tight leading-tight">
+          <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
             Manage
           </CardTitle>
         </CardHeader>
