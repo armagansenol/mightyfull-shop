@@ -1,6 +1,7 @@
 "use client"
 
 import { AnimatePresence, motion } from "motion/react"
+import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { IconClose } from "@/components/icons"
 import { Link } from "@/components/utility/link"
@@ -11,7 +12,17 @@ type FormState = "idle" | "loading" | "success" | "error"
 
 const STORAGE_KEY = "mf_welcome_popup"
 
+// Routes where the marketing welcome popup + reopen chip should not render.
+// These are authenticated / utility surfaces aimed at existing customers,
+// not first-time-visitor acquisition.
+const SUPPRESSED_PATH_PREFIXES = ["/account"]
+
 export function WelcomePopup() {
+  const pathname = usePathname()
+  const isSuppressed = SUPPRESSED_PATH_PREFIXES.some((prefix) =>
+    pathname?.startsWith(prefix)
+  )
+
   const [state, setState] = useState<PopupState>("hidden")
   const [formState, setFormState] = useState<FormState>("idle")
   const [errorMsg, setErrorMsg] = useState("")
@@ -19,6 +30,7 @@ export function WelcomePopup() {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    if (isSuppressed) return
     const seen = localStorage.getItem(STORAGE_KEY)
     if (seen === "dismissed") {
       setState("badge")
@@ -26,7 +38,9 @@ export function WelcomePopup() {
       const timer = setTimeout(() => setState("popup"), 1500)
       return () => clearTimeout(timer)
     }
-  }, [])
+  }, [isSuppressed])
+
+  if (isSuppressed) return null
 
   function dismiss() {
     localStorage.setItem(STORAGE_KEY, "dismissed")
