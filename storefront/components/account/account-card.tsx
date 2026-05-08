@@ -48,24 +48,24 @@ export function AccountCard({
       )}
     >
       {hasHeader && (
-        <header className="m-3 md:m-4 px-4 md:px-5 py-3.5 md:py-4 rounded-xl bg-blue-ruin text-sugar-milk flex items-start justify-between gap-4">
+        <header className="m-3 md:m-4 px-4 md:px-5 py-3.5 md:py-4 rounded-xl bg-blue-ruin/20 backdrop-blur-md border-[1.5px] border-blue-ruin/25 text-blue-ruin flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 min-w-0">
             {icon && (
               <span
                 aria-hidden="true"
-                className="shrink-0 mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-sugar-milk text-sugar-milk"
+                className="shrink-0 mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-ruin text-blue-ruin"
               >
                 <HugeiconsIcon icon={icon} size={18} strokeWidth={1.75} />
               </span>
             )}
             <div className="flex flex-col gap-0.5 min-w-0">
               {eyebrow && (
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-sugar-milk/75">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-ruin/70">
                   {eyebrow}
                 </span>
               )}
               {title && (
-                <h2 className="font-bomstad-display text-xl md:text-2xl text-sugar-milk leading-tight">
+                <h2 className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight">
                   {title}
                 </h2>
               )}
