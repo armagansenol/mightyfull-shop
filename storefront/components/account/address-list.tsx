@@ -3,7 +3,8 @@
 import {
   CheckmarkCircle02Icon,
   Delete02Icon,
-  Edit02Icon
+  Edit02Icon,
+  MapPinIcon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Loader2, MapPin } from 'lucide-react';
@@ -14,14 +15,11 @@ import {
   deleteAddress,
   setDefaultAddress
 } from '@/app/account/addresses/actions';
+import { AccountCard } from '@/components/account/account-card';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
+import { AddressBlock } from '@/components/account/address-block';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Dialog,
   DialogClose,
@@ -109,158 +107,149 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
   const defaultAddress = addresses.find((a) => a.id === defaultId) ?? null;
   const otherAddresses = addresses.filter((a) => a.id !== defaultId);
 
-  const renderCard = (addr: AddressNode, isDefault: boolean) => (
-    <Card
-      key={addr.id}
-      className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
-    >
-      <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-        <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
-          {addr.firstName} {addr.lastName}
-        </CardTitle>
-        {isDefault && (
-          <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-blue-ruin text-sugar-milk shrink-0">
-            Default
-          </span>
-        )}
-      </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <address className="not-italic flex flex-col gap-0.5 text-sm">
-                {addr.address1 && <span>{addr.address1}</span>}
-                {addr.address2 && <span>{addr.address2}</span>}
-                <span>
-                  {[addr.city, addr.zoneCode, addr.zip]
-                    .filter(Boolean)
-                    .join(', ')}
-                </span>
-                {addr.territoryCode && <span>{addr.territoryCode}</span>}
-                {addr.phoneNumber && (
-                  <span className="text-blue-ruin/80 mt-1">
-                    {addr.phoneNumber}
-                  </span>
-                )}
-              </address>
-              <div className="flex flex-wrap items-center gap-2">
+  const renderCard = (addr: AddressNode, isDefault: boolean) => {
+    const fullName =
+      `${addr.firstName ?? ''} ${addr.lastName ?? ''}`.trim() || 'Address';
+    return (
+      <AccountCard
+        key={addr.id}
+        icon={MapPinIcon}
+        eyebrow={isDefault ? 'Default' : 'Address'}
+        title={fullName}
+        action={
+          isDefault && (
+            <span className="inline-flex items-center px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] rounded-full bg-blue-ruin text-sugar-milk shrink-0">
+              Default
+            </span>
+          )
+        }
+        footer={
+          <>
+            <div className="flex flex-wrap items-center gap-2">
+              <Button
+                asChild
+                size="sm"
+                colorTheme="inverted-blue-ruin"
+                padding="fat"
+                hoverAnimation={false}
+                className="h-9 w-auto inline-flex items-center gap-1.5 text-sm"
+              >
+                <Link
+                  href={`/account/addresses/${encodeURIComponent(addr.id)}/edit`}
+                  prefetch={false}
+                >
+                  <HugeiconsIcon
+                    icon={Edit02Icon}
+                    size={14}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  Edit
+                </Link>
+              </Button>
+              {!isDefault && (
                 <Button
-                  asChild
+                  type="button"
                   size="sm"
                   colorTheme="inverted-blue-ruin"
                   padding="fat"
                   hoverAnimation={false}
+                  disabled={isPending}
+                  onClick={() => handleSetDefault(addr.id)}
                   className="h-9 w-auto inline-flex items-center gap-1.5 text-sm"
                 >
-                  <Link
-                    href={`/account/addresses/${encodeURIComponent(addr.id)}/edit`}
-                    prefetch={false}
-                  >
-                    <HugeiconsIcon
-                      icon={Edit02Icon}
-                      size={14}
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    />
-                    Edit
-                  </Link>
+                  <HugeiconsIcon
+                    icon={CheckmarkCircle02Icon}
+                    size={14}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  Set as default
                 </Button>
-                {!isDefault && (
+              )}
+            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  type="button"
+                  size="sm"
+                  colorTheme="naked-blue-ruin"
+                  padding="fat"
+                  hoverAnimation={false}
+                  disabled={isPending || isDefault}
+                  className="h-9 w-auto inline-flex items-center gap-1.5 text-sm text-blue-ruin/75 hover:text-blue-ruin"
+                >
+                  <HugeiconsIcon
+                    icon={Delete02Icon}
+                    size={14}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  Delete
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Delete address?</DialogTitle>
+                  <DialogDescription>
+                    This will remove this address from your account. It
+                    can&apos;t be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="gap-2">
+                  <DialogClose asChild>
+                    <Button
+                      type="button"
+                      colorTheme="naked-blue-ruin"
+                      size="sm"
+                      padding="fat"
+                      hoverAnimation={false}
+                      className="h-10"
+                    >
+                      Cancel
+                    </Button>
+                  </DialogClose>
                   <Button
                     type="button"
+                    colorTheme="blue-ruin"
                     size="sm"
-                    colorTheme="inverted-blue-ruin"
                     padding="fat"
                     hoverAnimation={false}
                     disabled={isPending}
-                    onClick={() => handleSetDefault(addr.id)}
-                    className="h-9 w-auto inline-flex items-center gap-1.5 text-sm"
+                    onClick={() => handleDelete(addr.id)}
+                    className="h-10"
                   >
-                    <HugeiconsIcon
-                      icon={CheckmarkCircle02Icon}
-                      size={14}
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    />
-                    Set as default
+                    {isPending ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      'Delete'
+                    )}
                   </Button>
-                )}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button
-                      type="button"
-                      size="sm"
-                      colorTheme="inverted-blue-ruin"
-                      padding="fat"
-                      hoverAnimation={false}
-                      disabled={isPending || isDefault}
-                      className="h-9 w-auto inline-flex items-center gap-1.5 text-sm ml-auto"
-                    >
-                      <HugeiconsIcon
-                        icon={Delete02Icon}
-                        size={14}
-                        strokeWidth={2}
-                        aria-hidden="true"
-                      />
-                      Delete
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Delete address?</DialogTitle>
-                      <DialogDescription>
-                        This will remove this address from your account. It
-                        can&apos;t be undone.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="gap-2">
-                      <DialogClose asChild>
-                        <Button
-                          type="button"
-                          colorTheme="naked-blue-ruin"
-                          size="sm"
-                          padding="fat"
-                          hoverAnimation={false}
-                          className="h-10"
-                        >
-                          Cancel
-                        </Button>
-                      </DialogClose>
-                      <Button
-                        type="button"
-                        colorTheme="blue-ruin"
-                        size="sm"
-                        padding="fat"
-                        hoverAnimation={false}
-                        disabled={isPending}
-                        onClick={() => handleDelete(addr.id)}
-                        className="h-10"
-                      >
-                        {isPending ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          'Delete'
-                        )}
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              {isDefault && (
-                <p className="text-xs text-blue-ruin/60">
-                  To delete the default address, set a different one as default
-                  first.
-                </p>
-              )}
-            </CardContent>
-          </Card>
-  );
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </>
+        }
+      >
+        <AddressBlock address={addr} showName={false} />
+        {isDefault && (
+          <p className="text-xs text-blue-ruin/60 mt-1">
+            Used at checkout unless you choose another. To delete, set a
+            different address as default first.
+          </p>
+        )}
+      </AccountCard>
+    );
+  };
 
   // No default set — show every address in one bucket
   if (!defaultAddress) {
     return (
       <section className="flex flex-col gap-3">
-        <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+        <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70">
           Saved addresses
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
           {otherAddresses.map((addr) => renderCard(addr, false))}
         </div>
       </section>
@@ -270,29 +259,21 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
   return (
     <div className="flex flex-col gap-8 md:gap-10">
       <section className="flex flex-col gap-3">
-        <header className="flex flex-col gap-1">
-          <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
-            Default address
-          </h2>
-          <p className="text-sm text-blue-ruin/80">
-            Used at checkout unless you choose another.
-          </p>
-        </header>
+        <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70">
+          Default
+        </h2>
         {renderCard(defaultAddress, true)}
       </section>
 
       {otherAddresses.length > 0 && (
         <section className="flex flex-col gap-3">
           <header className="flex items-center gap-3">
-            <h2 className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70">
               Other addresses
             </h2>
-            <span
-              className="h-px flex-1 bg-blue-ruin/15"
-              aria-hidden="true"
-            />
+            <span className="h-px flex-1 bg-blue-ruin/15" aria-hidden="true" />
           </header>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
             {otherAddresses.map((addr) => renderCard(addr, false))}
           </div>
         </section>

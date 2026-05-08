@@ -36,15 +36,11 @@ export function SubscriptionActions({
   const isActive = status === 'ACTIVE';
   const isPaused = status === 'PAUSED';
   const isTerminated =
-    status === 'CANCELLED' ||
-    status === 'EXPIRED' ||
-    status === 'FAILED';
+    status === 'CANCELLED' || status === 'EXPIRED' || status === 'FAILED';
 
   if (isTerminated) {
     return (
-      <p className="text-sm text-blue-ruin/80">
-        This subscription has ended.
-      </p>
+      <p className="text-sm text-blue-ruin/80">This subscription has ended.</p>
     );
   }
 
@@ -111,11 +107,7 @@ export function SubscriptionActions({
           onClick={handleResume}
           className="h-10"
         >
-          {isPending ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            'Resume'
-          )}
+          {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Resume'}
         </Button>
       )}
       <Dialog>

@@ -1,5 +1,8 @@
+import { Add01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { redirect } from 'next/navigation';
 import { AddressList } from '@/components/account/address-list';
+import { PageHeader } from '@/components/account/page-header';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/components/utility/link';
 import {
@@ -81,24 +84,36 @@ export default async function AddressesPage() {
 
   return (
     <>
-      <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          Addresses
-        </h1>
-        <Button
-          asChild
-          colorTheme="blue-ruin"
-          size="sm"
-          padding="fat"
-          hoverAnimation={false}
-          className="h-10 self-start md:self-auto"
-        >
-          <Link href="/account/addresses/new">Add new address</Link>
-        </Button>
-      </header>
+      <PageHeader
+        eyebrow="Addresses"
+        title="Where we ship to"
+        description="Save addresses for one-tap checkout. Pick a default and we’ll use it next time."
+        action={
+          <Button
+            asChild
+            colorTheme="blue-ruin"
+            size="sm"
+            padding="fat"
+            hoverAnimation={false}
+            className="h-10 inline-flex items-center gap-2"
+          >
+            <Link href="/account/addresses/new">
+              <HugeiconsIcon
+                icon={Add01Icon}
+                size={16}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+              Add address
+            </Link>
+          </Button>
+        }
+      />
 
       {error && (
-        <pre className="text-sm whitespace-pre-wrap text-red-700">{error}</pre>
+        <pre role="alert" className="text-sm whitespace-pre-wrap text-red-700">
+          {error}
+        </pre>
       )}
 
       <AddressList addresses={addresses} defaultId={defaultId} />

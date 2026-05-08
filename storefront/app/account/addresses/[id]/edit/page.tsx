@@ -1,6 +1,8 @@
+import { MapPinIcon } from '@hugeicons/core-free-icons';
 import { notFound, redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
 import { AddressForm } from '@/components/account/address-form';
-import { Card, CardContent } from '@/components/ui/card';
+import { PageHeader } from '@/components/account/page-header';
 import {
   CustomerAccountAPIError,
   customerQuery
@@ -88,33 +90,42 @@ export default async function EditAddressPage({
     notFound();
   }
 
+  const fullName =
+    `${address.firstName ?? ''} ${address.lastName ?? ''}`.trim();
+
   return (
     <>
-      <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          Edit address
-        </h1>
-      </header>
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardContent className="pt-6">
-          <AddressForm
-            mode="edit"
-            addressId={address.id}
-            isCurrentDefault={isDefault}
-            defaultValues={{
-              firstName: address.firstName ?? '',
-              lastName: address.lastName ?? '',
-              address1: address.address1 ?? '',
-              address2: address.address2 ?? '',
-              city: address.city ?? '',
-              zoneCode: address.zoneCode ?? '',
-              zip: address.zip ?? '',
-              territoryCode: address.territoryCode ?? 'US',
-              phoneNumber: address.phoneNumber ?? ''
-            }}
-          />
-        </CardContent>
-      </Card>
+      <PageHeader
+        eyebrow="Addresses"
+        title="Edit address"
+        description={
+          fullName
+            ? `Updating address for ${fullName}`
+            : 'Update this saved address.'
+        }
+      />
+      <AccountCard
+        icon={MapPinIcon}
+        eyebrow="Address details"
+        title="Where to ship"
+      >
+        <AddressForm
+          mode="edit"
+          addressId={address.id}
+          isCurrentDefault={isDefault}
+          defaultValues={{
+            firstName: address.firstName ?? '',
+            lastName: address.lastName ?? '',
+            address1: address.address1 ?? '',
+            address2: address.address2 ?? '',
+            city: address.city ?? '',
+            zoneCode: address.zoneCode ?? '',
+            zip: address.zip ?? '',
+            territoryCode: address.territoryCode ?? 'US',
+            phoneNumber: address.phoneNumber ?? ''
+          }}
+        />
+      </AccountCard>
     </>
   );
 }

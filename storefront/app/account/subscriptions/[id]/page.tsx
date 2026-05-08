@@ -1,13 +1,17 @@
+import {
+  ArrowLeft01Icon,
+  MapPinIcon,
+  Package01Icon,
+  Settings02Icon
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { notFound, redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
+import { AddressBlock } from '@/components/account/address-block';
+import { PageHeader } from '@/components/account/page-header';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import {
   CustomerAccountAPIError,
@@ -146,19 +150,18 @@ export default async function SubscriptionDetailPage({
   if (error) {
     return (
       <>
-        <header>
-          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-            Subscription
-          </h1>
-        </header>
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
+        <PageHeader eyebrow="Subscription" title="Subscription" />
+        <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
+            <CardTitle className="font-bomstad-display text-xl leading-tight">
               Couldn’t load this subscription
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="text-sm whitespace-pre-wrap text-red-700">
+            <pre
+              role="alert"
+              className="text-sm whitespace-pre-wrap text-red-800"
+            >
               {error}
             </pre>
           </CardContent>
@@ -171,117 +174,84 @@ export default async function SubscriptionDetailPage({
     notFound();
   }
 
+  const summary = contract.lines.nodes
+    .map((line) => `${line.title} × ${line.quantity}`)
+    .join(', ');
+
   return (
     <>
-      <header className="flex flex-col gap-3">
-        <Button
-          asChild
-          variant="link"
-          size="sm"
-          colorTheme="naked-blue-ruin"
-          hoverAnimation={false}
-          className="h-auto w-auto p-0 underline text-sm self-start"
+      <div className="flex flex-col gap-4">
+        <Link
+          href="/account/subscriptions"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-ruin/80 hover:text-blue-ruin transition-colors w-fit cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
         >
-          <Link href="/account/subscriptions">← All subscriptions</Link>
-        </Button>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-              Subscription
-            </h1>
-            <p className="text-sm text-blue-ruin/80">
-              Started {formatDate(contract.createdAt)}
-              {contract.nextBillingDate &&
-                ` · Next renewal ${formatDate(contract.nextBillingDate)}`}
-            </p>
-          </div>
-          <SubscriptionStatusBadge status={contract.status} />
-        </div>
-      </header>
+          <HugeiconsIcon
+            icon={ArrowLeft01Icon}
+            size={16}
+            strokeWidth={2}
+            aria-hidden="true"
+          />
+          <span>All subscriptions</span>
+        </Link>
+        <PageHeader
+          eyebrow={`Started ${formatDate(contract.createdAt)}`}
+          title={summary || 'Subscription'}
+          description={
+            contract.nextBillingDate
+              ? `Next renewal on ${formatDate(contract.nextBillingDate)}`
+              : 'No upcoming renewal'
+          }
+          action={<SubscriptionStatusBadge status={contract.status} />}
+        />
+      </div>
 
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight">
-            Items
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+      <AccountCard icon={Package01Icon} eyebrow="Items" title="What ships">
+        <ul className="flex flex-col list-none p-0">
           {contract.lines.nodes.map((line, idx) => (
-            <div
+            <li
               key={idx}
-              className="flex justify-between items-start border-b border-blue-ruin/10 pb-4 last:border-b-0 last:pb-0"
+              className="flex justify-between items-start py-3 border-b border-blue-ruin/10 last:border-b-0 last:pb-0 first:pt-0"
             >
               <div className="flex flex-col gap-1 min-w-0">
-                <p className="font-semibold">{line.title}</p>
+                <p className="font-semibold text-blue-ruin">{line.title}</p>
                 {line.variantTitle && (
-                  <p className="text-sm text-blue-ruin/80">
+                  <p className="text-sm text-blue-ruin/75">
                     {line.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/80">Qty {line.quantity}</p>
+                <p className="text-sm text-blue-ruin/75">Qty {line.quantity}</p>
               </div>
-              <p className="font-semibold shrink-0">
+              <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
                 {formatMoney(line.currentPrice)}
               </p>
-            </div>
+            </li>
           ))}
-        </CardContent>
-      </Card>
+        </ul>
+      </AccountCard>
 
       {contract.deliveryAddress && (
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-          <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
-              Delivery address
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <address className="not-italic flex flex-col gap-0.5 text-sm">
-              <span className="font-semibold text-base">
-                {contract.deliveryAddress.firstName}{' '}
-                {contract.deliveryAddress.lastName}
-              </span>
-              {contract.deliveryAddress.address1 && (
-                <span>{contract.deliveryAddress.address1}</span>
-              )}
-              {contract.deliveryAddress.address2 && (
-                <span>{contract.deliveryAddress.address2}</span>
-              )}
-              <span>
-                {[
-                  contract.deliveryAddress.city,
-                  contract.deliveryAddress.zoneCode,
-                  contract.deliveryAddress.zip
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
-              </span>
-              {contract.deliveryAddress.territoryCode && (
-                <span>{contract.deliveryAddress.territoryCode}</span>
-              )}
-              {contract.deliveryAddress.phoneNumber && (
-                <span className="text-blue-ruin/80 mt-1">
-                  {contract.deliveryAddress.phoneNumber}
-                </span>
-              )}
-            </address>
-          </CardContent>
-        </Card>
+        <AccountCard
+          icon={MapPinIcon}
+          eyebrow="Delivery address"
+          title={
+            `${contract.deliveryAddress.firstName ?? ''} ${contract.deliveryAddress.lastName ?? ''}`.trim() ||
+            'Delivery address'
+          }
+        >
+          <AddressBlock address={contract.deliveryAddress} showName={false} />
+        </AccountCard>
       )}
 
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
-            Manage
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SubscriptionActions
-            contractId={contract.id}
-            status={contract.status}
-          />
-        </CardContent>
-      </Card>
+      <AccountCard
+        icon={Settings02Icon}
+        eyebrow="Manage"
+        title="Pause, resume, or cancel"
+      >
+        <SubscriptionActions
+          contractId={contract.id}
+          status={contract.status}
+        />
+      </AccountCard>
     </>
   );
 }

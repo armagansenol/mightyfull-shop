@@ -32,10 +32,7 @@ export async function GET(request: Request) {
 
   const flow = await getFlowState();
   if (!flow || flow.state !== state) {
-    return NextResponse.json(
-      { error: 'Invalid OAuth state' },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: 'Invalid OAuth state' }, { status: 400 });
   }
 
   try {

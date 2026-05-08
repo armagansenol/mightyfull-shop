@@ -36,10 +36,9 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 
 interface ProfileFormProps {
   defaultValues: ProfileFormValues;
-  email: string;
 }
 
-export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
+export function ProfileForm({ defaultValues }: ProfileFormProps) {
   const [isPending, startTransition] = useTransition();
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -105,14 +104,6 @@ export function ProfileForm({ defaultValues, email }: ProfileFormProps) {
             </FormItem>
           )}
         />
-        <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium text-blue-ruin">Email</p>
-          <p className="text-sm text-blue-ruin/80">{email}</p>
-          <p className="text-xs text-blue-ruin/60 mt-1">
-            Email changes are managed via Shopify. Contact support if you need
-            to update.
-          </p>
-        </div>
         <div className="flex justify-start">
           <Button
             type="submit"

@@ -150,115 +150,65 @@ export function AddressForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-6 max-w-2xl"
+        className="flex flex-col gap-7 max-w-2xl"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-blue-ruin">First name</FormLabel>
-                <FormControl>
-                  <Input
-                  {...field}
-                  disabled={isPending}
-                  className={inputClasses}
-                />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-blue-ruin">Last name</FormLabel>
-                <FormControl>
-                  <Input
-                  {...field}
-                  disabled={isPending}
-                  className={inputClasses}
-                />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <fieldset className="flex flex-col gap-4">
+          <legend className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70 mb-1">
+            Recipient
+          </legend>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-ruin">First name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      className={inputClasses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-ruin">Last name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      className={inputClasses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </fieldset>
 
-        <FormField
-          control={form.control}
-          name="address1"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-blue-ruin">Address</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  disabled={isPending}
-                  placeholder="Street address"
-                  className={inputClasses}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="address2"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-blue-ruin">
-                Apartment, suite, etc. (optional)
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  disabled={isPending}
-                  className={inputClasses}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <fieldset className="flex flex-col gap-4">
+          <legend className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70 mb-1">
+            Shipping address
+          </legend>
           <FormField
             control={form.control}
-            name="city"
+            name="address1"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-blue-ruin">City</FormLabel>
-                <FormControl>
-                  <Input
-                  {...field}
-                  disabled={isPending}
-                  className={inputClasses}
-                />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="zoneCode"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-blue-ruin">
-                  State / Province
-                </FormLabel>
+                <FormLabel className="text-blue-ruin">Address</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
                     disabled={isPending}
-                    placeholder="e.g. CA, NY, ON"
+                    placeholder="Street address"
                     className={inputClasses}
                   />
                 </FormControl>
@@ -266,97 +216,163 @@ export function AddressForm({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
-            name="zip"
+            name="address2"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-blue-ruin">Postal code</FormLabel>
+                <FormLabel className="text-blue-ruin">
+                  Apartment, suite, etc. (optional)
+                </FormLabel>
                 <FormControl>
                   <Input
-                  {...field}
-                  disabled={isPending}
-                  className={inputClasses}
-                />
+                    {...field}
+                    disabled={isPending}
+                    className={inputClasses}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
 
-        <FormField
-          control={form.control}
-          name="territoryCode"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-blue-ruin">Country</FormLabel>
-              <Select
-                onValueChange={field.onChange}
-                value={field.value}
-                disabled={isPending}
-              >
-                <FormControl>
-                  <SelectTrigger
-                    className="h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin focus:border-blue-ruin focus:ring-2 focus:ring-blue-ruin/20"
-                  >
-                    <SelectValue placeholder="Select a country" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {COUNTRIES.map((c) => (
-                    <SelectItem key={c.code} value={c.code}>
-                      {c.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-ruin">City</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      className={inputClasses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="zoneCode"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-ruin">
+                    State / Province
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="e.g. CA, NY, ON"
+                      className={inputClasses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="zip"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-blue-ruin">Postal code</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      className={inputClasses}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        <FormField
-          control={form.control}
-          name="phoneNumber"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-blue-ruin">
-                Phone (optional)
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
+          <FormField
+            control={form.control}
+            name="territoryCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-blue-ruin">Country</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
                   disabled={isPending}
-                  placeholder="+1 555 0100"
-                  className={inputClasses}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                >
+                  <FormControl>
+                    <SelectTrigger className="h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin focus:border-blue-ruin focus:ring-2 focus:ring-blue-ruin/20">
+                      <SelectValue placeholder="Select a country" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {COUNTRIES.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-blue-ruin">
+                  Phone (optional)
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    placeholder="+1 555 0100"
+                    className={inputClasses}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </fieldset>
 
         <FormField
           control={form.control}
           name="isDefault"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-2 space-y-0">
+            <FormItem className="flex items-start gap-3 space-y-0 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.03] p-4">
               <FormControl>
                 <Checkbox
                   checked={field.value}
-                  onCheckedChange={(checked) => field.onChange(checked === true)}
+                  onCheckedChange={(checked) =>
+                    field.onChange(checked === true)
+                  }
                   disabled={isPending || isCurrentDefault}
+                  className="mt-0.5"
                 />
               </FormControl>
-              <FormLabel className="text-blue-ruin font-normal !mt-0">
-                Use as my default address
-              </FormLabel>
+              <div className="flex flex-col gap-0.5">
+                <FormLabel className="text-blue-ruin font-semibold !mt-0 cursor-pointer">
+                  Use as my default address
+                </FormLabel>
+                <span className="text-xs text-blue-ruin/70">
+                  We’ll preselect this at checkout.
+                </span>
+              </div>
             </FormItem>
           )}
         />
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 pt-1">
           <Button
             type="submit"
             colorTheme="blue-ruin"

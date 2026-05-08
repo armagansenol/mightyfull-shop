@@ -1,11 +1,9 @@
+import { Mail01Icon, UserAccountIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
+import { PageHeader } from '@/components/account/page-header';
 import { ProfileForm } from '@/components/account/profile-form';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
 import {
   CustomerAccountAPIError,
   customerQuery
@@ -57,40 +55,58 @@ export default async function ProfilePage() {
   }
 
   const customer = data?.customer ?? null;
+  const email = customer?.emailAddress?.emailAddress ?? '';
 
   return (
     <>
-      <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          Profile
-        </h1>
-      </header>
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight">
-            Personal info
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {error ? (
-            <pre className="text-sm whitespace-pre-wrap text-red-700">
-              {error}
-            </pre>
-          ) : customer ? (
-            <ProfileForm
-              defaultValues={{
-                firstName: customer.firstName ?? '',
-                lastName: customer.lastName ?? ''
-              }}
-              email={customer.emailAddress?.emailAddress ?? ''}
+      <PageHeader
+        eyebrow="Profile"
+        title="Personal info"
+        description="Edit your name and review the email tied to your account."
+      />
+
+      <AccountCard icon={UserAccountIcon} eyebrow="Identity" title="Your name">
+        {error ? (
+          <pre
+            role="alert"
+            className="text-sm whitespace-pre-wrap text-red-700"
+          >
+            {error}
+          </pre>
+        ) : customer ? (
+          <ProfileForm
+            defaultValues={{
+              firstName: customer.firstName ?? '',
+              lastName: customer.lastName ?? ''
+            }}
+          />
+        ) : (
+          <p className="text-sm text-blue-ruin/75">
+            Couldn’t load your profile. Refresh to try again.
+          </p>
+        )}
+      </AccountCard>
+
+      {email && (
+        <AccountCard icon={Mail01Icon} eyebrow="Email" title="Sign-in email">
+          <div className="flex items-center gap-3 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.03] p-4">
+            <HugeiconsIcon
+              icon={Mail01Icon}
+              size={18}
+              strokeWidth={1.75}
+              aria-hidden="true"
+              className="text-blue-ruin/70 shrink-0"
             />
-          ) : (
-            <p className="text-sm text-blue-ruin/80">
-              Couldn’t load your profile. Refresh to try again.
+            <p className="text-base font-semibold text-blue-ruin truncate">
+              {email}
             </p>
-          )}
-        </CardContent>
-      </Card>
+          </div>
+          <p className="text-xs text-blue-ruin/70">
+            Email changes are managed via Shopify. Contact support if you need
+            to update.
+          </p>
+        </AccountCard>
+      )}
     </>
   );
 }

@@ -114,8 +114,7 @@ function reduceUserErrors(userErrors: UserError[]): {
   }
   return {
     error: userErrors[0]?.message ?? 'Something went wrong',
-    fieldErrors:
-      Object.keys(fieldErrors).length > 0 ? fieldErrors : undefined
+    fieldErrors: Object.keys(fieldErrors).length > 0 ? fieldErrors : undefined
   };
 }
 

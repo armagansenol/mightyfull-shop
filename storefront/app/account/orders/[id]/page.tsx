@@ -1,12 +1,16 @@
-import { notFound, redirect } from 'next/navigation';
-import { OrderStatusBadge } from '@/components/account/order-status-badge';
-import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  ArrowLeft01Icon,
+  MapPinIcon,
+  Package01Icon,
+  ReceiptDollarIcon
+} from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { notFound, redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
+import { AddressBlock } from '@/components/account/address-block';
+import { OrderStatusBadge } from '@/components/account/order-status-badge';
+import { PageHeader } from '@/components/account/page-header';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
 import {
@@ -188,19 +192,18 @@ export default async function OrderDetailPage({
   if (error) {
     return (
       <>
-        <header>
-          <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-            Order
-          </h1>
-        </header>
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
+        <PageHeader eyebrow="Order" title="Order" />
+        <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
+            <CardTitle className="font-bomstad-display text-xl leading-tight">
               Couldn’t load this order
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="text-sm whitespace-pre-wrap text-red-700">
+            <pre
+              role="alert"
+              className="text-sm whitespace-pre-wrap text-red-800"
+            >
               {error}
             </pre>
           </CardContent>
@@ -213,55 +216,59 @@ export default async function OrderDetailPage({
     notFound();
   }
 
+  const totalQty = order.lineItems.nodes.reduce(
+    (sum, n) => sum + n.quantity,
+    0
+  );
+
   return (
     <>
-      <header className="flex flex-col gap-3">
-        <Button
-          asChild
-          variant="link"
-          size="sm"
-          colorTheme="naked-blue-ruin"
-          hoverAnimation={false}
-          className="h-auto w-auto p-0 underline text-sm self-start"
+      <div className="flex flex-col gap-4">
+        <Link
+          href="/account/orders"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-ruin/80 hover:text-blue-ruin transition-colors w-fit cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
         >
-          <Link href="/account/orders">← All orders</Link>
-        </Button>
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-              {order.name}
-            </h1>
-            <p className="text-sm text-blue-ruin/80">
-              Placed on {formatDate(order.processedAt)}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <OrderStatusBadge
-              status={order.fulfillmentStatus}
-              type="fulfillment"
-            />
-            <OrderStatusBadge
-              status={order.financialStatus}
-              type="financial"
-            />
-          </div>
-        </div>
-      </header>
+          <HugeiconsIcon
+            icon={ArrowLeft01Icon}
+            size={16}
+            strokeWidth={2}
+            aria-hidden="true"
+          />
+          <span>All orders</span>
+        </Link>
 
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight">
-            Items
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-4">
+        <PageHeader
+          eyebrow={`Placed on ${formatDate(order.processedAt)}`}
+          title={order.name}
+          description={`${totalQty} item${totalQty === 1 ? '' : 's'} · ${formatMoney(order.totalPrice)}`}
+          action={
+            <div className="flex flex-wrap gap-2">
+              <OrderStatusBadge
+                status={order.fulfillmentStatus}
+                type="fulfillment"
+              />
+              <OrderStatusBadge
+                status={order.financialStatus}
+                type="financial"
+              />
+            </div>
+          }
+        />
+      </div>
+
+      <AccountCard
+        icon={Package01Icon}
+        eyebrow="Items"
+        title="What you ordered"
+      >
+        <ul className="flex flex-col list-none p-0 -mx-1">
           {order.lineItems.nodes.map((item, idx) => (
-            <div
+            <li
               key={idx}
-              className="flex gap-4 items-start border-b border-blue-ruin/10 pb-4 last:border-b-0 last:pb-0"
+              className="flex gap-4 items-start py-4 px-1 border-b border-blue-ruin/10 last:border-b-0 last:pb-0 first:pt-0"
             >
-              {item.image?.url && (
-                <div className="shrink-0 w-20 h-20 rounded-md overflow-hidden bg-white border border-blue-ruin/15">
+              <div className="shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-white border border-blue-ruin/15">
+                {item.image?.url ? (
                   <Img
                     src={item.image.url}
                     alt={item.image.altText ?? item.title}
@@ -269,98 +276,90 @@ export default async function OrderDetailPage({
                     height={item.image.height ?? 80}
                     className="w-full h-full object-cover"
                   />
-                </div>
-              )}
+                ) : (
+                  <div
+                    aria-hidden="true"
+                    className="w-full h-full flex items-center justify-center text-blue-ruin/40"
+                  >
+                    <HugeiconsIcon
+                      icon={Package01Icon}
+                      size={28}
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                )}
+              </div>
               <div className="flex-1 min-w-0 flex flex-col gap-1">
-                <p className="font-semibold">{item.title}</p>
+                <p className="font-semibold text-blue-ruin">{item.title}</p>
                 {item.variantTitle && (
-                  <p className="text-sm text-blue-ruin/80">
+                  <p className="text-sm text-blue-ruin/75">
                     {item.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/80">
-                  Qty {item.quantity}
+                <p className="text-sm text-blue-ruin/75">Qty {item.quantity}</p>
+              </div>
+              <div className="text-right shrink-0 flex flex-col gap-1">
+                <p className="font-semibold tabular-nums text-blue-ruin">
+                  {formatMoney(item.totalPrice)}
                 </p>
+                {item.price &&
+                  item.totalPrice &&
+                  Number(item.price.amount) !==
+                    Number(item.totalPrice.amount) && (
+                    <p className="text-xs text-blue-ruin/70 tabular-nums">
+                      {formatMoney(item.price)} each
+                    </p>
+                  )}
               </div>
-              <div className="text-right shrink-0">
-                <p className="font-semibold">{formatMoney(item.totalPrice)}</p>
-              </div>
-            </div>
+            </li>
           ))}
-        </CardContent>
-      </Card>
+        </ul>
+      </AccountCard>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-          <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
-              Order summary
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-2 text-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        <AccountCard
+          icon={ReceiptDollarIcon}
+          eyebrow="Order summary"
+          title="Totals"
+        >
+          <dl className="flex flex-col gap-2 text-sm tabular-nums">
             <div className="flex justify-between">
-              <span className="text-blue-ruin/80">Subtotal</span>
-              <span>{formatMoney(order.subtotal)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-blue-ruin/80">Shipping</span>
-              <span>{formatMoney(order.totalShipping)}</span>
+              <dt className="text-blue-ruin/75">Subtotal</dt>
+              <dd>{formatMoney(order.subtotal)}</dd>
             </div>
             <div className="flex justify-between">
-              <span className="text-blue-ruin/80">Tax</span>
-              <span>{formatMoney(order.totalTax)}</span>
+              <dt className="text-blue-ruin/75">Shipping</dt>
+              <dd>{formatMoney(order.totalShipping)}</dd>
             </div>
-            <div className="flex justify-between text-base font-semibold border-t border-blue-ruin/10 pt-2 mt-1">
-              <span>Total</span>
-              <span>{formatMoney(order.totalPrice)}</span>
+            <div className="flex justify-between">
+              <dt className="text-blue-ruin/75">Tax</dt>
+              <dd>{formatMoney(order.totalTax)}</dd>
             </div>
-          </CardContent>
-        </Card>
+            <div className="flex justify-between text-base font-semibold border-t border-blue-ruin/10 pt-3 mt-1">
+              <dt>Total</dt>
+              <dd>{formatMoney(order.totalPrice)}</dd>
+            </div>
+          </dl>
+        </AccountCard>
 
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-          <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
-              Shipping address
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {order.shippingAddress ? (
-              <address className="not-italic flex flex-col gap-0.5 text-sm">
-                <span className="font-semibold text-base">
-                  {order.shippingAddress.firstName}{' '}
-                  {order.shippingAddress.lastName}
-                </span>
-                {order.shippingAddress.address1 && (
-                  <span>{order.shippingAddress.address1}</span>
-                )}
-                {order.shippingAddress.address2 && (
-                  <span>{order.shippingAddress.address2}</span>
-                )}
-                <span>
-                  {[
-                    order.shippingAddress.city,
-                    order.shippingAddress.zoneCode,
-                    order.shippingAddress.zip
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
-                </span>
-                {order.shippingAddress.territoryCode && (
-                  <span>{order.shippingAddress.territoryCode}</span>
-                )}
-                {order.shippingAddress.phoneNumber && (
-                  <span className="text-blue-ruin/80 mt-1">
-                    {order.shippingAddress.phoneNumber}
-                  </span>
-                )}
-              </address>
-            ) : (
-              <p className="text-sm text-blue-ruin/80">
-                No shipping address on file.
-              </p>
-            )}
-          </CardContent>
-        </Card>
+        <AccountCard
+          icon={MapPinIcon}
+          eyebrow="Shipping address"
+          title={
+            order.shippingAddress
+              ? `${order.shippingAddress.firstName ?? ''} ${order.shippingAddress.lastName ?? ''}`.trim() ||
+                'Shipping address'
+              : 'Shipping address'
+          }
+        >
+          {order.shippingAddress ? (
+            <AddressBlock address={order.shippingAddress} showName={false} />
+          ) : (
+            <p className="text-sm text-blue-ruin/75">
+              No shipping address on file.
+            </p>
+          )}
+        </AccountCard>
       </div>
     </>
   );

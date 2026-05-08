@@ -1,15 +1,13 @@
+import { RepeatIcon } from '@hugeicons/core-free-icons';
 import { Repeat } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
 import { CardActionLink } from '@/components/account/card-action-link';
+import { PageHeader } from '@/components/account/page-header';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import {
   CustomerAccountAPIError,
@@ -103,24 +101,32 @@ export default async function SubscriptionsPage() {
   }
 
   const contracts = data?.customer?.subscriptionContracts.nodes ?? [];
+  const activeCount = contracts.filter((c) => c.status === 'ACTIVE').length;
 
   return (
     <>
-      <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          Subscriptions
-        </h1>
-      </header>
+      <PageHeader
+        eyebrow="Subscriptions"
+        title="Your subscriptions"
+        description={
+          contracts.length > 0
+            ? `${activeCount} active · ${contracts.length} total`
+            : undefined
+        }
+      />
 
       {error && (
-        <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
+        <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin leading-tight">
+            <CardTitle className="font-bomstad-display text-xl leading-tight">
               Couldn’t load subscriptions
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="text-sm whitespace-pre-wrap text-red-700">
+            <pre
+              role="alert"
+              className="text-sm whitespace-pre-wrap text-red-800"
+            >
               {error}
             </pre>
           </CardContent>
@@ -151,45 +157,43 @@ export default async function SubscriptionsPage() {
         </Card>
       ) : (
         !error && (
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 md:gap-5">
             {contracts.map((contract) => {
               const summary = contract.lines.nodes
                 .map((line) => `${line.title} × ${line.quantity}`)
                 .join(', ');
               const firstLinePrice = contract.lines.nodes[0]?.currentPrice;
               return (
-                <Card
+                <AccountCard
                   key={contract.id}
-                  className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
-                >
-                  <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-                    <div className="flex flex-col gap-1 min-w-0">
-                      <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight truncate">
-                        {summary || 'Subscription'}
-                      </CardTitle>
-                      {contract.nextBillingDate && (
-                        <p className="text-sm text-blue-ruin/80">
-                          Next renewal {formatDate(contract.nextBillingDate)}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-end gap-2 shrink-0">
+                  icon={RepeatIcon}
+                  eyebrow="Subscription"
+                  title={summary || 'Subscription'}
+                  action={
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
                       {firstLinePrice && (
-                        <p className="font-semibold">
+                        <p className="font-semibold tabular-nums text-blue-ruin">
                           {formatMoney(firstLinePrice)}
                         </p>
                       )}
                       <SubscriptionStatusBadge status={contract.status} />
                     </div>
-                  </CardHeader>
-                  <CardContent className="flex justify-end">
-                    <CardActionLink
-                      href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
-                    >
-                      Manage
-                    </CardActionLink>
-                  </CardContent>
-                </Card>
+                  }
+                  footer={
+                    <>
+                      <span className="text-sm text-blue-ruin/75">
+                        {contract.nextBillingDate
+                          ? `Next renewal ${formatDate(contract.nextBillingDate)}`
+                          : 'No renewal scheduled'}
+                      </span>
+                      <CardActionLink
+                        href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
+                      >
+                        Manage
+                      </CardActionLink>
+                    </>
+                  }
+                />
               );
             })}
           </div>

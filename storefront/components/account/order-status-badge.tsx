@@ -7,17 +7,18 @@ interface OrderStatusBadgeProps {
   type: 'fulfillment' | 'financial';
 }
 
-const FULFILLMENT_LABELS: Record<string, { label: string; variant: Variant }> = {
-  FULFILLED: { label: 'Fulfilled', variant: 'positive' },
-  PARTIALLY_FULFILLED: { label: 'Partially fulfilled', variant: 'warning' },
-  UNFULFILLED: { label: 'Unfulfilled', variant: 'warning' },
-  IN_PROGRESS: { label: 'In progress', variant: 'warning' },
-  ON_HOLD: { label: 'On hold', variant: 'warning' },
-  OPEN: { label: 'Open', variant: 'warning' },
-  PENDING_FULFILLMENT: { label: 'Pending fulfillment', variant: 'warning' },
-  RESTOCKED: { label: 'Restocked', variant: 'neutral' },
-  SCHEDULED: { label: 'Scheduled', variant: 'neutral' }
-};
+const FULFILLMENT_LABELS: Record<string, { label: string; variant: Variant }> =
+  {
+    FULFILLED: { label: 'Fulfilled', variant: 'positive' },
+    PARTIALLY_FULFILLED: { label: 'Partially fulfilled', variant: 'warning' },
+    UNFULFILLED: { label: 'Unfulfilled', variant: 'warning' },
+    IN_PROGRESS: { label: 'In progress', variant: 'warning' },
+    ON_HOLD: { label: 'On hold', variant: 'warning' },
+    OPEN: { label: 'Open', variant: 'warning' },
+    PENDING_FULFILLMENT: { label: 'Pending fulfillment', variant: 'warning' },
+    RESTOCKED: { label: 'Restocked', variant: 'neutral' },
+    SCHEDULED: { label: 'Scheduled', variant: 'neutral' }
+  };
 
 const FINANCIAL_LABELS: Record<string, { label: string; variant: Variant }> = {
   PAID: { label: 'Paid', variant: 'positive' },

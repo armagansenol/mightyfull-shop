@@ -1,21 +1,19 @@
+import { Package01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Package } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
-import { CardActionLink } from '@/components/account/card-action-link';
 import { OrderStatusBadge } from '@/components/account/order-status-badge';
+import { PageHeader } from '@/components/account/page-header';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
 import {
   CustomerAccountAPIError,
   customerQuery
 } from '@/lib/shopify/customer-account/client';
 import { getSession } from '@/lib/shopify/customer-account/session';
+import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +31,12 @@ const ORDERS_QUERY = `
           }
           financialStatus
           fulfillmentStatus
+          lineItems(first: 1) {
+            nodes {
+              title
+              quantity
+            }
+          }
         }
       }
     }
@@ -46,6 +50,9 @@ interface OrderNode {
   totalPrice: { amount: string; currencyCode: string };
   financialStatus: string | null;
   fulfillmentStatus: string | null;
+  lineItems: {
+    nodes: Array<{ title: string; quantity: number }>;
+  };
 }
 
 interface OrdersData {
@@ -68,6 +75,16 @@ function formatMoney(amount: string, currency: string): string {
     style: 'currency',
     currency
   }).format(value);
+}
+
+function summarizeItems(nodes: OrderNode['lineItems']['nodes']): string {
+  if (nodes.length === 0) return 'No items';
+  const first = nodes[0];
+  const totalQty = nodes.reduce((sum, n) => sum + n.quantity, 0);
+  if (totalQty <= first.quantity) {
+    return `${first.title} × ${first.quantity}`;
+  }
+  return `${first.title} + ${totalQty - first.quantity} more`;
 }
 
 export default async function OrdersPage() {
@@ -96,14 +113,20 @@ export default async function OrdersPage() {
 
   return (
     <>
-      <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          Orders
-        </h1>
-      </header>
+      <PageHeader
+        eyebrow="Orders"
+        title="Your orders"
+        description={
+          orders.length > 0
+            ? `${orders.length} order${orders.length === 1 ? '' : 's'} on file`
+            : undefined
+        }
+      />
 
       {error && (
-        <pre className="text-sm whitespace-pre-wrap text-red-700">{error}</pre>
+        <pre role="alert" className="text-sm whitespace-pre-wrap text-red-700">
+          {error}
+        </pre>
       )}
 
       {orders.length === 0 ? (
@@ -129,44 +152,61 @@ export default async function OrdersPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="flex flex-col gap-4">
+        <ul className="flex flex-col gap-3 md:gap-4 list-none p-0">
           {orders.map((order) => (
-            <Card
-              key={order.id}
-              className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
-            >
-              <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-                <div className="flex flex-col gap-1">
-                  <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
-                    {order.name}
-                  </CardTitle>
-                  <p className="text-sm text-blue-ruin/80">
-                    {formatDate(order.processedAt)}
-                  </p>
+            <li key={order.id}>
+              <Link
+                href={`/account/orders/${encodeURIComponent(order.id)}`}
+                className={cn(
+                  'group block rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin',
+                  'p-5 md:p-6 transition-colors duration-200 cursor-pointer',
+                  'hover:border-blue-ruin/40 hover:bg-blue-ruin/[0.03]',
+                  'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'
+                )}
+              >
+                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
+                  <span
+                    aria-hidden="true"
+                    className="hidden md:inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-ruin/10 text-blue-ruin group-hover:bg-blue-ruin group-hover:text-sugar-milk transition-colors"
+                  >
+                    <HugeiconsIcon
+                      icon={Package01Icon}
+                      size={20}
+                      strokeWidth={1.75}
+                    />
+                  </span>
+                  <div className="flex-1 min-w-0 flex flex-col gap-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-bomstad-display text-lg md:text-xl text-blue-ruin leading-tight">
+                        {order.name}
+                      </span>
+                      <span className="text-xs text-blue-ruin/70">
+                        {formatDate(order.processedAt)}
+                      </span>
+                    </div>
+                    <p className="text-sm text-blue-ruin/75 truncate">
+                      {summarizeItems(order.lineItems.nodes)}
+                    </p>
+                  </div>
+                  <div className="flex flex-row md:flex-col md:items-end justify-between md:justify-center gap-2 md:gap-1.5 md:shrink-0">
+                    <span className="text-base font-semibold tabular-nums">
+                      {formatMoney(
+                        order.totalPrice.amount,
+                        order.totalPrice.currencyCode
+                      )}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 justify-end">
+                      <OrderStatusBadge
+                        status={order.fulfillmentStatus}
+                        type="fulfillment"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col items-end gap-2">
-                  <p className="font-semibold">
-                    {formatMoney(
-                      order.totalPrice.amount,
-                      order.totalPrice.currencyCode
-                    )}
-                  </p>
-                  <OrderStatusBadge
-                    status={order.fulfillmentStatus}
-                    type="fulfillment"
-                  />
-                </div>
-              </CardHeader>
-              <CardContent className="flex justify-end">
-                <CardActionLink
-                  href={`/account/orders/${encodeURIComponent(order.id)}`}
-                >
-                  View details
-                </CardActionLink>
-              </CardContent>
-            </Card>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </>
   );

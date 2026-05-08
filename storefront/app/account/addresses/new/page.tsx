@@ -1,6 +1,8 @@
+import { MapPinIcon } from '@hugeicons/core-free-icons';
 import { redirect } from 'next/navigation';
+import { AccountCard } from '@/components/account/account-card';
 import { AddressForm } from '@/components/account/address-form';
-import { Card, CardContent } from '@/components/ui/card';
+import { PageHeader } from '@/components/account/page-header';
 import { getSession } from '@/lib/shopify/customer-account/session';
 
 export const dynamic = 'force-dynamic';
@@ -13,16 +15,18 @@ export default async function NewAddressPage() {
 
   return (
     <>
-      <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin leading-tight">
-          New address
-        </h1>
-      </header>
-      <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardContent className="pt-6">
-          <AddressForm mode="create" />
-        </CardContent>
-      </Card>
+      <PageHeader
+        eyebrow="Addresses"
+        title="New address"
+        description="Add a shipping destination. We’ll save it for next time."
+      />
+      <AccountCard
+        icon={MapPinIcon}
+        eyebrow="Address details"
+        title="Where to ship"
+      >
+        <AddressForm mode="create" />
+      </AccountCard>
     </>
   );
 }
