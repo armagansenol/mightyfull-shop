@@ -25,10 +25,7 @@ async function tryPersistSession(session: CustomerSession): Promise<void> {
   }
 }
 
-async function fetchAPI(
-  accessToken: string,
-  body: string
-): Promise<Response> {
+async function fetchAPI(accessToken: string, body: string): Promise<Response> {
   return fetch(customerAccountConfig.apiUrl, {
     method: 'POST',
     headers: {

@@ -50,7 +50,9 @@ export async function exchangeCodeForTokens(params: {
     throw new Error(`Token exchange failed: ${response.status} ${text}`);
   }
 
-  return tokenResponseToSession((await response.json()) as ShopifyTokenResponse);
+  return tokenResponseToSession(
+    (await response.json()) as ShopifyTokenResponse
+  );
 }
 
 export async function refreshTokens(
@@ -73,10 +75,15 @@ export async function refreshTokens(
     throw new Error(`Token refresh failed: ${response.status} ${text}`);
   }
 
-  return tokenResponseToSession((await response.json()) as ShopifyTokenResponse);
+  return tokenResponseToSession(
+    (await response.json()) as ShopifyTokenResponse
+  );
 }
 
-export function buildLogoutUrl(idToken: string, postLogoutRedirect: string): string {
+export function buildLogoutUrl(
+  idToken: string,
+  postLogoutRedirect: string
+): string {
   const url = new URL(getLogoutEndpoint());
   url.searchParams.set('id_token_hint', idToken);
   url.searchParams.set('post_logout_redirect_uri', postLogoutRedirect);
