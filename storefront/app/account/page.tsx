@@ -1,3 +1,5 @@
+import { ArrowRight01Icon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
@@ -117,10 +119,16 @@ function CardActionLink({
       size="sm"
       colorTheme="naked-blue-ruin"
       hoverAnimation={false}
-      className="h-auto p-0 underline text-sm font-medium"
+      className="h-auto w-auto p-0 underline underline-offset-4 text-sm font-medium inline-flex items-center gap-1 text-blue-ruin/80 hover:text-blue-ruin transition-colors"
     >
       <Link href={href} prefetch={prefetch}>
-        {children}
+        <span>{children}</span>
+        <HugeiconsIcon
+          icon={ArrowRight01Icon}
+          size={14}
+          strokeWidth={2}
+          aria-hidden="true"
+        />
       </Link>
     </Button>
   );
@@ -180,7 +188,7 @@ export default async function AccountOverviewPage() {
   return (
     <>
       <header className="flex flex-col gap-2">
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
           Hi, {greetingName}.
         </h1>
         <p className="text-sm text-blue-ruin/80">
@@ -191,7 +199,7 @@ export default async function AccountOverviewPage() {
       {error && (
         <Card className={cardClasses}>
           <CardHeader>
-            <CardTitle className="font-bomstad-display text-xl text-blue-ruin">
+            <CardTitle className="font-bomstad-display text-xl text-blue-ruin tracking-tight leading-tight">
               Something went wrong
             </CardTitle>
           </CardHeader>
@@ -206,7 +214,7 @@ export default async function AccountOverviewPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
         <Card className={cardClasses}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap tracking-tight leading-tight">
               Recent order
             </CardTitle>
             <CardActionLink href="/account/orders">View all</CardActionLink>
@@ -241,7 +249,7 @@ export default async function AccountOverviewPage() {
 
         <Card className={cardClasses}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap tracking-tight leading-tight">
               Subscriptions
             </CardTitle>
             <CardActionLink href="/account/subscriptions">Manage</CardActionLink>
@@ -269,7 +277,7 @@ export default async function AccountOverviewPage() {
 
         <Card className={cn(cardClasses, 'md:col-span-2')}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap tracking-tight leading-tight">
               Default address
             </CardTitle>
             <CardActionLink href="/account/addresses">Manage</CardActionLink>

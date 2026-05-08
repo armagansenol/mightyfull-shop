@@ -61,13 +61,13 @@ export default async function ProfilePage() {
   return (
     <>
       <header>
-        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin">
+        <h1 className="font-bomstad-display text-3xl md:text-4xl font-bold text-blue-ruin tracking-tight leading-tight">
           Profile
         </h1>
       </header>
       <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
         <CardHeader>
-          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+          <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin tracking-tight leading-tight">
             Personal info
           </CardTitle>
         </CardHeader>

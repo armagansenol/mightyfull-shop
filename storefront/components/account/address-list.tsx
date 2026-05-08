@@ -110,7 +110,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
             className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin"
           >
             <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0">
-              <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin">
+              <CardTitle className="font-bomstad-display text-lg md:text-xl text-blue-ruin tracking-tight leading-tight">
                 {addr.firstName} {addr.lastName}
               </CardTitle>
               {isDefault && (

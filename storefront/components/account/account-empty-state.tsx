@@ -24,7 +24,7 @@ export function AccountEmptyState({
         />
       </div>
       <div className="flex flex-col gap-1 max-w-sm">
-        <h3 className="font-bomstad-display text-xl md:text-2xl font-bold text-blue-ruin">
+        <h3 className="font-bomstad-display text-xl md:text-2xl font-bold text-blue-ruin tracking-tight leading-tight">
           {title}
         </h3>
         <p className="text-sm text-blue-ruin/80">{description}</p>
