@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import {
   clearSession,
-  getSession
+  FLOW_COOKIE,
+  getSession,
+  SESSION_COOKIE
 } from '@/lib/shopify/customer-account/session';
 import { buildLogoutUrl } from '@/lib/shopify/customer-account/tokens';
 
@@ -11,12 +13,23 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const session = await getSession();
+
+  // Clear via the cookies() API (covers most cases).
   await clearSession();
 
-  if (!session?.idToken) {
-    return NextResponse.redirect(`${url.origin}/`);
-  }
+  // If Shopify SSO is still alive when /account/login fires next, the IdP
+  // would silently re-authorize us. Sending the user through Shopify's
+  // logout endpoint with id_token_hint kills that SSO session — but only
+  // if post_logout_redirect_uri is allowlisted on the Customer Account app.
+  const target = session?.idToken
+    ? buildLogoutUrl(session.idToken, `${url.origin}/`)
+    : `${url.origin}/`;
 
-  const logoutUrl = buildLogoutUrl(session.idToken, `${url.origin}/`);
-  return NextResponse.redirect(logoutUrl);
+  // Belt-and-suspenders: also delete the cookies on the response object.
+  // In route handlers, cookies() modifications don't always merge into a
+  // NextResponse.redirect(), so we attach them explicitly.
+  const response = NextResponse.redirect(target);
+  response.cookies.delete(SESSION_COOKIE);
+  response.cookies.delete(FLOW_COOKIE);
+  return response;
 }
