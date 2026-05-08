@@ -79,13 +79,19 @@ const DELETE_ADDRESS = `
   }
 `;
 
+// Customer Account API has no dedicated set-default mutation.
+// We re-use customerAddressUpdate with defaultAddress: true and an
+// empty address payload (all CustomerAddressInput fields are optional
+// on update so untouched fields keep their values).
 const SET_DEFAULT_ADDRESS = `
   mutation SetDefaultAddress($addressId: ID!) {
-    customerDefaultAddressUpdate(addressId: $addressId) {
-      customer {
-        defaultAddress {
-          id
-        }
+    customerAddressUpdate(
+      addressId: $addressId
+      address: {}
+      defaultAddress: true
+    ) {
+      customerAddress {
+        id
       }
       userErrors {
         field
@@ -241,8 +247,8 @@ export async function setDefaultAddress(
 ): Promise<AddressActionResult> {
   try {
     const data = await customerQuery<{
-      customerDefaultAddressUpdate: {
-        customer: { defaultAddress: { id: string } | null } | null;
+      customerAddressUpdate: {
+        customerAddress: { id: string } | null;
         userErrors: UserError[];
       };
     }>({
@@ -250,10 +256,10 @@ export async function setDefaultAddress(
       variables: { addressId }
     });
 
-    if (data.customerDefaultAddressUpdate.userErrors.length > 0) {
+    if (data.customerAddressUpdate.userErrors.length > 0) {
       return {
         ok: false,
-        ...reduceUserErrors(data.customerDefaultAddressUpdate.userErrors)
+        ...reduceUserErrors(data.customerAddressUpdate.userErrors)
       };
     }
 
