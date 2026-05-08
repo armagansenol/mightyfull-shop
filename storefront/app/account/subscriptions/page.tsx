@@ -1,4 +1,6 @@
+import { Repeat } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { AccountEmptyState } from '@/components/account/account-empty-state';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -126,20 +128,24 @@ export default async function SubscriptionsPage() {
 
       {!error && contracts.length === 0 ? (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-          <CardContent className="py-8 flex flex-col items-start gap-3">
-            <p className="text-sm text-blue-ruin/80">
-              You don&apos;t have any subscriptions yet.
-            </p>
-            <Button
-              asChild
-              variant="link"
-              size="sm"
-              colorTheme="naked-blue-ruin"
-              hoverAnimation={false}
-              className="h-auto p-0 underline text-sm font-medium"
-            >
-              <Link href="/shop">Browse the shop</Link>
-            </Button>
+          <CardContent>
+            <AccountEmptyState
+              icon={Repeat}
+              title="No subscriptions yet"
+              description="Subscribe to your favorites and we&apos;ll deliver them on your schedule. Pause, skip, or cancel anytime."
+              action={
+                <Button
+                  asChild
+                  colorTheme="blue-ruin"
+                  size="sm"
+                  padding="fat"
+                  hoverAnimation={false}
+                  className="h-10"
+                >
+                  <Link href="/shop">Browse the shop</Link>
+                </Button>
+              }
+            />
           </CardContent>
         </Card>
       ) : (

@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
+import { Loader2, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { toast } from 'sonner';
@@ -8,6 +8,7 @@ import {
   deleteAddress,
   setDefaultAddress
 } from '@/app/account/addresses/actions';
+import { AccountEmptyState } from '@/components/account/account-empty-state';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -52,10 +53,24 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
   if (addresses.length === 0) {
     return (
       <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-        <CardContent className="py-8">
-          <p className="text-sm text-blue-ruin/80">
-            You don&apos;t have any saved addresses yet.
-          </p>
+        <CardContent>
+          <AccountEmptyState
+            icon={MapPin}
+            title="No saved addresses"
+            description="Save an address now and checkout will be one tap on your next order."
+            action={
+              <Button
+                asChild
+                colorTheme="blue-ruin"
+                size="sm"
+                padding="fat"
+                hoverAnimation={false}
+                className="h-10"
+              >
+                <Link href="/account/addresses/new">Add an address</Link>
+              </Button>
+            }
+          />
         </CardContent>
       </Card>
     );

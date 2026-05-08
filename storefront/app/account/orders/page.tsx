@@ -1,4 +1,6 @@
+import { Package } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import { AccountEmptyState } from '@/components/account/account-empty-state';
 import { OrderStatusBadge } from '@/components/account/order-status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -105,20 +107,24 @@ export default async function OrdersPage() {
 
       {orders.length === 0 ? (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
-          <CardContent className="py-8 flex flex-col items-start gap-3">
-            <p className="text-sm text-blue-ruin/80">
-              You don&apos;t have any orders yet.
-            </p>
-            <Button
-              asChild
-              variant="link"
-              size="sm"
-              colorTheme="naked-blue-ruin"
-              hoverAnimation={false}
-              className="h-auto p-0 underline text-sm font-medium"
-            >
-              <Link href="/shop">Browse the shop</Link>
-            </Button>
+          <CardContent>
+            <AccountEmptyState
+              icon={Package}
+              title="No orders yet"
+              description="When you place your first order, you&apos;ll see it here with status, totals, and tracking."
+              action={
+                <Button
+                  asChild
+                  colorTheme="blue-ruin"
+                  size="sm"
+                  padding="fat"
+                  hoverAnimation={false}
+                  className="h-10"
+                >
+                  <Link href="/shop">Browse the shop</Link>
+                </Button>
+              }
+            />
           </CardContent>
         </Card>
       ) : (
