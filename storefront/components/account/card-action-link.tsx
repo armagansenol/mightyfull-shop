@@ -28,7 +28,10 @@ export function CardActionLink({
       size="sm"
       colorTheme="naked-blue-ruin"
       hoverAnimation={false}
-      className="h-auto w-auto p-0 underline underline-offset-4 text-sm font-medium inline-flex items-center gap-1 text-blue-ruin/80 hover:text-blue-ruin transition-colors"
+      // Adopt surrounding color via currentColor + opacity, so the link
+      // reads correctly both on the cream card body (blue-ruin parent)
+      // and inside the saturated blue header band (sugar-milk parent).
+      className="h-auto w-auto p-0 underline underline-offset-4 text-sm font-medium inline-flex items-center gap-1 opacity-80 hover:opacity-100 transition-opacity"
     >
       <Link href={href} prefetch={prefetch}>
         <span>{children}</span>

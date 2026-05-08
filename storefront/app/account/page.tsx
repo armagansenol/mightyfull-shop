@@ -238,10 +238,10 @@ export default async function AccountOverviewPage() {
           {recentOrder ? (
             <>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span className="text-sm text-blue-ruin/75">
+                <span className="text-sm text-account-muted">
                   Placed on {formatDate(recentOrder.processedAt)}
                 </span>
-                <span aria-hidden="true" className="text-blue-ruin/30">
+                <span aria-hidden="true" className="text-account-subtle/60">
                   •
                 </span>
                 <span className="text-sm font-semibold text-blue-ruin">
@@ -263,7 +263,7 @@ export default async function AccountOverviewPage() {
               </div>
             </>
           ) : (
-            <p className="text-sm text-blue-ruin/75">
+            <p className="text-sm text-account-muted">
               When you place your first order, you’ll see it here with status,
               totals, and tracking.
             </p>
@@ -292,7 +292,7 @@ export default async function AccountOverviewPage() {
                 />
               )}
               {nextRenewal && (
-                <p className="text-sm text-blue-ruin/75">
+                <p className="text-sm text-account-muted">
                   Next renewal on{' '}
                   <span className="font-semibold text-blue-ruin">
                     {formatDate(nextRenewal)}
@@ -301,7 +301,7 @@ export default async function AccountOverviewPage() {
               )}
             </div>
           ) : (
-            <p className="text-sm text-blue-ruin/75">
+            <p className="text-sm text-account-muted">
               Subscribe to your favorites and we’ll deliver them on your
               schedule.
             </p>
@@ -325,7 +325,7 @@ export default async function AccountOverviewPage() {
           {customer?.defaultAddress ? (
             <AddressBlock address={customer.defaultAddress} showName={false} />
           ) : (
-            <p className="text-sm text-blue-ruin/75">
+            <p className="text-sm text-account-muted">
               Add a shipping address now and checkout will be one tap on your
               next order.
             </p>
@@ -336,7 +336,7 @@ export default async function AccountOverviewPage() {
       <section className="flex flex-col gap-3" aria-labelledby="quick-actions">
         <h2
           id="quick-actions"
-          className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70"
+          className="text-xs font-semibold uppercase tracking-[0.14em] text-account-subtle"
         >
           Quick actions
         </h2>
@@ -359,7 +359,7 @@ export default async function AccountOverviewPage() {
               <span className="font-bomstad-display text-base md:text-lg leading-tight">
                 {action.label}
               </span>
-              <span className="text-xs text-blue-ruin/75 group-hover:text-sugar-milk/75 transition-colors">
+              <span className="text-xs text-account-muted group-hover:text-sugar-milk/75 transition-colors">
                 {action.description}
               </span>
             </Link>

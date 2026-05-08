@@ -30,7 +30,7 @@ export function AddressBlock({
   return (
     <address
       className={cn(
-        'not-italic flex flex-col gap-0.5 text-sm leading-relaxed',
+        'not-italic flex flex-col gap-0.5 text-sm leading-relaxed text-account-muted',
         className
       )}
     >
@@ -44,7 +44,7 @@ export function AddressBlock({
       {cityLine && <span>{cityLine}</span>}
       {address.territoryCode && <span>{address.territoryCode}</span>}
       {address.phoneNumber && (
-        <span className="text-blue-ruin/70 mt-1">{address.phoneNumber}</span>
+        <span className="text-account-subtle mt-1">{address.phoneNumber}</span>
       )}
     </address>
   );

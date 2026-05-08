@@ -25,7 +25,7 @@ export function PageHeader({
     >
       <div className="flex flex-col gap-2 min-w-0">
         {eyebrow && (
-          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/70">
+          <div className="text-xs font-semibold uppercase tracking-[0.14em] text-account-subtle">
             {eyebrow}
           </div>
         )}
@@ -33,7 +33,7 @@ export function PageHeader({
           {title}
         </h1>
         {description && (
-          <p className="text-sm md:text-base text-blue-ruin/75 max-w-prose">
+          <p className="text-sm md:text-base text-account-muted max-w-prose">
             {description}
           </p>
         )}

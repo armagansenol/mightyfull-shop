@@ -31,6 +31,13 @@
   --color-silverback: rgb(203, 203, 203);
   --color-cookie-brown: rgb(107, 66, 38);
 
+  /* Account dashboard semantic tokens.
+     Slate scale pairs cleanly with cobalt blue-ruin on the cream
+     sugar-milk surface; both pass WCAG AA. Overridden in dark mode
+     below to stay legible on the inverted blue body. */
+  --color-account-muted: rgb(71, 85, 105);
+  --color-account-subtle: rgb(100, 116, 139);
+
   /* Shadcn Semantic Colors */
   --color-background: hsl(0 0% 100%);
   --color-foreground: hsl(240 10% 3.9%);
@@ -409,6 +416,10 @@
   --sugar-milk: rgb(0, 119, 224);
   --blue-ruin-transparent: rgb(255 250 243 / 0);
   --sugar-milk-transparent: rgb(0 119 224 / 0);
+  /* Slate doesn't read on the inverted blue body; switch to cream
+     opacity tints that mirror the AA contrast of slate on cream. */
+  --color-account-muted: rgb(255 250 243 / 0.82);
+  --color-account-subtle: rgb(255 250 243 / 0.65);
 }
 
 /* Smooth the swap so cards/buttons transition rather than snap. */
