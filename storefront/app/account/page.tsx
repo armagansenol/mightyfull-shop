@@ -203,10 +203,10 @@ export default async function AccountOverviewPage() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-start">
         <Card className={cardClasses}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
               Recent order
             </CardTitle>
             <CardActionLink href="/account/orders">View all</CardActionLink>
@@ -241,7 +241,7 @@ export default async function AccountOverviewPage() {
 
         <Card className={cardClasses}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
               Subscriptions
             </CardTitle>
             <CardActionLink href="/account/subscriptions">Manage</CardActionLink>
@@ -269,7 +269,7 @@ export default async function AccountOverviewPage() {
 
         <Card className={cn(cardClasses, 'md:col-span-2')}>
           <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
-            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin">
+            <CardTitle className="font-bomstad-display text-xl md:text-2xl text-blue-ruin whitespace-nowrap">
               Default address
             </CardTitle>
             <CardActionLink href="/account/addresses">Manage</CardActionLink>
