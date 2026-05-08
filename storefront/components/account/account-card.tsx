@@ -16,15 +16,15 @@ interface AccountCardProps {
 }
 
 /**
- * Canonical account-area card with three layers:
- *   1. Outer surface — sugar-milk body + soft brand-tinted shadow
- *      and border, so the card lifts off the page surface.
- *   2. Header band — saturated blue-ruin with sugar-milk text and
- *      a cream-tinted icon dot. In dark mode the swap inverts to a
- *      cream band on a blue body, preserving hierarchy.
- *   3. Body — sugar-milk surface for the actual content; the parent
- *      sets the foreground color so CardActionLink and other
- *      currentColor consumers adopt the right tone in either zone.
+ * Brutalist-leaning card:
+ *   - Outer surface: thick blue-ruin border, sugar-milk body, no shadow.
+ *   - Header is an inset "island" — a solid blue-ruin block with the
+ *     same border radius as the outer surface, separated from the
+ *     border by margin so it visually floats inside the card.
+ *   - Body and footer share consistent radii and a thick divider rule.
+ *
+ * In dark mode the token swap inverts: a cream island on a blue body,
+ * preserving the same hierarchy.
  */
 export function AccountCard({
   icon,
@@ -42,19 +42,18 @@ export function AccountCard({
   return (
     <Tag
       className={cn(
-        'rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin',
-        'shadow-[0_1px_2px_rgb(0_119_224_/_0.04),_0_8px_24px_-8px_rgb(0_119_224_/_0.10)]',
-        'flex flex-col overflow-hidden',
+        'rounded-xl border-2 border-blue-ruin bg-sugar-milk text-blue-ruin',
+        'flex flex-col',
         className
       )}
     >
       {hasHeader && (
-        <header className="flex items-start justify-between gap-4 px-5 md:px-6 py-4 bg-blue-ruin text-sugar-milk border-b border-blue-ruin">
+        <header className="m-3 md:m-4 px-4 md:px-5 py-3.5 md:py-4 rounded-xl bg-blue-ruin text-sugar-milk flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 min-w-0">
             {icon && (
               <span
                 aria-hidden="true"
-                className="shrink-0 mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-sugar-milk/15 text-sugar-milk"
+                className="shrink-0 mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-sugar-milk text-sugar-milk"
               >
                 <HugeiconsIcon icon={icon} size={18} strokeWidth={1.75} />
               </span>
@@ -79,6 +78,8 @@ export function AccountCard({
         <div
           className={cn(
             'px-5 md:px-6 py-5 md:py-6 flex flex-col gap-3',
+            !hasHeader && 'pt-5 md:pt-6',
+            hasHeader && 'pt-1 md:pt-2',
             contentClassName
           )}
         >
@@ -86,7 +87,7 @@ export function AccountCard({
         </div>
       )}
       {footer && (
-        <div className="border-t border-blue-ruin/10 px-5 md:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-sm">
+        <div className="border-t-2 border-blue-ruin px-5 md:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-sm">
           {footer}
         </div>
       )}

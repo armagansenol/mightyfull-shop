@@ -346,9 +346,9 @@ export default async function AccountOverviewPage() {
               key={action.href}
               href={action.href}
               prefetch={action.href.startsWith('/account')}
-              className="group flex flex-col gap-2 p-4 rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin transition-colors duration-200 hover:bg-blue-ruin hover:text-sugar-milk hover:border-blue-ruin focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
+              className="group flex flex-col gap-2 p-4 rounded-xl border-2 border-blue-ruin bg-sugar-milk text-blue-ruin transition-colors duration-200 hover:bg-blue-ruin hover:text-sugar-milk focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-ruin/10 group-hover:bg-sugar-milk/15 transition-colors">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-ruin group-hover:border-sugar-milk transition-colors">
                 <HugeiconsIcon
                   icon={action.icon}
                   size={18}

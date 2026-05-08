@@ -15,10 +15,10 @@ const STATUS_LABELS: Record<string, { label: string; variant: Variant }> = {
 };
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  positive: 'bg-emerald-100 text-emerald-800',
-  warning: 'bg-amber-100 text-amber-800',
-  neutral: 'bg-blue-ruin/10 text-blue-ruin',
-  negative: 'bg-red-100 text-red-800'
+  positive: 'border-emerald-700 bg-emerald-50 text-emerald-900',
+  warning: 'border-amber-700 bg-amber-50 text-amber-900',
+  neutral: 'border-blue-ruin bg-sugar-milk text-blue-ruin',
+  negative: 'border-red-700 bg-red-50 text-red-900'
 };
 
 export function SubscriptionStatusBadge({
@@ -33,7 +33,7 @@ export function SubscriptionStatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full whitespace-nowrap',
+        'inline-flex items-center px-2.5 py-0.5 text-xs font-semibold rounded-full whitespace-nowrap border-[1.5px]',
         VARIANT_CLASSES[entry.variant]
       )}
     >
