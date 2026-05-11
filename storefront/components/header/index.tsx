@@ -6,7 +6,7 @@ import { useLenis } from 'lenis/react';
 import { CircleUserRound } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Cart } from '@/components/cart/cart';
+import { CartLauncher } from '@/components/cart/cart';
 import { Container } from '@/components/container';
 import { IconLogo } from '@/components/icons';
 import { Noticebar } from '@/components/noticebar';
@@ -94,7 +94,7 @@ export function Header() {
           </Link>
           <div className="flex items-center gap-5">
             <div className="flex md:hidden">
-              <Cart />
+              <CartLauncher />
             </div>
             <div
               className={cn(s.trigger, 'block md:hidden', {
@@ -155,7 +155,7 @@ export function Header() {
                 className="hidden md:block cursor-pointer"
                 // onClick={() => setOpen(true)}
               >
-                <Cart />
+                <CartLauncher />
               </div>
             </div>
           </nav>

@@ -2,6 +2,7 @@ import 'styles/global.css';
 
 import { cookies } from 'next/headers';
 import { cache } from 'react';
+import { Cart } from '@/components/cart/cart';
 import { GSAP } from '@/components/gsap';
 import { CartProvider } from '@/components/providers/cart';
 import { ReactQueryProvider } from '@/components/providers/react-query';
@@ -43,6 +44,7 @@ export default async function RootLayout({
           <CartProvider cartPromise={cartPromise}>
             <LayoutDataProvider value={layoutData}>
               {children}
+              <Cart />
               <WelcomePopup />
               <GSAP />
             </LayoutDataProvider>
