@@ -1,4 +1,5 @@
 import {
+  ArrowRight01Icon,
   Location04Icon,
   MapPinIcon,
   Package01Icon,
@@ -121,6 +122,15 @@ function formatMoney(amount: string, currency: string): string {
   }).format(value);
 }
 
+function getCustomerName(
+  customer: NonNullable<OverviewData['customer']>
+): string {
+  return [customer.firstName, customer.lastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
 const QUICK_ACTIONS: Array<{
   href: string;
   label: string;
@@ -191,12 +201,16 @@ export default async function AccountOverviewPage() {
 
   const greetingName = customer?.firstName?.trim() || 'there';
   const email = customer?.emailAddress?.emailAddress;
+  const fullName = customer ? getCustomerName(customer) : '';
+  const orderStatus =
+    recentOrder?.fulfillmentStatus ?? recentOrder?.financialStatus;
+  const hasSavedAddress = Boolean(customer?.defaultAddress);
 
   return (
     <>
       <PageHeader
-        eyebrow="Your account"
-        title={<>Hi, {greetingName}.</>}
+        eyebrow="Account home"
+        title={<>Hi, {greetingName}</>}
         description={
           email ? (
             <>
@@ -208,7 +222,7 @@ export default async function AccountOverviewPage() {
       />
 
       {error && (
-        <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
+        <Card className="rounded-xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
             <CardTitle className="font-bomstad-display text-xl leading-tight">
               Something went wrong
@@ -225,147 +239,230 @@ export default async function AccountOverviewPage() {
         </Card>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6 items-start">
-        <AccountCard
-          icon={Package01Icon}
-          eyebrow="Recent order"
-          title={recentOrder?.name ?? 'No orders yet'}
-          action={
-            <CardActionLink href="/account/orders">View all</CardActionLink>
-          }
-          className="lg:col-span-2"
-        >
-          {recentOrder ? (
-            <>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span className="text-sm text-account-muted">
-                  Placed on {formatDate(recentOrder.processedAt)}
-                </span>
-                <span aria-hidden="true" className="text-account-subtle/60">
-                  •
-                </span>
-                <span className="text-sm font-semibold text-blue-ruin">
-                  {formatMoney(
-                    recentOrder.totalPrice.amount,
-                    recentOrder.totalPrice.currencyCode
-                  )}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <OrderStatusBadge
-                  status={recentOrder.fulfillmentStatus}
-                  type="fulfillment"
-                />
-                <OrderStatusBadge
-                  status={recentOrder.financialStatus}
-                  type="financial"
-                />
-              </div>
-            </>
-          ) : (
-            <p className="text-sm text-account-muted">
-              When you place your first order, you’ll see it here with status,
-              totals, and tracking.
-            </p>
-          )}
-        </AccountCard>
-
-        <AccountCard
-          icon={RepeatIcon}
-          eyebrow="Subscriptions"
-          title={
-            activeSubscriptions.length > 0
-              ? `${activeSubscriptions.length} active`
-              : 'None active'
-          }
-          action={
-            <CardActionLink href="/account/subscriptions">
-              Manage
-            </CardActionLink>
-          }
-        >
-          {activeSubscriptions.length > 0 ? (
-            <div className="flex flex-col gap-2">
-              {nextActiveSubscription && (
-                <SubscriptionStatusBadge
-                  status={nextActiveSubscription.status}
-                />
-              )}
-              {nextRenewal && (
-                <p className="text-sm text-account-muted">
-                  Next renewal on{' '}
-                  <span className="font-semibold text-blue-ruin">
-                    {formatDate(nextRenewal)}
-                  </span>
-                </p>
-              )}
-            </div>
-          ) : (
-            <p className="text-sm text-account-muted">
-              Subscribe to your favorites and we’ll deliver them on your
-              schedule.
-            </p>
-          )}
-        </AccountCard>
-
-        <AccountCard
-          icon={MapPinIcon}
-          eyebrow="Default address"
-          title={
-            customer?.defaultAddress
-              ? `${customer.defaultAddress.firstName ?? ''} ${customer.defaultAddress.lastName ?? ''}`.trim() ||
-                'Default address'
-              : 'No address yet'
-          }
-          action={
-            <CardActionLink href="/account/addresses">Manage</CardActionLink>
-          }
-          className="lg:col-span-3"
-        >
-          {customer?.defaultAddress ? (
-            <AddressBlock address={customer.defaultAddress} showName={false} />
-          ) : (
-            <p className="text-sm text-account-muted">
-              Add a shipping address now and checkout will be one tap on your
-              next order.
-            </p>
-          )}
-        </AccountCard>
-      </div>
-
-      <section className="flex flex-col gap-3" aria-labelledby="quick-actions">
-        <h2
-          id="quick-actions"
-          className="text-xs font-semibold uppercase tracking-[0.14em] text-account-subtle"
-        >
-          Quick actions
-        </h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          {QUICK_ACTIONS.map((action) => (
-            <Link
-              key={action.href}
-              href={action.href}
-              prefetch={action.href.startsWith('/account')}
-              className="group flex flex-col gap-2 p-4 rounded-xl border-2 border-blue-ruin bg-sugar-milk text-blue-ruin transition-colors duration-200 hover:bg-blue-ruin hover:text-sugar-milk focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
-            >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border-2 border-blue-ruin group-hover:border-sugar-milk transition-colors">
-                <HugeiconsIcon
-                  icon={action.icon}
-                  size={18}
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                />
-              </span>
-              <span className="font-bomstad-display text-base md:text-lg leading-tight">
-                {action.label}
-              </span>
-              <span className="text-xs text-account-muted group-hover:text-sugar-milk/75 transition-colors">
-                {action.description}
-              </span>
-            </Link>
-          ))}
+      <section
+        aria-label="Account summary"
+        className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-xl border border-blue-ruin/20 bg-blue-ruin/[0.04] p-3 md:p-4"
+      >
+        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
+            Orders
+          </p>
+          <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin tabular-nums">
+            {recentOrder ? 'Latest ready' : 'No orders'}
+          </p>
+          <p className="mt-2 text-xs text-account-muted">
+            {recentOrder
+              ? `Last placed ${formatDate(recentOrder.processedAt)}`
+              : 'Start with your first checkout.'}
+          </p>
+        </div>
+        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
+            Renewals
+          </p>
+          <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin tabular-nums">
+            {activeSubscriptions.length}
+          </p>
+          <p className="mt-2 text-xs text-account-muted">
+            {nextRenewal
+              ? `Next charge ${formatDate(nextRenewal)}`
+              : 'No active subscription.'}
+          </p>
+        </div>
+        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
+            Shipping
+          </p>
+          <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin">
+            {hasSavedAddress ? 'Saved' : 'Missing'}
+          </p>
+          <p className="mt-2 text-xs text-account-muted">
+            {hasSavedAddress
+              ? 'Default address is ready.'
+              : 'Add one for faster orders.'}
+          </p>
         </div>
       </section>
+
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.55fr)] gap-5 md:gap-6 items-start">
+        <div className="flex flex-col gap-5 md:gap-6">
+          <AccountCard
+            icon={Package01Icon}
+            eyebrow="Latest order"
+            title={recentOrder?.name ?? 'No orders yet'}
+            action={
+              <CardActionLink href="/account/orders">
+                View orders
+              </CardActionLink>
+            }
+            className="overflow-hidden"
+            contentClassName="gap-5"
+          >
+            {recentOrder ? (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                    <span className="text-xs text-account-subtle">Placed</span>
+                    <p className="mt-1 text-sm font-semibold text-blue-ruin">
+                      {formatDate(recentOrder.processedAt)}
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                    <span className="text-xs text-account-subtle">Total</span>
+                    <p className="mt-1 text-sm font-semibold text-blue-ruin tabular-nums">
+                      {formatMoney(
+                        recentOrder.totalPrice.amount,
+                        recentOrder.totalPrice.currencyCode
+                      )}
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                    <span className="text-xs text-account-subtle">Status</span>
+                    <p className="mt-1 text-sm font-semibold text-blue-ruin">
+                      {orderStatus?.replace(/_/g, ' ').toLowerCase() ??
+                        'Processing'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <OrderStatusBadge
+                    status={recentOrder.fulfillmentStatus}
+                    type="fulfillment"
+                  />
+                  <OrderStatusBadge
+                    status={recentOrder.financialStatus}
+                    type="financial"
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] p-4">
+                <p className="text-sm text-account-muted max-w-md">
+                  Your orders will show up here with totals, fulfillment status,
+                  and tracking links after checkout.
+                </p>
+                <CardActionLink href="/shop">Shop now</CardActionLink>
+              </div>
+            )}
+          </AccountCard>
+
+          <section
+            className="rounded-xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin overflow-hidden"
+            aria-labelledby="quick-actions"
+          >
+            <div className="px-5 md:px-6 py-4 border-b border-blue-ruin/15">
+              <h2
+                id="quick-actions"
+                className="font-bomstad-display text-xl md:text-2xl leading-tight text-blue-ruin"
+              >
+                Quick actions
+              </h2>
+            </div>
+            <div className="divide-y divide-blue-ruin/15">
+              {QUICK_ACTIONS.map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  prefetch={action.href.startsWith('/account')}
+                  className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 px-5 md:px-6 py-4 transition-colors duration-200 hover:bg-blue-ruin/[0.06] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
+                >
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-blue-ruin/20 bg-blue-ruin/[0.06] text-blue-ruin transition-transform duration-200 group-hover:-translate-y-0.5">
+                    <HugeiconsIcon
+                      icon={action.icon}
+                      size={18}
+                      strokeWidth={1.75}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-bomstad-display text-base md:text-lg leading-tight text-blue-ruin">
+                      {action.label}
+                    </span>
+                    <span className="block text-xs text-account-muted mt-0.5">
+                      {action.description}
+                    </span>
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="text-blue-ruin transition-transform duration-200 group-hover:translate-x-1"
+                  >
+                    <HugeiconsIcon
+                      icon={ArrowRight01Icon}
+                      size={18}
+                      strokeWidth={2}
+                    />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <aside className="flex flex-col gap-5 md:gap-6">
+          <AccountCard
+            icon={RepeatIcon}
+            eyebrow="Subscriptions"
+            title={
+              activeSubscriptions.length > 0
+                ? `${activeSubscriptions.length} active`
+                : 'None active'
+            }
+            action={
+              <CardActionLink href="/account/subscriptions">
+                Manage
+              </CardActionLink>
+            }
+          >
+            {activeSubscriptions.length > 0 ? (
+              <div className="flex flex-col gap-3">
+                {nextActiveSubscription && (
+                  <SubscriptionStatusBadge
+                    status={nextActiveSubscription.status}
+                  />
+                )}
+                {nextRenewal && (
+                  <p className="text-sm text-account-muted">
+                    Next renewal on{' '}
+                    <span className="font-semibold text-blue-ruin">
+                      {formatDate(nextRenewal)}
+                    </span>
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-account-muted">
+                Subscribe to favorites and manage renewal timing here.
+              </p>
+            )}
+          </AccountCard>
+
+          <AccountCard
+            icon={MapPinIcon}
+            eyebrow="Default address"
+            title={
+              customer?.defaultAddress
+                ? `${customer.defaultAddress.firstName ?? ''} ${customer.defaultAddress.lastName ?? ''}`.trim() ||
+                  fullName ||
+                  'Default address'
+                : 'No address yet'
+            }
+            action={
+              <CardActionLink href="/account/addresses">Manage</CardActionLink>
+            }
+          >
+            {customer?.defaultAddress ? (
+              <AddressBlock
+                address={customer.defaultAddress}
+                showName={false}
+              />
+            ) : (
+              <p className="text-sm text-account-muted">
+                Add a shipping address now so the next checkout is faster.
+              </p>
+            )}
+          </AccountCard>
+        </aside>
+      </div>
     </>
   );
 }
