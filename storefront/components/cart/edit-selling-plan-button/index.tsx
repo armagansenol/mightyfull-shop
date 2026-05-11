@@ -6,39 +6,41 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useUpdateSellingPlan } from '@/components/cart/hooks/useCartItemMutations';
-import { IconClose } from '@/components/icons';
-import { LetterSwapOnHover } from '@/components/letter-swap-on-hover';
+import { IconChevronDown, IconClose } from '@/components/icons';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 import { formatSellingPlanName } from '@/lib/shopify/selling-plan';
 import type { CartItem } from '@/lib/shopify/types';
+
+type SellingPlanOption = { id: string; name: string };
 
 function ResetButton({
   onClick,
   disabled,
-  isLoading,
   ariaLabel = 'Reset to one-time purchase'
 }: {
   onClick: () => void;
   disabled?: boolean;
-  isLoading?: boolean;
   ariaLabel?: string;
 }) {
   return (
     <button
       type="button"
       className={cn(
-        'h-12 w-12 p-4 rounded-lg hover:bg-gray-100 transition-colors bg-white border border-blue-ruin',
+        'h-10 w-10 p-3 rounded-lg hover:bg-gray-100 transition-colors bg-white border border-blue-ruin',
         'cursor-pointer flex items-center justify-center',
-        (disabled || isLoading) && 'opacity-50 cursor-not-allowed'
+        disabled && 'cursor-not-allowed'
       )}
       onClick={onClick}
-      disabled={disabled || isLoading}
+      disabled={disabled}
       aria-label={ariaLabel}
     >
-      {isLoading ? (
-        <Loader2 className="h-4 w-4 animate-spin text-blue-ruin" />
-      ) : (
-        <IconClose fill="var(--blue-ruin)" />
-      )}
+      <IconClose fill="var(--blue-ruin)" />
     </button>
   );
 }
@@ -53,7 +55,7 @@ function UpgradeButton({
   return (
     <button
       className={cn(
-        'h-12 w-full flex items-center justify-center cursor-pointer relative bg-white border border-blue-ruin rounded-xl',
+        'h-10 w-full flex items-center justify-center cursor-pointer bg-white border border-blue-ruin rounded-xl',
         isUpdating && 'pointer-events-none'
       )}
       onClick={onClick}
@@ -62,64 +64,75 @@ function UpgradeButton({
       type="button"
     >
       <span className="font-bomstad-display font-medium text-blue-ruin text-lg leading-none">
-        <LetterSwapOnHover label="Subscribe & save 10%" />
+        Subscribe & save 10%
       </span>
-      {isUpdating && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
-        </motion.div>
-      )}
     </button>
   );
 }
 
-function SubscriptionLabel({
-  currentSellingPlanName,
+function SubscriptionPlanPicker({
+  currentSellingPlanId,
+  sellingPlans,
   isUpdating,
+  onChange,
   onReset,
   item
 }: {
-  currentSellingPlanName: string;
+  currentSellingPlanId: string | null;
+  sellingPlans: SellingPlanOption[];
   isUpdating: boolean;
+  onChange: (newSellingPlanId: string) => void;
   onReset: () => void;
   item: CartItem;
 }) {
+  const selectedId = currentSellingPlanId ?? sellingPlans[0]?.id;
+
   return (
-    <div className={cn('w-full flex gap-2 relative')} aria-live="polite">
-      <div
-        className={cn(
-          'flex-1 h-12 bg-white border border-blue-ruin rounded-lg',
-          'flex items-center justify-center',
-          'text-lg font-bomstad-display font-medium text-blue-ruin'
-        )}
+    <div className={cn('w-full flex gap-2')} aria-live="polite">
+      <Select
+        value={selectedId}
+        onValueChange={(value) => {
+          if (value && value !== currentSellingPlanId) {
+            onChange(value);
+          }
+        }}
+        disabled={isUpdating || sellingPlans.length < 2}
       >
-        {currentSellingPlanName}
-      </div>
+        <SelectTrigger
+          aria-label={`Change delivery frequency for ${item.merchandise.product.title}`}
+          className={cn(
+            'flex-1 h-10 bg-white border border-blue-ruin rounded-lg px-4 gap-2',
+            'justify-center text-lg font-bomstad-display font-medium text-blue-ruin',
+            'disabled:opacity-100',
+            '[&>svg]:hidden'
+          )}
+        >
+          <SelectValue />
+          <span
+            aria-hidden="true"
+            className="block w-[9px] h-[5px] shrink-0 text-blue-ruin"
+          >
+            <IconChevronDown fill="currentColor" />
+          </span>
+        </SelectTrigger>
+        <SelectContent className="border border-blue-ruin bg-white">
+          {sellingPlans.map((plan) => (
+            <SelectItem
+              key={plan.id}
+              value={plan.id}
+              className="font-bomstad-display font-medium text-blue-ruin focus:bg-blue-ruin/10 focus:text-blue-ruin"
+            >
+              {formatSellingPlanName(plan.name)}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
 
       <ResetButton
         onClick={onReset}
         disabled={isUpdating}
-        isLoading={isUpdating}
         ariaLabel={`Reset ${item.merchandise.product.title} to one-time purchase`}
       />
-
-      {isUpdating && (
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 rounded"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
-        </motion.div>
-      )}
     </div>
   );
 }
@@ -153,26 +166,29 @@ export function EditSellingPlanButton({
     currentSellingPlanId !== null
   );
 
-  useEffect(() => {
-    setSelectActive(currentSellingPlanId !== null);
-  }, [currentSellingPlanId]);
-
   const { mutate: updateSellingPlan, isPending: isUpdating } =
     useUpdateSellingPlan(item);
 
-  const currentSellingPlanName = useMemo(() => {
-    const planName = currentSellingPlanId
-      ? sellingPlans.find((plan) => plan.id === currentSellingPlanId)?.name ||
-        'Monthly subscription'
-      : sellingPlans[0]?.name || 'Monthly subscription';
-
-    return formatSellingPlanName(planName);
-  }, [currentSellingPlanId, sellingPlans]);
+  useEffect(() => {
+    // Hold the visible state steady while a mutation is in flight so the
+    // spinner overlay stays on the picker during a reset (and on the upgrade
+    // button during a downgrade), then sync once it settles.
+    if (isUpdating) return;
+    setSelectActive(currentSellingPlanId !== null);
+  }, [currentSellingPlanId, isUpdating]);
 
   const handleUpgrade = useCallback(() => {
     if (isUpdating) return;
     updateSellingPlan({ newSellingPlanId: defaultSellingPlan });
   }, [defaultSellingPlan, updateSellingPlan, isUpdating]);
+
+  const handleChangePlan = useCallback(
+    (newSellingPlanId: string) => {
+      if (isUpdating) return;
+      updateSellingPlan({ newSellingPlanId });
+    },
+    [updateSellingPlan, isUpdating]
+  );
 
   const handleResetToOneTime = useCallback(() => {
     if (!currentSellingPlanId || isUpdating) return;
@@ -181,42 +197,64 @@ export function EditSellingPlanButton({
 
   if (!hasSellingPlans) return null;
 
-  const showUpgradeButton = !selectActive && !currentSellingPlanId;
-  const showSubscriptionLabel = selectActive || currentSellingPlanId !== null;
+  // Drive visibility off `selectActive` (frozen during isUpdating) so the
+  // pre-mutation UI keeps its spinner overlay until the server settles.
+  const showUpgradeButton = !selectActive;
+  const showSubscriptionLabel = selectActive;
 
   return (
-    <div
-      className={cn('transition-opacity duration-700', {
-        'opacity-75': isUpdating
-      })}
-    >
-      <AnimatePresence mode="popLayout">
-        {showUpgradeButton && (
-          <motion.div
-            key="upgrade-button"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            <UpgradeButton isUpdating={isUpdating} onClick={handleUpgrade} />
-          </motion.div>
+    <div className="relative">
+      <div
+        className={cn(
+          'transition-opacity duration-200',
+          isUpdating && 'opacity-20'
         )}
+      >
+        <AnimatePresence mode="popLayout">
+          {showUpgradeButton && (
+            <motion.div
+              key="upgrade-button"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <UpgradeButton isUpdating={isUpdating} onClick={handleUpgrade} />
+            </motion.div>
+          )}
 
-        {showSubscriptionLabel && (
+          {showSubscriptionLabel && (
+            <motion.div
+              key="subscription-label"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+            >
+              <SubscriptionPlanPicker
+                currentSellingPlanId={currentSellingPlanId}
+                sellingPlans={sellingPlans}
+                isUpdating={isUpdating}
+                onChange={handleChangePlan}
+                onReset={handleResetToOneTime}
+                item={item}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence>
+        {isUpdating && (
           <motion.div
-            key="subscription-label"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            key="loading-overlay"
+            className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <SubscriptionLabel
-              currentSellingPlanName={currentSellingPlanName}
-              isUpdating={isUpdating}
-              onReset={handleResetToOneTime}
-              item={item}
-            />
+            <Loader2 className="h-5 w-5 animate-spin text-blue-ruin" />
           </motion.div>
         )}
       </AnimatePresence>

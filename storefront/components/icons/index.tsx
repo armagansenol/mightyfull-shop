@@ -730,6 +730,25 @@ export const IconClose = (props: Props) => {
   );
 };
 
+export const IconChevronDown = (props: Props) => {
+  return (
+    <span className="inherit-dims block">
+      <svg
+        width="100%"
+        height="100%"
+        viewBox="0 0 9 5"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M9 2.24051L4.51002 5L-1.20621e-07 2.24051L-2.18557e-07 4.76837e-07L4.51002 2.77215L9 8.34347e-08L9 2.24051Z"
+          fill={props.fill ?? 'currentColor'}
+        />
+      </svg>
+    </span>
+  );
+};
+
 export const IconAsterisk = (props: Props) => {
   return (
     <span className="inherit-dims block">
