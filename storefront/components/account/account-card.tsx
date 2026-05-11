@@ -37,30 +37,37 @@ export function AccountCard({
       )}
     >
       {hasHeader && (
-        <header className="px-5 md:px-6 pt-5 md:pt-6 pb-3 flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3 min-w-0">
+        <header className="px-5 md:px-6 pt-5 md:pt-6 pb-4 flex items-center justify-between gap-4">
+          <div
+            className={cn(
+              'grid items-center gap-3.5 min-w-0',
+              icon
+                ? 'grid-cols-[2.75rem_minmax(0,1fr)]'
+                : 'grid-cols-[minmax(0,1fr)]'
+            )}
+          >
             {icon && (
               <span
                 aria-hidden="true"
-                className="shrink-0 mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-blue-ruin/20 bg-blue-ruin/[0.06] text-blue-ruin"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-blue-ruin/25 bg-blue-ruin/[0.05] text-blue-ruin"
               >
-                <HugeiconsIcon icon={icon} size={18} strokeWidth={1.75} />
+                <HugeiconsIcon icon={icon} size={19} strokeWidth={1.75} />
               </span>
             )}
-            <div className="flex flex-col gap-0.5 min-w-0">
+            <div className="flex min-w-0 flex-col justify-center gap-1">
               {eyebrow && (
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] leading-none text-account-subtle">
                   {eyebrow}
                 </span>
               )}
               {title && (
-                <h2 className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-tight text-wrap-balance">
+                <h2 className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-[0.98] text-wrap-balance">
                   {title}
                 </h2>
               )}
             </div>
           </div>
-          {action && <div className="shrink-0">{action}</div>}
+          {action && <div className="shrink-0 self-center">{action}</div>}
         </header>
       )}
       {children !== undefined && children !== null && children !== false && (
