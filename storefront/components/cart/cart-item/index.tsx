@@ -18,6 +18,18 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
+  // Resolve real inventory for the variant in this line so we cap the
+  // increment button against actual stock instead of letting an optimistic
+  // update bounce back when Shopify clamps the requested quantity.
+  const variant = item.merchandise.product.variants.edges.find(
+    (edge) => edge.node.id === item.merchandise.id
+  )?.node;
+  const availableStock =
+    typeof variant?.quantityAvailable === 'number' &&
+    variant.quantityAvailable >= 0
+      ? variant.quantityAvailable
+      : undefined;
+
   return (
     <div
       className={cn('w-full space-y-6 border-b border-silverback/20 pb-10')}
@@ -41,7 +53,7 @@ export default function CartItem({ item }: CartItemProps) {
           </span>
           <div className="flex flex-col justify-between">
             <div className="flex items-center justify-center">
-              <QuantityControl item={item} />
+              <QuantityControl item={item} availableStock={availableStock} />
             </div>
           </div>
           <DeleteItemButton item={item} />

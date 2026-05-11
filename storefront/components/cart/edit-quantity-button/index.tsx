@@ -1,7 +1,7 @@
 'use client';
 
-import NumberFlow from '@number-flow/react';
 import { Loader2 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useCallback } from 'react';
 
 import { IconMinus, IconPlus } from '@/components/icons';
@@ -48,16 +48,22 @@ export function QuantityButton({
 
 export function IncrementButton({
   item,
-  maxQuantity = 100
+  maxQuantity = 100,
+  availableStock
 }: {
   item: CartItem;
   maxQuantity?: number;
+  availableStock?: number;
 }) {
   const productTitle = item.merchandise.product.title;
-  const isDisabled = item.quantity >= maxQuantity;
+  const effectiveMax =
+    typeof availableStock === 'number'
+      ? Math.min(maxQuantity, availableStock)
+      : maxQuantity;
+  const isDisabled = item.quantity >= effectiveMax;
   const { mutate, isPending: isLoading } = useIncrementCartItem(
     item,
-    maxQuantity
+    effectiveMax
   );
 
   const handleIncrement = useCallback(() => {
@@ -101,21 +107,45 @@ export function DecrementButton({ item }: { item: CartItem }) {
 
 export function QuantityControl({
   item,
-  maxQuantity = 100
+  maxQuantity = 100,
+  availableStock
 }: {
   item: CartItem;
   maxQuantity?: number;
+  availableStock?: number;
 }) {
+  const atStockLimit =
+    typeof availableStock === 'number' && item.quantity >= availableStock;
+
   return (
-    <div
-      className="flex items-center space-x-2 border border-blue-ruin rounded-lg"
-      aria-live="polite"
-    >
-      <DecrementButton item={item} />
-      <span className="w-6 text-center font-poppins font-bold text-lg text-blue-ruin leading-none">
-        <NumberFlow value={item.quantity} />
-      </span>
-      <IncrementButton item={item} maxQuantity={maxQuantity} />
+    <div className="flex flex-col gap-1" aria-live="polite">
+      <div className="flex items-center space-x-2 border border-blue-ruin rounded-lg">
+        <DecrementButton item={item} />
+        <span className="w-6 text-center font-poppins font-bold text-lg text-blue-ruin leading-none">
+          <motion.span
+            key={item.quantity}
+            initial={{ scale: 1.15 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+            className="inline-block"
+          >
+            {item.quantity}
+          </motion.span>
+        </span>
+        <IncrementButton
+          item={item}
+          maxQuantity={maxQuantity}
+          availableStock={availableStock}
+        />
+      </div>
+      {atStockLimit && availableStock !== undefined && (
+        <span
+          role="status"
+          className="text-[11px] font-poppins font-medium text-blue-ruin/60 tracking-wide leading-none"
+        >
+          Max in stock: {availableStock}
+        </span>
+      )}
     </div>
   );
 }
