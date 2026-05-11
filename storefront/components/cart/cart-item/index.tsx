@@ -19,7 +19,9 @@ interface CartItemProps {
 
 export default function CartItem({ item }: CartItemProps) {
   return (
-    <div className={cn('w-full space-y-6 border-b border-silverback pb-10')}>
+    <div
+      className={cn('w-full space-y-6 border-b border-silverback/20 pb-10')}
+    >
       <div className="grid grid-cols-12 gap-6 relative">
         <div className={cn('col-span-4 aspect-square p-1')}>
           <Img
@@ -48,7 +50,7 @@ export default function CartItem({ item }: CartItemProps) {
           {item.sellingPlanAllocation?.sellingPlan?.id ? (
             <>
               {/* original price */}
-              <div className="line-through font-bomstad-display text-gray-400 text-xl font-bold">
+              <div className="line-through font-bomstad-display text-gray-400 text-xl font-semibold">
                 <Price
                   className="leading-none"
                   amount={(
@@ -64,18 +66,18 @@ export default function CartItem({ item }: CartItemProps) {
                 />
               </div>
               {/* price with discount */}
-              <div className="font-bomstad-display text-green-500 text-3xl font-bold">
+              <div className="font-bomstad-display text-green-500 text-3xl font-semibold">
                 <Price
-                  animated
+                  animation="bob"
                   amount={item.cost.totalAmount.amount}
                   currencyCode={item.cost.totalAmount.currencyCode}
                 />
               </div>
             </>
           ) : (
-            <div className="font-bomstad-display text-blue-ruin text-3xl font-bold">
+            <div className="font-bomstad-display text-blue-ruin text-3xl font-semibold">
               <Price
-                animated
+                animation="bob"
                 amount={(
                   parseFloat(
                     item.merchandise.product.variants.edges[0].node.price.amount

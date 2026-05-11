@@ -39,7 +39,7 @@ export function CheckoutButton({
               className="flex items-center justify-center text-2xl font-medium"
             >
               (
-              <Price animated amount={amount} currencyCode={currencyCode} />)
+              <Price animation="flow" amount={amount} currencyCode={currencyCode} />)
             </motion.span>
           )}
         </div>

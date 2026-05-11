@@ -1,46 +1,55 @@
 import NumberFlow from '@number-flow/react';
+import { motion } from 'motion/react';
 
 const Price = ({
-  animated = false,
+  animation,
   amount,
   className,
   currencyCode = 'USD'
 }: {
   amount: string;
-  animated?: boolean;
+  animation?: 'flow' | 'bob';
   className?: string;
   currencyCode?: string;
 } & React.ComponentProps<'p'>) => {
-  // Parse the amount string to a number first
   const numericAmount = parseFloat(amount);
 
-  // Format the number with exactly two decimal places
-  // This will be used to create a properly formatted number for display
   const formattedNumber = new Intl.NumberFormat(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(numericAmount);
 
-  // Get currency symbol using Intl
   const formatter = new Intl.NumberFormat(undefined, {
     style: 'currency',
     currency: currencyCode,
     currencyDisplay: 'narrowSymbol'
   });
 
-  // Extract just the currency symbol
   const currencySymbol =
     formatter.formatToParts(0).find((part) => part.type === 'currency')
       ?.value || currencyCode;
 
-  // Parse the formatted number back to a number for NumberFlow
-  // This ensures we have the correct number of decimal places
   const displayNumber = parseFloat(formattedNumber.replace(/,/g, ''));
 
   return (
     <p className={className}>
-      {animated ? (
-        <NumberFlow value={displayNumber} />
+      {animation === 'flow' ? (
+        <NumberFlow
+          value={displayNumber}
+          transformTiming={{ duration: 500 }}
+          spinTiming={{ duration: 500 }}
+          opacityTiming={{ duration: 500 }}
+        />
+      ) : animation === 'bob' ? (
+        <motion.span
+          key={displayNumber}
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+          className="inline-block"
+        >
+          {displayNumber}
+        </motion.span>
       ) : (
         <span>{displayNumber}</span>
       )}
