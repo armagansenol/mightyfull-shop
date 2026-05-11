@@ -84,7 +84,7 @@ export function AccountSidebar() {
               'text-sm font-bold cursor-pointer transition-colors duration-200',
               'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk',
               active
-                ? 'bg-blue-ruin text-sugar-milk shadow-[0_1px_0_0_rgb(0_0_0_/_0.04)]'
+                ? 'bg-blue-ruin text-sugar-milk'
                 : 'text-blue-ruin hover:bg-blue-ruin/8'
             )}
           >

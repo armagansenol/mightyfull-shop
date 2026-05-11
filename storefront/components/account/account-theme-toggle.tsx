@@ -83,7 +83,7 @@ export function AccountThemeToggle() {
       >
         <span
           className={cn(
-            'inline-block h-3.5 w-3.5 rounded-full bg-sugar-milk shadow-sm transition-transform duration-200',
+            'inline-block h-3.5 w-3.5 rounded-full bg-sugar-milk transition-transform duration-200',
             isDark ? 'translate-x-[18px]' : 'translate-x-[2px]'
           )}
         />

@@ -32,8 +32,7 @@ export function AccountCard({
     <Tag
       className={cn(
         'rounded-xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin',
-        'flex flex-col shadow-[0_18px_42px_-32px_rgb(0_119_224_/_0.55)]',
-        'transition-[border-color,background-color,box-shadow,transform] duration-300 ease-out',
+        'flex flex-col transition-[border-color,background-color,transform] duration-300 ease-out',
         className
       )}
     >
