@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import * as z from 'zod';
 import { updateProfile } from '@/app/account/profile/actions';
 import { Button } from '@/components/ui/button';
@@ -49,7 +48,6 @@ export function ProfileForm({ defaultValues }: ProfileFormProps) {
     startTransition(async () => {
       const result = await updateProfile(values);
       if (result.ok) {
-        toast.success('Profile updated');
         form.reset(values);
         return;
       }
@@ -60,7 +58,6 @@ export function ProfileForm({ defaultValues }: ProfileFormProps) {
           }
         }
       }
-      toast.error(result.error);
     });
   }
 

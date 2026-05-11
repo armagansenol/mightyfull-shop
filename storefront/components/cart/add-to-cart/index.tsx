@@ -1,11 +1,9 @@
 'use client';
 
-import { BellRing, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
-import { toast } from 'sonner';
 
 import { useAddToCart } from '@/components/cart/hooks/useAddToCart';
-import { IconClose } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 
 export function AddToCart({
@@ -16,8 +14,7 @@ export function AddToCart({
   amount,
   currencyCode,
   quantity = 1,
-  sellingPlanId,
-  productTitle = 'Item'
+  sellingPlanId
 }: {
   buttonTheme?: 'inverted-blue-ruin' | 'inverted-themed';
   className?: string;
@@ -29,33 +26,10 @@ export function AddToCart({
   quantity?: number;
   sellingPlanId?: string;
 }) {
-  const { mutate, isPending } = useAddToCart(variantId, productTitle);
+  const { mutate, isPending } = useAddToCart(variantId);
 
   const handleAddToCart = useCallback(() => {
-    if (!availableForSale) {
-      return toast.error(
-        <>
-          <div
-            className="absolute top-2 right-2 w-4 h-4 cursor-pointer"
-            onClick={() => toast.dismiss()}
-          >
-            <IconClose fill="var(--blue-ruin)" />
-          </div>
-          <div className="flex flex-col gap-2 relative">
-            <div>This product is currently sold out.</div>
-            <div>Please check back soon.</div>
-            <button className="flex gap-4">
-              <span>
-                <BellRing />
-              </span>
-              <span>NOTIFY ME WHEN BACK IN STOCK</span>
-            </button>
-          </div>
-        </>
-      );
-    }
-
-    // Prevent multiple clicks while processing
+    if (!availableForSale) return;
     if (isPending) return;
 
     mutate({ quantity, sellingPlanId });

@@ -10,7 +10,6 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Loader2, MapPin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { toast } from 'sonner';
 import {
   deleteAddress,
   setDefaultAddress
@@ -84,10 +83,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
     startTransition(async () => {
       const result = await setDefaultAddress(id);
       if (result.ok) {
-        toast.success('Default address updated');
         router.refresh();
-      } else {
-        toast.error(result.error);
       }
     });
   };
@@ -96,10 +92,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
     startTransition(async () => {
       const result = await deleteAddress(id);
       if (result.ok) {
-        toast.success('Address deleted');
         router.refresh();
-      } else {
-        toast.error(result.error);
       }
     });
   };

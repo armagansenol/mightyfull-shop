@@ -1,8 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'sonner';
 import { getCart } from '@/components/cart/actions';
 import { useCart } from '@/components/cart/cart-context';
-import { test } from '@/components/custom-toast/success';
 import type { Cart } from '@/lib/shopify/types';
 
 type CartActionType = 'plus' | 'minus' | 'delete' | 'update-selling-plan';
@@ -13,9 +11,6 @@ interface UseCartMutationOptions<TVariables extends Record<string, unknown>> {
   actionType: CartActionType;
   merchandiseId: string;
   sellingPlanId?: string | null;
-  productTitle?: string;
-  successMessage?: string;
-  errorMessage?: string;
   onSuccess?: (result: MutationResult, variables: TVariables) => void;
   onError?: (error: Error, variables: TVariables) => void;
 }
@@ -27,9 +22,6 @@ export function useCartMutation<
   actionType,
   merchandiseId,
   sellingPlanId,
-  productTitle = 'Item',
-  successMessage,
-  errorMessage,
   onSuccess,
   onError
 }: UseCartMutationOptions<TVariables>) {
@@ -68,28 +60,8 @@ export function useCartMutation<
         'success' in result &&
         result.success;
 
-      if (isSuccess) {
-        const message =
-          (typeof result === 'object' && 'message' in result
-            ? result.message
-            : undefined) ||
-          successMessage ||
-          `${productTitle} updated successfully`;
-        test(message);
-
-        if (onSuccess) {
-          onSuccess(result, variables);
-        }
-      } else {
-        // Server returned a failure — rollback will happen in onSettled via sync
-        const message =
-          (typeof result === 'object' && 'message' in result
-            ? result.message
-            : undefined) ||
-          (typeof result === 'string' ? result : undefined) ||
-          errorMessage ||
-          `Failed to update ${productTitle}`;
-        toast.error(message);
+      if (isSuccess && onSuccess) {
+        onSuccess(result, variables);
       }
     },
 
@@ -101,15 +73,7 @@ export function useCartMutation<
 
       if (onError) {
         onError(error, variables);
-        return;
       }
-
-      const message =
-        error instanceof Error
-          ? error.message
-          : errorMessage || `Failed to update ${productTitle}`;
-
-      toast.error(`Error updating ${productTitle}: ${message}`);
     },
 
     // Always sync with server after mutation settles

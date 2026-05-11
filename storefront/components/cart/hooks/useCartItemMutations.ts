@@ -11,7 +11,6 @@ export function useDeleteCartItem(item: CartItem) {
   const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
-  const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
@@ -19,9 +18,7 @@ export function useDeleteCartItem(item: CartItem) {
     },
     actionType: 'delete',
     merchandiseId,
-    sellingPlanId,
-    productTitle,
-    successMessage: `${productTitle} removed from cart`
+    sellingPlanId
   });
 }
 
@@ -29,7 +26,6 @@ export function useIncrementCartItem(item: CartItem, maxQuantity?: number) {
   const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
-  const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
@@ -37,8 +33,7 @@ export function useIncrementCartItem(item: CartItem, maxQuantity?: number) {
     },
     actionType: 'plus',
     merchandiseId,
-    sellingPlanId,
-    productTitle
+    sellingPlanId
   });
 }
 
@@ -46,7 +41,6 @@ export function useDecrementCartItem(item: CartItem) {
   const lineId = item.id!;
   const merchandiseId = item.merchandise.id;
   const sellingPlanId = item.sellingPlanAllocation?.sellingPlan?.id || null;
-  const productTitle = item.merchandise.product.title;
 
   return useCartMutation({
     mutationFn: async () => {
@@ -54,8 +48,7 @@ export function useDecrementCartItem(item: CartItem) {
     },
     actionType: 'minus',
     merchandiseId,
-    sellingPlanId,
-    productTitle
+    sellingPlanId
   });
 }
 
@@ -83,7 +76,6 @@ export function useUpdateSellingPlan(item: CartItem) {
     },
     actionType: 'update-selling-plan',
     merchandiseId,
-    sellingPlanId: currentSellingPlanId,
-    successMessage: 'Subscription option updated'
+    sellingPlanId: currentSellingPlanId
   });
 }

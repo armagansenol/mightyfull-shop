@@ -1,8 +1,7 @@
-import { toast } from 'sonner';
 import { addItem } from '@/components/cart/actions';
 import { useCartMutation } from './useCartMutation';
 
-export function useAddToCart(variantId: string, productTitle: string) {
+export function useAddToCart(variantId: string) {
   return useCartMutation<{
     quantity?: number;
     sellingPlanId?: string;
@@ -23,11 +22,6 @@ export function useAddToCart(variantId: string, productTitle: string) {
     },
     actionType: 'plus',
     merchandiseId: variantId,
-    sellingPlanId: undefined,
-    productTitle,
-    successMessage: `${productTitle} added to cart`,
-    onError: (error: Error) => {
-      toast.error(`Failed to add ${productTitle} to cart: ${error.message}`);
-    }
+    sellingPlanId: undefined
   });
 }

@@ -3,7 +3,6 @@
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
-import { toast } from 'sonner';
 import {
   cancelSubscription,
   pauseSubscription,
@@ -48,10 +47,7 @@ export function SubscriptionActions({
     startTransition(async () => {
       const result = await pauseSubscription(contractId);
       if (result.ok) {
-        toast.success('Subscription paused');
         router.refresh();
-      } else {
-        toast.error(result.error);
       }
     });
   };
@@ -60,10 +56,7 @@ export function SubscriptionActions({
     startTransition(async () => {
       const result = await resumeSubscription(contractId);
       if (result.ok) {
-        toast.success('Subscription resumed');
         router.refresh();
-      } else {
-        toast.error(result.error);
       }
     });
   };
@@ -72,10 +65,7 @@ export function SubscriptionActions({
     startTransition(async () => {
       const result = await cancelSubscription(contractId);
       if (result.ok) {
-        toast.success('Subscription cancelled');
         router.refresh();
-      } else {
-        toast.error(result.error);
       }
     });
   };

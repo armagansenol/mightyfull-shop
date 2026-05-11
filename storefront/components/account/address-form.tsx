@@ -5,7 +5,6 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import * as z from 'zod';
 import {
   type AddressInput,
@@ -129,7 +128,6 @@ export function AddressForm({
           : await updateAddress(addressId, payload, isDefault);
 
       if (result.ok) {
-        toast.success(mode === 'create' ? 'Address added' : 'Address updated');
         router.push('/account/addresses');
         router.refresh();
         return;
@@ -142,7 +140,6 @@ export function AddressForm({
           }
         }
       }
-      toast.error(result.error);
     });
   }
 

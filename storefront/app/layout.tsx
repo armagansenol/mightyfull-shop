@@ -5,7 +5,6 @@ import { cache } from 'react';
 import { GSAP } from '@/components/gsap';
 import { CartProvider } from '@/components/providers/cart';
 import { ReactQueryProvider } from '@/components/providers/react-query';
-import { Toaster } from '@/components/ui/sonner';
 import { WelcomePopup } from '@/components/welcome-popup';
 import { LayoutDataProvider } from '@/context/layout-data';
 import { sanityFetch } from '@/lib/sanity/client';
@@ -45,7 +44,6 @@ export default async function RootLayout({
             <LayoutDataProvider value={layoutData}>
               {children}
               <WelcomePopup />
-              <Toaster position="bottom-left" />
               <GSAP />
             </LayoutDataProvider>
           </CartProvider>
