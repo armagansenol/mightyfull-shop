@@ -63,7 +63,7 @@ export function AccountSidebar() {
       aria-label="Account navigation"
       className={cn(
         'flex md:flex-col gap-1.5 md:w-64 md:shrink-0',
-        'rounded-2xl border border-blue-ruin/20 bg-blue-ruin/[0.06] p-2 md:p-3',
+        'rounded-2xl border border-blue-ruin/20 bg-columbia-blue/35 p-2 md:p-3',
         'overflow-x-auto md:overflow-visible',
         'snap-x snap-mandatory md:snap-none',
         'md:sticky md:top-24 md:self-start'
@@ -84,7 +84,7 @@ export function AccountSidebar() {
               'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk',
               active
                 ? 'bg-blue-ruin text-sugar-milk'
-                : 'text-blue-ruin hover:bg-blue-ruin/8'
+                : 'text-blue-ruin hover:bg-cerulean/20'
             )}
           >
             <HugeiconsIcon
@@ -122,7 +122,7 @@ export function AccountSidebar() {
           'inline-flex items-center gap-2.5 shrink-0 md:shrink',
           'h-11 md:h-10 px-4 md:px-3.5 rounded-xl whitespace-nowrap',
           'text-sm font-bold cursor-pointer transition-colors duration-200',
-          'border border-blue-ruin/40 text-blue-ruin hover:bg-blue-ruin hover:text-sugar-milk',
+          'border border-blue-ruin/40 text-blue-ruin hover:bg-cerulean/25',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'
         )}
       >

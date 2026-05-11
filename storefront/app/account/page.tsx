@@ -241,7 +241,7 @@ export default async function AccountOverviewPage() {
 
       <section
         aria-label="Account summary"
-        className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-2xl border border-blue-ruin/20 bg-blue-ruin/[0.04] p-3 md:p-4"
+        className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-2xl border border-blue-ruin/20 bg-columbia-blue/35 p-3 md:p-4"
       >
         <div className="rounded-xl bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
@@ -301,13 +301,13 @@ export default async function AccountOverviewPage() {
             {recentOrder ? (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-columbia-blue/30 px-4 py-3">
                     <span className="text-xs text-account-subtle">Placed</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin">
                       {formatDate(recentOrder.processedAt)}
                     </p>
                   </div>
-                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-columbia-blue/30 px-4 py-3">
                     <span className="text-xs text-account-subtle">Total</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin tabular-nums">
                       {formatMoney(
@@ -316,7 +316,7 @@ export default async function AccountOverviewPage() {
                       )}
                     </p>
                   </div>
-                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-columbia-blue/30 px-4 py-3">
                     <span className="text-xs text-account-subtle">Status</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin">
                       {orderStatus?.replace(/_/g, ' ').toLowerCase() ??
@@ -336,7 +336,7 @@ export default async function AccountOverviewPage() {
                 </div>
               </>
             ) : (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-blue-ruin/15 bg-columbia-blue/30 p-4">
                 <p className="text-sm font-medium text-account-muted max-w-md">
                   Your orders will show up here with totals, fulfillment status,
                   and tracking links after checkout.
@@ -364,9 +364,9 @@ export default async function AccountOverviewPage() {
                   key={action.href}
                   href={action.href}
                   prefetch={action.href.startsWith('/account')}
-                  className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 px-5 md:px-6 py-4 transition-colors duration-200 hover:bg-blue-ruin/[0.06] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
+                  className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 px-5 md:px-6 py-4 transition-colors duration-200 hover:bg-cerulean/15 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-blue-ruin/20 bg-blue-ruin/[0.06] text-blue-ruin transition-transform duration-200 group-hover:-translate-y-0.5">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-blue-ruin/20 bg-columbia-blue/45 text-blue-ruin transition-[background-color,transform] duration-200 group-hover:-translate-y-0.5 group-hover:bg-cerulean/25">
                     <HugeiconsIcon
                       icon={action.icon}
                       size={18}

@@ -60,7 +60,7 @@ export function AccountThemeToggle() {
         'group inline-flex items-center justify-between gap-2.5 shrink-0 md:shrink',
         'h-11 md:h-10 px-4 md:px-3.5 rounded-xl whitespace-nowrap',
         'text-sm font-bold cursor-pointer transition-colors duration-200',
-        'border border-blue-ruin/20 text-blue-ruin hover:bg-blue-ruin/8',
+        'border border-blue-ruin/20 text-blue-ruin hover:bg-cerulean/20',
         'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'
       )}
     >
@@ -78,7 +78,7 @@ export function AccountThemeToggle() {
         aria-hidden="true"
         className={cn(
           'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full border border-blue-ruin/30',
-          isDark ? 'bg-blue-ruin/80' : 'bg-blue-ruin/10'
+          isDark ? 'bg-blue-ruin/80' : 'bg-columbia-blue/60'
         )}
       >
         <span
