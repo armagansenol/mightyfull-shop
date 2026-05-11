@@ -31,7 +31,7 @@ export function AccountCard({
   return (
     <Tag
       className={cn(
-        'rounded-xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin',
+        'rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin',
         'flex flex-col transition-[border-color,background-color,transform] duration-300 ease-out',
         className
       )}
@@ -49,7 +49,7 @@ export function AccountCard({
             {icon && (
               <span
                 aria-hidden="true"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-blue-ruin/25 bg-blue-ruin/[0.05] text-blue-ruin"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-blue-ruin/25 bg-blue-ruin/[0.05] text-blue-ruin"
               >
                 <HugeiconsIcon icon={icon} size={19} strokeWidth={1.75} />
               </span>

@@ -222,7 +222,7 @@ export default async function AccountOverviewPage() {
       />
 
       {error && (
-        <Card className="rounded-xl border border-red-300/60 bg-red-50 text-red-900">
+        <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
             <CardTitle className="font-bomstad-display text-xl leading-tight">
               Something went wrong
@@ -241,9 +241,9 @@ export default async function AccountOverviewPage() {
 
       <section
         aria-label="Account summary"
-        className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-xl border border-blue-ruin/20 bg-blue-ruin/[0.04] p-3 md:p-4"
+        className="grid grid-cols-1 md:grid-cols-3 gap-3 rounded-2xl border border-blue-ruin/20 bg-blue-ruin/[0.04] p-3 md:p-4"
       >
-        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+        <div className="rounded-xl bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
             Orders
           </p>
@@ -256,7 +256,7 @@ export default async function AccountOverviewPage() {
               : 'Start with your first checkout.'}
           </p>
         </div>
-        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+        <div className="rounded-xl bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
             Renewals
           </p>
@@ -269,7 +269,7 @@ export default async function AccountOverviewPage() {
               : 'No active subscription.'}
           </p>
         </div>
-        <div className="rounded-lg bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
+        <div className="rounded-xl bg-sugar-milk px-4 py-3 border border-blue-ruin/15">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-account-subtle">
             Shipping
           </p>
@@ -301,13 +301,13 @@ export default async function AccountOverviewPage() {
             {recentOrder ? (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
                     <span className="text-xs text-account-subtle">Placed</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin">
                       {formatDate(recentOrder.processedAt)}
                     </p>
                   </div>
-                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
                     <span className="text-xs text-account-subtle">Total</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin tabular-nums">
                       {formatMoney(
@@ -316,7 +316,7 @@ export default async function AccountOverviewPage() {
                       )}
                     </p>
                   </div>
-                  <div className="rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
+                  <div className="rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] px-4 py-3">
                     <span className="text-xs text-account-subtle">Status</span>
                     <p className="mt-1 text-sm font-semibold text-blue-ruin">
                       {orderStatus?.replace(/_/g, ' ').toLowerCase() ??
@@ -336,7 +336,7 @@ export default async function AccountOverviewPage() {
                 </div>
               </>
             ) : (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-lg border border-blue-ruin/15 bg-blue-ruin/[0.04] p-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] p-4">
                 <p className="text-sm text-account-muted max-w-md">
                   Your orders will show up here with totals, fulfillment status,
                   and tracking links after checkout.
@@ -347,7 +347,7 @@ export default async function AccountOverviewPage() {
           </AccountCard>
 
           <section
-            className="rounded-xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin overflow-hidden"
+            className="rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin overflow-hidden"
             aria-labelledby="quick-actions"
           >
             <div className="px-5 md:px-6 py-4 border-b border-blue-ruin/15">
@@ -366,7 +366,7 @@ export default async function AccountOverviewPage() {
                   prefetch={action.href.startsWith('/account')}
                   className="group grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 px-5 md:px-6 py-4 transition-colors duration-200 hover:bg-blue-ruin/[0.06] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk cursor-pointer"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-blue-ruin/20 bg-blue-ruin/[0.06] text-blue-ruin transition-transform duration-200 group-hover:-translate-y-0.5">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-blue-ruin/20 bg-blue-ruin/[0.06] text-blue-ruin transition-transform duration-200 group-hover:-translate-y-0.5">
                     <HugeiconsIcon
                       icon={action.icon}
                       size={18}

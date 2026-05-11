@@ -58,7 +58,7 @@ export function AccountThemeToggle() {
       suppressHydrationWarning
       className={cn(
         'group inline-flex items-center justify-between gap-2.5 shrink-0 md:shrink',
-        'h-11 md:h-10 px-4 md:px-3 rounded-lg whitespace-nowrap',
+        'h-11 md:h-10 px-4 md:px-3.5 rounded-xl whitespace-nowrap',
         'text-sm font-bold cursor-pointer transition-colors duration-200',
         'border border-blue-ruin/20 text-blue-ruin hover:bg-blue-ruin/8',
         'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'

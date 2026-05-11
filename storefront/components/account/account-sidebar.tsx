@@ -62,10 +62,9 @@ export function AccountSidebar() {
     <nav
       aria-label="Account navigation"
       className={cn(
-        // Mobile: scroll-snap tab strip with subtle bottom rule
-        'flex md:flex-col gap-1 md:gap-1.5 md:w-60 md:shrink-0',
+        'flex md:flex-col gap-1.5 md:w-64 md:shrink-0',
+        'rounded-2xl border border-blue-ruin/20 bg-blue-ruin/[0.06] p-2 md:p-3',
         'overflow-x-auto md:overflow-visible',
-        '-mx-4 md:mx-0 px-4 md:px-0 pb-2 md:pb-0',
         'snap-x snap-mandatory md:snap-none',
         'md:sticky md:top-24 md:self-start'
       )}
@@ -80,7 +79,7 @@ export function AccountSidebar() {
             aria-current={active ? 'page' : undefined}
             className={cn(
               'group inline-flex items-center gap-2.5 shrink-0 md:shrink',
-              'h-11 md:h-10 px-4 md:px-3 rounded-lg whitespace-nowrap snap-start',
+              'h-11 md:h-10 px-4 md:px-3.5 rounded-xl whitespace-nowrap snap-start',
               'text-sm font-bold cursor-pointer transition-colors duration-200',
               'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk',
               active
@@ -121,7 +120,7 @@ export function AccountSidebar() {
         href="/account/logout"
         className={cn(
           'inline-flex items-center gap-2.5 shrink-0 md:shrink',
-          'h-11 md:h-10 px-4 md:px-3 rounded-lg whitespace-nowrap',
+          'h-11 md:h-10 px-4 md:px-3.5 rounded-xl whitespace-nowrap',
           'text-sm font-bold cursor-pointer transition-colors duration-200',
           'border border-blue-ruin/40 text-blue-ruin hover:bg-blue-ruin hover:text-sugar-milk',
           'focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk'

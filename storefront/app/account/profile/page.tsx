@@ -89,7 +89,7 @@ export default async function ProfilePage() {
 
       {email && (
         <AccountCard icon={Mail01Icon} eyebrow="Email" title="Sign-in email">
-          <div className="flex items-center gap-3 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.03] p-4">
+          <div className="flex items-center gap-3 rounded-2xl border border-blue-ruin/15 bg-blue-ruin/[0.03] p-4">
             <HugeiconsIcon
               icon={Mail01Icon}
               size={18}
