@@ -181,7 +181,7 @@ export default async function SubscriptionsPage() {
                   }
                   footer={
                     <>
-                      <span className="text-sm text-blue-ruin/75">
+                      <span className="text-sm font-medium text-blue-ruin/75">
                         {contract.nextBillingDate
                           ? `Next renewal ${formatDate(contract.nextBillingDate)}`
                           : 'No renewal scheduled'}

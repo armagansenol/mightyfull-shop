@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/select';
 
 const inputClasses =
-  'h-10 border border-blue-ruin/30 rounded-xl bg-white text-blue-ruin placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
+  'h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin font-medium placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
 
 const COUNTRIES: Array<{ code: string; name: string }> = [
   { code: 'US', name: 'United States' },
@@ -306,7 +306,7 @@ export function AddressForm({
                   disabled={isPending}
                 >
                   <FormControl>
-                    <SelectTrigger className="h-10 border border-blue-ruin/30 rounded-xl bg-white text-blue-ruin focus:border-blue-ruin focus:ring-2 focus:ring-blue-ruin/20">
+                    <SelectTrigger className="h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin font-medium focus:border-blue-ruin focus:ring-2 focus:ring-blue-ruin/20">
                       <SelectValue placeholder="Select a country" />
                     </SelectTrigger>
                   </FormControl>

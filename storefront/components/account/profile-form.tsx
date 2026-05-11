@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 const inputClasses =
-  'h-10 border border-blue-ruin/30 rounded-xl bg-white text-blue-ruin placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
+  'h-10 border border-blue-ruin/30 rounded-md bg-white text-blue-ruin font-medium placeholder:text-blue-ruin/40 focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20';
 
 const profileSchema = z.object({
   firstName: z

@@ -215,11 +215,13 @@ export default async function SubscriptionDetailPage({
               <div className="flex flex-col gap-1 min-w-0">
                 <p className="font-semibold text-blue-ruin">{line.title}</p>
                 {line.variantTitle && (
-                  <p className="text-sm text-blue-ruin/75">
+                  <p className="text-sm font-medium text-blue-ruin/75">
                     {line.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/75">Qty {line.quantity}</p>
+                <p className="text-sm font-medium text-blue-ruin/75">
+                  Qty {line.quantity}
+                </p>
               </div>
               <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
                 {formatMoney(line.currentPrice)}

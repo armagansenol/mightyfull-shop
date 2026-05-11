@@ -184,7 +184,7 @@ export default async function OrdersPage() {
                         {formatDate(order.processedAt)}
                       </span>
                     </div>
-                    <p className="text-sm text-blue-ruin/75 truncate">
+                    <p className="text-sm font-medium text-blue-ruin/75 truncate">
                       {summarizeItems(order.lineItems.nodes)}
                     </p>
                   </div>

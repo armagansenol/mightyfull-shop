@@ -250,7 +250,7 @@ export default async function AccountOverviewPage() {
           <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin tabular-nums">
             {recentOrder ? 'Latest ready' : 'No orders'}
           </p>
-          <p className="mt-2 text-xs text-account-muted">
+          <p className="mt-2 text-xs font-medium text-account-muted">
             {recentOrder
               ? `Last placed ${formatDate(recentOrder.processedAt)}`
               : 'Start with your first checkout.'}
@@ -263,7 +263,7 @@ export default async function AccountOverviewPage() {
           <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin tabular-nums">
             {activeSubscriptions.length}
           </p>
-          <p className="mt-2 text-xs text-account-muted">
+          <p className="mt-2 text-xs font-medium text-account-muted">
             {nextRenewal
               ? `Next charge ${formatDate(nextRenewal)}`
               : 'No active subscription.'}
@@ -276,7 +276,7 @@ export default async function AccountOverviewPage() {
           <p className="mt-1 font-bomstad-display text-2xl leading-none text-blue-ruin">
             {hasSavedAddress ? 'Saved' : 'Missing'}
           </p>
-          <p className="mt-2 text-xs text-account-muted">
+          <p className="mt-2 text-xs font-medium text-account-muted">
             {hasSavedAddress
               ? 'Default address is ready.'
               : 'Add one for faster orders.'}
@@ -337,7 +337,7 @@ export default async function AccountOverviewPage() {
               </>
             ) : (
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-blue-ruin/15 bg-blue-ruin/[0.04] p-4">
-                <p className="text-sm text-account-muted max-w-md">
+                <p className="text-sm font-medium text-account-muted max-w-md">
                   Your orders will show up here with totals, fulfillment status,
                   and tracking links after checkout.
                 </p>
@@ -378,7 +378,7 @@ export default async function AccountOverviewPage() {
                     <span className="block font-bomstad-display text-base md:text-lg leading-tight text-blue-ruin">
                       {action.label}
                     </span>
-                    <span className="block text-xs text-account-muted mt-0.5">
+                    <span className="block text-xs font-medium text-account-muted mt-0.5">
                       {action.description}
                     </span>
                   </span>
@@ -421,7 +421,7 @@ export default async function AccountOverviewPage() {
                   />
                 )}
                 {nextRenewal && (
-                  <p className="text-sm text-account-muted">
+                  <p className="text-sm font-medium text-account-muted">
                     Next renewal on{' '}
                     <span className="font-semibold text-blue-ruin">
                       {formatDate(nextRenewal)}
@@ -430,7 +430,7 @@ export default async function AccountOverviewPage() {
                 )}
               </div>
             ) : (
-              <p className="text-sm text-account-muted">
+              <p className="text-sm font-medium text-account-muted">
                 Subscribe to favorites and manage renewal timing here.
               </p>
             )}
@@ -456,7 +456,7 @@ export default async function AccountOverviewPage() {
                 showName={false}
               />
             ) : (
-              <p className="text-sm text-account-muted">
+              <p className="text-sm font-medium text-account-muted">
                 Add a shipping address now so the next checkout is faster.
               </p>
             )}

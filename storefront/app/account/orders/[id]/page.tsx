@@ -292,11 +292,13 @@ export default async function OrderDetailPage({
               <div className="flex-1 min-w-0 flex flex-col gap-1">
                 <p className="font-semibold text-blue-ruin">{item.title}</p>
                 {item.variantTitle && (
-                  <p className="text-sm text-blue-ruin/75">
+                  <p className="text-sm font-medium text-blue-ruin/75">
                     {item.variantTitle}
                   </p>
                 )}
-                <p className="text-sm text-blue-ruin/75">Qty {item.quantity}</p>
+                <p className="text-sm font-medium text-blue-ruin/75">
+                  Qty {item.quantity}
+                </p>
               </div>
               <div className="text-right shrink-0 flex flex-col gap-1">
                 <p className="font-semibold tabular-nums text-blue-ruin">
@@ -355,7 +357,7 @@ export default async function OrderDetailPage({
           {order.shippingAddress ? (
             <AddressBlock address={order.shippingAddress} showName={false} />
           ) : (
-            <p className="text-sm text-blue-ruin/75">
+            <p className="text-sm font-medium text-blue-ruin/75">
               No shipping address on file.
             </p>
           )}

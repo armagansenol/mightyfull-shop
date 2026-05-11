@@ -177,7 +177,7 @@ export function AddressList({ addresses, defaultId }: AddressListProps) {
                   padding="fat"
                   hoverAnimation={false}
                   disabled={isPending || isDefault}
-                  className="h-9 w-auto inline-flex items-center gap-1.5 text-sm text-blue-ruin/75 hover:text-blue-ruin"
+                  className="h-9 w-auto inline-flex items-center gap-1.5 text-sm font-medium text-blue-ruin/75 hover:text-blue-ruin"
                 >
                   <HugeiconsIcon
                     icon={Delete02Icon}

@@ -61,7 +61,7 @@ export function AccountCard({
                 </span>
               )}
               {title && (
-                <h2 className="font-bomstad-display text-xl md:text-2xl text-blue-ruin leading-[0.98] text-wrap-balance">
+                <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
                   {title}
                 </h2>
               )}

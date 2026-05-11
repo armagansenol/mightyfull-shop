@@ -33,7 +33,7 @@ export function PageHeader({
           {title}
         </h1>
         {description && (
-          <p className="text-sm md:text-base text-account-muted max-w-prose">
+          <p className="text-sm md:text-base font-medium text-account-muted max-w-prose">
             {description}
           </p>
         )}

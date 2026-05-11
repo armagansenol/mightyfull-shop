@@ -81,7 +81,7 @@ export default async function ProfilePage() {
             }}
           />
         ) : (
-          <p className="text-sm text-blue-ruin/75">
+          <p className="text-sm font-medium text-blue-ruin/75">
             Couldn’t load your profile. Refresh to try again.
           </p>
         )}
