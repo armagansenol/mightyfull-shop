@@ -184,11 +184,10 @@
 }
 
 .differences {
-  padding: 40px 80px;
-  padding-bottom: 120px;
+  padding: 70px 80px 100px;
 
   @media (max-width: 768px) {
-    padding: 50px 16px;
+    padding: 60px 16px 80px;
   }
 
   > h2 {
