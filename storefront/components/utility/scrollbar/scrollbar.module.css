@@ -1,26 +1,37 @@
 .scrollbar {
   position: absolute;
   right: 0;
-  bottom: 0;
   top: 0;
+  bottom: 0;
+  width: 8px;
   z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
 
-  .inner {
-    height: 100%;
-    position: relative;
-  }
+.scrollbar[data-visible] {
+  opacity: 0.2;
+  pointer-events: auto;
+}
 
-  .thumb {
-    min-height: 80px;
-    width: 8px;
-    background-color: var(--blue-ruin);
-    border-radius: 12px;
-    position: absolute;
-    right: 0;
-    cursor: grab;
-  }
+.thumb {
+  width: 100%;
+  background-color: var(--silverback);
+  border-radius: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: grab;
+  will-change: transform;
+}
 
-  @media (max-width: 768px) {
+.thumb:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 768px) {
+  .scrollbar {
     display: none;
   }
 }

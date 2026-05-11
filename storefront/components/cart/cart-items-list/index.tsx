@@ -19,6 +19,7 @@ export function CartItemsList({ cart, updateCartItem }: CartItemsListProps) {
     <ScrollableBox
       wrapperClassName="flex flex-col flex-1"
       contentClassName="flex-1 py-6 space-y-10"
+      showScrollbar
     >
       {cart.lines.map((item) => (
         <div key={item.id}>

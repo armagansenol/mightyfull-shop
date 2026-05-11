@@ -1,89 +1,122 @@
 'use client';
 
-import { useRect } from 'hamo';
 import type Lenis from 'lenis';
-import { useLenis } from 'lenis/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import s from './scrollbar.module.css';
 
-function mapRange(
-  inMin: number,
-  inMax: number,
-  input: number,
-  outMin: number,
-  outMax: number
-) {
-  return ((input - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+interface ScrollbarProps {
+  lenis: Lenis | null;
 }
 
-export function Scrollbar({ lenis }: { lenis: Lenis }) {
-  const thumbRef = useRef<HTMLDivElement>(null!);
-  const [innerMeasureRef, { height: innerHeight = 0 }] = useRect();
-  const [thumbMeasureRef, { height: thumbHeight = 0 }] = useRect();
-
-  useLenis(
-    ({ scroll, limit }) => {
-      const progress = scroll / limit;
-
-      thumbRef.current.style.transform = `translate3d(0,${
-        progress * (innerHeight - thumbHeight)
-      }px,0)`;
-    },
-    [innerHeight, thumbHeight]
-  );
+export function Scrollbar({ lenis }: ScrollbarProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const thumbRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    let start: null | number = null;
+    if (!lenis) return;
+    const track = trackRef.current;
+    const thumb = thumbRef.current;
+    if (!track || !thumb) return;
 
-    function onPointerMove(e: PointerEvent) {
-      if (!start || !lenis) return;
-      e.preventDefault();
+    const THUMB_HEIGHT = 56;
 
-      const scroll = mapRange(
-        start,
-        innerHeight - (thumbHeight - start),
-        e.clientY,
-        0,
-        lenis.limit
-      );
-      lenis.scrollTo(scroll, { immediate: true });
-    }
+    const update = () => {
+      const limit = lenis.limit;
+      const trackHeight = track.clientHeight;
 
-    function onPointerDown(e: PointerEvent) {
-      start = e.offsetY;
-    }
+      if (!limit || limit <= 0 || trackHeight <= 0) {
+        setVisible(false);
+        return;
+      }
 
-    function onPointerUp() {
-      start = null;
-    }
+      const thumbHeight = Math.min(THUMB_HEIGHT, trackHeight);
+      thumb.style.height = `${thumbHeight}px`;
 
-    thumbRef.current?.addEventListener('pointerdown', onPointerDown, false);
-    window.addEventListener('pointermove', onPointerMove, false);
-    window.addEventListener('pointerup', onPointerUp, false);
+      const progress = Math.max(0, Math.min(1, lenis.scroll / limit));
+      const translateY = progress * (trackHeight - thumbHeight);
+      thumb.style.transform = `translate3d(0, ${translateY}px, 0)`;
+
+      setVisible(true);
+    };
+
+    update();
+
+    const onScroll = () => update();
+    lenis.on('scroll', onScroll);
+
+    const wrapper = (lenis as unknown as { rootElement?: HTMLElement })
+      .rootElement;
+    const content =
+      (wrapper?.firstElementChild as HTMLElement | null) ?? null;
+
+    const onResize = () => {
+      // Force Lenis to recalculate its limit when the content shrinks/grows
+      // while the wrapper stays the same size (item add/remove inside a
+      // flex-sized scroll area).
+      lenis.resize();
+      update();
+    };
+
+    const ro = new ResizeObserver(onResize);
+    if (wrapper) ro.observe(wrapper);
+    if (content) ro.observe(content);
+    ro.observe(track);
 
     return () => {
-      thumbRef.current?.removeEventListener(
-        'pointerdown',
-        onPointerDown,
-        false
-      );
-      window.removeEventListener('pointermove', onPointerMove, false);
-      window.removeEventListener('pointerup', onPointerUp, false);
+      lenis.off('scroll', onScroll);
+      ro.disconnect();
     };
-  }, [lenis, innerHeight, thumbHeight]);
+  }, [lenis]);
+
+  useEffect(() => {
+    if (!lenis) return;
+    const track = trackRef.current;
+    const thumb = thumbRef.current;
+    if (!track || !thumb) return;
+
+    let grabOffset: number | null = null;
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (grabOffset === null) return;
+      e.preventDefault();
+      const rect = track.getBoundingClientRect();
+      const thumbHeight = thumb.clientHeight;
+      const range = rect.height - thumbHeight;
+      if (range <= 0) return;
+      const y = e.clientY - rect.top - grabOffset;
+      const progress = Math.max(0, Math.min(1, y / range));
+      lenis.scrollTo(progress * lenis.limit, { immediate: true });
+    };
+
+    const onPointerUp = () => {
+      grabOffset = null;
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+
+    const onPointerDown = (e: PointerEvent) => {
+      grabOffset = e.offsetY;
+      window.addEventListener('pointermove', onPointerMove);
+      window.addEventListener('pointerup', onPointerUp);
+    };
+
+    thumb.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      thumb.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+  }, [lenis]);
 
   return (
-    <div className={s.scrollbar}>
-      <div ref={innerMeasureRef} className={s.inner}>
-        <div
-          className={s.thumb}
-          ref={(node) => {
-            if (!node) return;
-            thumbRef.current = node;
-            thumbMeasureRef(node);
-          }}
-        />
-      </div>
+    <div
+      ref={trackRef}
+      className={s.scrollbar}
+      data-visible={visible || undefined}
+      aria-hidden="true"
+    >
+      <div ref={thumbRef} className={s.thumb} />
     </div>
   );
 }
