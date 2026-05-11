@@ -45,6 +45,10 @@ type CartContextType = {
     sellingPlanId: string | null
   ) => void;
   setCart: (cart: Cart | undefined) => void;
+  isCartOpen: boolean;
+  setCartOpen: (open: boolean) => void;
+  openCart: () => void;
+  closeCart: () => void;
 };
 
 export const CartContext = createContext<CartContextType | undefined>(

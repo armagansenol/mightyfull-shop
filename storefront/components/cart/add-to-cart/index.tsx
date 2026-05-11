@@ -3,6 +3,7 @@
 import { Loader2 } from 'lucide-react';
 import { useCallback } from 'react';
 
+import { useCart } from '@/components/cart/cart-context';
 import { useAddToCart } from '@/components/cart/hooks/useAddToCart';
 import { Button } from '@/components/ui/button';
 
@@ -27,13 +28,35 @@ export function AddToCart({
   sellingPlanId?: string;
 }) {
   const { mutate, isPending } = useAddToCart(variantId);
+  const { cart, openCart } = useCart();
 
   const handleAddToCart = useCallback(() => {
     if (!availableForSale) return;
     if (isPending) return;
 
+    const isNewUniqueLine = !cart?.lines?.some(
+      (line) =>
+        line.merchandise.id === variantId &&
+        ((sellingPlanId &&
+          line.sellingPlanAllocation?.sellingPlan?.id === sellingPlanId) ||
+          (!sellingPlanId && !line.sellingPlanAllocation))
+    );
+
     mutate({ quantity, sellingPlanId });
-  }, [availableForSale, isPending, mutate, quantity, sellingPlanId]);
+
+    if (isNewUniqueLine) {
+      openCart();
+    }
+  }, [
+    availableForSale,
+    isPending,
+    mutate,
+    quantity,
+    sellingPlanId,
+    cart,
+    variantId,
+    openCart
+  ]);
 
   if (!availableForSale)
     return (

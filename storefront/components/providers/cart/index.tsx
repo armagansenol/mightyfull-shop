@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer, useState } from 'react';
 import {
   CartContext,
   cartReducer,
@@ -18,6 +18,9 @@ export function CartProvider({
   cartPromise: Promise<Cart | undefined>;
 }) {
   const [cart, dispatch] = useReducer(cartReducer, createEmptyCart());
+  const [isCartOpen, setCartOpen] = useState(false);
+  const openCart = useCallback(() => setCartOpen(true), []);
+  const closeCart = useCallback(() => setCartOpen(false), []);
 
   React.useEffect(() => {
     cartPromise.then((initialCart) => {
@@ -70,9 +73,22 @@ export function CartProvider({
       updateCartItem,
       addCartItem,
       updateCartItemSellingPlan,
-      setCart
+      setCart,
+      isCartOpen,
+      setCartOpen,
+      openCart,
+      closeCart
     }),
-    [cart, updateCartItem, addCartItem, updateCartItemSellingPlan, setCart]
+    [
+      cart,
+      updateCartItem,
+      addCartItem,
+      updateCartItemSellingPlan,
+      setCart,
+      isCartOpen,
+      openCart,
+      closeCart
+    ]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

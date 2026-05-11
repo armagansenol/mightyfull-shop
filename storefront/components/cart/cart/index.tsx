@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { CartContent } from '@/components/cart/cart-content';
 import { useCart } from '@/components/cart/cart-context';
 import { CartHeader } from '@/components/cart/cart-header';
@@ -13,18 +11,21 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useScrollLock } from '@/hooks/use-scroll-lock';
 
 export function Cart() {
-  const [open, setOpen] = useState(false);
-  const openCart = () => setOpen(true);
-  const closeCart = () => setOpen(false);
-
-  const { cart, updateCartItem } = useCart();
+  const {
+    cart,
+    updateCartItem,
+    isCartOpen,
+    setCartOpen,
+    openCart,
+    closeCart
+  } = useCart();
   const isInitialized = useCartInitialization();
   const { mutate: handleCheckout, isPending: isCheckoutPending } =
     useCartCheckout();
 
   const uniqueItemCount = cart?.lines?.length || 0;
 
-  useScrollLock(open);
+  useScrollLock(isCartOpen);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ export function Cart() {
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
       <SheetTrigger asChild>
         <CartTrigger
           totalQuantity={uniqueItemCount}
