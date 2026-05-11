@@ -349,7 +349,7 @@ export function AddressForm({
           control={form.control}
           name="isDefault"
           render={({ field }) => (
-            <FormItem className="flex items-start gap-3 space-y-0 rounded-2xl border border-blue-ruin/15 bg-columbia-blue/30 p-4">
+            <FormItem className="flex items-start gap-3 space-y-0 rounded-2xl border border-blue-ruin/15 bg-cerulean/15 p-4">
               <FormControl>
                 <Checkbox
                   checked={field.value}
