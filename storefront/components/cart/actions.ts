@@ -144,9 +144,19 @@ async function getCartId(): Promise<string | undefined> {
 async function getOrCreateCartId(): Promise<string> {
   const cookieStore = await cookies();
   const existing = cookieStore.get('cartId')?.value;
+  console.log('[cart] getOrCreateCartId: existing cookie =', existing);
   if (existing) return existing;
 
+  console.log('[cart] getOrCreateCartId: calling cartService.create()');
   const cart = await cartService.create();
+  console.log(
+    '[cart] getOrCreateCartId: created cart',
+    JSON.stringify({
+      id: cart.id,
+      lines: cart.lines?.length,
+      totalQuantity: cart.totalQuantity
+    })
+  );
   if (!cart.id) {
     throw new Error('Shopify did not return a cart id');
   }
@@ -155,6 +165,7 @@ async function getOrCreateCartId(): Promise<string> {
     ...CART_COOKIE_OPTIONS,
     expires: new Date(Date.now() + CART_COOKIE_MAX_AGE_MS)
   });
+  console.log('[cart] getOrCreateCartId: cookie set to', cart.id);
 
   return cart.id;
 }
@@ -202,7 +213,12 @@ export async function addItem(
   quantity: number,
   sellingPlanId?: string
 ) {
+  console.log(
+    '[cart] addItem: enter',
+    JSON.stringify({ selectedVariantId, quantity, sellingPlanId })
+  );
   if (!selectedVariantId) {
+    console.log('[cart] addItem: no variant id, bailing');
     return {
       success: false,
       message: 'Please select a product variant before adding to cart.'
@@ -216,10 +232,19 @@ export async function addItem(
 
   return await withCartOperation(async () => {
     const cartId = await getOrCreateCartId();
+    console.log('[cart] addItem: using cartId', cartId);
 
     return await withCartCleanup(cartId, async () => {
       // First check if this item already exists in the cart
       const currentCart = await cartService.get(cartId);
+      console.log(
+        '[cart] addItem: currentCart fetched',
+        JSON.stringify({
+          present: !!currentCart,
+          lines: currentCart?.lines?.length,
+          totalQuantity: currentCart?.totalQuantity
+        })
+      );
 
       if (currentCart) {
         // Find existing line items with the same variant and selling plan
@@ -255,6 +280,12 @@ export async function addItem(
       }
 
       // If no existing items or couldn't update, add as new
+      console.log('[cart] addItem: calling cartService.add', {
+        cartId,
+        selectedVariantId,
+        quantity,
+        sellingPlanId
+      });
       const updated = await cartService.add(cartId, [
         {
           merchandiseId: selectedVariantId,
@@ -262,6 +293,20 @@ export async function addItem(
           ...(sellingPlanId && { sellingPlanId })
         }
       ]);
+      console.log(
+        '[cart] addItem: cartService.add returned',
+        JSON.stringify({
+          id: updated.id,
+          lines: updated.lines?.length,
+          totalQuantity: updated.totalQuantity,
+          firstLine: updated.lines?.[0]
+            ? {
+                quantity: updated.lines[0].quantity,
+                merchandiseId: updated.lines[0].merchandise?.id
+              }
+            : null
+        })
+      );
 
       updateTag(TAGS.cart);
 

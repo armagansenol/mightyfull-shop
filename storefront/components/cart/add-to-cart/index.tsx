@@ -31,6 +31,14 @@ export function AddToCart({
   const { cart, openCart } = useCart();
 
   const handleAddToCart = useCallback(() => {
+    console.log('[cart] AddToCart click', {
+      variantId,
+      sellingPlanId,
+      quantity,
+      availableForSale,
+      isPending,
+      cartLines: cart?.lines?.length
+    });
     if (!availableForSale) return;
     if (isPending) return;
 

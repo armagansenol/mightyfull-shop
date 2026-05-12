@@ -35,6 +35,11 @@ export function useCartMutation<
 
     // Optimistic update: fire BEFORE the server call
     onMutate: async (variables) => {
+      console.log('[cart] useCartMutation.onMutate', {
+        actionType,
+        merchandiseId,
+        previousLines: cart?.lines?.length
+      });
       const previousCart = cart
         ? { ...cart, lines: [...cart.lines] }
         : undefined;
@@ -62,6 +67,23 @@ export function useCartMutation<
         'success' in result &&
         result.success;
 
+      console.log('[cart] useCartMutation.onSuccess', {
+        actionType,
+        isSuccess,
+        result:
+          typeof result === 'object'
+            ? {
+                success: 'success' in result ? result.success : undefined,
+                message: 'message' in result ? result.message : undefined,
+                hasCart: 'cart' in result && Boolean(result.cart),
+                lines:
+                  'cart' in result && result.cart
+                    ? result.cart.lines?.length
+                    : undefined
+              }
+            : result
+      });
+
       // If the server returned the updated cart in the same response, apply
       // it directly. This avoids a follow-up getCart() round-trip whose
       // result depends on the newly-set cartId cookie having been applied
@@ -73,6 +95,7 @@ export function useCartMutation<
         'cart' in result &&
         result.cart
       ) {
+        console.log('[cart] useCartMutation.onSuccess: setCart from result');
         setCart(result.cart);
       }
 
@@ -82,6 +105,10 @@ export function useCartMutation<
     },
 
     onError: (error, variables, context) => {
+      console.log('[cart] useCartMutation.onError', {
+        actionType,
+        message: error instanceof Error ? error.message : String(error)
+      });
       // Rollback to previous cart state immediately
       if (context?.previousCart) {
         setCart(context.previousCart as Cart);
@@ -100,11 +127,21 @@ export function useCartMutation<
         typeof result === 'object' &&
         'cart' in result &&
         Boolean(result.cart);
+      console.log('[cart] useCartMutation.onSettled', {
+        actionType,
+        hasError: !!error,
+        hasCartInResult: hasCart
+      });
       if (hasCart) return;
       try {
         const serverCart = await getCart();
+        console.log('[cart] useCartMutation.onSettled: getCart fallback', {
+          present: !!serverCart,
+          lines: serverCart?.lines?.length
+        });
         setCart(serverCart);
-      } catch {
+      } catch (e) {
+        console.log('[cart] useCartMutation.onSettled: getCart threw', e);
         if (error) return;
       }
     }
