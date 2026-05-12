@@ -235,7 +235,7 @@ export async function addItem(
             (existingItem.quantity > 0 ? existingItem.quantity : 0) + quantity;
 
           // Update the existing item
-          await cartService.update(cartId, [
+          const updated = await cartService.update(cartId, [
             {
               id: existingItem.id,
               merchandiseId: selectedVariantId,
@@ -248,13 +248,14 @@ export async function addItem(
 
           return {
             success: true,
-            message: 'Item quantity updated successfully'
+            message: 'Item quantity updated successfully',
+            cart: updated
           };
         }
       }
 
       // If no existing items or couldn't update, add as new
-      await cartService.add(cartId, [
+      const updated = await cartService.add(cartId, [
         {
           merchandiseId: selectedVariantId,
           quantity,
@@ -264,7 +265,11 @@ export async function addItem(
 
       updateTag(TAGS.cart);
 
-      return { success: true, message: 'Item added to cart successfully' };
+      return {
+        success: true,
+        message: 'Item added to cart successfully',
+        cart: updated
+      };
     });
   }, 'Error adding item to cart:');
 }
