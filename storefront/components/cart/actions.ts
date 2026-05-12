@@ -119,6 +119,14 @@ function formatErrorForToast(error: unknown): string {
   return 'An unexpected error occurred. Please try again.';
 }
 
+const CART_COOKIE_OPTIONS = {
+  path: '/',
+  sameSite: 'strict' as const,
+  secure: process.env.NODE_ENV === 'production'
+};
+
+const CART_COOKIE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
 /**
  * Utility function to get cart ID from cookies
  */
@@ -127,19 +135,28 @@ async function getCartId(): Promise<string | undefined> {
 }
 
 /**
- * Utility function to validate cart ID
+ * Returns the current cart ID, or creates a brand-new Shopify cart and
+ * persists its ID in the `cartId` cookie before returning it. Use this in
+ * server actions that need a cart to exist (e.g. addItem) so we don't fail
+ * when the client-side init hook hasn't run yet — which is a real race
+ * condition on Vercel where server-action latency is higher than locally.
  */
-function validateCartId(cartId: string | undefined): {
-  success: boolean;
-  message?: string;
-} {
-  if (!cartId) {
-    return {
-      success: false,
-      message: 'Missing cart ID. Please refresh the page and try again.'
-    };
+async function getOrCreateCartId(): Promise<string> {
+  const cookieStore = await cookies();
+  const existing = cookieStore.get('cartId')?.value;
+  if (existing) return existing;
+
+  const cart = await cartService.create();
+  if (!cart.id) {
+    throw new Error('Shopify did not return a cart id');
   }
-  return { success: true };
+
+  cookieStore.set('cartId', cart.id, {
+    ...CART_COOKIE_OPTIONS,
+    expires: new Date(Date.now() + CART_COOKIE_MAX_AGE_MS)
+  });
+
+  return cart.id;
 }
 
 /**
@@ -185,16 +202,6 @@ export async function addItem(
   quantity: number,
   sellingPlanId?: string
 ) {
-  const cartId = await getCartId();
-  const validation = validateCartId(cartId);
-
-  if (!validation.success) {
-    return {
-      success: false,
-      message: validation.message
-    };
-  }
-
   if (!selectedVariantId) {
     return {
       success: false,
@@ -208,9 +215,11 @@ export async function addItem(
   }
 
   return await withCartOperation(async () => {
-    return await withCartCleanup(cartId!, async () => {
+    const cartId = await getOrCreateCartId();
+
+    return await withCartCleanup(cartId, async () => {
       // First check if this item already exists in the cart
-      const currentCart = await cartService.get(cartId!);
+      const currentCart = await cartService.get(cartId);
 
       if (currentCart) {
         // Find existing line items with the same variant and selling plan
@@ -226,7 +235,7 @@ export async function addItem(
             (existingItem.quantity > 0 ? existingItem.quantity : 0) + quantity;
 
           // Update the existing item
-          await cartService.update(cartId!, [
+          await cartService.update(cartId, [
             {
               id: existingItem.id,
               merchandiseId: selectedVariantId,
@@ -245,7 +254,7 @@ export async function addItem(
       }
 
       // If no existing items or couldn't update, add as new
-      await cartService.add(cartId!, [
+      await cartService.add(cartId, [
         {
           merchandiseId: selectedVariantId,
           quantity,
@@ -394,10 +403,8 @@ export async function createCartAndSetCookie() {
 
     // Set the cart cookie with a 30-day expiration
     cookieStore.set('cartId', cart.id!, {
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-      path: '/',
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production'
+      ...CART_COOKIE_OPTIONS,
+      expires: new Date(Date.now() + CART_COOKIE_MAX_AGE_MS)
     });
 
     return cart;
