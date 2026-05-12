@@ -46,6 +46,11 @@ export function CartContent({
   onCheckout,
   onContinueShopping
 }: CartContentProps) {
+  console.log('[cart] CartContent render', {
+    hasCart: !!cart,
+    lines: cart?.lines?.length,
+    isEmpty: !cart || cart.lines.length === 0
+  });
   return (
     <AnimatePresence mode="wait">
       {!cart || cart.lines.length === 0 ? (

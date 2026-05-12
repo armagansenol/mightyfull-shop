@@ -64,8 +64,31 @@ export function CartProvider({
   );
 
   const setCart = useCallback((newCart: Cart | undefined) => {
+    console.log('[cart] CartProvider.setCart called', {
+      hasCart: !!newCart,
+      id: newCart?.id,
+      lines: newCart?.lines?.length,
+      totalQuantity: newCart?.totalQuantity,
+      firstLine: newCart?.lines?.[0]
+        ? {
+            id: newCart.lines[0].id,
+            quantity: newCart.lines[0].quantity,
+            merchandiseId: newCart.lines[0].merchandise?.id,
+            hasProduct: !!newCart.lines[0].merchandise?.product
+          }
+        : null
+    });
     dispatch({ type: 'SET_INITIAL_CART', payload: newCart });
   }, []);
+
+  React.useEffect(() => {
+    console.log('[cart] CartProvider state change', {
+      hasCart: !!cart,
+      id: cart?.id,
+      lines: cart?.lines?.length,
+      totalQuantity: cart?.totalQuantity
+    });
+  }, [cart]);
 
   const value = useMemo(
     () => ({

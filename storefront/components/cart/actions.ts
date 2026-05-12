@@ -308,6 +308,20 @@ export async function addItem(
         })
       );
 
+      // If Shopify returned a different cart id than the one we sent (e.g.
+      // the cookie's cart was invalid and Shopify created/swapped to a new
+      // one), update the cookie so the next request uses the right id.
+      if (updated.id && updated.id !== cartId) {
+        console.log(
+          '[cart] addItem: cart id drift, rewriting cookie',
+          updated.id
+        );
+        (await cookies()).set('cartId', updated.id, {
+          ...CART_COOKIE_OPTIONS,
+          expires: new Date(Date.now() + CART_COOKIE_MAX_AGE_MS)
+        });
+      }
+
       updateTag(TAGS.cart);
 
       return {
