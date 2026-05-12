@@ -93,11 +93,11 @@ export function Header() {
             />
           </Link>
           <div className="flex items-center gap-5">
-            <div className="flex md:hidden">
+            <div className="flex md:hidden cursor-pointer">
               <CartLauncher />
             </div>
             <div
-              className={cn(s.trigger, 'block md:hidden', {
+              className={cn(s.trigger, 'block md:hidden cursor-pointer', {
                 [s.active]: hamburgerOpen
               })}
               onClick={() => setHamburgerOpen((prev) => !prev)}
@@ -124,10 +124,10 @@ export function Header() {
                 'flex flex-col md:flex-row items-center justify-between gap-5 md:gap-20'
               )}
             >
-              <div className={s.navItem}>
+              <div className={cn(s.navItem, 'cursor-pointer')}>
                 <Link href={`/${routes.shop.url}`}>{routes.shop.ui}</Link>
               </div>
-              <div className={s.navItem}>
+              <div className={cn(s.navItem, 'cursor-pointer')}>
                 <Link href={`/${routes.ourStory.url}`}>
                   {routes.ourStory.ui}
                 </Link>
