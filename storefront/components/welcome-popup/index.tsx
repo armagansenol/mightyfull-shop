@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "motion/react"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { IconClose } from "@/components/icons"
+import { Img } from "@/components/utility/img"
 import { Link } from "@/components/utility/link"
 import { cn } from "@/lib/utils"
 
@@ -17,6 +18,15 @@ const STORAGE_KEY = "mf_welcome_popup"
 // not first-time-visitor acquisition.
 const SUPPRESSED_PATH_PREFIXES = ["/account"]
 
+// Cookies the badge cycles through while hovered. First item is the resting
+// image; the rest are swapped in on a short interval on hover.
+const BADGE_COOKIES = [
+  "/img/c-pb-choco-oatie.png",
+  "/img/c-choco-chip.png",
+  "/img/c-double-choco-chip.png",
+  "/img/c-pb-jelly-choco-chip.png",
+]
+
 export function WelcomePopup() {
   const pathname = usePathname()
   const isSuppressed = SUPPRESSED_PATH_PREFIXES.some((prefix) =>
@@ -27,7 +37,20 @@ export function WelcomePopup() {
   const [formState, setFormState] = useState<FormState>("idle")
   const [errorMsg, setErrorMsg] = useState("")
   const [alreadySubscribed, setAlreadySubscribed] = useState(false)
+  const [cookieIndex, setCookieIndex] = useState(0)
+  const [isBadgeHovered, setIsBadgeHovered] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!isBadgeHovered) {
+      setCookieIndex(0)
+      return
+    }
+    const id = window.setInterval(() => {
+      setCookieIndex((i) => (i + 1) % BADGE_COOKIES.length)
+    }, 400)
+    return () => window.clearInterval(id)
+  }, [isBadgeHovered])
 
   useEffect(() => {
     if (isSuppressed) return
@@ -233,20 +256,42 @@ export function WelcomePopup() {
       {/* Minimized badge */}
       <button
         onClick={() => setState("popup")}
+        onMouseEnter={() => setIsBadgeHovered(true)}
+        onMouseLeave={() => setIsBadgeHovered(false)}
+        onFocus={() => setIsBadgeHovered(true)}
+        onBlur={() => setIsBadgeHovered(false)}
         className={cn(
           "fixed bottom-24 left-0",
           "bg-nova-pink text-sugar-milk",
           "rounded-r-xl shadow-lg pl-4 pr-6 py-3",
+          "flex items-center gap-3",
           "transition-transform duration-300 ease-in-out",
           state === "badge" ? "translate-x-0" : "-translate-x-full",
         )}
         style={{ zIndex: "var(--z-index-sticky)" }}
         aria-label="Reopen first order discount offer"
       >
-        <span className="flex flex-col items-start font-bomstad-display font-black text-sm leading-tight text-left">
-          <span className="whitespace-nowrap">First Order?</span>
-          <span className="whitespace-nowrap">Save 15%</span>
+        <span className="block w-12 h-12 shrink-0">
+          <Img
+            className="w-full h-full object-contain"
+            src={BADGE_COOKIES[cookieIndex]}
+            width={96}
+            height={96}
+            alt=""
+          />
         </span>
+        <motion.span
+          className="inline-block font-bomstad-display font-black text-sm leading-tight text-left uppercase tracking-wide origin-bottom-left"
+          animate={
+            isBadgeHovered ? { rotate: [0, -2, 1.5, 0] } : { rotate: 0 }
+          }
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+        >
+          <span className="block whitespace-nowrap">First Order?</span>
+          <span className="block whitespace-nowrap text-yellow-300">
+            Save 15%
+          </span>
+        </motion.span>
       </button>
     </>
   )
