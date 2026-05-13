@@ -4,7 +4,6 @@ import { revalidatePath } from 'next/cache';
 import {
   CANCELLATION_REASONS,
   type CancellationReasonValue,
-  FREQUENCY_OPTIONS,
   type SubscriptionShippingAddressInput
 } from '@/app/account/subscriptions/constants';
 import { adminQuery, AdminAPIError } from '@/lib/shopify/admin';
@@ -439,29 +438,6 @@ export async function updateSubscriptionShippingAddress(
     updateDraft(draftId, {
       deliveryMethod: {
         shipping: { address: mailingAddress }
-      }
-    })
-  );
-}
-
-export async function changeSubscriptionFrequency(
-  subscriptionContractId: string,
-  optionValue: string
-): Promise<SubscriptionActionResult> {
-  const option = FREQUENCY_OPTIONS.find((o) => o.value === optionValue);
-  if (!option) {
-    return { ok: false, error: 'Unknown frequency option.' };
-  }
-
-  return withDraft(subscriptionContractId, (draftId) =>
-    updateDraft(draftId, {
-      deliveryPolicy: {
-        interval: option.interval,
-        intervalCount: option.intervalCount
-      },
-      billingPolicy: {
-        interval: option.interval,
-        intervalCount: option.intervalCount
       }
     })
   );

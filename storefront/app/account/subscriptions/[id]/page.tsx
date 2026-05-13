@@ -15,7 +15,6 @@ import {
   PreorderBanner
 } from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
-import { SubscriptionFrequencyForm } from '@/components/account/subscription-frequency-form';
 import { SubscriptionNextBillingBanner } from '@/components/account/subscription-next-billing-banner';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -194,17 +193,6 @@ function shopHostedManageUrl(numericContractId: string): string | null {
   return `https://shopify.com/${shopId}/account/pages/${pageId}/subscriptions/${numericContractId}`;
 }
 
-function matchFrequencyValue(
-  policy: DeliveryFrequency | null
-): string | undefined {
-  if (!policy) return undefined;
-  return FREQUENCY_OPTIONS.find(
-    (o) =>
-      o.interval === policy.interval &&
-      o.intervalCount === policy.intervalCount.count
-  )?.value;
-}
-
 function matchFrequencyLabel(
   policy: DeliveryFrequency | null
 ): string | undefined {
@@ -293,7 +281,6 @@ export default async function SubscriptionDetailPage({
 
   const deliveryAddress = toAddressBlock(contract.deliveryMethod?.address);
   const manageUrl = shopHostedManageUrl(numericId);
-  const frequencyValue = matchFrequencyValue(contract.deliveryPolicy);
   const frequencyLabel = matchFrequencyLabel(contract.deliveryPolicy);
 
   return (
@@ -422,16 +409,9 @@ export default async function SubscriptionDetailPage({
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
               Frequency
             </p>
-            {isActive ? (
-              <SubscriptionFrequencyForm
-                contractId={contract.id}
-                currentValue={frequencyValue}
-              />
-            ) : (
-              <p className="text-sm text-blue-ruin/85">
-                {frequencyLabel ?? '—'}
-              </p>
-            )}
+            <p className="text-sm text-blue-ruin/85">
+              {frequencyLabel ?? '—'}
+            </p>
           </div>
 
           {/* Shipping address */}
