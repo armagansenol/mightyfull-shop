@@ -438,17 +438,17 @@ export async function updateSubscriptionShippingAddress(
   subscriptionContractId: string,
   address: SubscriptionShippingAddressInput
 ): Promise<SubscriptionActionResult> {
-  // SubscriptionMailingAddressInput uses `province` (zone) + `country` (code).
-  // Map our address fields to that shape.
+  // Customer Account API's SubscriptionMailingAddressInput uses ISO
+  // `provinceCode` and `countryCode`, plus `phone` (not `phoneNumber`).
   const mailingAddress = {
     firstName: address.firstName,
     lastName: address.lastName,
     address1: address.address1,
     address2: address.address2,
     city: address.city,
-    province: address.zoneCode,
+    provinceCode: address.zoneCode,
     zip: address.zip,
-    country: address.territoryCode,
+    countryCode: address.territoryCode,
     phone: address.phoneNumber
   };
 

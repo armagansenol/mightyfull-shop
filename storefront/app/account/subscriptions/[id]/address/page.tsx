@@ -21,16 +21,22 @@ const SUBSCRIPTION_ADDRESS_QUERY = `
         nodes {
           id
           status
-          deliveryAddress {
-            firstName
-            lastName
-            address1
-            address2
-            city
-            zoneCode
-            zip
-            territoryCode
-            phoneNumber
+          deliveryMethod {
+            ... on SubscriptionDeliveryMethodShipping {
+              address {
+                firstName
+                lastName
+                address1
+                address2
+                city
+                province
+                provinceCode
+                zip
+                country
+                countryCode
+                phone
+              }
+            }
           }
         }
       }
@@ -44,16 +50,20 @@ interface AddressData {
       nodes: Array<{
         id: string;
         status: string;
-        deliveryAddress: {
-          firstName: string | null;
-          lastName: string | null;
-          address1: string | null;
-          address2: string | null;
-          city: string | null;
-          zoneCode: string | null;
-          zip: string | null;
-          territoryCode: string | null;
-          phoneNumber: string | null;
+        deliveryMethod: {
+          address?: {
+            firstName: string | null;
+            lastName: string | null;
+            address1: string | null;
+            address2: string | null;
+            city: string | null;
+            province: string | null;
+            provinceCode: string | null;
+            zip: string | null;
+            country: string | null;
+            countryCode: string | null;
+            phone: string | null;
+          };
         } | null;
       }>;
     };
@@ -152,15 +162,21 @@ export default async function SubscriptionAddressEditPage({
         <SubscriptionAddressFormClient
           contractId={contract.id}
           defaultValues={{
-            firstName: contract.deliveryAddress?.firstName ?? '',
-            lastName: contract.deliveryAddress?.lastName ?? '',
-            address1: contract.deliveryAddress?.address1 ?? '',
-            address2: contract.deliveryAddress?.address2 ?? '',
-            city: contract.deliveryAddress?.city ?? '',
-            zoneCode: contract.deliveryAddress?.zoneCode ?? '',
-            zip: contract.deliveryAddress?.zip ?? '',
-            territoryCode: contract.deliveryAddress?.territoryCode ?? 'US',
-            phoneNumber: contract.deliveryAddress?.phoneNumber ?? ''
+            firstName: contract.deliveryMethod?.address?.firstName ?? '',
+            lastName: contract.deliveryMethod?.address?.lastName ?? '',
+            address1: contract.deliveryMethod?.address?.address1 ?? '',
+            address2: contract.deliveryMethod?.address?.address2 ?? '',
+            city: contract.deliveryMethod?.address?.city ?? '',
+            zoneCode:
+              contract.deliveryMethod?.address?.provinceCode ??
+              contract.deliveryMethod?.address?.province ??
+              '',
+            zip: contract.deliveryMethod?.address?.zip ?? '',
+            territoryCode:
+              contract.deliveryMethod?.address?.countryCode ??
+              contract.deliveryMethod?.address?.country ??
+              'US',
+            phoneNumber: contract.deliveryMethod?.address?.phone ?? ''
           }}
           backHref={backHref}
         />

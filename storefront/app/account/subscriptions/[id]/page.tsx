@@ -40,11 +40,15 @@ const SUBSCRIPTION_QUERY = `
           createdAt
           billingPolicy {
             interval
-            intervalCount
+            intervalCount {
+              count
+            }
           }
           deliveryPolicy {
             interval
-            intervalCount
+            intervalCount {
+              count
+            }
           }
           lines(first: 50) {
             nodes {
@@ -57,16 +61,22 @@ const SUBSCRIPTION_QUERY = `
               }
             }
           }
-          deliveryAddress {
-            firstName
-            lastName
-            address1
-            address2
-            city
-            zoneCode
-            zip
-            territoryCode
-            phoneNumber
+          deliveryMethod {
+            ... on SubscriptionDeliveryMethodShipping {
+              address {
+                firstName
+                lastName
+                address1
+                address2
+                city
+                province
+                provinceCode
+                zip
+                country
+                countryCode
+                phone
+              }
+            }
           }
         }
       }
@@ -88,7 +98,21 @@ interface SubscriptionLine {
 
 interface DeliveryFrequency {
   interval: 'WEEK' | 'MONTH' | 'YEAR' | 'DAY';
-  intervalCount: number;
+  intervalCount: { count: number };
+}
+
+interface SubscriptionMailingAddress {
+  firstName: string | null;
+  lastName: string | null;
+  address1: string | null;
+  address2: string | null;
+  city: string | null;
+  province: string | null;
+  provinceCode: string | null;
+  zip: string | null;
+  country: string | null;
+  countryCode: string | null;
+  phone: string | null;
 }
 
 interface SubscriptionContract {
@@ -99,17 +123,26 @@ interface SubscriptionContract {
   billingPolicy: DeliveryFrequency | null;
   deliveryPolicy: DeliveryFrequency | null;
   lines: { nodes: SubscriptionLine[] };
-  deliveryAddress: {
-    firstName: string | null;
-    lastName: string | null;
-    address1: string | null;
-    address2: string | null;
-    city: string | null;
-    zoneCode: string | null;
-    zip: string | null;
-    territoryCode: string | null;
-    phoneNumber: string | null;
+  deliveryMethod: {
+    address?: SubscriptionMailingAddress;
   } | null;
+}
+
+function toAddressBlock(
+  address: SubscriptionMailingAddress | null | undefined
+) {
+  if (!address) return null;
+  return {
+    firstName: address.firstName,
+    lastName: address.lastName,
+    address1: address.address1,
+    address2: address.address2,
+    city: address.city,
+    zoneCode: address.provinceCode ?? address.province,
+    zip: address.zip,
+    territoryCode: address.countryCode ?? address.country,
+    phoneNumber: address.phone
+  };
 }
 
 interface SubscriptionData {
@@ -256,28 +289,32 @@ export default async function SubscriptionDetailPage({
         </ul>
       </AccountCard>
 
-      {contract.deliveryAddress && (
-        <AccountCard
-          icon={MapPinIcon}
-          eyebrow="Delivery address"
-          title={
-            `${contract.deliveryAddress.firstName ?? ''} ${contract.deliveryAddress.lastName ?? ''}`.trim() ||
-            'Delivery address'
-          }
-          action={
-            contract.status === 'ACTIVE' || contract.status === 'PAUSED' ? (
-              <Link
-                href={`/account/subscriptions/${encodedId}/address`}
-                className="text-sm font-semibold text-blue-ruin underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
-              >
-                Edit
-              </Link>
-            ) : null
-          }
-        >
-          <AddressBlock address={contract.deliveryAddress} showName={false} />
-        </AccountCard>
-      )}
+      {(() => {
+        const deliveryAddress = toAddressBlock(contract.deliveryMethod?.address);
+        if (!deliveryAddress) return null;
+        return (
+          <AccountCard
+            icon={MapPinIcon}
+            eyebrow="Delivery address"
+            title={
+              `${deliveryAddress.firstName ?? ''} ${deliveryAddress.lastName ?? ''}`.trim() ||
+              'Delivery address'
+            }
+            action={
+              contract.status === 'ACTIVE' || contract.status === 'PAUSED' ? (
+                <Link
+                  href={`/account/subscriptions/${encodedId}/address`}
+                  className="text-sm font-semibold text-blue-ruin underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
+                >
+                  Edit
+                </Link>
+              ) : null
+            }
+          >
+            <AddressBlock address={deliveryAddress} showName={false} />
+          </AccountCard>
+        );
+      })()}
 
       <AccountCard
         icon={Settings02Icon}
@@ -342,6 +379,7 @@ function matchFrequencyValue(
   if (!policy) return undefined;
   return FREQUENCY_OPTIONS.find(
     (o) =>
-      o.interval === policy.interval && o.intervalCount === policy.intervalCount
+      o.interval === policy.interval &&
+      o.intervalCount === policy.intervalCount.count
   )?.value;
 }
