@@ -4,6 +4,11 @@ import { redirect } from 'next/navigation';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
 import { PageHeader } from '@/components/account/page-header';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
+import {
+  SubscriptionsFilters,
+  type SubscriptionSortKey,
+  type SubscriptionStatusFilter
+} from '@/components/account/subscriptions-filters';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
@@ -18,11 +23,12 @@ export const dynamic = 'force-dynamic';
 const SUBSCRIPTIONS_QUERY = `
   query AccountSubscriptions {
     customer {
-      subscriptionContracts(first: 20) {
+      subscriptionContracts(first: 50) {
         nodes {
           id
           status
           nextBillingDate
+          createdAt
           lines(first: 5) {
             nodes {
               title
@@ -54,6 +60,7 @@ interface SubscriptionContract {
   id: string;
   status: string;
   nextBillingDate: string | null;
+  createdAt: string;
   lines: { nodes: SubscriptionLine[] };
 }
 
@@ -79,11 +86,71 @@ function formatMoney(money: { amount: string; currencyCode: string } | null) {
   }).format(Number.parseFloat(money.amount));
 }
 
-export default async function SubscriptionsPage() {
+function parseStatusFilter(value: string | undefined): SubscriptionStatusFilter {
+  if (value === 'active' || value === 'paused' || value === 'cancelled') {
+    return value;
+  }
+  return 'all';
+}
+
+function parseSortKey(value: string | undefined): SubscriptionSortKey {
+  if (value === 'newest' || value === 'oldest') return value;
+  return 'next-renewal';
+}
+
+function applyFilterAndSort(
+  contracts: SubscriptionContract[],
+  status: SubscriptionStatusFilter,
+  sort: SubscriptionSortKey
+): SubscriptionContract[] {
+  const filtered = contracts.filter((c) => {
+    if (status === 'all') return true;
+    if (status === 'active') return c.status === 'ACTIVE';
+    if (status === 'paused') return c.status === 'PAUSED';
+    if (status === 'cancelled')
+      return ['CANCELLED', 'EXPIRED', 'FAILED'].includes(c.status);
+    return true;
+  });
+
+  const sorted = [...filtered];
+  if (sort === 'newest') {
+    sorted.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  } else if (sort === 'oldest') {
+    sorted.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+  } else {
+    sorted.sort((a, b) => {
+      if (!a.nextBillingDate && !b.nextBillingDate) return 0;
+      if (!a.nextBillingDate) return 1;
+      if (!b.nextBillingDate) return -1;
+      return (
+        new Date(a.nextBillingDate).getTime() -
+        new Date(b.nextBillingDate).getTime()
+      );
+    });
+  }
+
+  return sorted;
+}
+
+export default async function SubscriptionsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ status?: string; sort?: string }>;
+}) {
   const session = await getSession();
   if (!session) {
     redirect('/account/login');
   }
+
+  const { status: statusParam, sort: sortParam } = await searchParams;
+  const status = parseStatusFilter(statusParam);
+  const sort = parseSortKey(sortParam);
 
   let data: SubscriptionsData | null = null;
   let error: string | null = null;
@@ -103,8 +170,9 @@ export default async function SubscriptionsPage() {
     }
   }
 
-  const contracts = data?.customer?.subscriptionContracts.nodes ?? [];
-  const activeCount = contracts.filter((c) => c.status === 'ACTIVE').length;
+  const allContracts = data?.customer?.subscriptionContracts.nodes ?? [];
+  const activeCount = allContracts.filter((c) => c.status === 'ACTIVE').length;
+  const contracts = applyFilterAndSort(allContracts, status, sort);
 
   return (
     <>
@@ -112,8 +180,8 @@ export default async function SubscriptionsPage() {
         eyebrow="Subscriptions"
         title="Your subscriptions"
         description={
-          contracts.length > 0
-            ? `${activeCount} active · ${contracts.length} total`
+          allContracts.length > 0
+            ? `${activeCount} active · ${allContracts.length} total`
             : undefined
         }
       />
@@ -136,7 +204,7 @@ export default async function SubscriptionsPage() {
         </Card>
       )}
 
-      {!error && contracts.length === 0 ? (
+      {!error && allContracts.length === 0 ? (
         <Card className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk text-blue-ruin">
           <CardContent>
             <AccountEmptyState
@@ -160,53 +228,90 @@ export default async function SubscriptionsPage() {
         </Card>
       ) : (
         !error && (
-          <div className="flex flex-col gap-4 md:gap-5">
-            {contracts.map((contract) => {
-              const summary = contract.lines.nodes
-                .map((line) => `${line.title} × ${line.quantity}`)
-                .join(', ');
-              const firstLine = contract.lines.nodes[0];
-              const firstLinePrice = firstLine?.currentPrice ?? null;
-              const firstLineImage = firstLine?.image ?? null;
-              return (
-                <Link
-                  key={contract.id}
-                  href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
-                  className="block rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin p-5 md:p-6 hover:border-blue-ruin/45 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk"
-                >
-                  <div className="flex items-start gap-4 md:gap-5">
-                    {firstLineImage && (
-                      <Image
-                        src={firstLineImage.url}
-                        alt={firstLineImage.altText ?? firstLine?.title ?? ''}
-                        width={80}
-                        height={80}
-                        className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
-                      />
-                    )}
-                    <div className="flex-1 min-w-0 flex flex-col gap-1.5">
-                      <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
-                        {summary || 'Subscription'}
-                      </h2>
-                      <p className="text-sm font-medium text-blue-ruin/75">
-                        {contract.nextBillingDate
-                          ? `Next renewal ${formatDate(contract.nextBillingDate)}`
-                          : 'No renewal scheduled'}
-                      </p>
-                    </div>
-                    <div className="shrink-0 flex flex-col items-end gap-1.5">
-                      {firstLinePrice && (
-                        <p className="font-semibold tabular-nums text-blue-ruin">
-                          {formatMoney(firstLinePrice)}
-                        </p>
-                      )}
-                      <SubscriptionStatusBadge status={contract.status} />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <>
+            <SubscriptionsFilters
+              initialStatus={status}
+              initialSort={sort}
+            />
+
+            {contracts.length === 0 ? (
+              <div className="rounded-2xl border border-blue-ruin/15 bg-sugar-milk px-5 py-10 text-center">
+                <p className="text-sm font-medium text-blue-ruin/75">
+                  No subscriptions match this filter.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 md:gap-5">
+                {contracts.map((contract) => {
+                  const summary = contract.lines.nodes
+                    .map((line) => `${line.title} × ${line.quantity}`)
+                    .join(', ');
+                  const firstLine = contract.lines.nodes[0];
+                  const firstLinePrice = firstLine?.currentPrice ?? null;
+                  const firstLineImage = firstLine?.image ?? null;
+                  const detailHref = `/account/subscriptions/${encodeURIComponent(contract.id)}`;
+
+                  return (
+                    <article
+                      key={contract.id}
+                      className="relative rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin p-5 md:p-6 hover:border-blue-ruin/40 transition-colors"
+                    >
+                      {/* Status badge — top right */}
+                      <div className="absolute top-4 right-4 md:top-5 md:right-5 z-10">
+                        <SubscriptionStatusBadge status={contract.status} />
+                      </div>
+
+                      {/* Header: image + title + renewal */}
+                      <div className="flex items-start gap-4 md:gap-5 pr-24 md:pr-28">
+                        {firstLineImage && (
+                          <Image
+                            src={firstLineImage.url}
+                            alt={
+                              firstLineImage.altText ?? firstLine?.title ?? ''
+                            }
+                            width={80}
+                            height={80}
+                            className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                          <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
+                            {summary || 'Subscription'}
+                          </h2>
+                          <p className="text-sm font-medium text-blue-ruin/75">
+                            {contract.nextBillingDate
+                              ? `Next renewal ${formatDate(contract.nextBillingDate)}`
+                              : 'No renewal scheduled'}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Footer: big price + Manage button */}
+                      <div className="mt-5 md:mt-6 flex items-end justify-between gap-4">
+                        {firstLinePrice ? (
+                          <p className="font-bomstad-display text-3xl md:text-4xl font-bold tabular-nums leading-none text-blue-ruin">
+                            {formatMoney(firstLinePrice)}
+                          </p>
+                        ) : (
+                          <span />
+                        )}
+                        <Button
+                          asChild
+                          colorTheme="blue-ruin"
+                          size="sm"
+                          padding="fat"
+                          hoverAnimation={false}
+                          className="h-10"
+                        >
+                          <Link href={detailHref}>Manage</Link>
+                        </Button>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )
       )}
     </>
