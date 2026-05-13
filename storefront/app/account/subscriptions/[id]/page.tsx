@@ -16,7 +16,7 @@ import {
 } from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
 import { SubscriptionFrequencyForm } from '@/components/account/subscription-frequency-form';
-import { SubscriptionSkipButton } from '@/components/account/subscription-skip-button';
+import { SubscriptionNextBillingBanner } from '@/components/account/subscription-next-billing-banner';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
@@ -311,22 +311,13 @@ export default async function SubscriptionDetailPage({
 
       {/* Next billing banner */}
       {contract.nextBillingDate && !isTerminated && (
-        <div className="rounded-2xl bg-blue-ruin px-6 py-5 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sugar-milk/60">
-              Upcoming order
-            </p>
-            <p className="text-2xl font-bold text-sugar-milk mt-1">
-              {formatDate(contract.nextBillingDate)}
-            </p>
-          </div>
-          {isActive && (
-              <SubscriptionSkipButton
-                contractId={contract.id}
-                nextBillingDate={contract.nextBillingDate!}
-              />
-            )}
-        </div>
+        <SubscriptionNextBillingBanner
+          contractId={contract.id}
+          nextBillingDate={contract.nextBillingDate}
+          canSkip={isActive}
+          interval={contract.deliveryPolicy?.interval ?? null}
+          intervalCount={contract.deliveryPolicy?.intervalCount.count ?? null}
+        />
       )}
 
       {/* Two-column layout */}
