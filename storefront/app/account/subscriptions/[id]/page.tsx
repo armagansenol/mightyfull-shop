@@ -1,7 +1,6 @@
 import {
   ArrowLeft01Icon,
   Package01Icon,
-  PencilEdit01Icon,
   Settings02Icon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -15,6 +14,7 @@ import {
   PreorderBanner
 } from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
+import { SubscriptionAddressDialog } from '@/components/account/subscription-address-dialog';
 import { SubscriptionNextBillingBanner } from '@/components/account/subscription-next-billing-banner';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -422,18 +422,20 @@ export default async function SubscriptionDetailPage({
                   Shipping address
                 </p>
                 {isManageable && (
-                  <Link
-                    href={`/account/subscriptions/${encodedId}/address`}
-                    aria-label="Edit shipping address"
-                    className="text-blue-ruin/60 hover:text-blue-ruin transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 rounded"
-                  >
-                    <HugeiconsIcon
-                      icon={PencilEdit01Icon}
-                      size={15}
-                      strokeWidth={1.5}
-                      aria-hidden="true"
-                    />
-                  </Link>
+                  <SubscriptionAddressDialog
+                    contractId={contract.id}
+                    defaultValues={{
+                      firstName: deliveryAddress.firstName ?? '',
+                      lastName: deliveryAddress.lastName ?? '',
+                      address1: deliveryAddress.address1 ?? '',
+                      address2: deliveryAddress.address2 ?? '',
+                      city: deliveryAddress.city ?? '',
+                      zoneCode: deliveryAddress.zoneCode ?? '',
+                      zip: deliveryAddress.zip ?? '',
+                      territoryCode: deliveryAddress.territoryCode ?? 'US',
+                      phoneNumber: deliveryAddress.phoneNumber ?? ''
+                    }}
+                  />
                 )}
               </div>
               <AddressBlock address={deliveryAddress} showName />

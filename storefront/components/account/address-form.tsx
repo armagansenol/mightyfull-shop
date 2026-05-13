@@ -92,6 +92,10 @@ interface AddressFormProps {
     address: AddressInput,
     isDefault: boolean
   ) => Promise<AddressFormResult>;
+  // When provided, these take precedence over cancelHref/successHref —
+  // use them to drive the form inside a Dialog without navigating.
+  onCancel?: () => void;
+  onSuccess?: () => void;
 }
 
 export function AddressForm({
@@ -103,7 +107,9 @@ export function AddressForm({
   submitLabel,
   cancelHref = '/account/addresses',
   successHref = '/account/addresses',
-  customSubmit
+  customSubmit,
+  onCancel,
+  onSuccess
 }: AddressFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -148,7 +154,11 @@ export function AddressForm({
           : await updateAddress(addressId, payload, isDefault);
 
       if (result.ok) {
-        router.push(successHref);
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          router.push(successHref);
+        }
         router.refresh();
         return;
       }
@@ -427,7 +437,7 @@ export function AddressForm({
             padding="fat"
             hoverAnimation={false}
             disabled={isPending}
-            onClick={() => router.push(cancelHref)}
+            onClick={() => (onCancel ? onCancel() : router.push(cancelHref))}
             className="h-10"
           >
             Cancel
