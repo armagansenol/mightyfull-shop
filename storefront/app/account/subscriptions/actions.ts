@@ -314,41 +314,57 @@ export async function updateSubscriptionShippingAddress(
     phoneNumber: address.phoneNumber
   };
 
+  // Up to ~7s of polling: first call typically returns null (pending)
+  // while Shopify computes shippable rates for the new address.
+  const MAX_ATTEMPTS = 10;
+  const RETRY_DELAY_MS = 700;
+
   try {
-    const fetchData = await customerQuery<{
-      subscriptionContractFetchDeliveryOptions: {
-        deliveryOptionsResult:
-          | {
-              __typename: 'SubscriptionDeliveryOptionsResultSuccess';
-              token: string;
-            }
-          | {
-              __typename: 'SubscriptionDeliveryOptionsResultFailure';
-              message: string;
-            }
-          | null;
-        userErrors: UserError[];
-      };
-    }>({
-      query: FETCH_DELIVERY_OPTIONS_MUTATION,
-      variables: { id: subscriptionContractId, address: customerAddress }
-    });
+    let token: string | null = null;
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const fetchData = await customerQuery<{
+        subscriptionContractFetchDeliveryOptions: {
+          deliveryOptionsResult:
+            | {
+                __typename: 'SubscriptionDeliveryOptionsResultSuccess';
+                token: string;
+              }
+            | {
+                __typename: 'SubscriptionDeliveryOptionsResultFailure';
+                message: string;
+              }
+            | null;
+          userErrors: UserError[];
+        };
+      }>({
+        query: FETCH_DELIVERY_OPTIONS_MUTATION,
+        variables: { id: subscriptionContractId, address: customerAddress }
+      });
 
-    const fetchErrors =
-      fetchData.subscriptionContractFetchDeliveryOptions.userErrors;
-    if (fetchErrors.length > 0) {
-      return { ok: false, error: firstUserError(fetchErrors) };
+      const payload = fetchData.subscriptionContractFetchDeliveryOptions;
+      if (payload.userErrors.length > 0) {
+        return { ok: false, error: firstUserError(payload.userErrors) };
+      }
+      const result = payload.deliveryOptionsResult;
+      if (result?.__typename === 'SubscriptionDeliveryOptionsResultSuccess') {
+        token = result.token;
+        break;
+      }
+      if (result?.__typename === 'SubscriptionDeliveryOptionsResultFailure') {
+        return {
+          ok: false,
+          error: result.message ?? "We can't ship to this address."
+        };
+      }
+      // pending — wait and retry
+      await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
     }
 
-    const result =
-      fetchData.subscriptionContractFetchDeliveryOptions.deliveryOptionsResult;
-    if (!result) {
-      return { ok: false, error: 'No delivery options available.' };
-    }
-    if (result.__typename === 'SubscriptionDeliveryOptionsResultFailure') {
+    if (!token) {
       return {
         ok: false,
-        error: result.message ?? "We can't ship to this address."
+        error:
+          'Shopify is still computing delivery options for this address. Please try again in a moment.'
       };
     }
 
@@ -362,7 +378,7 @@ export async function updateSubscriptionShippingAddress(
       variables: {
         id: subscriptionContractId,
         input: { shipping: { shippingAddress: customerAddress } },
-        token: result.token
+        token
       }
     });
 
