@@ -75,11 +75,9 @@ const CANCEL_MUTATION = `
 const SKIP_CYCLE_MUTATION = `
   mutation SkipBillingCycle(
     $billingCycleInput: SubscriptionBillingCycleInput!
-    $skip: Boolean!
   ) {
     subscriptionBillingCycleSkip(
       billingCycleInput: $billingCycleInput
-      skip: $skip
     ) {
       billingCycle {
         cycleIndex
@@ -426,8 +424,7 @@ export async function skipNextBillingCycle(
         billingCycleInput: {
           contractId: subscriptionContractId,
           selector: { date: nextBillingDate }
-        },
-        skip: true
+        }
       }
     });
 
