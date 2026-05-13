@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
+import { CheckIcon, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { skipNextBillingCycle } from '@/app/account/subscriptions/actions';
@@ -15,18 +15,30 @@ export function SubscriptionSkipButton({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [skipped, setSkipped] = useState(false);
 
   const handleSkip = () => {
     setError(null);
     startTransition(async () => {
       const result = await skipNextBillingCycle(contractId, nextBillingDate);
       if (result.ok) {
-        router.refresh();
+        setSkipped(true);
+        // Give Shopify a moment to recompute nextBillingDate, then refresh.
+        setTimeout(() => router.refresh(), 1500);
       } else {
         setError(result.error);
       }
     });
   };
+
+  if (skipped) {
+    return (
+      <div className="inline-flex items-center gap-2 text-sm font-semibold text-sugar-milk shrink-0">
+        <CheckIcon className="w-4 h-4" />
+        <span>Order skipped</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-end gap-1.5 shrink-0">

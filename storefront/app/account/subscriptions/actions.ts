@@ -143,6 +143,7 @@ function firstUserError(errors: UserError[]): string {
 function revalidateSubscriptionPaths() {
   revalidatePath('/account');
   revalidatePath('/account/subscriptions');
+  revalidatePath('/account/subscriptions/[id]', 'page');
 }
 
 export async function pauseSubscription(
