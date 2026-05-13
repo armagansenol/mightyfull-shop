@@ -275,30 +275,34 @@ export default async function SubscriptionsPage({
                   return (
                     <article
                       key={contract.id}
-                      className="relative rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin p-5 md:p-6 hover:border-blue-ruin/40 transition-colors"
+                      className="rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin p-5 md:p-6 hover:border-blue-ruin/40 transition-colors"
                     >
-                      {/* Status badge — top right */}
-                      <div className="absolute top-4 right-4 md:top-5 md:right-5 z-10">
-                        <SubscriptionStatusBadge status={contract.status} />
-                      </div>
-
-                      {/* Header: image + title + info pills + price */}
-                      <div className="flex items-start gap-4 md:gap-5 pr-24 md:pr-28">
+                      <div className="flex items-start gap-4 md:gap-5">
                         {firstLineImage && (
                           <Image
                             src={firstLineImage.url}
                             alt={
                               firstLineImage.altText ?? firstLine?.title ?? ''
                             }
-                            width={80}
-                            height={80}
-                            className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
+                            width={128}
+                            height={128}
+                            className="shrink-0 w-24 h-24 md:w-32 md:h-32 object-contain"
                           />
                         )}
                         <div className="flex-1 min-w-0 flex flex-col gap-2.5">
-                          <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
-                            {summary || 'Subscription'}
-                          </h2>
+                          {/* Title + status badge inline */}
+                          <div className="flex items-start justify-between gap-3 flex-wrap">
+                            <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
+                              {summary || 'Subscription'}
+                            </h2>
+                            <div className="shrink-0 mt-0.5">
+                              <SubscriptionStatusBadge
+                                status={contract.status}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Info pills */}
                           <div className="flex flex-wrap items-center gap-2">
                             {frequencyLabel && (
                               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-ruin/8 text-blue-ruin text-xs font-semibold ring-1 ring-inset ring-blue-ruin/15">
@@ -321,26 +325,28 @@ export default async function SubscriptionsPage({
                                 : 'No renewal scheduled'}
                             </span>
                           </div>
-                          {firstLinePrice && (
-                            <p className="text-base md:text-lg font-bold tabular-nums leading-none text-blue-ruin/85 mt-0.5">
-                              {formatMoney(firstLinePrice)}
-                            </p>
-                          )}
-                        </div>
-                      </div>
 
-                      {/* Manage button bottom-right */}
-                      <div className="mt-5 flex justify-end">
-                        <Button
-                          asChild
-                          colorTheme="blue-ruin"
-                          size="sm"
-                          padding="fat"
-                          hoverAnimation={false}
-                          className="h-10"
-                        >
-                          <Link href={detailHref}>Manage</Link>
-                        </Button>
+                          {/* Money + Manage button on the same row */}
+                          <div className="flex items-center justify-between gap-3 flex-wrap mt-1">
+                            {firstLinePrice ? (
+                              <p className="text-lg md:text-xl font-bold tabular-nums leading-none text-blue-ruin">
+                                {formatMoney(firstLinePrice)}
+                              </p>
+                            ) : (
+                              <span />
+                            )}
+                            <Button
+                              asChild
+                              colorTheme="blue-ruin"
+                              size="sm"
+                              padding="fat"
+                              hoverAnimation={false}
+                              className="h-10"
+                            >
+                              <Link href={detailHref}>Manage</Link>
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </article>
                   );
