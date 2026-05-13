@@ -1,7 +1,7 @@
 'use client';
 
-import { ArrowDown01Icon, ArrowUp01Icon } from '@hugeicons/core-free-icons';
-import { HugeiconsIcon } from '@hugeicons/react';
+import { ChevronDown } from 'lucide-react';
+import { motion } from 'motion/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
 
@@ -65,15 +65,12 @@ export function SubscriptionsFilters({
     pushParams({ sort: value === 'next-renewal' ? null : value });
   };
 
-  const sortIcon =
-    initialSort === 'oldest' ? ArrowUp01Icon : ArrowDown01Icon;
-
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div
         role="tablist"
         aria-label="Filter by status"
-        className="inline-flex flex-wrap gap-1 rounded-lg border border-blue-ruin/20 bg-cerulean/15 p-1 w-fit"
+        className="relative inline-flex gap-1 rounded-full border border-blue-ruin/20 bg-cerulean/15 p-1 w-fit"
       >
         {STATUS_OPTIONS.map((option) => {
           const isActive = initialStatus === option.value;
@@ -85,13 +82,29 @@ export function SubscriptionsFilters({
               aria-selected={isActive}
               disabled={isPending}
               onClick={() => handleStatus(option.value)}
-              className={
-                isActive
-                  ? 'inline-flex h-8 items-center justify-center px-3 rounded-md bg-blue-ruin text-sugar-milk text-sm font-semibold cursor-pointer'
-                  : 'inline-flex h-8 items-center justify-center px-3 rounded-md text-sm font-semibold text-blue-ruin hover:bg-cerulean/30 cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60'
-              }
+              className="relative inline-flex h-8 items-center justify-center px-4 rounded-full text-sm font-semibold cursor-pointer focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 transition-colors"
             >
-              {option.label}
+              {isActive && (
+                <motion.span
+                  layoutId="subscription-filter-active"
+                  aria-hidden="true"
+                  className="absolute inset-0 rounded-full bg-blue-ruin"
+                  transition={{
+                    type: 'spring',
+                    stiffness: 400,
+                    damping: 32
+                  }}
+                />
+              )}
+              <span
+                className={
+                  isActive
+                    ? 'relative z-10 text-sugar-milk'
+                    : 'relative z-10 text-blue-ruin'
+                }
+              >
+                {option.label}
+              </span>
             </button>
           );
         })}
@@ -108,7 +121,7 @@ export function SubscriptionsFilters({
               handleSort(e.target.value as SubscriptionSortKey)
             }
             disabled={isPending}
-            className="appearance-none h-9 pl-3 pr-8 rounded-md border border-blue-ruin/30 bg-sugar-milk text-blue-ruin text-sm font-semibold cursor-pointer focus-visible:outline-hidden focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20"
+            className="appearance-none h-9 pl-3.5 pr-9 rounded-full border border-blue-ruin/30 bg-sugar-milk text-blue-ruin text-sm font-semibold cursor-pointer focus-visible:outline-hidden focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20 hover:border-blue-ruin/50 transition-colors"
             aria-label="Sort subscriptions"
           >
             {SORT_OPTIONS.map((option) => (
@@ -117,11 +130,9 @@ export function SubscriptionsFilters({
               </option>
             ))}
           </select>
-          <HugeiconsIcon
-            icon={sortIcon}
-            size={14}
-            strokeWidth={2}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-blue-ruin/60 pointer-events-none"
+          <ChevronDown
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-ruin/60 pointer-events-none"
+            strokeWidth={2.25}
             aria-hidden="true"
           />
         </div>
