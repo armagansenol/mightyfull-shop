@@ -5,6 +5,7 @@ import {
   Settings02Icon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import Image from 'next/image';
 import { notFound, redirect } from 'next/navigation';
 import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/constants';
 import { AddressBlock } from '@/components/account/address-block';
@@ -57,6 +58,10 @@ const SUBSCRIPTION_QUERY = `
                 amount
                 currencyCode
               }
+              image {
+                url
+                altText
+              }
             }
           }
           deliveryMethod {
@@ -92,6 +97,7 @@ interface SubscriptionLine {
   quantity: number;
   variantTitle: string | null;
   currentPrice: MoneyV2 | null;
+  image: { url: string; altText: string | null } | null;
 }
 
 interface DeliveryFrequency {
@@ -342,22 +348,37 @@ export default async function SubscriptionDetailPage({
               {contract.lines.nodes.map((line, idx) => (
                 <li
                   key={idx}
-                  className="flex justify-between items-start py-4 border-b border-blue-ruin/10 last:border-b-0"
+                  className="flex items-center gap-4 py-4 border-b border-blue-ruin/10 last:border-b-0"
                 >
-                  <div className="flex flex-col gap-1 min-w-0">
-                    <p className="font-semibold text-blue-ruin">{line.title}</p>
-                    {line.variantTitle && (
+                  {line.image ? (
+                    <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-blue-ruin/5 border border-blue-ruin/10">
+                      <Image
+                        src={line.image.url}
+                        alt={line.image.altText ?? line.title}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="shrink-0 w-16 h-16 rounded-lg bg-blue-ruin/5 border border-blue-ruin/10" />
+                  )}
+                  <div className="flex flex-1 items-start justify-between gap-3 min-w-0">
+                    <div className="flex flex-col gap-0.5 min-w-0">
+                      <p className="font-semibold text-blue-ruin">{line.title}</p>
+                      {line.variantTitle && (
+                        <p className="text-sm font-medium text-blue-ruin/75">
+                          {line.variantTitle}
+                        </p>
+                      )}
                       <p className="text-sm font-medium text-blue-ruin/75">
-                        {line.variantTitle}
+                        Qty {line.quantity}
                       </p>
-                    )}
-                    <p className="text-sm font-medium text-blue-ruin/75">
-                      Qty {line.quantity}
+                    </div>
+                    <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
+                      {formatMoney(line.currentPrice)}
                     </p>
                   </div>
-                  <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
-                    {formatMoney(line.currentPrice)}
-                  </p>
                 </li>
               ))}
             </ul>
