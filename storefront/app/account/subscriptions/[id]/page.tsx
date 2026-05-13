@@ -350,18 +350,14 @@ export default async function SubscriptionDetailPage({
                   key={idx}
                   className="flex items-center gap-4 py-4 border-b border-blue-ruin/10 last:border-b-0"
                 >
-                  {line.image ? (
-                    <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-blue-ruin/5 border border-blue-ruin/10">
-                      <Image
-                        src={line.image.url}
-                        alt={line.image.altText ?? line.title}
-                        width={64}
-                        height={64}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="shrink-0 w-16 h-16 rounded-lg bg-blue-ruin/5 border border-blue-ruin/10" />
+                  {line.image && (
+                    <Image
+                      src={line.image.url}
+                      alt={line.image.altText ?? line.title}
+                      width={64}
+                      height={64}
+                      className="shrink-0 w-16 h-16 object-contain"
+                    />
                   )}
                   <div className="flex flex-1 items-start justify-between gap-3 min-w-0">
                     <div className="flex flex-col gap-0.5 min-w-0">
