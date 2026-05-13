@@ -1,6 +1,6 @@
 # Customer Dashboard — Native Next.js Implementation Plan
 
-**Status:** In progress. Phases 1–5 feature work shipped. Header and cancellation-policy links already point at the on-site `/account` tree. Phase 6 (a11y, E2E, observability) and Phase 7 (launch) are the remaining buckets. Email change moved to Backlog. Test account: armagansnl@gmail.com (Shopify Payments live, one-time + subscription orders placed).
+**Status:** In progress. Phases 1–5 feature work shipped. Header and cancellation-policy links already point at the on-site `/account` tree. Phase 6 narrowed to **E2E coverage only** (a11y audit, cross-browser QA, Sentry, analytics moved to Backlog). Phase 7 (launch) is the remaining bucket. Frequency-change feature removed mid-Phase-5: requires the protected `write_own_subscription_contracts` scope, which legacy custom apps cannot request. Email change moved to Backlog. Test account: armagansnl@gmail.com (Shopify Payments live, one-time + subscription orders placed).
 **Drafted:** 2026-05-07 · **Last updated:** 2026-05-13
 
 ---
@@ -131,32 +131,28 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - [x] Resume → `subscriptionContractActivate`
 - [x] Cancel → confirmation dialog, mutation `subscriptionContractCancel`
 - [x] Capture cancellation reason (radio + optional notes) before firing the mutation; logged for downstream Klaviyo wiring in Phase 7
-- [x] Skip next cycle → queries upcoming `billingCycles`, calls `subscriptionBillingCycleSkip`
-- [x] Change frequency → draft flow (`subscriptionContractUpdate` → `subscriptionDraftUpdate` → `subscriptionDraftCommit`) with delivery + billing policy
-- [x] Edit shipping address — `/account/subscriptions/[id]/address` reuses `AddressForm` via the same draft flow
-- [x] Edit payment method — external link to Shopify-hosted manage page (`https://shopify.com/{shopId}/account/subscriptions/{id}`)
+- [x] Skip next cycle → uses `upcomingBillingCycles` on the contract + `subscriptionBillingCycleSkip` / `subscriptionBillingCycleUnskip` (Customer Account API only exposes `upcomingBillingCycles`, not `billingCycles`)
+- [x] Upcoming orders dialog — list next 5 cycles with per-cycle Skip/Unskip toggle + dedicated Skip confirmation dialog (matches Shopify-hosted UX)
+- [ ] ~~Change frequency~~ **Removed 2026-05-13.** Customer Account API has no mutation for this. Admin API equivalent (`subscriptionContractUpdate` → `subscriptionDraftUpdate` → `subscriptionDraftCommit`) requires `write_own_subscription_contracts`, a protected scope that legacy custom apps cannot request. Frequency now shows as read-only; customers manage it through Shopify's hosted portal.
+- [ ] Edit shipping address — `/account/subscriptions/[id]/address` route exists and reuses `AddressForm`, **but the underlying draft flow has the same scope dependency as frequency change and is currently untested live.** Same options apply: drop the feature, or implement properly via `subscriptionContractSelectDeliveryMethod` (Customer Account API mutation requiring a delivery-options-token roundtrip).
+- [x] Edit payment method — external link to Shopify-hosted manage page (`https://shopify.com/{shopId}/account/pages/{pageId}/subscriptions/{numericId}`). Requires `NEXT_PUBLIC_SHOPIFY_SHOP_ID` + `NEXT_PUBLIC_SHOPIFY_SUBSCRIPTION_PAGE_ID` env vars.
 - [x] Pre-order surfacing — heuristic detection on line title/variantTitle; banner with extracted ship date if present
 - [x] `components/cancellation-policy-dialog/index.tsx` — "account dashboard" copy now links to `/account/subscriptions`
 
 ---
 
-## Phase 6 — Polish, a11y, E2E, QA
+## Phase 6 — E2E coverage
+
+Narrowed 2026-05-13. A11y audit, cross-browser QA, Sentry, and analytics events moved to Backlog — pick those up once there's a concrete user/incident driver. Visual polish is already shipping incrementally; not tracked as a phase task.
 
 ### Tasks
-- [x] Brand typography (`font-bomstad-display`, `font-poppins`) applied
-- [x] Color / spacing tokens match existing components
-- [x] GSAP/Lenis transitions consistent with rest of site
-- [ ] Accessibility audit
-  - [ ] Keyboard navigation through all flows
-  - [ ] Focus management on modal open/close
-  - [ ] ARIA labels on icon buttons
-  - [ ] Color contrast ratios
-  - [ ] Screen reader pass (VoiceOver)
-- [ ] Cross-browser QA: Chrome, Safari, Firefox, mobile Safari, Chrome Android
 - [x] Playwright E2E scaffolding (`tests/e2e/account.spec.ts`)
-  - [ ] Confirm coverage: login → view orders → reorder; cancel subscription with reason; add address → set default; profile edit; logout
-- [ ] Sentry / error monitoring wiring
-- [ ] Analytics events: login, logout, order viewed, sub paused, sub cancelled, reorder
+- [ ] Confirm coverage of the five happy-path flows:
+  - [ ] Login → view orders → reorder
+  - [ ] Cancel subscription with reason capture
+  - [ ] Address CRUD (add → set default → edit → delete)
+  - [ ] Profile edit
+  - [ ] Logout
 
 ---
 
@@ -205,6 +201,13 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 ## Backlog
 
 Tasks that are not blocking and were intentionally deferred. Pull from here only if the listed trigger applies.
+
+### Phase 6 deferrals (moved 2026-05-13)
+
+- **Accessibility audit.** Keyboard navigation through all flows, focus management on modal open/close, ARIA labels on icon buttons, color contrast ratios, VoiceOver/screen-reader pass. *Trigger:* a11y complaint from a customer, a procurement/contract requirement, or a redesign that touches form patterns or modals at scale.
+- **Cross-browser QA.** Chrome, Safari, Firefox, mobile Safari, Chrome Android. *Trigger:* before broad public launch, or after any browser-API-touching change (custom scrollbars, intersection observers, etc.).
+- **Sentry / error monitoring wiring.** Add the SDK to the storefront and capture client + server errors with user context. *Trigger:* first unexplained error reported by a customer, or before broad public launch.
+- **Analytics events.** Fire `Logged In`, `Logged Out`, `Order Viewed`, `Subscription Paused`, `Subscription Cancelled`, `Reorder` to the existing analytics destination (likely Klaviyo per Phase 7). *Trigger:* marketing/growth wants behavioural data, or before broad public launch.
 
 ### Phase 3 profile follow-ups
 
