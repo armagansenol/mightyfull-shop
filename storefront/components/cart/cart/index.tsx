@@ -8,8 +8,6 @@ import { useCartCheckout } from '@/components/cart/hooks/useCartCheckout';
 import { useCartInitialization } from '@/components/cart/hooks/useCartInitialization';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 
-import { useScrollLock } from '@/hooks/use-scroll-lock';
-
 /**
  * Renders the cart Sheet once globally — mount this at the app root, not
  * per-header-slot, because Radix portals SheetContent to document.body and
@@ -20,8 +18,6 @@ export function Cart() {
     useCart();
   const { mutate: handleCheckout, isPending: isCheckoutPending } =
     useCartCheckout();
-
-  useScrollLock(isCartOpen);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

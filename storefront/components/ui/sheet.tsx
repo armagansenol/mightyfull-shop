@@ -3,9 +3,42 @@
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
+import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { cn } from '@/lib/utils';
 
-const Sheet = SheetPrimitive.Root;
+type SheetRootProps = React.ComponentPropsWithoutRef<typeof SheetPrimitive.Root>;
+
+/**
+ * Wraps Radix Dialog.Root (used by Sheet) and pauses Lenis smooth-scroll
+ * while the sheet is open. Works for both controlled and uncontrolled usage.
+ */
+function Sheet({
+  open: controlledOpen,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: SheetRootProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(
+    defaultOpen ?? false
+  );
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+
+  useScrollLock(!!open);
+
+  const handleOpenChange = (next: boolean) => {
+    if (!isControlled) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  };
+
+  return (
+    <SheetPrimitive.Root
+      open={open}
+      onOpenChange={handleOpenChange}
+      {...props}
+    />
+  );
+}
 
 const SheetTrigger = SheetPrimitive.Trigger;
 

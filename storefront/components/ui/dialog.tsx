@@ -2,9 +2,42 @@
 
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
+import { useScrollLock } from '@/hooks/use-scroll-lock';
 import { cn } from '@/lib/utils';
 
-const Dialog = DialogPrimitive.Root;
+type DialogRootProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>;
+
+/**
+ * Wraps Radix Dialog.Root and pauses Lenis smooth-scroll while the
+ * dialog is open. Works for both controlled and uncontrolled usage.
+ */
+function Dialog({
+  open: controlledOpen,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: DialogRootProps) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(
+    defaultOpen ?? false
+  );
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : uncontrolledOpen;
+
+  useScrollLock(!!open);
+
+  const handleOpenChange = (next: boolean) => {
+    if (!isControlled) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  };
+
+  return (
+    <DialogPrimitive.Root
+      open={open}
+      onOpenChange={handleOpenChange}
+      {...props}
+    />
+  );
+}
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
