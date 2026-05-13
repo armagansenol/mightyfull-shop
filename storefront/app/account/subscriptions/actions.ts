@@ -91,6 +91,25 @@ const SKIP_CYCLE_MUTATION = `
   }
 `;
 
+const UNSKIP_CYCLE_MUTATION = `
+  mutation UnskipBillingCycle(
+    $billingCycleInput: SubscriptionBillingCycleInput!
+  ) {
+    subscriptionBillingCycleUnskip(
+      billingCycleInput: $billingCycleInput
+    ) {
+      billingCycle {
+        cycleIndex
+        skipped
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 const OPEN_DRAFT_MUTATION = `
   mutation OpenSubscriptionDraft($id: ID!) {
     subscriptionContractUpdate(subscriptionContractId: $id) {
@@ -446,6 +465,48 @@ export async function skipNextBillingCycle(
           : e instanceof Error
             ? e.message
             : 'Failed to skip charge'
+    };
+  }
+}
+
+export async function unskipBillingCycle(
+  subscriptionContractId: string,
+  date: string
+): Promise<SubscriptionActionResult> {
+  try {
+    const data = await customerQuery<{
+      subscriptionBillingCycleUnskip: {
+        billingCycle: { cycleIndex: number; skipped: boolean } | null;
+        userErrors: UserError[];
+      };
+    }>({
+      query: UNSKIP_CYCLE_MUTATION,
+      variables: {
+        billingCycleInput: {
+          contractId: subscriptionContractId,
+          selector: { date }
+        }
+      }
+    });
+
+    if (data.subscriptionBillingCycleUnskip.userErrors.length > 0) {
+      return {
+        ok: false,
+        error: firstUserError(data.subscriptionBillingCycleUnskip.userErrors)
+      };
+    }
+
+    revalidateSubscriptionPaths();
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error:
+        e instanceof CustomerAccountAPIError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : 'Failed to unskip charge'
     };
   }
 }
