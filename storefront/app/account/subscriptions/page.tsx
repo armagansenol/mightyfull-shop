@@ -1,4 +1,4 @@
-import { Repeat } from 'lucide-react';
+import { CalendarClock, Repeat, RotateCw } from 'lucide-react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
@@ -29,6 +29,12 @@ const SUBSCRIPTIONS_QUERY = `
           status
           nextBillingDate
           createdAt
+          deliveryPolicy {
+            interval
+            intervalCount {
+              count
+            }
+          }
           lines(first: 5) {
             nodes {
               title
@@ -56,11 +62,17 @@ interface SubscriptionLine {
   image: { url: string; altText: string | null } | null;
 }
 
+interface DeliveryFrequency {
+  interval: 'WEEK' | 'MONTH' | 'YEAR' | 'DAY';
+  intervalCount: { count: number };
+}
+
 interface SubscriptionContract {
   id: string;
   status: string;
   nextBillingDate: string | null;
   createdAt: string;
+  deliveryPolicy: DeliveryFrequency | null;
   lines: { nodes: SubscriptionLine[] };
 }
 
@@ -84,6 +96,14 @@ function formatMoney(money: { amount: string; currencyCode: string } | null) {
     style: 'currency',
     currency: money.currencyCode
   }).format(Number.parseFloat(money.amount));
+}
+
+function formatFrequency(policy: DeliveryFrequency | null): string | null {
+  if (!policy) return null;
+  const count = policy.intervalCount.count;
+  const unit = policy.interval.toLowerCase();
+  if (count === 1) return `Every ${unit}`;
+  return `Every ${count} ${unit}s`;
 }
 
 function parseStatusFilter(value: string | undefined): SubscriptionStatusFilter {
@@ -249,6 +269,7 @@ export default async function SubscriptionsPage({
                   const firstLine = contract.lines.nodes[0];
                   const firstLinePrice = firstLine?.currentPrice ?? null;
                   const firstLineImage = firstLine?.image ?? null;
+                  const frequencyLabel = formatFrequency(contract.deliveryPolicy);
                   const detailHref = `/account/subscriptions/${encodeURIComponent(contract.id)}`;
 
                   return (
@@ -274,15 +295,32 @@ export default async function SubscriptionsPage({
                             className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
                           />
                         )}
-                        <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                        <div className="flex-1 min-w-0 flex flex-col gap-2">
                           <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
                             {summary || 'Subscription'}
                           </h2>
-                          <p className="text-sm font-medium text-blue-ruin/75">
-                            {contract.nextBillingDate
-                              ? `Next renewal ${formatDate(contract.nextBillingDate)}`
-                              : 'No renewal scheduled'}
-                          </p>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm font-medium text-blue-ruin/75">
+                            {frequencyLabel && (
+                              <span className="inline-flex items-center gap-1.5">
+                                <RotateCw
+                                  className="w-3.5 h-3.5 shrink-0"
+                                  strokeWidth={2}
+                                  aria-hidden="true"
+                                />
+                                {frequencyLabel}
+                              </span>
+                            )}
+                            <span className="inline-flex items-center gap-1.5">
+                              <CalendarClock
+                                className="w-3.5 h-3.5 shrink-0"
+                                strokeWidth={2}
+                                aria-hidden="true"
+                              />
+                              {contract.nextBillingDate
+                                ? `Next renewal ${formatDate(contract.nextBillingDate)}`
+                                : 'No renewal scheduled'}
+                            </span>
+                          </div>
                         </div>
                       </div>
 
