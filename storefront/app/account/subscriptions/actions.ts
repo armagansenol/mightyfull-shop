@@ -11,6 +11,7 @@ import {
   CustomerAccountAPIError,
   customerQuery
 } from '@/lib/shopify/customer-account/client';
+import { adminQuery } from '@/lib/shopify/admin';
 
 interface UserError {
   field: string[] | null;
@@ -482,6 +483,88 @@ export async function changeSubscriptionFrequency(
       }
     })
   );
+}
+
+const GET_CONTRACT_PAYMENT_METHOD_QUERY = `
+  query GetSubscriptionPaymentMethod($id: ID!) {
+    subscriptionContract(id: $id) {
+      customerPaymentMethod {
+        id
+      }
+    }
+  }
+`;
+
+const SEND_PAYMENT_UPDATE_EMAIL_MUTATION = `
+  mutation SendPaymentUpdateEmail($customerPaymentMethodId: ID!) {
+    customerPaymentMethodSendUpdateEmail(
+      customerPaymentMethodId: $customerPaymentMethodId
+    ) {
+      customer {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export async function sendPaymentMethodUpdateEmail(
+  subscriptionContractId: string
+): Promise<SubscriptionActionResult> {
+  try {
+    const contractData = await adminQuery<{
+      subscriptionContract: {
+        customerPaymentMethod: { id: string } | null;
+      } | null;
+    }>({
+      query: GET_CONTRACT_PAYMENT_METHOD_QUERY,
+      variables: { id: subscriptionContractId }
+    });
+
+    const paymentMethodId =
+      contractData.subscriptionContract?.customerPaymentMethod?.id;
+
+    if (!paymentMethodId) {
+      return {
+        ok: false,
+        error: 'No payment method found for this subscription.'
+      };
+    }
+
+    const emailData = await adminQuery<{
+      customerPaymentMethodSendUpdateEmail: {
+        customer: { id: string } | null;
+        userErrors: UserError[];
+      };
+    }>({
+      query: SEND_PAYMENT_UPDATE_EMAIL_MUTATION,
+      variables: { customerPaymentMethodId: paymentMethodId }
+    });
+
+    if (
+      emailData.customerPaymentMethodSendUpdateEmail.userErrors.length > 0
+    ) {
+      return {
+        ok: false,
+        error: firstUserError(
+          emailData.customerPaymentMethodSendUpdateEmail.userErrors
+        )
+      };
+    }
+
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error:
+        e instanceof Error
+          ? e.message
+          : 'Failed to send payment update email'
+    };
+  }
 }
 
 export async function skipNextBillingCycle(

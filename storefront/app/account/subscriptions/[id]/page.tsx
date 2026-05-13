@@ -18,6 +18,7 @@ import {
 } from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
 import { SubscriptionFrequencyForm } from '@/components/account/subscription-frequency-form';
+import { SubscriptionPaymentUpdateButton } from '@/components/account/subscription-payment-update-button';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
@@ -340,37 +341,21 @@ export default async function SubscriptionDetailPage({
         </AccountCard>
       )}
 
-      {(contract.status === 'ACTIVE' || contract.status === 'PAUSED') &&
-        shopHostedManageUrl(numericId) && (
-          <AccountCard
-            icon={CreditCardIcon}
-            eyebrow="Payment method"
-            title="Update card on file"
-          >
-            <p className="text-sm text-blue-ruin/85 max-w-prose">
-              Payment details are handled securely by Shopify. Use the link
-              below to update the card on file for this subscription.
-            </p>
-            <div>
-              <a
-                href={shopHostedManageUrl(numericId) ?? '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-10 px-6 lg:px-8 xl:px-12 rounded-lg bg-blue-ruin text-sugar-milk font-bold text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 transition-colors hover:bg-blue-ruin/90"
-              >
-                Update on Shopify
-              </a>
-            </div>
-          </AccountCard>
-        )}
+      {(contract.status === 'ACTIVE' || contract.status === 'PAUSED') && (
+        <AccountCard
+          icon={CreditCardIcon}
+          eyebrow="Payment method"
+          title="Update card on file"
+        >
+          <p className="text-sm text-blue-ruin/85 max-w-prose">
+            We&apos;ll email you a secure link to update the card on file for
+            this subscription.
+          </p>
+          <SubscriptionPaymentUpdateButton contractId={contract.id} />
+        </AccountCard>
+      )}
     </>
   );
-}
-
-function shopHostedManageUrl(numericContractId: string): string | null {
-  const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID;
-  if (!shopId) return null;
-  return `https://shopify.com/${shopId}/account/subscriptions/${numericContractId}`;
 }
 
 function matchFrequencyValue(
