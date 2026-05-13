@@ -113,7 +113,7 @@ const UNSKIP_CYCLE_MUTATION = `
 
 const OPEN_DRAFT_MUTATION = `
   mutation OpenSubscriptionDraft($id: ID!) {
-    subscriptionContractUpdate(subscriptionContractId: $id) {
+    subscriptionContractUpdate(contractId: $id) {
       draft {
         id
       }
