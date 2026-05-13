@@ -3,11 +3,5 @@
   "framework": "nextjs",
   "buildCommand": "pnpm --filter storefront build",
   "installCommand": "corepack prepare pnpm@10.22.0 --activate && pnpm install --no-frozen-lockfile",
-  "outputDirectory": "storefront/.next",
-  "crons": [
-    {
-      "path": "/api/subscription-reminder",
-      "schedule": "0 8 * * *"
-    }
-  ]
+  "outputDirectory": "storefront/.next"
 }

@@ -130,7 +130,7 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - [x] Pause → `subscriptionContractPause`
 - [x] Resume → `subscriptionContractActivate`
 - [x] Cancel → confirmation dialog, mutation `subscriptionContractCancel`
-- [x] Capture cancellation reason (radio + optional notes) before firing the mutation; logged for downstream Klaviyo wiring in Phase 7
+- [x] Capture cancellation reason (radio + optional notes) before firing the mutation; logged to server console (analytics forwarding not planned — Klaviyo marketing pulled from Phase 7)
 - [x] Skip next cycle → uses `upcomingBillingCycles` on the contract + `subscriptionBillingCycleSkip` / `subscriptionBillingCycleUnskip` (Customer Account API only exposes `upcomingBillingCycles`, not `billingCycles`)
 - [x] Upcoming orders dialog — list next 5 cycles with per-cycle Skip/Unskip toggle + dedicated Skip confirmation dialog (matches Shopify-hosted UX)
 - [ ] ~~Change frequency~~ **Removed 2026-05-13.** Customer Account API has no mutation for this. Admin API equivalent (`subscriptionContractUpdate` → `subscriptionDraftUpdate` → `subscriptionDraftCommit`) requires `write_own_subscription_contracts`, a protected scope that legacy custom apps cannot request. Frequency now shows as read-only; customers manage it through Shopify's hosted portal.
@@ -161,12 +161,12 @@ Narrowed 2026-05-13. A11y audit, cross-browser QA, Sentry, and analytics events 
 ### Tasks
 - [x] Header link swap → `/account`
 - [x] Cancellation copy → internal `/account/subscriptions`
-- [x] Audit other deep links to `shopify.com/<shop-id>/account` — none found
-- [ ] Feature flag for soft launch (cookie-gated rollout or simple env flag)
-- [ ] Klaviyo profile sync hooks: emit `Logged In`, `Order Viewed`, sub-state events
-- [ ] `app/robots.ts` (or `public/robots.txt`) — disallow `/account/*` from indexing; keep `/account/login` indexable, account interior no-index
-- [ ] Production smoke-test checklist
-- [ ] FAQ / comms update if any copy still mentions Shopify-hosted login
+- [x] Audit other deep links to `shopify.com/<shop-id>/account` — only intentional "Update on Shopify" payment-method link remains
+- [ ] ~~Feature flag for soft launch~~ **Skipped 2026-05-13.** Going with a hard cutover; header link swap is the rollback lever.
+- [ ] ~~Klaviyo profile sync hooks~~ **Removed 2026-05-13.** Klaviyo marketing pulled entirely: subscription-reminder cron deleted (`vercel.json` crons entry, `app/api/subscription-reminder/`, `lib/subscription-reminder/`, unit test). Welcome-popup + back-in-stock Klaviyo flows untouched (acquisition + customer-initiated; not marketing push).
+- [x] `app/robots.ts` — `/account/login` allowed, everything under `/account/` disallowed
+- [x] Production smoke-test checklist — see [`todos/launch-smoke-test.md`](launch-smoke-test.md)
+- [x] FAQ / comms copy audit — no off-site account references found in source (FAQ content lives in Sanity; verify there manually before launch)
 
 ---
 
@@ -193,8 +193,14 @@ Narrowed 2026-05-13. A11y audit, cross-browser QA, Sentry, and analytics events 
 - `components/cancellation-policy-dialog/index.tsx` — "account dashboard" link updated
 - `.env.local`, Vercel env — auth vars added
 
+### storefront — removed (Klaviyo marketing pulled 2026-05-13)
+- `app/api/subscription-reminder/route.ts`
+- `lib/subscription-reminder/index.ts`
+- `tests/unit/subscription-reminder.test.ts`
+- `vercel.json` — `crons` entry
+
 ### still missing
-- `app/robots.ts`
+- _(nothing — Phase 7 file work complete)_
 
 ---
 
@@ -207,7 +213,6 @@ Tasks that are not blocking and were intentionally deferred. Pull from here only
 - **Accessibility audit.** Keyboard navigation through all flows, focus management on modal open/close, ARIA labels on icon buttons, color contrast ratios, VoiceOver/screen-reader pass. *Trigger:* a11y complaint from a customer, a procurement/contract requirement, or a redesign that touches form patterns or modals at scale.
 - **Cross-browser QA.** Chrome, Safari, Firefox, mobile Safari, Chrome Android. *Trigger:* before broad public launch, or after any browser-API-touching change (custom scrollbars, intersection observers, etc.).
 - **Sentry / error monitoring wiring.** Add the SDK to the storefront and capture client + server errors with user context. *Trigger:* first unexplained error reported by a customer, or before broad public launch.
-- **Analytics events.** Fire `Logged In`, `Logged Out`, `Order Viewed`, `Subscription Paused`, `Subscription Cancelled`, `Reorder` to the existing analytics destination (likely Klaviyo per Phase 7). *Trigger:* marketing/growth wants behavioural data, or before broad public launch.
 
 ### Phase 3 profile follow-ups
 

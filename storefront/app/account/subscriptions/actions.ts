@@ -269,9 +269,6 @@ export async function cancelSubscription(
       };
     }
 
-    // Customer Account API's subscriptionContractCancel does not accept a
-    // reason — log here so it can be forwarded to analytics (Klaviyo) when
-    // the Phase 7 event wiring lands.
     console.info('[subscription cancelled]', {
       contractId: subscriptionContractId,
       reason,
