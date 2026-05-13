@@ -369,8 +369,9 @@ export default async function SubscriptionDetailPage({
 
 function shopHostedManageUrl(numericContractId: string): string | null {
   const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID;
-  if (!shopId) return null;
-  return `https://shopify.com/${shopId}/account/subscriptions/${numericContractId}`;
+  const pageId = process.env.NEXT_PUBLIC_SHOPIFY_SUBSCRIPTION_PAGE_ID;
+  if (!shopId || !pageId) return null;
+  return `https://shopify.com/${shopId}/account/pages/${pageId}/subscriptions/${numericContractId}`;
 }
 
 function matchFrequencyValue(
