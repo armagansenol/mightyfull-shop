@@ -1,9 +1,7 @@
-import { RepeatIcon } from '@hugeicons/core-free-icons';
 import { Repeat } from 'lucide-react';
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import { AccountCard } from '@/components/account/account-card';
 import { AccountEmptyState } from '@/components/account/account-empty-state';
-import { CardActionLink } from '@/components/account/card-action-link';
 import { PageHeader } from '@/components/account/page-header';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Button } from '@/components/ui/button';
@@ -33,6 +31,10 @@ const SUBSCRIPTIONS_QUERY = `
                 amount
                 currencyCode
               }
+              image {
+                url
+                altText
+              }
             }
           }
         }
@@ -45,6 +47,7 @@ interface SubscriptionLine {
   title: string;
   quantity: number;
   currentPrice: { amount: string; currencyCode: string } | null;
+  image: { url: string; altText: string | null } | null;
 }
 
 interface SubscriptionContract {
@@ -162,15 +165,36 @@ export default async function SubscriptionsPage() {
               const summary = contract.lines.nodes
                 .map((line) => `${line.title} × ${line.quantity}`)
                 .join(', ');
-              const firstLinePrice = contract.lines.nodes[0]?.currentPrice;
+              const firstLine = contract.lines.nodes[0];
+              const firstLinePrice = firstLine?.currentPrice ?? null;
+              const firstLineImage = firstLine?.image ?? null;
               return (
-                <AccountCard
+                <Link
                   key={contract.id}
-                  icon={RepeatIcon}
-                  eyebrow="Subscription"
-                  title={summary || 'Subscription'}
-                  action={
-                    <div className="flex flex-col items-end gap-1.5 shrink-0">
+                  href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
+                  className="block rounded-2xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin p-5 md:p-6 hover:border-blue-ruin/45 transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk"
+                >
+                  <div className="flex items-start gap-4 md:gap-5">
+                    {firstLineImage && (
+                      <Image
+                        src={firstLineImage.url}
+                        alt={firstLineImage.altText ?? firstLine?.title ?? ''}
+                        width={80}
+                        height={80}
+                        className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                      <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
+                        {summary || 'Subscription'}
+                      </h2>
+                      <p className="text-sm font-medium text-blue-ruin/75">
+                        {contract.nextBillingDate
+                          ? `Next renewal ${formatDate(contract.nextBillingDate)}`
+                          : 'No renewal scheduled'}
+                      </p>
+                    </div>
+                    <div className="shrink-0 flex flex-col items-end gap-1.5">
                       {firstLinePrice && (
                         <p className="font-semibold tabular-nums text-blue-ruin">
                           {formatMoney(firstLinePrice)}
@@ -178,22 +202,8 @@ export default async function SubscriptionsPage() {
                       )}
                       <SubscriptionStatusBadge status={contract.status} />
                     </div>
-                  }
-                  footer={
-                    <>
-                      <span className="text-sm font-medium text-blue-ruin/75">
-                        {contract.nextBillingDate
-                          ? `Next renewal ${formatDate(contract.nextBillingDate)}`
-                          : 'No renewal scheduled'}
-                      </span>
-                      <CardActionLink
-                        href={`/account/subscriptions/${encodeURIComponent(contract.id)}`}
-                      >
-                        Manage
-                      </CardActionLink>
-                    </>
-                  }
-                />
+                  </div>
+                </Link>
               );
             })}
           </div>
