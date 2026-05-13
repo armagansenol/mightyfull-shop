@@ -1,9 +1,15 @@
 'use client';
 
-import { ChevronDown } from 'lucide-react';
 import { motion } from 'motion/react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
 
 export type SubscriptionStatusFilter =
   | 'all'
@@ -110,33 +116,37 @@ export function SubscriptionsFilters({
         })}
       </div>
 
-      <label className="inline-flex items-center gap-2 self-start md:self-auto">
-        <span className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+      <div className="inline-flex items-center gap-2 self-start md:self-auto">
+        <span
+          id="subscription-sort-label"
+          className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60"
+        >
           Sort by
         </span>
-        <div className="relative">
-          <select
-            value={initialSort}
-            onChange={(e) =>
-              handleSort(e.target.value as SubscriptionSortKey)
-            }
-            disabled={isPending}
-            className="appearance-none h-9 pl-3.5 pr-9 rounded-full border border-blue-ruin/30 bg-sugar-milk text-blue-ruin text-sm font-semibold cursor-pointer focus-visible:outline-hidden focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20 hover:border-blue-ruin/50 transition-colors"
-            aria-label="Sort subscriptions"
+        <Select
+          value={initialSort}
+          onValueChange={(v) => handleSort(v as SubscriptionSortKey)}
+          disabled={isPending}
+        >
+          <SelectTrigger
+            aria-labelledby="subscription-sort-label"
+            className="h-9 px-3.5 rounded-full border border-blue-ruin/30 bg-sugar-milk text-blue-ruin text-sm font-semibold cursor-pointer hover:border-blue-ruin/50 transition-colors focus-visible:outline-hidden focus-visible:border-blue-ruin focus-visible:ring-2 focus-visible:ring-blue-ruin/20 gap-2 [&>span]:line-clamp-none [&_svg]:!h-4 [&_svg]:!w-4 [&_svg]:opacity-70"
           >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl border border-blue-ruin/20 bg-sugar-milk text-blue-ruin shadow-lg p-1">
             {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                className="rounded-md px-3 py-1.5 text-sm font-semibold text-blue-ruin focus:bg-blue-ruin/10 data-[state=checked]:bg-blue-ruin/8 cursor-pointer"
+              >
                 {option.label}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-          <ChevronDown
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-ruin/60 pointer-events-none"
-            strokeWidth={2.25}
-            aria-hidden="true"
-          />
-        </div>
-      </label>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }
