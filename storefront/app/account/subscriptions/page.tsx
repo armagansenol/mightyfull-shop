@@ -282,7 +282,7 @@ export default async function SubscriptionsPage({
                         <SubscriptionStatusBadge status={contract.status} />
                       </div>
 
-                      {/* Header: image + title + renewal */}
+                      {/* Header: image + title + info pills + price */}
                       <div className="flex items-start gap-4 md:gap-5 pr-24 md:pr-28">
                         {firstLineImage && (
                           <Image
@@ -295,25 +295,25 @@ export default async function SubscriptionsPage({
                             className="shrink-0 w-16 h-16 md:w-20 md:h-20 object-contain"
                           />
                         )}
-                        <div className="flex-1 min-w-0 flex flex-col gap-2">
+                        <div className="flex-1 min-w-0 flex flex-col gap-2.5">
                           <h2 className="font-bomstad-display text-xl md:text-2xl font-semibold text-blue-ruin leading-[0.98] text-wrap-balance">
                             {summary || 'Subscription'}
                           </h2>
-                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm font-medium text-blue-ruin/75">
+                          <div className="flex flex-wrap items-center gap-2">
                             {frequencyLabel && (
-                              <span className="inline-flex items-center gap-1.5">
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-ruin/8 text-blue-ruin text-xs font-semibold ring-1 ring-inset ring-blue-ruin/15">
                                 <RotateCw
-                                  className="w-3.5 h-3.5 shrink-0"
-                                  strokeWidth={2}
+                                  className="w-3 h-3 shrink-0"
+                                  strokeWidth={2.25}
                                   aria-hidden="true"
                                 />
                                 {frequencyLabel}
                               </span>
                             )}
-                            <span className="inline-flex items-center gap-1.5">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-ruin/8 text-blue-ruin text-xs font-semibold ring-1 ring-inset ring-blue-ruin/15">
                               <CalendarClock
-                                className="w-3.5 h-3.5 shrink-0"
-                                strokeWidth={2}
+                                className="w-3 h-3 shrink-0"
+                                strokeWidth={2.25}
                                 aria-hidden="true"
                               />
                               {contract.nextBillingDate
@@ -321,18 +321,16 @@ export default async function SubscriptionsPage({
                                 : 'No renewal scheduled'}
                             </span>
                           </div>
+                          {firstLinePrice && (
+                            <p className="text-base md:text-lg font-bold tabular-nums leading-none text-blue-ruin/85 mt-0.5">
+                              {formatMoney(firstLinePrice)}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      {/* Footer: big price + Manage button */}
-                      <div className="mt-5 md:mt-6 flex items-end justify-between gap-4">
-                        {firstLinePrice ? (
-                          <p className="font-bomstad-display text-3xl md:text-4xl font-bold tabular-nums leading-none text-blue-ruin">
-                            {formatMoney(firstLinePrice)}
-                          </p>
-                        ) : (
-                          <span />
-                        )}
+                      {/* Manage button bottom-right */}
+                      <div className="mt-5 flex justify-end">
                         <Button
                           asChild
                           colorTheme="blue-ruin"
