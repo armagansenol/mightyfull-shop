@@ -20,7 +20,7 @@ export default function AccountLayout({
         <div
           id="account-root"
           data-account-theme="light"
-          className="bg-sugar-milk text-blue-ruin min-h-screen px-4 md:px-20 py-8 md:py-14"
+          className="bg-sugar-milk text-blue-ruin min-h-screen px-4 md:px-20 pt-8 md:pt-14 pb-20 md:pb-32"
         >
           {/* Sync read of the persisted preference before paint to avoid flash. */}
           <script dangerouslySetInnerHTML={{ __html: ACCOUNT_THEME_INIT }} />
