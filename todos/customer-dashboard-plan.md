@@ -134,7 +134,7 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - [x] Skip next cycle → uses `upcomingBillingCycles` on the contract + `subscriptionBillingCycleSkip` / `subscriptionBillingCycleUnskip` (Customer Account API only exposes `upcomingBillingCycles`, not `billingCycles`)
 - [x] Upcoming orders dialog — list next 5 cycles with per-cycle Skip/Unskip toggle + dedicated Skip confirmation dialog (matches Shopify-hosted UX)
 - [ ] ~~Change frequency~~ **Removed 2026-05-13.** Customer Account API has no mutation for this. Admin API equivalent (`subscriptionContractUpdate` → `subscriptionDraftUpdate` → `subscriptionDraftCommit`) requires `write_own_subscription_contracts`, a protected scope that legacy custom apps cannot request. Frequency now shows as read-only; customers manage it through Shopify's hosted portal.
-- [ ] Edit shipping address — `/account/subscriptions/[id]/address` route exists and reuses `AddressForm`, **but the underlying draft flow has the same scope dependency as frequency change and is currently untested live.** Same options apply: drop the feature, or implement properly via `subscriptionContractSelectDeliveryMethod` (Customer Account API mutation requiring a delivery-options-token roundtrip).
+- [x] Edit shipping address — `/account/subscriptions/[id]/address` reuses `AddressForm`; implemented properly via the Customer Account API two-step flow: `subscriptionContractFetchDeliveryOptions(contractId, address)` → `subscriptionContractSelectDeliveryMethod(contractId, input, token)`. No Admin API scope needed; per-customer auth enforced by Customer Account API itself.
 - [x] Edit payment method — external link to Shopify-hosted manage page (`https://shopify.com/{shopId}/account/pages/{pageId}/subscriptions/{numericId}`). Requires `NEXT_PUBLIC_SHOPIFY_SHOP_ID` + `NEXT_PUBLIC_SHOPIFY_SUBSCRIPTION_PAGE_ID` env vars.
 - [x] Pre-order surfacing — heuristic detection on line title/variantTitle; banner with extracted ship date if present
 - [x] `components/cancellation-policy-dialog/index.tsx` — "account dashboard" copy now links to `/account/subscriptions`
@@ -198,6 +198,11 @@ Narrowed 2026-05-13. A11y audit, cross-browser QA, Sentry, and analytics events 
 - `lib/subscription-reminder/index.ts`
 - `tests/unit/subscription-reminder.test.ts`
 - `vercel.json` — `crons` entry
+
+### storefront — removed (Admin API draft flow no longer needed 2026-05-13)
+- `lib/shopify/admin.ts` — was the Admin API client used only by the
+  subscription draft flow (frequency change removed, address change
+  reimplemented via Customer Account API)
 
 ### still missing
 - _(nothing — Phase 7 file work complete)_

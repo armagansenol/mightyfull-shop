@@ -6,7 +6,6 @@ import {
   type CancellationReasonValue,
   type SubscriptionShippingAddressInput
 } from '@/app/account/subscriptions/constants';
-import { adminQuery, AdminAPIError } from '@/lib/shopify/admin';
 import {
   CustomerAccountAPIError,
   customerQuery
@@ -110,11 +109,20 @@ const UNSKIP_CYCLE_MUTATION = `
   }
 `;
 
-const OPEN_DRAFT_MUTATION = `
-  mutation OpenSubscriptionDraft($id: ID!) {
-    subscriptionContractUpdate(contractId: $id) {
-      draft {
-        id
+const FETCH_DELIVERY_OPTIONS_MUTATION = `
+  mutation FetchDeliveryOptions($id: ID!, $address: CustomerAddressInput) {
+    subscriptionContractFetchDeliveryOptions(
+      subscriptionContractId: $id
+      address: $address
+    ) {
+      deliveryOptionsResult {
+        __typename
+        ... on SubscriptionDeliveryOptionsResultSuccess {
+          token
+        }
+        ... on SubscriptionDeliveryOptionsResultFailure {
+          message
+        }
       }
       userErrors {
         field
@@ -124,26 +132,17 @@ const OPEN_DRAFT_MUTATION = `
   }
 `;
 
-const DRAFT_UPDATE_MUTATION = `
-  mutation UpdateSubscriptionDraft(
-    $draftId: ID!
-    $input: SubscriptionDraftInput!
+const SELECT_DELIVERY_METHOD_MUTATION = `
+  mutation SelectDeliveryMethod(
+    $id: ID!
+    $input: SubscriptionDeliveryMethodInput!
+    $token: String!
   ) {
-    subscriptionDraftUpdate(draftId: $draftId, input: $input) {
-      draft {
-        id
-      }
-      userErrors {
-        field
-        message
-      }
-    }
-  }
-`;
-
-const DRAFT_COMMIT_MUTATION = `
-  mutation CommitSubscriptionDraft($draftId: ID!) {
-    subscriptionDraftCommit(draftId: $draftId) {
+    subscriptionContractSelectDeliveryMethod(
+      subscriptionContractId: $id
+      deliveryMethodInput: $input
+      subscriptionDeliveryOptionsResultToken: $token
+    ) {
       contract {
         id
       }
@@ -291,88 +290,86 @@ export async function cancelSubscription(
   }
 }
 
-// The Customer Account API doesn't expose subscriptionContractUpdate /
-// subscriptionDraftUpdate / subscriptionDraftCommit — those mutations are
-// Admin API only. Customer Account API's only contract-editing mutation is
-// subscriptionContractSelectDeliveryMethod, which requires a delivery-options
-// token roundtrip. For simple field edits (frequency, address) we go through
-// Admin API but verify first that the authenticated customer actually owns
-// this contract, since Admin tokens bypass per-customer authorization.
-async function verifyContractAccess(
-  subscriptionContractId: string
-): Promise<boolean> {
-  const numericId =
-    subscriptionContractId.split('/').pop() ?? subscriptionContractId;
-  try {
-    const data = await customerQuery<{
-      customer: {
-        subscriptionContracts: { nodes: Array<{ id: string }> };
-      } | null;
-    }>({
-      query: `
-        query VerifyContract($idQuery: String!) {
-          customer {
-            subscriptionContracts(first: 1, query: $idQuery) {
-              nodes { id }
-            }
-          }
-        }
-      `,
-      variables: { idQuery: `id:${numericId}` }
-    });
-    return !!data.customer?.subscriptionContracts.nodes[0];
-  } catch {
-    return false;
-  }
-}
-
-async function withDraft(
+// Customer Account API two-step flow for changing the shipping address on
+// a subscription contract:
+//   1. subscriptionContractFetchDeliveryOptions(contractId, address)
+//      → returns a token + the rate options Shopify can offer for that
+//        address. (Returns Failure if the address can't be shipped to.)
+//   2. subscriptionContractSelectDeliveryMethod(contractId, input, token)
+//      → commits the address change; Shopify picks the matching rate
+//        from the previously-fetched options.
+export async function updateSubscriptionShippingAddress(
   subscriptionContractId: string,
-  apply: (draftId: string) => Promise<SubscriptionActionResult>
+  address: SubscriptionShippingAddressInput
 ): Promise<SubscriptionActionResult> {
-  if (!(await verifyContractAccess(subscriptionContractId))) {
-    return { ok: false, error: 'Not authorized to modify this subscription.' };
-  }
+  const customerAddress = {
+    firstName: address.firstName,
+    lastName: address.lastName,
+    address1: address.address1,
+    address2: address.address2,
+    city: address.city,
+    zip: address.zip,
+    zoneCode: address.zoneCode,
+    territoryCode: address.territoryCode,
+    phoneNumber: address.phoneNumber
+  };
+
   try {
-    const openData = await adminQuery<{
-      subscriptionContractUpdate: {
-        draft: { id: string } | null;
+    const fetchData = await customerQuery<{
+      subscriptionContractFetchDeliveryOptions: {
+        deliveryOptionsResult:
+          | {
+              __typename: 'SubscriptionDeliveryOptionsResultSuccess';
+              token: string;
+            }
+          | {
+              __typename: 'SubscriptionDeliveryOptionsResultFailure';
+              message: string;
+            }
+          | null;
         userErrors: UserError[];
       };
     }>({
-      query: OPEN_DRAFT_MUTATION,
-      variables: { id: subscriptionContractId }
+      query: FETCH_DELIVERY_OPTIONS_MUTATION,
+      variables: { id: subscriptionContractId, address: customerAddress }
     });
 
-    if (openData.subscriptionContractUpdate.userErrors.length > 0) {
+    const fetchErrors =
+      fetchData.subscriptionContractFetchDeliveryOptions.userErrors;
+    if (fetchErrors.length > 0) {
+      return { ok: false, error: firstUserError(fetchErrors) };
+    }
+
+    const result =
+      fetchData.subscriptionContractFetchDeliveryOptions.deliveryOptionsResult;
+    if (!result) {
+      return { ok: false, error: 'No delivery options available.' };
+    }
+    if (result.__typename === 'SubscriptionDeliveryOptionsResultFailure') {
       return {
         ok: false,
-        error: firstUserError(openData.subscriptionContractUpdate.userErrors)
+        error: result.message ?? "We can't ship to this address."
       };
     }
-    const draftId = openData.subscriptionContractUpdate.draft?.id;
-    if (!draftId) {
-      return { ok: false, error: 'Could not open subscription for editing.' };
-    }
 
-    const applied = await apply(draftId);
-    if (!applied.ok) return applied;
-
-    const commitData = await adminQuery<{
-      subscriptionDraftCommit: {
+    const selectData = await customerQuery<{
+      subscriptionContractSelectDeliveryMethod: {
         contract: { id: string } | null;
         userErrors: UserError[];
       };
     }>({
-      query: DRAFT_COMMIT_MUTATION,
-      variables: { draftId }
+      query: SELECT_DELIVERY_METHOD_MUTATION,
+      variables: {
+        id: subscriptionContractId,
+        input: { shipping: { shippingAddress: customerAddress } },
+        token: result.token
+      }
     });
 
-    if (commitData.subscriptionDraftCommit.userErrors.length > 0) {
-      return {
-        ok: false,
-        error: firstUserError(commitData.subscriptionDraftCommit.userErrors)
-      };
+    const selectErrors =
+      selectData.subscriptionContractSelectDeliveryMethod.userErrors;
+    if (selectErrors.length > 0) {
+      return { ok: false, error: firstUserError(selectErrors) };
     }
 
     revalidateSubscriptionPaths();
@@ -381,63 +378,13 @@ async function withDraft(
     return {
       ok: false,
       error:
-        e instanceof AdminAPIError
+        e instanceof CustomerAccountAPIError
           ? e.message
           : e instanceof Error
             ? e.message
-            : 'Failed to update subscription'
+            : 'Failed to update shipping address'
     };
   }
-}
-
-async function updateDraft(
-  draftId: string,
-  input: Record<string, unknown>
-): Promise<SubscriptionActionResult> {
-  const data = await adminQuery<{
-    subscriptionDraftUpdate: {
-      draft: { id: string } | null;
-      userErrors: UserError[];
-    };
-  }>({
-    query: DRAFT_UPDATE_MUTATION,
-    variables: { draftId, input }
-  });
-
-  if (data.subscriptionDraftUpdate.userErrors.length > 0) {
-    return {
-      ok: false,
-      error: firstUserError(data.subscriptionDraftUpdate.userErrors)
-    };
-  }
-  return { ok: true };
-}
-
-export async function updateSubscriptionShippingAddress(
-  subscriptionContractId: string,
-  address: SubscriptionShippingAddressInput
-): Promise<SubscriptionActionResult> {
-  // Admin API's MailingAddressInput uses ISO `provinceCode` and
-  // `countryCode`, plus `phone` (not `phoneNumber`).
-  const mailingAddress = {
-    firstName: address.firstName,
-    lastName: address.lastName,
-    address1: address.address1,
-    address2: address.address2,
-    city: address.city,
-    provinceCode: address.zoneCode,
-    zip: address.zip,
-    countryCode: address.territoryCode,
-    phone: address.phoneNumber
-  };
-
-  return withDraft(subscriptionContractId, (draftId) =>
-    updateDraft(draftId, {
-      deliveryMethod: {
-        shipping: { address: mailingAddress }
-      }
-    })
-  );
 }
 
 export async function skipBillingCycle(
