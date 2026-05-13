@@ -1,15 +1,19 @@
 import {
   ArrowLeft01Icon,
+  Invoice01Icon,
   MapPinIcon,
   Package01Icon,
-  ReceiptDollarIcon
+  ReceiptDollarIcon,
+  TruckDeliveryIcon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
+import { ExternalLink } from 'lucide-react';
 import { notFound, redirect } from 'next/navigation';
 import { AccountCard } from '@/components/account/account-card';
 import { AddressBlock } from '@/components/account/address-block';
 import { OrderStatusBadge } from '@/components/account/order-status-badge';
 import { PageHeader } from '@/components/account/page-header';
+import { ReorderButton } from '@/components/account/reorder-button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
@@ -31,6 +35,7 @@ const ORDER_QUERY = `
           processedAt
           financialStatus
           fulfillmentStatus
+          statusPageUrl
           totalPrice {
             amount
             currencyCode
@@ -58,11 +63,22 @@ const ORDER_QUERY = `
             territoryCode
             phoneNumber
           }
+          fulfillments(first: 10) {
+            nodes {
+              status
+              trackingInformation {
+                number
+                url
+                company
+              }
+            }
+          }
           lineItems(first: 50) {
             nodes {
               title
               quantity
               variantTitle
+              variantId
               image {
                 url
                 altText
@@ -90,12 +106,24 @@ interface MoneyV2 {
   currencyCode: string;
 }
 
+interface TrackingInfo {
+  number: string | null;
+  url: string | null;
+  company: string | null;
+}
+
+interface FulfillmentNode {
+  status: string | null;
+  trackingInformation: TrackingInfo[];
+}
+
 interface OrderDetail {
   id: string;
   name: string;
   processedAt: string;
   financialStatus: string | null;
   fulfillmentStatus: string | null;
+  statusPageUrl: string | null;
   totalPrice: MoneyV2;
   subtotal: MoneyV2 | null;
   totalTax: MoneyV2 | null;
@@ -111,11 +139,15 @@ interface OrderDetail {
     territoryCode: string | null;
     phoneNumber: string | null;
   } | null;
+  fulfillments: {
+    nodes: FulfillmentNode[];
+  };
   lineItems: {
     nodes: Array<{
       title: string;
       quantity: number;
       variantTitle: string | null;
+      variantId: string | null;
       image: {
         url: string;
         altText: string | null;
@@ -221,6 +253,24 @@ export default async function OrderDetailPage({
     0
   );
 
+  const tracking = order.fulfillments.nodes
+    .flatMap((f) =>
+      f.trackingInformation.map((t) => ({
+        ...t,
+        fulfillmentStatus: f.status
+      }))
+    )
+    .filter((t) => t.number || t.url);
+
+  const reorderItems = order.lineItems.nodes
+    .filter((li): li is typeof li & { variantId: string } =>
+      Boolean(li.variantId)
+    )
+    .map((li) => ({
+      variantId: li.variantId,
+      quantity: li.quantity
+    }));
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -254,7 +304,78 @@ export default async function OrderDetailPage({
             </div>
           }
         />
+
+        <div className="flex flex-wrap gap-3">
+          {reorderItems.length > 0 && <ReorderButton items={reorderItems} />}
+          {order.statusPageUrl && (
+            <a
+              href={order.statusPageUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-10 px-6 lg:px-8 xl:px-12 rounded-lg border border-blue-ruin text-blue-ruin font-bold text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 hover:bg-blue-ruin/5 transition-colors"
+            >
+              <HugeiconsIcon
+                icon={Invoice01Icon}
+                size={16}
+                strokeWidth={1.75}
+                className="mr-2"
+                aria-hidden="true"
+              />
+              View receipt
+              <ExternalLink
+                aria-hidden="true"
+                className="w-3.5 h-3.5 ml-1.5"
+                strokeWidth={2}
+              />
+            </a>
+          )}
+        </div>
       </div>
+
+      {tracking.length > 0 && (
+        <AccountCard
+          icon={TruckDeliveryIcon}
+          eyebrow="Tracking"
+          title={
+            tracking.length === 1
+              ? 'Track your shipment'
+              : 'Track your shipments'
+          }
+        >
+          <ul className="flex flex-col list-none p-0 gap-3">
+            {tracking.map((t, idx) => (
+              <li
+                key={idx}
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-blue-ruin/15 bg-cerulean/15 p-4"
+              >
+                <div className="flex flex-col gap-0.5 min-w-0">
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em] text-account-subtle">
+                    {t.company ?? 'Carrier'}
+                  </span>
+                  <span className="font-mono text-sm font-semibold text-blue-ruin break-all">
+                    {t.number ?? '—'}
+                  </span>
+                </div>
+                {t.url && (
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-blue-ruin text-sugar-milk font-bold text-sm shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 hover:bg-blue-ruin/90 transition-colors"
+                  >
+                    Track
+                    <ExternalLink
+                      aria-hidden="true"
+                      className="w-3.5 h-3.5 ml-1.5"
+                      strokeWidth={2}
+                    />
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </AccountCard>
+      )}
 
       <AccountCard
         icon={Package01Icon}

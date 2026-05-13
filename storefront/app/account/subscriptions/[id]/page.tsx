@@ -1,15 +1,23 @@
 import {
   ArrowLeft01Icon,
+  CalendarSetting02Icon,
+  CreditCardIcon,
   MapPinIcon,
   Package01Icon,
   Settings02Icon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { notFound, redirect } from 'next/navigation';
+import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/actions';
 import { AccountCard } from '@/components/account/account-card';
 import { AddressBlock } from '@/components/account/address-block';
 import { PageHeader } from '@/components/account/page-header';
+import {
+  detectPreorderLines,
+  PreorderBanner
+} from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
+import { SubscriptionFrequencyForm } from '@/components/account/subscription-frequency-form';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
@@ -30,6 +38,14 @@ const SUBSCRIPTION_QUERY = `
           status
           nextBillingDate
           createdAt
+          billingPolicy {
+            interval
+            intervalCount
+          }
+          deliveryPolicy {
+            interval
+            intervalCount
+          }
           lines(first: 50) {
             nodes {
               title
@@ -70,11 +86,18 @@ interface SubscriptionLine {
   currentPrice: MoneyV2 | null;
 }
 
+interface DeliveryFrequency {
+  interval: 'WEEK' | 'MONTH' | 'YEAR' | 'DAY';
+  intervalCount: number;
+}
+
 interface SubscriptionContract {
   id: string;
   status: string;
   nextBillingDate: string | null;
   createdAt: string;
+  billingPolicy: DeliveryFrequency | null;
+  deliveryPolicy: DeliveryFrequency | null;
   lines: { nodes: SubscriptionLine[] };
   deliveryAddress: {
     firstName: string | null;
@@ -205,6 +228,8 @@ export default async function SubscriptionDetailPage({
         />
       </div>
 
+      <PreorderBanner lines={detectPreorderLines(contract.lines.nodes)} />
+
       <AccountCard icon={Package01Icon} eyebrow="Items" title="What ships">
         <ul className="flex flex-col list-none p-0">
           {contract.lines.nodes.map((line, idx) => (
@@ -239,6 +264,16 @@ export default async function SubscriptionDetailPage({
             `${contract.deliveryAddress.firstName ?? ''} ${contract.deliveryAddress.lastName ?? ''}`.trim() ||
             'Delivery address'
           }
+          action={
+            contract.status === 'ACTIVE' || contract.status === 'PAUSED' ? (
+              <Link
+                href={`/account/subscriptions/${encodedId}/address`}
+                className="text-sm font-semibold text-blue-ruin underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
+              >
+                Edit
+              </Link>
+            ) : null
+          }
         >
           <AddressBlock address={contract.deliveryAddress} showName={false} />
         </AccountCard>
@@ -254,6 +289,59 @@ export default async function SubscriptionDetailPage({
           status={contract.status}
         />
       </AccountCard>
+
+      {contract.status === 'ACTIVE' && (
+        <AccountCard
+          icon={CalendarSetting02Icon}
+          eyebrow="Frequency"
+          title="How often it ships"
+        >
+          <SubscriptionFrequencyForm
+            contractId={contract.id}
+            currentValue={matchFrequencyValue(contract.deliveryPolicy)}
+          />
+        </AccountCard>
+      )}
+
+      {(contract.status === 'ACTIVE' || contract.status === 'PAUSED') &&
+        shopHostedManageUrl(numericId) && (
+          <AccountCard
+            icon={CreditCardIcon}
+            eyebrow="Payment method"
+            title="Update card on file"
+          >
+            <p className="text-sm text-blue-ruin/85 max-w-prose">
+              Payment details are handled securely by Shopify. Use the link
+              below to update the card on file for this subscription.
+            </p>
+            <div>
+              <a
+                href={shopHostedManageUrl(numericId) ?? '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center h-10 px-6 lg:px-8 xl:px-12 rounded-lg bg-blue-ruin text-sugar-milk font-bold text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 transition-colors hover:bg-blue-ruin/90"
+              >
+                Update on Shopify
+              </a>
+            </div>
+          </AccountCard>
+        )}
     </>
   );
+}
+
+function shopHostedManageUrl(numericContractId: string): string | null {
+  const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID;
+  if (!shopId) return null;
+  return `https://shopify.com/${shopId}/account/subscriptions/${numericContractId}`;
+}
+
+function matchFrequencyValue(
+  policy: DeliveryFrequency | null
+): string | undefined {
+  if (!policy) return undefined;
+  return FREQUENCY_OPTIONS.find(
+    (o) =>
+      o.interval === policy.interval && o.intervalCount === policy.intervalCount
+  )?.value;
 }

@@ -66,6 +66,93 @@ const CANCEL_MUTATION = `
   }
 `;
 
+const NEXT_CYCLE_QUERY = `
+  query NextBillingCycle($idQuery: String!) {
+    customer {
+      subscriptionContracts(first: 1, query: $idQuery) {
+        nodes {
+          id
+          nextBillingDate
+          billingCycles(first: 8) {
+            nodes {
+              cycleIndex
+              cycleStartAt
+              billingAttemptExpectedDate
+              skipped
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+const SKIP_CYCLE_MUTATION = `
+  mutation SkipBillingCycle(
+    $billingCycleInput: SubscriptionBillingCycleInput!
+    $skip: Boolean!
+  ) {
+    subscriptionBillingCycleSkip(
+      billingCycleInput: $billingCycleInput
+      skip: $skip
+    ) {
+      billingCycle {
+        cycleIndex
+        skipped
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const OPEN_DRAFT_MUTATION = `
+  mutation OpenSubscriptionDraft($id: ID!) {
+    subscriptionContractUpdate(subscriptionContractId: $id) {
+      draft {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const DRAFT_UPDATE_MUTATION = `
+  mutation UpdateSubscriptionDraft(
+    $draftId: ID!
+    $input: SubscriptionDraftInput!
+  ) {
+    subscriptionDraftUpdate(draftId: $draftId, input: $input) {
+      draft {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+const DRAFT_COMMIT_MUTATION = `
+  mutation CommitSubscriptionDraft($draftId: ID!) {
+    subscriptionDraftCommit(draftId: $draftId) {
+      contract {
+        id
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`;
+
 function firstUserError(errors: UserError[]): string {
   return errors[0]?.message ?? 'Something went wrong';
 }
@@ -147,9 +234,33 @@ export async function resumeSubscription(
   }
 }
 
+export const CANCELLATION_REASONS = [
+  { value: 'too_expensive', label: 'Too expensive' },
+  { value: 'too_frequent', label: 'Shipments come too often' },
+  { value: 'not_frequent_enough', label: "Shipments don't come often enough" },
+  { value: 'pause_too_long', label: 'I have enough for now' },
+  { value: 'flavor_preference', label: 'I want to try different flavors' },
+  { value: 'quality', label: 'Quality issue' },
+  { value: 'other', label: 'Other' }
+] as const;
+
+export type CancellationReasonValue =
+  (typeof CANCELLATION_REASONS)[number]['value'];
+
+export interface CancelSubscriptionInput {
+  subscriptionContractId: string;
+  reason: CancellationReasonValue;
+  notes?: string;
+}
+
+function reasonLabel(value: CancellationReasonValue): string {
+  return CANCELLATION_REASONS.find((r) => r.value === value)?.label ?? value;
+}
+
 export async function cancelSubscription(
-  subscriptionContractId: string
+  input: CancelSubscriptionInput
 ): Promise<SubscriptionActionResult> {
+  const { subscriptionContractId, reason, notes } = input;
   try {
     const data = await customerQuery<{
       subscriptionContractCancel: {
@@ -168,6 +279,16 @@ export async function cancelSubscription(
       };
     }
 
+    // Customer Account API's subscriptionContractCancel does not accept a
+    // reason — log here so it can be forwarded to analytics (Klaviyo) when
+    // the Phase 7 event wiring lands.
+    console.info('[subscription cancelled]', {
+      contractId: subscriptionContractId,
+      reason,
+      reasonLabel: reasonLabel(reason),
+      notes: notes?.trim() || null
+    });
+
     revalidateSubscriptionPaths();
     return { ok: true };
   } catch (e) {
@@ -179,6 +300,290 @@ export async function cancelSubscription(
           : e instanceof Error
             ? e.message
             : 'Failed to cancel subscription'
+    };
+  }
+}
+
+interface BillingCycleNode {
+  cycleIndex: number;
+  cycleStartAt: string;
+  billingAttemptExpectedDate: string | null;
+  skipped: boolean;
+}
+
+async function findNextUnskippedCycle(
+  contractGid: string
+): Promise<{ cycle: BillingCycleNode | null; error?: string }> {
+  // contractGid is something like "gid://shopify/SubscriptionContract/12345"
+  const numericId = contractGid.split('/').pop() ?? contractGid;
+  try {
+    const data = await customerQuery<{
+      customer: {
+        subscriptionContracts: {
+          nodes: Array<{
+            id: string;
+            nextBillingDate: string | null;
+            billingCycles: { nodes: BillingCycleNode[] };
+          }>;
+        };
+      } | null;
+    }>({
+      query: NEXT_CYCLE_QUERY,
+      variables: { idQuery: `id:${numericId}` }
+    });
+
+    const contract = data.customer?.subscriptionContracts.nodes[0];
+    if (!contract) {
+      return { cycle: null, error: 'Subscription not found' };
+    }
+
+    const now = Date.now();
+    const upcoming = contract.billingCycles.nodes
+      .filter((c) => !c.skipped)
+      .filter((c) => new Date(c.cycleStartAt).getTime() >= now)
+      .sort((a, b) => a.cycleIndex - b.cycleIndex)[0];
+
+    return { cycle: upcoming ?? null };
+  } catch (e) {
+    return {
+      cycle: null,
+      error:
+        e instanceof CustomerAccountAPIError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : 'Failed to load billing cycles'
+    };
+  }
+}
+
+export type FrequencyInterval = 'WEEK' | 'MONTH';
+
+export interface FrequencyOption {
+  value: string;
+  label: string;
+  interval: FrequencyInterval;
+  intervalCount: number;
+}
+
+export const FREQUENCY_OPTIONS: FrequencyOption[] = [
+  { value: 'week-1', label: 'Every week', interval: 'WEEK', intervalCount: 1 },
+  {
+    value: 'week-2',
+    label: 'Every 2 weeks',
+    interval: 'WEEK',
+    intervalCount: 2
+  },
+  {
+    value: 'month-1',
+    label: 'Every month',
+    interval: 'MONTH',
+    intervalCount: 1
+  },
+  {
+    value: 'month-2',
+    label: 'Every 2 months',
+    interval: 'MONTH',
+    intervalCount: 2
+  },
+  {
+    value: 'month-3',
+    label: 'Every 3 months',
+    interval: 'MONTH',
+    intervalCount: 3
+  }
+];
+
+async function withDraft(
+  subscriptionContractId: string,
+  apply: (draftId: string) => Promise<SubscriptionActionResult>
+): Promise<SubscriptionActionResult> {
+  try {
+    const openData = await customerQuery<{
+      subscriptionContractUpdate: {
+        draft: { id: string } | null;
+        userErrors: UserError[];
+      };
+    }>({
+      query: OPEN_DRAFT_MUTATION,
+      variables: { id: subscriptionContractId }
+    });
+
+    if (openData.subscriptionContractUpdate.userErrors.length > 0) {
+      return {
+        ok: false,
+        error: firstUserError(openData.subscriptionContractUpdate.userErrors)
+      };
+    }
+    const draftId = openData.subscriptionContractUpdate.draft?.id;
+    if (!draftId) {
+      return { ok: false, error: 'Could not open subscription for editing.' };
+    }
+
+    const applied = await apply(draftId);
+    if (!applied.ok) return applied;
+
+    const commitData = await customerQuery<{
+      subscriptionDraftCommit: {
+        contract: { id: string } | null;
+        userErrors: UserError[];
+      };
+    }>({
+      query: DRAFT_COMMIT_MUTATION,
+      variables: { draftId }
+    });
+
+    if (commitData.subscriptionDraftCommit.userErrors.length > 0) {
+      return {
+        ok: false,
+        error: firstUserError(commitData.subscriptionDraftCommit.userErrors)
+      };
+    }
+
+    revalidateSubscriptionPaths();
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error:
+        e instanceof CustomerAccountAPIError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : 'Failed to update subscription'
+    };
+  }
+}
+
+async function updateDraft(
+  draftId: string,
+  input: Record<string, unknown>
+): Promise<SubscriptionActionResult> {
+  const data = await customerQuery<{
+    subscriptionDraftUpdate: {
+      draft: { id: string } | null;
+      userErrors: UserError[];
+    };
+  }>({
+    query: DRAFT_UPDATE_MUTATION,
+    variables: { draftId, input }
+  });
+
+  if (data.subscriptionDraftUpdate.userErrors.length > 0) {
+    return {
+      ok: false,
+      error: firstUserError(data.subscriptionDraftUpdate.userErrors)
+    };
+  }
+  return { ok: true };
+}
+
+export interface SubscriptionShippingAddressInput {
+  firstName?: string;
+  lastName?: string;
+  address1?: string;
+  address2?: string;
+  city?: string;
+  zoneCode?: string;
+  zip?: string;
+  territoryCode?: string;
+  phoneNumber?: string;
+}
+
+export async function updateSubscriptionShippingAddress(
+  subscriptionContractId: string,
+  address: SubscriptionShippingAddressInput
+): Promise<SubscriptionActionResult> {
+  // SubscriptionMailingAddressInput uses `province` (zone) + `country` (code).
+  // Map our address fields to that shape.
+  const mailingAddress = {
+    firstName: address.firstName,
+    lastName: address.lastName,
+    address1: address.address1,
+    address2: address.address2,
+    city: address.city,
+    province: address.zoneCode,
+    zip: address.zip,
+    country: address.territoryCode,
+    phone: address.phoneNumber
+  };
+
+  return withDraft(subscriptionContractId, (draftId) =>
+    updateDraft(draftId, {
+      deliveryMethod: {
+        shipping: { address: mailingAddress }
+      }
+    })
+  );
+}
+
+export async function changeSubscriptionFrequency(
+  subscriptionContractId: string,
+  optionValue: string
+): Promise<SubscriptionActionResult> {
+  const option = FREQUENCY_OPTIONS.find((o) => o.value === optionValue);
+  if (!option) {
+    return { ok: false, error: 'Unknown frequency option.' };
+  }
+
+  return withDraft(subscriptionContractId, (draftId) =>
+    updateDraft(draftId, {
+      deliveryPolicy: {
+        interval: option.interval,
+        intervalCount: option.intervalCount
+      },
+      billingPolicy: {
+        interval: option.interval,
+        intervalCount: option.intervalCount
+      }
+    })
+  );
+}
+
+export async function skipNextBillingCycle(
+  subscriptionContractId: string
+): Promise<SubscriptionActionResult> {
+  const { cycle, error } = await findNextUnskippedCycle(subscriptionContractId);
+  if (error) return { ok: false, error };
+  if (!cycle) {
+    return { ok: false, error: 'No upcoming charge to skip.' };
+  }
+
+  try {
+    const data = await customerQuery<{
+      subscriptionBillingCycleSkip: {
+        billingCycle: { cycleIndex: number; skipped: boolean } | null;
+        userErrors: UserError[];
+      };
+    }>({
+      query: SKIP_CYCLE_MUTATION,
+      variables: {
+        billingCycleInput: {
+          contractId: subscriptionContractId,
+          selector: { index: cycle.cycleIndex }
+        },
+        skip: true
+      }
+    });
+
+    if (data.subscriptionBillingCycleSkip.userErrors.length > 0) {
+      return {
+        ok: false,
+        error: firstUserError(data.subscriptionBillingCycleSkip.userErrors)
+      };
+    }
+
+    revalidateSubscriptionPaths();
+    return { ok: true };
+  } catch (e) {
+    return {
+      ok: false,
+      error:
+        e instanceof CustomerAccountAPIError
+          ? e.message
+          : e instanceof Error
+            ? e.message
+            : 'Failed to skip charge'
     };
   }
 }

@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import {
@@ -75,21 +75,39 @@ const addressSchema = z.object({
 
 type AddressFormValues = z.infer<typeof addressSchema>;
 
+export type AddressFormResult =
+  | { ok: true }
+  | { ok: false; error?: string; fieldErrors?: Record<string, string> };
+
 interface AddressFormProps {
   mode: 'create' | 'edit';
   addressId?: string;
   defaultValues?: Partial<Omit<AddressFormValues, 'isDefault'>>;
   isCurrentDefault?: boolean;
+  showDefaultToggle?: boolean;
+  submitLabel?: string;
+  cancelHref?: string;
+  successHref?: string;
+  customSubmit?: (
+    address: AddressInput,
+    isDefault: boolean
+  ) => Promise<AddressFormResult>;
 }
 
 export function AddressForm({
   mode,
   addressId,
   defaultValues,
-  isCurrentDefault = false
+  isCurrentDefault = false,
+  showDefaultToggle = true,
+  submitLabel,
+  cancelHref = '/account/addresses',
+  successHref = '/account/addresses',
+  customSubmit
 }: AddressFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [formError, setFormError] = useState<string | null>(null);
 
   const form = useForm<AddressFormValues>({
     resolver: zodResolver(addressSchema),
@@ -121,14 +139,16 @@ export function AddressForm({
       phoneNumber: rest.phoneNumber || undefined
     };
 
+    setFormError(null);
     startTransition(async () => {
-      const result =
-        mode === 'create' || !addressId
+      const result: AddressFormResult = customSubmit
+        ? await customSubmit(payload, isDefault)
+        : mode === 'create' || !addressId
           ? await createAddress(payload, isDefault)
           : await updateAddress(addressId, payload, isDefault);
 
       if (result.ok) {
-        router.push('/account/addresses');
+        router.push(successHref);
         router.refresh();
         return;
       }
@@ -139,6 +159,9 @@ export function AddressForm({
             form.setError(field as keyof AddressFormValues, { message });
           }
         }
+      }
+      if (result.error) {
+        setFormError(result.error);
       }
     });
   }
@@ -342,32 +365,40 @@ export function AddressForm({
           />
         </fieldset>
 
-        <FormField
-          control={form.control}
-          name="isDefault"
-          render={({ field }) => (
-            <FormItem className="flex items-start gap-3 space-y-0 rounded-2xl border border-blue-ruin/15 bg-cerulean/15 p-4">
-              <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={(checked) =>
-                    field.onChange(checked === true)
-                  }
-                  disabled={isPending || isCurrentDefault}
-                  className="mt-0.5"
-                />
-              </FormControl>
-              <div className="flex flex-col gap-0.5">
-                <FormLabel className="text-blue-ruin font-semibold !mt-0 cursor-pointer">
-                  Use as my default address
-                </FormLabel>
-                <span className="text-xs text-blue-ruin/70">
-                  We’ll preselect this at checkout.
-                </span>
-              </div>
-            </FormItem>
-          )}
-        />
+        {showDefaultToggle && (
+          <FormField
+            control={form.control}
+            name="isDefault"
+            render={({ field }) => (
+              <FormItem className="flex items-start gap-3 space-y-0 rounded-2xl border border-blue-ruin/15 bg-cerulean/15 p-4">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(checked) =>
+                      field.onChange(checked === true)
+                    }
+                    disabled={isPending || isCurrentDefault}
+                    className="mt-0.5"
+                  />
+                </FormControl>
+                <div className="flex flex-col gap-0.5">
+                  <FormLabel className="text-blue-ruin font-semibold !mt-0 cursor-pointer">
+                    Use as my default address
+                  </FormLabel>
+                  <span className="text-xs text-blue-ruin/70">
+                    We’ll preselect this at checkout.
+                  </span>
+                </div>
+              </FormItem>
+            )}
+          />
+        )}
+
+        {formError && (
+          <p role="alert" className="text-sm font-medium text-red-700">
+            {formError}
+          </p>
+        )}
 
         <div className="flex flex-wrap gap-3 pt-1">
           <Button
@@ -381,6 +412,8 @@ export function AddressForm({
           >
             {isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
+            ) : submitLabel ? (
+              submitLabel
             ) : mode === 'create' ? (
               'Add address'
             ) : (
@@ -394,7 +427,7 @@ export function AddressForm({
             padding="fat"
             hoverAnimation={false}
             disabled={isPending}
-            onClick={() => router.push('/account/addresses')}
+            onClick={() => router.push(cancelHref)}
             className="h-10"
           >
             Cancel

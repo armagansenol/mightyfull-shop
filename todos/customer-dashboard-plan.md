@@ -1,7 +1,7 @@
 # Customer Dashboard — Native Next.js Implementation Plan
 
-**Status:** In progress. Phases 1, 2, 3 (mostly), 4 (mostly), and 5 (partially) are shipped. Header and cancellation-policy links already point at the on-site `/account` tree. Remaining work is mostly Subscriptions advanced actions, a few Orders/Profile gaps, and launch polish.
-**Drafted:** 2026-05-07 · **Last updated:** 2026-05-12
+**Status:** In progress. Phases 1–5 feature work shipped. Header and cancellation-policy links already point at the on-site `/account` tree. Phase 6 (a11y, E2E, observability) and Phase 7 (launch) are the remaining buckets. Email change moved to Backlog. Test account: armagansnl@gmail.com (Shopify Payments live, one-time + subscription orders placed).
+**Drafted:** 2026-05-07 · **Last updated:** 2026-05-13
 
 ---
 
@@ -47,7 +47,7 @@ Owner: store admin.
 - [x] Redirect URIs registered (`/account/callback` on localhost + prod + Vercel previews)
 - [x] Shopify Subscriptions app installed
 - [x] Env vars set in Vercel + `.env.local` (`SHOPIFY_CUSTOMER_ACCOUNT_*`, `NEXT_PUBLIC_SHOPIFY_SHOP_ID`)
-- [ ] Subscription product in dev store for testing (verify still available for ongoing QA)
+- [x] Subscription product in dev store for testing (Shopify Payments live; one-time + subscription test orders placed with armagansnl@gmail.com)
 
 ---
 
@@ -77,7 +77,7 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 
 ---
 
-## Phase 2 — Account shell + dashboard ✅ (mostly)
+## Phase 2 — Account shell + dashboard ✅
 
 ### Tasks
 - [x] `app/account/layout.tsx` with desktop sidebar nav (Overview, Orders, Subscriptions, Addresses, Profile, Logout) — `components/account/account-sidebar.tsx`
@@ -87,7 +87,7 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
   - [x] `account-card.tsx`
   - [x] `account-empty-state.tsx`
   - [x] `account-skeleton.tsx` (+ per-route `loading.tsx` files)
-  - [ ] `account-error-boundary.tsx`
+  - [x] `account-error-boundary.tsx` + per-segment `error.tsx` files
 
 ---
 
@@ -95,7 +95,6 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 
 ### Tasks
 - [x] `app/account/profile/page.tsx` — edit first/last name, phone (`customerUpdate`)
-- [ ] Email change with verification flow (Shopify sends email)
 - [x] `app/account/addresses/page.tsx` — list, default badge, edit/delete
 - [x] `app/account/addresses/new/page.tsx` — form
 - [x] `app/account/addresses/[id]/edit/page.tsx` — form
@@ -105,23 +104,23 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 
 ---
 
-## Phase 4 — Orders ✅ (mostly)
+## Phase 4 — Orders ✅
 
 ### Tasks
 - [x] `app/account/orders/page.tsx` — list with status badge, date, total
 - [x] `app/account/orders/[id]/page.tsx` — number, date, status, line items, fulfillment, addresses, totals
 - [x] Status badge mapping (`order-status-badge.tsx`)
 - [x] Empty state when no orders
-- [ ] Cursor pagination (10/page)
-- [ ] Status filter (open, fulfilled, cancelled)
-- [ ] Search by order number
-- [ ] Tracking number + carrier link in order detail
-- [ ] Re-order CTA — push line items into the Hydrogen cart
-- [ ] Invoice / receipt download link (Shopify provides the URL on the order)
+- [x] Cursor pagination (10/page) — uses `customer.orders.pageInfo.endCursor`
+- [x] Status filter (open, fulfilled, cancelled) — pills + URL params
+- [x] Search by order number — `name:#<n>` query
+- [x] Tracking number + carrier link in order detail — `order.fulfillments(first: 10).trackingInformation`
+- [x] Re-order CTA — pushes order line variants into the Hydrogen cart (`<ReorderButton />`)
+- [x] Invoice / receipt download link — links to `order.statusPageUrl`
 
 ---
 
-## Phase 5 — Subscriptions ✅ (partial)
+## Phase 5 — Subscriptions ✅
 
 **Engine:** Shopify Subscriptions.
 
@@ -130,13 +129,13 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - [x] `app/account/subscriptions/[id]/page.tsx` — contract detail
 - [x] Pause → `subscriptionContractPause`
 - [x] Resume → `subscriptionContractActivate`
-- [x] Cancel → confirmation dialog, mutation `subscriptionContractCancel` (no reason capture yet)
-- [ ] Capture cancellation reason (radio + textarea) before firing the mutation
-- [ ] Skip next cycle → `subscriptionBillingCycleSkip`
-- [ ] Change frequency → `subscriptionContractUpdate`
-- [ ] Edit shipping address (reuse address form from Phase 3)
-- [ ] Edit payment method — redirect to Shopify-hosted payment update (PCI scope stays with Shopify)
-- [ ] Pre-order edge case: surface ship date prominently when any line item is pre-order
+- [x] Cancel → confirmation dialog, mutation `subscriptionContractCancel`
+- [x] Capture cancellation reason (radio + optional notes) before firing the mutation; logged for downstream Klaviyo wiring in Phase 7
+- [x] Skip next cycle → queries upcoming `billingCycles`, calls `subscriptionBillingCycleSkip`
+- [x] Change frequency → draft flow (`subscriptionContractUpdate` → `subscriptionDraftUpdate` → `subscriptionDraftCommit`) with delivery + billing policy
+- [x] Edit shipping address — `/account/subscriptions/[id]/address` reuses `AddressForm` via the same draft flow
+- [x] Edit payment method — external link to Shopify-hosted manage page (`https://shopify.com/{shopId}/account/subscriptions/{id}`)
+- [x] Pre-order surfacing — heuristic detection on line title/variantTitle; banner with extracted ship date if present
 - [x] `components/cancellation-policy-dialog/index.tsx` — "account dashboard" copy now links to `/account/subscriptions`
 
 ---
@@ -181,16 +180,16 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - `proxy.ts` — auth gate for `/account/*`
 - `app/account/layout.tsx`
 - `app/account/page.tsx`
-- `app/account/loading.tsx`
+- `app/account/loading.tsx`, `error.tsx`
 - `app/account/login/route.ts`
 - `app/account/callback/route.ts`
 - `app/account/logout/route.ts`
-- `app/account/orders/page.tsx`, `[id]/page.tsx`, `loading.tsx`
-- `app/account/profile/page.tsx`, `actions.ts`, `loading.tsx`
-- `app/account/addresses/page.tsx`, `new/page.tsx`, `[id]/edit/page.tsx`, `actions.ts`, `loading.tsx`
-- `app/account/subscriptions/page.tsx`, `[id]/page.tsx`, `actions.ts`, `loading.tsx`
+- `app/account/orders/page.tsx`, `[id]/page.tsx`, `loading.tsx`, `error.tsx`
+- `app/account/profile/page.tsx`, `actions.ts`, `loading.tsx`, `error.tsx`
+- `app/account/addresses/page.tsx`, `new/page.tsx`, `[id]/edit/page.tsx`, `actions.ts`, `loading.tsx`, `error.tsx`
+- `app/account/subscriptions/page.tsx`, `[id]/page.tsx`, `[id]/address/page.tsx`, `actions.ts`, `loading.tsx`, `error.tsx`
 - `lib/shopify/customer-account/{client,config,cookies,oauth,session,tokens,types}.ts`
-- `components/account/{account-card,account-empty-state,account-sidebar,account-skeleton,account-theme-toggle,address-block,address-form,address-list,card-action-link,order-status-badge,page-header,profile-form,subscription-actions,subscription-status-badge}.tsx`
+- `components/account/{account-card,account-empty-state,account-error-boundary,account-sidebar,account-skeleton,account-theme-toggle,address-block,address-form,address-list,card-action-link,order-status-badge,orders-filters,page-header,preorder-banner,profile-form,reorder-button,subscription-actions,subscription-address-form-client,subscription-frequency-form,subscription-status-badge}.tsx`
 - `tests/e2e/account.spec.ts`
 
 ### storefront — modified
@@ -199,7 +198,6 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 - `.env.local`, Vercel env — auth vars added
 
 ### still missing
-- `components/account/account-error-boundary.tsx`
 - `app/robots.ts`
 
 ---
@@ -207,6 +205,10 @@ The four remaining auth follow-ups (`use-customer` client hook, header logged-in
 ## Backlog
 
 Tasks that are not blocking and were intentionally deferred. Pull from here only if the listed trigger applies.
+
+### Phase 3 profile follow-ups
+
+- **Email change with verification flow.** Shopify sends a verification email when the customer changes their account email; we'd need a UI for the request, a "check your email" confirmation state, and handling of the post-verification return. Deferred 2026-05-13. *Trigger to pick up:* a customer asks to change their email, or support starts handling these manually.
 
 ### Phase 1 auth follow-ups
 
@@ -221,10 +223,9 @@ Decision (2026-05-12): the current server-side-only auth implementation is consi
 
 ## Open questions
 
-1. Email change flow: mirror Shopify's verification UX in our UI, or just show "check your email"?
-2. Order returns: in-app return request flow (~2d extra) or keep Shopify-hosted?
-3. Cancellation reason capture: free-form textarea, or fixed radio list + optional notes?
-4. Soft-launch strategy: feature flag with cookie cohort, or just ship?
+1. Order returns: in-app return request flow (~2d extra) or keep Shopify-hosted?
+2. Cancellation reason capture: free-form textarea, or fixed radio list + optional notes?
+3. Soft-launch strategy: feature flag with cookie cohort, or just ship?
 
 ---
 
