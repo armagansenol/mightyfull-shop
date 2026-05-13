@@ -162,6 +162,7 @@ function firstUserError(errors: UserError[]): string {
 function revalidateSubscriptionPaths() {
   revalidatePath('/account');
   revalidatePath('/account/subscriptions');
+  revalidatePath('/account/subscriptions/[id]', 'page');
 }
 
 export async function pauseSubscription(
@@ -427,9 +428,9 @@ export async function changeSubscriptionFrequency(
   );
 }
 
-export async function skipNextBillingCycle(
+export async function skipBillingCycle(
   subscriptionContractId: string,
-  nextBillingDate: string
+  cycleIndex: number
 ): Promise<SubscriptionActionResult> {
   try {
     const data = await customerQuery<{
@@ -442,7 +443,7 @@ export async function skipNextBillingCycle(
       variables: {
         billingCycleInput: {
           contractId: subscriptionContractId,
-          selector: { date: nextBillingDate }
+          selector: { index: cycleIndex }
         }
       }
     });
@@ -471,7 +472,7 @@ export async function skipNextBillingCycle(
 
 export async function unskipBillingCycle(
   subscriptionContractId: string,
-  date: string
+  cycleIndex: number
 ): Promise<SubscriptionActionResult> {
   try {
     const data = await customerQuery<{
@@ -484,7 +485,7 @@ export async function unskipBillingCycle(
       variables: {
         billingCycleInput: {
           contractId: subscriptionContractId,
-          selector: { date }
+          selector: { index: cycleIndex }
         }
       }
     });

@@ -64,6 +64,14 @@ const SUBSCRIPTION_QUERY = `
               }
             }
           }
+          upcomingBillingCycles(first: 10) {
+            nodes {
+              cycleIndex
+              cycleStartAt
+              billingAttemptExpectedDate
+              skipped
+            }
+          }
           deliveryMethod {
             ... on SubscriptionDeliveryMethodShipping {
               address {
@@ -119,6 +127,13 @@ interface SubscriptionMailingAddress {
   phone: string | null;
 }
 
+interface BillingCycle {
+  cycleIndex: number;
+  cycleStartAt: string;
+  billingAttemptExpectedDate: string | null;
+  skipped: boolean;
+}
+
 interface SubscriptionContract {
   id: string;
   status: string;
@@ -130,6 +145,7 @@ interface SubscriptionContract {
   deliveryMethod: {
     address?: SubscriptionMailingAddress;
   } | null;
+  upcomingBillingCycles: { nodes: BillingCycle[] };
 }
 
 function toAddressBlock(
@@ -310,13 +326,11 @@ export default async function SubscriptionDetailPage({
       <PreorderBanner lines={detectPreorderLines(contract.lines.nodes)} />
 
       {/* Next billing banner */}
-      {contract.nextBillingDate && !isTerminated && (
+      {!isTerminated && contract.upcomingBillingCycles.nodes.length > 0 && (
         <SubscriptionNextBillingBanner
           contractId={contract.id}
-          nextBillingDate={contract.nextBillingDate}
           canSkip={isActive}
-          interval={contract.deliveryPolicy?.interval ?? null}
-          intervalCount={contract.deliveryPolicy?.intervalCount.count ?? null}
+          cycles={contract.upcomingBillingCycles.nodes}
         />
       )}
 

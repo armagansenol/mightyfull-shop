@@ -1,9 +1,10 @@
 'use client';
 
 import { Loader2 } from 'lucide-react';
-import { useMemo, useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, useTransition } from 'react';
 import {
-  skipNextBillingCycle,
+  skipBillingCycle,
   unskipBillingCycle
 } from '@/app/account/subscriptions/actions';
 import { Button } from '@/components/ui/button';
@@ -17,17 +18,18 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 
-type Interval = 'WEEK' | 'MONTH' | 'YEAR' | 'DAY';
+interface BillingCycle {
+  cycleIndex: number;
+  cycleStartAt: string;
+  billingAttemptExpectedDate: string | null;
+  skipped: boolean;
+}
 
 interface Props {
   contractId: string;
-  nextBillingDate: string;
   canSkip: boolean;
-  interval: Interval | null;
-  intervalCount: number | null;
+  cycles: BillingCycle[];
 }
-
-const UPCOMING_COUNT = 5;
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {
@@ -45,99 +47,67 @@ function formatShortDate(iso: string): string {
   });
 }
 
-function advanceDate(iso: string, interval: Interval, count: number): string {
-  const date = new Date(iso);
-  if (interval === 'DAY') date.setDate(date.getDate() + count);
-  else if (interval === 'WEEK') date.setDate(date.getDate() + 7 * count);
-  else if (interval === 'MONTH') date.setMonth(date.getMonth() + count);
-  else if (interval === 'YEAR') date.setFullYear(date.getFullYear() + count);
-  return date.toISOString();
-}
-
-interface UpcomingItem {
-  date: string;
-  skipped: boolean;
-}
-
-function computeUpcoming(
-  startDate: string,
-  interval: Interval | null,
-  intervalCount: number | null
-): UpcomingItem[] {
-  if (!interval || !intervalCount) {
-    return [{ date: startDate, skipped: false }];
-  }
-  const items: UpcomingItem[] = [];
-  let current = startDate;
-  for (let i = 0; i < UPCOMING_COUNT; i++) {
-    items.push({ date: current, skipped: false });
-    current = advanceDate(current, interval, intervalCount);
-  }
-  return items;
-}
-
 export function SubscriptionNextBillingBanner({
   contractId,
-  nextBillingDate,
   canSkip,
-  interval,
-  intervalCount
+  cycles
 }: Props) {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [upcoming, setUpcoming] = useState<UpcomingItem[]>(() =>
-    computeUpcoming(nextBillingDate, interval, intervalCount)
+  const [pendingCycleIndex, setPendingCycleIndex] = useState<number | null>(
+    null
   );
   const [skipConfirmOpen, setSkipConfirmOpen] = useState(false);
   const [upcomingDialogOpen, setUpcomingDialogOpen] = useState(false);
 
-  const firstUnskipped = upcoming.find((u) => !u.skipped);
-  const displayDate = firstUnskipped?.date ?? nextBillingDate;
+  const firstUnskipped = cycles.find((c) => !c.skipped);
+  const dateForCycle = (c: BillingCycle) =>
+    c.billingAttemptExpectedDate ?? c.cycleStartAt;
+  const displayDate = firstUnskipped
+    ? dateForCycle(firstUnskipped)
+    : cycles[0]
+      ? dateForCycle(cycles[0])
+      : null;
 
-  // The date the subscription will resume after skipping the next order
-  const resumeDate = useMemo(() => {
-    if (!firstUnskipped) return null;
-    const startIdx = upcoming.indexOf(firstUnskipped);
-    const next = upcoming.slice(startIdx + 1).find((u) => !u.skipped);
-    if (next) return next.date;
-    if (interval && intervalCount) {
-      return advanceDate(displayDate, interval, intervalCount);
-    }
-    return null;
-  }, [firstUnskipped, upcoming, interval, intervalCount, displayDate]);
+  // Next unskipped cycle AFTER firstUnskipped (for the skip-confirm copy)
+  const nextAfterFirst = firstUnskipped
+    ? cycles
+        .filter((c) => c.cycleIndex > firstUnskipped.cycleIndex)
+        .find((c) => !c.skipped)
+    : null;
+  const resumeDate = nextAfterFirst ? dateForCycle(nextAfterFirst) : null;
 
-  const handleSkip = (dateToSkip: string) => {
+  const handleSkip = (cycleIndex: number) => {
     setError(null);
+    setPendingCycleIndex(cycleIndex);
     startTransition(async () => {
-      const result = await skipNextBillingCycle(contractId, dateToSkip);
+      const result = await skipBillingCycle(contractId, cycleIndex);
+      setPendingCycleIndex(null);
       if (result.ok) {
-        setUpcoming((prev) =>
-          prev.map((u) =>
-            u.date === dateToSkip ? { ...u, skipped: true } : u
-          )
-        );
         setSkipConfirmOpen(false);
+        router.refresh();
       } else {
         setError(result.error);
       }
     });
   };
 
-  const handleUnskip = (dateToUnskip: string) => {
+  const handleUnskip = (cycleIndex: number) => {
     setError(null);
+    setPendingCycleIndex(cycleIndex);
     startTransition(async () => {
-      const result = await unskipBillingCycle(contractId, dateToUnskip);
+      const result = await unskipBillingCycle(contractId, cycleIndex);
+      setPendingCycleIndex(null);
       if (result.ok) {
-        setUpcoming((prev) =>
-          prev.map((u) =>
-            u.date === dateToUnskip ? { ...u, skipped: false } : u
-          )
-        );
+        router.refresh();
       } else {
         setError(result.error);
       }
     });
   };
+
+  if (!displayDate) return null;
 
   return (
     <>
@@ -206,7 +176,9 @@ export function SubscriptionNextBillingBanner({
               padding="fat"
               hoverAnimation={false}
               disabled={isPending}
-              onClick={() => firstUnskipped && handleSkip(firstUnskipped.date)}
+              onClick={() =>
+                firstUnskipped && handleSkip(firstUnskipped.cycleIndex)
+              }
               className="h-10"
             >
               {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Skip'}
@@ -222,36 +194,44 @@ export function SubscriptionNextBillingBanner({
             <DialogTitle>Upcoming orders</DialogTitle>
           </DialogHeader>
           <ul className="flex flex-col list-none p-0 my-2">
-            {upcoming.map((item) => (
-              <li
-                key={item.date}
-                className="flex items-center justify-between py-3 border-b border-blue-ruin/10 last:border-b-0"
-              >
-                <p className="text-sm font-medium text-blue-ruin">
-                  {formatShortDate(item.date)}
-                  {item.skipped && (
-                    <span className="text-blue-ruin/60 font-normal">
-                      {' '}
-                      (skipped)
-                    </span>
+            {cycles.map((cycle) => {
+              const cycleDate = dateForCycle(cycle);
+              const isPendingThis =
+                isPending && pendingCycleIndex === cycle.cycleIndex;
+              return (
+                <li
+                  key={cycle.cycleIndex}
+                  className="flex items-center justify-between py-3 border-b border-blue-ruin/10 last:border-b-0"
+                >
+                  <p className="text-sm font-medium text-blue-ruin">
+                    {formatShortDate(cycleDate)}
+                    {cycle.skipped && (
+                      <span className="text-blue-ruin/60 font-normal">
+                        {' '}
+                        (skipped)
+                      </span>
+                    )}
+                  </p>
+                  {canSkip && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        cycle.skipped
+                          ? handleUnskip(cycle.cycleIndex)
+                          : handleSkip(cycle.cycleIndex)
+                      }
+                      disabled={isPending}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-ruin underline underline-offset-4 hover:opacity-80 transition-opacity disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 rounded cursor-pointer"
+                    >
+                      {isPendingThis && (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      )}
+                      {cycle.skipped ? 'Unskip' : 'Skip'}
+                    </button>
                   )}
-                </p>
-                {canSkip && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      item.skipped
-                        ? handleUnskip(item.date)
-                        : handleSkip(item.date)
-                    }
-                    disabled={isPending}
-                    className="text-sm font-semibold text-blue-ruin underline underline-offset-4 hover:opacity-80 transition-opacity disabled:opacity-50 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 rounded cursor-pointer"
-                  >
-                    {item.skipped ? 'Unskip' : 'Skip'}
-                  </button>
-                )}
-              </li>
-            ))}
+                </li>
+              );
+            })}
           </ul>
           {error && (
             <p role="alert" className="text-sm font-medium text-red-700">
