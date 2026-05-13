@@ -11,7 +11,7 @@ export const CANCELLATION_REASONS = [
 export type CancellationReasonValue =
   (typeof CANCELLATION_REASONS)[number]['value'];
 
-export type FrequencyInterval = 'WEEK' | 'MONTH';
+export type FrequencyInterval = 'MONTH';
 
 export interface FrequencyOption {
   value: string;
@@ -33,28 +33,15 @@ export interface SubscriptionShippingAddressInput {
 }
 
 export const FREQUENCY_OPTIONS: FrequencyOption[] = [
-  { value: 'week-1', label: 'Every week', interval: 'WEEK', intervalCount: 1 },
-  {
-    value: 'week-2',
-    label: 'Every 2 weeks',
-    interval: 'WEEK',
-    intervalCount: 2
-  },
   {
     value: 'month-1',
-    label: 'Every month',
+    label: 'Delivery every month',
     interval: 'MONTH',
     intervalCount: 1
   },
   {
-    value: 'month-2',
-    label: 'Every 2 months',
-    interval: 'MONTH',
-    intervalCount: 2
-  },
-  {
     value: 'month-3',
-    label: 'Every 3 months',
+    label: 'Delivery every 3 months',
     interval: 'MONTH',
     intervalCount: 3
   }
