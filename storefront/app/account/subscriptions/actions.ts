@@ -7,6 +7,7 @@ import {
   FREQUENCY_OPTIONS,
   type SubscriptionShippingAddressInput
 } from '@/app/account/subscriptions/constants';
+import { adminQuery, AdminAPIError } from '@/lib/shopify/admin';
 import {
   CustomerAccountAPIError,
   customerQuery
@@ -294,12 +295,50 @@ export async function cancelSubscription(
   }
 }
 
+// The Customer Account API doesn't expose subscriptionContractUpdate /
+// subscriptionDraftUpdate / subscriptionDraftCommit — those mutations are
+// Admin API only. Customer Account API's only contract-editing mutation is
+// subscriptionContractSelectDeliveryMethod, which requires a delivery-options
+// token roundtrip. For simple field edits (frequency, address) we go through
+// Admin API but verify first that the authenticated customer actually owns
+// this contract, since Admin tokens bypass per-customer authorization.
+async function verifyContractAccess(
+  subscriptionContractId: string
+): Promise<boolean> {
+  const numericId =
+    subscriptionContractId.split('/').pop() ?? subscriptionContractId;
+  try {
+    const data = await customerQuery<{
+      customer: {
+        subscriptionContracts: { nodes: Array<{ id: string }> };
+      } | null;
+    }>({
+      query: `
+        query VerifyContract($idQuery: String!) {
+          customer {
+            subscriptionContracts(first: 1, query: $idQuery) {
+              nodes { id }
+            }
+          }
+        }
+      `,
+      variables: { idQuery: `id:${numericId}` }
+    });
+    return !!data.customer?.subscriptionContracts.nodes[0];
+  } catch {
+    return false;
+  }
+}
+
 async function withDraft(
   subscriptionContractId: string,
   apply: (draftId: string) => Promise<SubscriptionActionResult>
 ): Promise<SubscriptionActionResult> {
+  if (!(await verifyContractAccess(subscriptionContractId))) {
+    return { ok: false, error: 'Not authorized to modify this subscription.' };
+  }
   try {
-    const openData = await customerQuery<{
+    const openData = await adminQuery<{
       subscriptionContractUpdate: {
         draft: { id: string } | null;
         userErrors: UserError[];
@@ -323,7 +362,7 @@ async function withDraft(
     const applied = await apply(draftId);
     if (!applied.ok) return applied;
 
-    const commitData = await customerQuery<{
+    const commitData = await adminQuery<{
       subscriptionDraftCommit: {
         contract: { id: string } | null;
         userErrors: UserError[];
@@ -346,7 +385,7 @@ async function withDraft(
     return {
       ok: false,
       error:
-        e instanceof CustomerAccountAPIError
+        e instanceof AdminAPIError
           ? e.message
           : e instanceof Error
             ? e.message
@@ -359,7 +398,7 @@ async function updateDraft(
   draftId: string,
   input: Record<string, unknown>
 ): Promise<SubscriptionActionResult> {
-  const data = await customerQuery<{
+  const data = await adminQuery<{
     subscriptionDraftUpdate: {
       draft: { id: string } | null;
       userErrors: UserError[];
@@ -382,8 +421,8 @@ export async function updateSubscriptionShippingAddress(
   subscriptionContractId: string,
   address: SubscriptionShippingAddressInput
 ): Promise<SubscriptionActionResult> {
-  // Customer Account API's SubscriptionMailingAddressInput uses ISO
-  // `provinceCode` and `countryCode`, plus `phone` (not `phoneNumber`).
+  // Admin API's MailingAddressInput uses ISO `provinceCode` and
+  // `countryCode`, plus `phone` (not `phoneNumber`).
   const mailingAddress = {
     firstName: address.firstName,
     lastName: address.lastName,
