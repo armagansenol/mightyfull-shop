@@ -6,8 +6,7 @@ import { useState, useTransition } from 'react';
 import {
   cancelSubscription,
   pauseSubscription,
-  resumeSubscription,
-  skipNextBillingCycle
+  resumeSubscription
 } from '@/app/account/subscriptions/actions';
 import {
   CANCELLATION_REASONS,
@@ -60,18 +59,6 @@ export function SubscriptionActions({
     setActionError(null);
     startTransition(async () => {
       const result = await pauseSubscription(contractId);
-      if (result.ok) {
-        router.refresh();
-      } else {
-        setActionError(result.error);
-      }
-    });
-  };
-
-  const handleSkip = () => {
-    setActionError(null);
-    startTransition(async () => {
-      const result = await skipNextBillingCycle(contractId);
       if (result.ok) {
         router.refresh();
       } else {
@@ -138,24 +125,6 @@ export function SubscriptionActions({
             className="h-10"
           >
             {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Pause'}
-          </Button>
-        )}
-        {isActive && (
-          <Button
-            type="button"
-            colorTheme="naked-blue-ruin"
-            size="sm"
-            padding="fat"
-            hoverAnimation={false}
-            disabled={isPending}
-            onClick={handleSkip}
-            className="h-10"
-          >
-            {isPending ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              'Skip next charge'
-            )}
           </Button>
         )}
         {isPaused && (

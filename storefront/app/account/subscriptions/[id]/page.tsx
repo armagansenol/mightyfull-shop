@@ -1,15 +1,12 @@
 import {
   ArrowLeft01Icon,
-  CalendarSetting02Icon,
-  CreditCardIcon,
-  MapPinIcon,
   Package01Icon,
+  PencilEdit01Icon,
   Settings02Icon
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { notFound, redirect } from 'next/navigation';
 import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/constants';
-import { AccountCard } from '@/components/account/account-card';
 import { AddressBlock } from '@/components/account/address-block';
 import { PageHeader } from '@/components/account/page-header';
 import {
@@ -18,6 +15,7 @@ import {
 } from '@/components/account/preorder-banner';
 import { SubscriptionActions } from '@/components/account/subscription-actions';
 import { SubscriptionFrequencyForm } from '@/components/account/subscription-frequency-form';
+import { SubscriptionSkipButton } from '@/components/account/subscription-skip-button';
 import { SubscriptionStatusBadge } from '@/components/account/subscription-status-badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/components/utility/link';
@@ -153,7 +151,7 @@ interface SubscriptionData {
 
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
+    month: 'long',
     day: 'numeric',
     year: 'numeric'
   });
@@ -165,6 +163,35 @@ function formatMoney(money: MoneyV2 | null): string {
     style: 'currency',
     currency: money.currencyCode
   }).format(Number.parseFloat(money.amount));
+}
+
+function shopHostedManageUrl(numericContractId: string): string | null {
+  const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID;
+  const pageId = process.env.NEXT_PUBLIC_SHOPIFY_SUBSCRIPTION_PAGE_ID;
+  if (!shopId || !pageId) return null;
+  return `https://shopify.com/${shopId}/account/pages/${pageId}/subscriptions/${numericContractId}`;
+}
+
+function matchFrequencyValue(
+  policy: DeliveryFrequency | null
+): string | undefined {
+  if (!policy) return undefined;
+  return FREQUENCY_OPTIONS.find(
+    (o) =>
+      o.interval === policy.interval &&
+      o.intervalCount === policy.intervalCount.count
+  )?.value;
+}
+
+function matchFrequencyLabel(
+  policy: DeliveryFrequency | null
+): string | undefined {
+  if (!policy) return undefined;
+  return FREQUENCY_OPTIONS.find(
+    (o) =>
+      o.interval === policy.interval &&
+      o.intervalCount === policy.intervalCount.count
+  )?.label;
 }
 
 export default async function SubscriptionDetailPage({
@@ -210,7 +237,7 @@ export default async function SubscriptionDetailPage({
         <Card className="rounded-2xl border border-red-300/60 bg-red-50 text-red-900">
           <CardHeader>
             <CardTitle className="font-bomstad-display text-xl leading-tight">
-              Couldn’t load this subscription
+              Couldn't load this subscription
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -230,12 +257,26 @@ export default async function SubscriptionDetailPage({
     notFound();
   }
 
+  const isActive = contract.status === 'ACTIVE';
+  const isPaused = contract.status === 'PAUSED';
+  const isManageable = isActive || isPaused;
+  const isTerminated =
+    contract.status === 'CANCELLED' ||
+    contract.status === 'EXPIRED' ||
+    contract.status === 'FAILED';
+
   const summary = contract.lines.nodes
     .map((line) => `${line.title} × ${line.quantity}`)
     .join(', ');
 
+  const deliveryAddress = toAddressBlock(contract.deliveryMethod?.address);
+  const manageUrl = shopHostedManageUrl(numericId);
+  const frequencyValue = matchFrequencyValue(contract.deliveryPolicy);
+  const frequencyLabel = matchFrequencyLabel(contract.deliveryPolicy);
+
   return (
     <>
+      {/* Header */}
       <div className="flex flex-col gap-4">
         <Link
           href="/account/subscriptions"
@@ -249,138 +290,167 @@ export default async function SubscriptionDetailPage({
           />
           <span>All subscriptions</span>
         </Link>
-        <PageHeader
-          eyebrow={`Started ${formatDate(contract.createdAt)}`}
-          title={summary || 'Subscription'}
-          description={
-            contract.nextBillingDate
-              ? `Next renewal on ${formatDate(contract.nextBillingDate)}`
-              : 'No upcoming renewal'
-          }
-          action={<SubscriptionStatusBadge status={contract.status} />}
-        />
+        <div className="flex items-start justify-between gap-4">
+          <PageHeader
+            eyebrow={`Started ${formatDate(contract.createdAt)}`}
+            title={summary || 'Subscription'}
+          />
+          <div className="shrink-0 mt-1">
+            <SubscriptionStatusBadge status={contract.status} />
+          </div>
+        </div>
       </div>
 
       <PreorderBanner lines={detectPreorderLines(contract.lines.nodes)} />
 
-      <AccountCard icon={Package01Icon} eyebrow="Items" title="What ships">
-        <ul className="flex flex-col list-none p-0">
-          {contract.lines.nodes.map((line, idx) => (
-            <li
-              key={idx}
-              className="flex justify-between items-start py-3 border-b border-blue-ruin/10 last:border-b-0 last:pb-0 first:pt-0"
-            >
-              <div className="flex flex-col gap-1 min-w-0">
-                <p className="font-semibold text-blue-ruin">{line.title}</p>
-                {line.variantTitle && (
-                  <p className="text-sm font-medium text-blue-ruin/75">
-                    {line.variantTitle}
-                  </p>
-                )}
-                <p className="text-sm font-medium text-blue-ruin/75">
-                  Qty {line.quantity}
-                </p>
-              </div>
-              <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
-                {formatMoney(line.currentPrice)}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </AccountCard>
-
-      {(() => {
-        const deliveryAddress = toAddressBlock(contract.deliveryMethod?.address);
-        if (!deliveryAddress) return null;
-        return (
-          <AccountCard
-            icon={MapPinIcon}
-            eyebrow="Delivery address"
-            title={
-              `${deliveryAddress.firstName ?? ''} ${deliveryAddress.lastName ?? ''}`.trim() ||
-              'Delivery address'
-            }
-            action={
-              contract.status === 'ACTIVE' || contract.status === 'PAUSED' ? (
-                <Link
-                  href={`/account/subscriptions/${encodedId}/address`}
-                  className="text-sm font-semibold text-blue-ruin underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 focus-visible:ring-offset-sugar-milk rounded"
-                >
-                  Edit
-                </Link>
-              ) : null
-            }
-          >
-            <AddressBlock address={deliveryAddress} showName={false} />
-          </AccountCard>
-        );
-      })()}
-
-      <AccountCard
-        icon={Settings02Icon}
-        eyebrow="Manage"
-        title="Pause, resume, or cancel"
-      >
-        <SubscriptionActions
-          contractId={contract.id}
-          status={contract.status}
-        />
-      </AccountCard>
-
-      {contract.status === 'ACTIVE' && (
-        <AccountCard
-          icon={CalendarSetting02Icon}
-          eyebrow="Frequency"
-          title="How often it ships"
-        >
-          <SubscriptionFrequencyForm
-            contractId={contract.id}
-            currentValue={matchFrequencyValue(contract.deliveryPolicy)}
-          />
-        </AccountCard>
+      {/* Next billing banner */}
+      {contract.nextBillingDate && !isTerminated && (
+        <div className="rounded-2xl bg-blue-ruin px-6 py-5 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-sugar-milk/60">
+              Upcoming order
+            </p>
+            <p className="text-2xl font-bold text-sugar-milk mt-1">
+              {formatDate(contract.nextBillingDate)}
+            </p>
+          </div>
+          {isActive && <SubscriptionSkipButton contractId={contract.id} />}
+        </div>
       )}
 
-      {(contract.status === 'ACTIVE' || contract.status === 'PAUSED') &&
-        shopHostedManageUrl(numericId) && (
-          <AccountCard
-            icon={CreditCardIcon}
-            eyebrow="Payment method"
-            title="Update card on file"
-          >
-            <p className="text-sm text-blue-ruin/85 max-w-prose">
-              Payment details are handled securely by Shopify. Use the link
-              below to update the card on file for this subscription.
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Left: products + manage */}
+        <div className="lg:col-span-3 flex flex-col gap-6">
+          {/* Products */}
+          <div className="rounded-2xl border border-blue-ruin/10 bg-sugar-milk overflow-hidden">
+            <div className="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-blue-ruin/10">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-ruin/8 shrink-0">
+                <HugeiconsIcon
+                  icon={Package01Icon}
+                  size={16}
+                  strokeWidth={1.5}
+                  className="text-blue-ruin"
+                  aria-hidden="true"
+                />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+                Items
+              </p>
+            </div>
+            <ul className="flex flex-col list-none p-0 px-5">
+              {contract.lines.nodes.map((line, idx) => (
+                <li
+                  key={idx}
+                  className="flex justify-between items-start py-4 border-b border-blue-ruin/10 last:border-b-0"
+                >
+                  <div className="flex flex-col gap-1 min-w-0">
+                    <p className="font-semibold text-blue-ruin">{line.title}</p>
+                    {line.variantTitle && (
+                      <p className="text-sm font-medium text-blue-ruin/75">
+                        {line.variantTitle}
+                      </p>
+                    )}
+                    <p className="text-sm font-medium text-blue-ruin/75">
+                      Qty {line.quantity}
+                    </p>
+                  </div>
+                  <p className="font-semibold tabular-nums shrink-0 text-blue-ruin">
+                    {formatMoney(line.currentPrice)}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Manage */}
+          <div className="rounded-2xl border border-blue-ruin/10 bg-sugar-milk overflow-hidden">
+            <div className="flex items-center gap-3 px-5 pt-5 pb-4 border-b border-blue-ruin/10">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-ruin/8 shrink-0">
+                <HugeiconsIcon
+                  icon={Settings02Icon}
+                  size={16}
+                  strokeWidth={1.5}
+                  className="text-blue-ruin"
+                  aria-hidden="true"
+                />
+              </div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+                Manage
+              </p>
+            </div>
+            <div className="px-5 py-4">
+              <SubscriptionActions
+                contractId={contract.id}
+                status={contract.status}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Right: details */}
+        <div className="lg:col-span-2 rounded-2xl border border-blue-ruin/10 bg-sugar-milk overflow-hidden divide-y divide-blue-ruin/10 self-start">
+          {/* Frequency */}
+          <div className="px-5 py-4 flex flex-col gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+              Frequency
             </p>
-            <div>
+            {isActive ? (
+              <SubscriptionFrequencyForm
+                contractId={contract.id}
+                currentValue={frequencyValue}
+              />
+            ) : (
+              <p className="text-sm text-blue-ruin/85">
+                {frequencyLabel ?? '—'}
+              </p>
+            )}
+          </div>
+
+          {/* Shipping address */}
+          {deliveryAddress && (
+            <div className="px-5 py-4 flex flex-col gap-3">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+                  Shipping address
+                </p>
+                {isManageable && (
+                  <Link
+                    href={`/account/subscriptions/${encodedId}/address`}
+                    aria-label="Edit shipping address"
+                    className="text-blue-ruin/60 hover:text-blue-ruin transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 rounded"
+                  >
+                    <HugeiconsIcon
+                      icon={PencilEdit01Icon}
+                      size={15}
+                      strokeWidth={1.5}
+                      aria-hidden="true"
+                    />
+                  </Link>
+                )}
+              </div>
+              <AddressBlock address={deliveryAddress} showName />
+            </div>
+          )}
+
+          {/* Payment method */}
+          {isManageable && manageUrl && (
+            <div className="px-5 py-4 flex flex-col gap-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-ruin/60">
+                Payment method
+              </p>
               <a
-                href={shopHostedManageUrl(numericId) ?? '#'}
+                href={manageUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-10 px-6 lg:px-8 xl:px-12 rounded-lg bg-blue-ruin text-sugar-milk font-bold text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 focus-visible:ring-offset-2 transition-colors hover:bg-blue-ruin/90"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-ruin underline-offset-4 hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-blue-ruin/60 rounded w-fit"
               >
-                Update on Shopify
+                Update on Shopify ↗
               </a>
             </div>
-          </AccountCard>
-        )}
+          )}
+        </div>
+      </div>
     </>
   );
-}
-
-function shopHostedManageUrl(numericContractId: string): string | null {
-  const shopId = process.env.NEXT_PUBLIC_SHOPIFY_SHOP_ID;
-  const pageId = process.env.NEXT_PUBLIC_SHOPIFY_SUBSCRIPTION_PAGE_ID;
-  if (!shopId || !pageId) return null;
-  return `https://shopify.com/${shopId}/account/pages/${pageId}/subscriptions/${numericContractId}`;
-}
-
-function matchFrequencyValue(
-  policy: DeliveryFrequency | null
-): string | undefined {
-  if (!policy) return undefined;
-  return FREQUENCY_OPTIONS.find(
-    (o) =>
-      o.interval === policy.interval &&
-      o.intervalCount === policy.intervalCount.count
-  )?.value;
 }
