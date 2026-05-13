@@ -320,7 +320,12 @@ export default async function SubscriptionDetailPage({
               {formatDate(contract.nextBillingDate)}
             </p>
           </div>
-          {isActive && <SubscriptionSkipButton contractId={contract.id} />}
+          {isActive && (
+              <SubscriptionSkipButton
+                contractId={contract.id}
+                nextBillingDate={contract.nextBillingDate!}
+              />
+            )}
         </div>
       )}
 

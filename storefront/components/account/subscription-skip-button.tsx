@@ -5,7 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { skipNextBillingCycle } from '@/app/account/subscriptions/actions';
 
-export function SubscriptionSkipButton({ contractId }: { contractId: string }) {
+export function SubscriptionSkipButton({
+  contractId,
+  nextBillingDate
+}: {
+  contractId: string;
+  nextBillingDate: string;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +19,7 @@ export function SubscriptionSkipButton({ contractId }: { contractId: string }) {
   const handleSkip = () => {
     setError(null);
     startTransition(async () => {
-      const result = await skipNextBillingCycle(contractId);
+      const result = await skipNextBillingCycle(contractId, nextBillingDate);
       if (result.ok) {
         router.refresh();
       } else {

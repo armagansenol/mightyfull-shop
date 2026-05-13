@@ -72,27 +72,6 @@ const CANCEL_MUTATION = `
   }
 `;
 
-const NEXT_CYCLE_QUERY = `
-  query NextBillingCycle($idQuery: String!) {
-    customer {
-      subscriptionContracts(first: 1, query: $idQuery) {
-        nodes {
-          id
-          nextBillingDate
-          billingCycles(first: 8) {
-            nodes {
-              cycleIndex
-              cycleStartAt
-              billingAttemptExpectedDate
-              skipped
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const SKIP_CYCLE_MUTATION = `
   mutation SkipBillingCycle(
     $billingCycleInput: SubscriptionBillingCycleInput!
@@ -297,59 +276,6 @@ export async function cancelSubscription(
   }
 }
 
-interface BillingCycleNode {
-  cycleIndex: number;
-  cycleStartAt: string;
-  billingAttemptExpectedDate: string | null;
-  skipped: boolean;
-}
-
-async function findNextUnskippedCycle(
-  contractGid: string
-): Promise<{ cycle: BillingCycleNode | null; error?: string }> {
-  // contractGid is something like "gid://shopify/SubscriptionContract/12345"
-  const numericId = contractGid.split('/').pop() ?? contractGid;
-  try {
-    const data = await customerQuery<{
-      customer: {
-        subscriptionContracts: {
-          nodes: Array<{
-            id: string;
-            nextBillingDate: string | null;
-            billingCycles: { nodes: BillingCycleNode[] };
-          }>;
-        };
-      } | null;
-    }>({
-      query: NEXT_CYCLE_QUERY,
-      variables: { idQuery: `id:${numericId}` }
-    });
-
-    const contract = data.customer?.subscriptionContracts.nodes[0];
-    if (!contract) {
-      return { cycle: null, error: 'Subscription not found' };
-    }
-
-    const now = Date.now();
-    const upcoming = contract.billingCycles.nodes
-      .filter((c) => !c.skipped)
-      .filter((c) => new Date(c.cycleStartAt).getTime() >= now)
-      .sort((a, b) => a.cycleIndex - b.cycleIndex)[0];
-
-    return { cycle: upcoming ?? null };
-  } catch (e) {
-    return {
-      cycle: null,
-      error:
-        e instanceof CustomerAccountAPIError
-          ? e.message
-          : e instanceof Error
-            ? e.message
-            : 'Failed to load billing cycles'
-    };
-  }
-}
-
 async function withDraft(
   subscriptionContractId: string,
   apply: (draftId: string) => Promise<SubscriptionActionResult>
@@ -485,14 +411,9 @@ export async function changeSubscriptionFrequency(
 }
 
 export async function skipNextBillingCycle(
-  subscriptionContractId: string
+  subscriptionContractId: string,
+  nextBillingDate: string
 ): Promise<SubscriptionActionResult> {
-  const { cycle, error } = await findNextUnskippedCycle(subscriptionContractId);
-  if (error) return { ok: false, error };
-  if (!cycle) {
-    return { ok: false, error: 'No upcoming charge to skip.' };
-  }
-
   try {
     const data = await customerQuery<{
       subscriptionBillingCycleSkip: {
@@ -504,7 +425,7 @@ export async function skipNextBillingCycle(
       variables: {
         billingCycleInput: {
           contractId: subscriptionContractId,
-          selector: { index: cycle.cycleIndex }
+          selector: { date: nextBillingDate }
         },
         skip: true
       }
