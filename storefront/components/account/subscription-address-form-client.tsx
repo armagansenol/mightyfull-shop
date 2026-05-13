@@ -1,9 +1,7 @@
 'use client';
 
-import {
-  type SubscriptionShippingAddressInput,
-  updateSubscriptionShippingAddress
-} from '@/app/account/subscriptions/actions';
+import { updateSubscriptionShippingAddress } from '@/app/account/subscriptions/actions';
+import type { SubscriptionShippingAddressInput } from '@/app/account/subscriptions/constants';
 import {
   AddressForm,
   type AddressFormResult

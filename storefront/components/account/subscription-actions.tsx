@@ -4,13 +4,15 @@ import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import {
-  CANCELLATION_REASONS,
-  type CancellationReasonValue,
   cancelSubscription,
   pauseSubscription,
   resumeSubscription,
   skipNextBillingCycle
 } from '@/app/account/subscriptions/actions';
+import {
+  CANCELLATION_REASONS,
+  type CancellationReasonValue
+} from '@/app/account/subscriptions/constants';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

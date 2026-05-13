@@ -8,7 +8,7 @@ import {
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { notFound, redirect } from 'next/navigation';
-import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/actions';
+import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/constants';
 import { AccountCard } from '@/components/account/account-card';
 import { AddressBlock } from '@/components/account/address-block';
 import { PageHeader } from '@/components/account/page-header';

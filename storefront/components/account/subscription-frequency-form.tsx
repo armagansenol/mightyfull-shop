@@ -3,10 +3,8 @@
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
-import {
-  changeSubscriptionFrequency,
-  FREQUENCY_OPTIONS
-} from '@/app/account/subscriptions/actions';
+import { changeSubscriptionFrequency } from '@/app/account/subscriptions/actions';
+import { FREQUENCY_OPTIONS } from '@/app/account/subscriptions/constants';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
