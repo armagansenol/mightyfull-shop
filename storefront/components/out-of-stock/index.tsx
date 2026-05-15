@@ -86,7 +86,7 @@ export function OutOfStock({
         <DialogTrigger asChild>
           <Button
             className={cn(s.notifyButton, 'h-12 inline-flex items-center')}
-            colorTheme="blue-ruin"
+            colorTheme="inverted-themed"
             hoverAnimation={false}
             size="sm"
           >
@@ -111,8 +111,8 @@ export function OutOfStock({
             <IconClose fill="var(--cherry-blush)" />
             <span className="sr-only">Close</span>
           </DialogClose>
-          <div className="grid grid-cols-12">
-            <div className="col-span-7 p-8">
+          <div className="grid grid-cols-12 h-full">
+            <div className="col-span-12 lg:col-span-7 p-6 sm:p-8 pr-14 sm:pr-16 lg:pr-8">
               <DialogTitle className={s.title}>
                 Please enter your email address and we&apos;ll notify you when
                 this product is{' '}
@@ -165,9 +165,9 @@ export function OutOfStock({
                 )}
               </DialogDescription>
             </div>
-            <div className="col-span-5">
+            <div className="hidden lg:block col-span-5">
               <Img
-                className="object-cover"
+                className="object-cover w-full h-full"
                 src="/img/lady.jpg"
                 alt="Sold out"
                 width={1000}
