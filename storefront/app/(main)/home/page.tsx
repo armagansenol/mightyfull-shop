@@ -55,7 +55,7 @@ export default async function HomePage() {
             <p>Meet our mightyfull flavors</p>
             <Button
               asChild
-              className="h-10 lg:h-12 xl:h-16"
+              className="h-14 xl:h-16"
               size="md"
               padding="fat"
             >
@@ -198,7 +198,12 @@ export default async function HomePage() {
                 <br />
                 Our journey began with a simple moment in the kitchen.
               </p>
-              <Button asChild className="h-16" size="md" padding="fat">
+              <Button
+                asChild
+                className="h-12 text-lg lg:h-14 lg:text-2xl xl:h-16"
+                size="md"
+                padding="fat"
+              >
                 <Link href={routes.ourStory.url}>READ OUR STORY</Link>
               </Button>
             </div>
