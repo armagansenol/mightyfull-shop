@@ -27,7 +27,7 @@ export function Cart() {
   return (
     <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
       <SheetContent
-        className="lg:w-3/5 xl:w-2/5 h-full max-h-screen px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin flex flex-col"
+        className="w-full md:w-3/4 lg:w-3/5 xl:w-2/5 h-full max-h-screen px-4 sm:px-6 md:px-8 lg:px-10 py-5 bg-sugar-milk border-l-4 border-blue-ruin flex flex-col"
         aria-describedby="cart-content-description"
       >
         <div id="cart-content-description" className="sr-only">

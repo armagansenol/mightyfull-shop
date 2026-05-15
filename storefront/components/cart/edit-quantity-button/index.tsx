@@ -28,7 +28,7 @@ export function QuantityButton({
     <button
       aria-label={ariaLabel}
       onClick={onClick}
-      className={`cursor-pointer h-10 w-10 flex items-center justify-center`}
+      className="cursor-pointer h-8 w-8 sm:h-10 sm:w-10 flex items-center justify-center"
       disabled={disabled || isLoading}
     >
       {isLoading ? (
@@ -119,9 +119,9 @@ export function QuantityControl({
 
   return (
     <div className="flex flex-col gap-1" aria-live="polite">
-      <div className="flex items-center space-x-2 border border-blue-ruin rounded-lg">
+      <div className="flex items-center space-x-1 sm:space-x-2 border border-blue-ruin rounded-lg">
         <DecrementButton item={item} />
-        <span className="w-6 text-center font-poppins font-bold text-lg text-blue-ruin leading-none">
+        <span className="w-5 sm:w-6 text-center font-poppins font-bold text-base sm:text-lg text-blue-ruin leading-none">
           <motion.span
             key={item.quantity}
             initial={{ scale: 1.15 }}

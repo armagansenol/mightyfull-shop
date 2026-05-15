@@ -30,12 +30,51 @@ export default function CartItem({ item }: CartItemProps) {
       ? variant.quantityAvailable
       : undefined;
 
+  const priceBlock = item.sellingPlanAllocation?.sellingPlan?.id ? (
+    <>
+      <div className="line-through font-bomstad-display text-gray-400 text-base sm:text-lg lg:text-xl font-semibold">
+        <Price
+          className="leading-none"
+          amount={(
+            parseFloat(
+              item.merchandise.product.variants.edges[0].node.price.amount
+            ) * item.quantity
+          ).toString()}
+          currencyCode={
+            item.merchandise.product.variants.edges[0].node.price.currencyCode
+          }
+        />
+      </div>
+      <div className="font-bomstad-display text-green-500 text-xl sm:text-2xl lg:text-3xl font-semibold">
+        <Price
+          animation="bob"
+          amount={item.cost.totalAmount.amount}
+          currencyCode={item.cost.totalAmount.currencyCode}
+        />
+      </div>
+    </>
+  ) : (
+    <div className="font-bomstad-display text-blue-ruin text-xl sm:text-2xl lg:text-3xl font-semibold">
+      <Price
+        animation="bob"
+        amount={(
+          parseFloat(
+            item.merchandise.product.variants.edges[0].node.price.amount
+          ) * item.quantity
+        ).toString()}
+        currencyCode={
+          item.merchandise.product.variants.edges[0].node.price.currencyCode
+        }
+      />
+    </div>
+  );
+
   return (
     <div
       className={cn('w-full space-y-6 border-b border-silverback/20 pb-10')}
     >
-      <div className="grid grid-cols-12 gap-6 relative">
-        <div className={cn('col-span-4 aspect-square p-1')}>
+      <div className="grid grid-cols-12 gap-4 sm:gap-6">
+        <div className="col-span-4 aspect-square p-1">
           <Img
             className="h-full w-full object-cover"
             width={300}
@@ -47,61 +86,17 @@ export default function CartItem({ item }: CartItemProps) {
             src={item.merchandise.product.featuredImage.url}
           />
         </div>
-        <div className="col-span-5 flex flex-col items-start gap-4">
-          <span className="font-bomstad-display font-black text-2xl text-blue-ruin leading-none">
-            {item.merchandise.product.title}
-          </span>
-          <div className="flex flex-col justify-between">
-            <div className="flex items-center justify-center">
-              <QuantityControl item={item} availableStock={availableStock} />
+        <div className="col-span-8 flex flex-col items-start gap-3 sm:gap-4 min-w-0">
+          <div className="flex items-start justify-between gap-3 w-full">
+            <span className="font-bomstad-display font-black text-lg sm:text-xl lg:text-2xl text-blue-ruin leading-tight text-balance min-w-0 flex-1">
+              {item.merchandise.product.title}
+            </span>
+            <div className="flex flex-col items-end gap-1 shrink-0">
+              {priceBlock}
             </div>
           </div>
+          <QuantityControl item={item} availableStock={availableStock} />
           <DeleteItemButton item={item} />
-        </div>
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col items-end gap-1">
-          {item.sellingPlanAllocation?.sellingPlan?.id ? (
-            <>
-              {/* original price */}
-              <div className="line-through font-bomstad-display text-gray-400 text-xl font-semibold">
-                <Price
-                  className="leading-none"
-                  amount={(
-                    parseFloat(
-                      item.merchandise.product.variants.edges[0].node.price
-                        .amount
-                    ) * item.quantity
-                  ).toString()}
-                  currencyCode={
-                    item.merchandise.product.variants.edges[0].node.price
-                      .currencyCode
-                  }
-                />
-              </div>
-              {/* price with discount */}
-              <div className="font-bomstad-display text-green-500 text-3xl font-semibold">
-                <Price
-                  animation="bob"
-                  amount={item.cost.totalAmount.amount}
-                  currencyCode={item.cost.totalAmount.currencyCode}
-                />
-              </div>
-            </>
-          ) : (
-            <div className="font-bomstad-display text-blue-ruin text-3xl font-semibold">
-              <Price
-                animation="bob"
-                amount={(
-                  parseFloat(
-                    item.merchandise.product.variants.edges[0].node.price.amount
-                  ) * item.quantity
-                ).toString()}
-                currencyCode={
-                  item.merchandise.product.variants.edges[0].node.price
-                    .currencyCode
-                }
-              />
-            </div>
-          )}
         </div>
       </div>
       <EditSellingPlanButton
