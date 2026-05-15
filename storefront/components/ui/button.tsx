@@ -19,8 +19,8 @@ const buttonVariants = cva(
         lg: cn(s.lg, 'text-3xl')
       },
       padding: {
-        fat: 'px-6 lg:px-8 xl:px-12 rounded-lg',
-        slim: 'px-5 lg:px-none w-full rounded-md lg:rounded-lg',
+        fat: 'px-6 lg:px-8 xl:px-12 rounded-lg max-w-xs sm:max-w-sm lg:max-w-md',
+        slim: 'px-5 lg:px-none w-full max-w-sm rounded-md lg:rounded-lg',
         none: 'w-full h-full rounded-lg',
         square: 'p-4'
       },

@@ -23,12 +23,14 @@ export function ProductCard({
 }: ProductCardProps) {
   return (
     <div className={cn(s['product-card'], 'flex flex-col')} key={id}>
-      <Link
-        href={`/${routes.shop.url}/${animatedCard.product.shopifySlug}`}
-        prefetch={true}
-      >
-        <AnimatedCard {...animatedCard} />
-      </Link>
+      <div className="flex justify-center">
+        <Link
+          href={`/${routes.shop.url}/${animatedCard.product.shopifySlug}`}
+          prefetch={true}
+        >
+          <AnimatedCard {...animatedCard} />
+        </Link>
+      </div>
       <div className={cn(s['button-c'], 'flex flex-col')}>
         <Button
           hoverAnimation={false}

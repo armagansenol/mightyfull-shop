@@ -62,8 +62,8 @@ export function ProductHighlightCarousel({
   }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative w-screen h-screen flex items-center">
-      <div className="flex-shrink-0" ref={emblaRef}>
+    <div className="relative w-full">
+      <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom">
           {items.map((item, index) => {
             return (
@@ -87,21 +87,21 @@ export function ProductHighlightCarousel({
             );
           })}
         </div>
-        <PrevButton
-          className={cn(s.prevButton, 'cursor-pointer')}
-          onClick={onPrevButtonClick}
-          disabled={prevBtnDisabled}
-        >
-          <IconArrow fill={`${currentColor}`} rotate={180} />
-        </PrevButton>
-        <NextButton
-          className={cn(s.nextButton, 'cursor-pointer')}
-          onClick={onNextButtonClick}
-          disabled={nextBtnDisabled}
-        >
-          <IconArrow fill={`${currentColor}`} />
-        </NextButton>
       </div>
+      <PrevButton
+        className={cn(s.prevButton, 'cursor-pointer')}
+        onClick={onPrevButtonClick}
+        disabled={prevBtnDisabled}
+      >
+        <IconArrow fill={`${currentColor}`} rotate={180} />
+      </PrevButton>
+      <NextButton
+        className={cn(s.nextButton, 'cursor-pointer')}
+        onClick={onNextButtonClick}
+        disabled={nextBtnDisabled}
+      >
+        <IconArrow fill={`${currentColor}`} />
+      </NextButton>
     </div>
   );
 }

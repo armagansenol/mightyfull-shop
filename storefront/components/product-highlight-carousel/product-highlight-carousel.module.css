@@ -1,6 +1,7 @@
 .slide {
-  width: 100vw;
-  padding: 0 40px;
+  flex: 0 0 100%;
+  min-width: 0;
+  padding: 0;
 
   .animation-c {
     opacity: 0.8;
@@ -29,26 +30,26 @@
 }
 .nextButton {
   position: absolute;
-  top: 30%;
+  top: 50%;
   right: 0;
   bottom: auto;
   left: auto;
   transform: translateY(-50%);
 
   @media (max-width: 768px) {
-    right: 40px;
+    right: 16px;
   }
 }
 .prevButton {
   position: absolute;
-  top: 30%;
+  top: 50%;
   right: auto;
   bottom: auto;
   left: 0;
   transform: translateY(-50%);
 
   @media (max-width: 768px) {
-    left: 40px;
+    left: 16px;
   }
 }
 .emblaButtonDisabled {
