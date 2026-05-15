@@ -8,11 +8,13 @@
 
   @media (max-width: 768px) {
     border-radius: 16px;
-    padding-bottom: 400px;
+    padding-top: 64px;
+    padding-bottom: 280px;
   }
 
   .heading {
     width: 710px;
+    max-width: 100%;
     height: auto;
     color: var(--blue-ruin);
     font-family: var(--font-bomstad-display);
@@ -21,13 +23,21 @@
     line-height: 1.25;
     margin-bottom: 50px;
     text-align: center;
+    text-wrap: balance;
+
+    @media (max-width: 1023px) {
+      width: 480px;
+      font-size: 48px;
+      line-height: 1.15;
+      margin-bottom: 80px;
+    }
 
     @media (max-width: 768px) {
       width: auto;
       height: auto;
-      font-size: 45px;
+      font-size: 40px;
       line-height: 1.1;
-      margin-bottom: 150px;
+      margin-bottom: 56px;
       padding: 0 16px;
     }
   }
@@ -42,15 +52,23 @@
     height: 380px;
     transform: translate(25%, 25%);
 
-    @media (max-width: 768px) {
-      position: absolute;
-      top: 160px;
+    @media (max-width: 1023px) {
+      top: 64px;
       right: 16px;
-      bottom: auto;
+      width: 220px;
+      height: 220px;
+      transform: rotate(-6deg);
+    }
+
+    @media (max-width: 768px) {
+      top: auto;
+      right: -16px;
+      bottom: 280px;
       left: auto;
-      width: 180px;
-      height: 180px;
-      transform: translate(15%, 25%);
+      width: 120px;
+      height: 120px;
+      transform: rotate(-8deg);
+      z-index: 50;
     }
   }
 
@@ -60,7 +78,7 @@
       transform: rotate(8deg);
 
       @media (max-width: 768px) {
-        transform: rotate(-8deg);
+        transform: none;
       }
     }
 
@@ -69,8 +87,8 @@
 
       @media (max-width: 768px) {
         margin-top: 0;
-        transform: rotate(8deg);
-        z-index: 10;
+        transform: none;
+        z-index: auto;
       }
     }
   }
@@ -88,12 +106,14 @@
     text-align: left;
 
     @media (max-width: 768px) {
-      width: 300px;
+      width: 100%;
+      max-width: 320px;
       height: auto;
-      border-radius: 16px;
-      margin-bottom: -200px;
-      padding: 30px 20px;
-      padding-bottom: 100px;
+      border-radius: 20px;
+      transform: none;
+      margin-bottom: 0;
+      padding: 28px 24px;
+      padding-bottom: 140px;
     }
 
     .title {
@@ -134,9 +154,11 @@
       transform: translate(20%, 20%);
 
       @media (max-width: 768px) {
-        width: 120px;
-        height: 120px;
-        transform: translate(20%, 20%);
+        right: 8px;
+        bottom: 8px;
+        width: 130px;
+        height: 130px;
+        transform: none;
       }
     }
   }
@@ -154,13 +176,10 @@
       height: 120px;
 
       @media (max-width: 768px) {
-        position: absolute;
-        top: 250px;
-        right: auto;
-        bottom: auto;
-        left: 10px;
-        width: 60px;
-        height: 60px;
+        top: 140px;
+        left: -10px;
+        width: 50px;
+        height: 50px;
       }
     }
 
@@ -174,13 +193,12 @@
       height: 132px;
 
       @media (max-width: 768px) {
-        position: absolute;
-        top: 750px;
+        top: auto;
+        bottom: 200px;
         right: auto;
-        bottom: auto;
-        left: 10px;
-        width: 60px;
-        height: 60px;
+        left: -10px;
+        width: 50px;
+        height: 50px;
       }
     }
 
@@ -194,13 +212,12 @@
       height: 120px;
 
       @media (max-width: 768px) {
-        position: absolute;
-        top: 540px;
-        right: auto;
-        bottom: auto;
-        left: 310px;
-        width: 50px;
-        height: 50px;
+        top: auto;
+        bottom: 260px;
+        right: -8px;
+        left: auto;
+        width: 60px;
+        height: 60px;
       }
     }
 
@@ -214,13 +231,7 @@
       height: 260px;
 
       @media (max-width: 768px) {
-        position: absolute;
-        top: 1090px;
-        right: auto;
-        bottom: auto;
-        left: 10px;
-        width: 40px;
-        height: 40px;
+        display: none;
       }
     }
 
@@ -234,13 +245,7 @@
       height: 160px;
 
       @media (max-width: 768px) {
-        position: absolute;
-        top: 880px;
-        right: auto;
-        bottom: auto;
-        left: 300px;
-        width: 35px;
-        height: 35px;
+        display: none;
       }
     }
   }
