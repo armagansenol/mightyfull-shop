@@ -92,6 +92,9 @@ export function Footer() {
             <Link href={`/terms-of-service`} className={s.navItem}>
               Terms of Service
             </Link>
+            <Link href={`/account/subscriptions`} className={s.navItem}>
+              Manage Subscription
+            </Link>
           </nav>
         </div>
         <div
