@@ -705,6 +705,30 @@ sup {
   min-height: calc(100vh - var(--header-height));
 }
 
+/* @tailwindcss/typography color theme — paint every prose-controlled
+   token (body, headings, bold, links, list markers, borders, …) with
+   the brand `--blue-ruin` instead of the plugin's default slate-grays.
+   Used wherever `prose prose-blue-ruin` appears (policy pages, FAQ
+   answers). */
+.prose.prose-blue-ruin {
+  --tw-prose-body: var(--blue-ruin);
+  --tw-prose-headings: var(--blue-ruin);
+  --tw-prose-lead: var(--blue-ruin);
+  --tw-prose-links: var(--blue-ruin);
+  --tw-prose-bold: var(--blue-ruin);
+  --tw-prose-counters: var(--blue-ruin);
+  --tw-prose-bullets: var(--blue-ruin);
+  --tw-prose-hr: var(--blue-ruin);
+  --tw-prose-quotes: var(--blue-ruin);
+  --tw-prose-quote-borders: var(--blue-ruin);
+  --tw-prose-captions: var(--blue-ruin);
+  --tw-prose-code: var(--blue-ruin);
+  --tw-prose-pre-code: var(--blue-ruin);
+  --tw-prose-pre-bg: transparent;
+  --tw-prose-th-borders: var(--blue-ruin);
+  --tw-prose-td-borders: var(--blue-ruin);
+}
+
 /* ==========================================================================
    Section 9 -- Okendo widget overrides (imported at top of file)
    ========================================================================== */
