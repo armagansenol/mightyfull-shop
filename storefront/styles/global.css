@@ -64,9 +64,14 @@
   --color-chart-4: hsl(43 74% 66%);
   --color-chart-5: hsl(27 87% 67%);
 
-  /* Fonts */
-  --font-bomstad-display: BomstadDisplay, sans-serif;
-  --font-poppins: Poppins, sans-serif;
+  /* Fonts
+     next/font (in app/layout.tsx) injects --font-bomstad-display and
+     --font-poppins on <html>. Those override the :root defaults below
+     for every descendant. The fallback literals here keep Tailwind v4
+     `font-bomstad-display` / `font-poppins` utility output sensible
+     until the next/font CSS hits the page on first paint. */
+  --font-bomstad-display: system-ui, sans-serif;
+  --font-poppins: system-ui, sans-serif;
 
   /* Border Radius */
   --radius: 0.5rem;
@@ -158,107 +163,12 @@
 }
 
 /* ==========================================================================
-   Section 1 -- Fonts (from _fonts.scss)
+   Section 1 -- Fonts
+   Loaded via next/font in app/layout.tsx — automatically preloaded,
+   self-hosted, and size-adjusted to fallback metrics to eliminate CLS.
+   The --font-bomstad-display and --font-poppins variables are injected
+   on <html> by next/font; the @theme tokens reference them.
    ========================================================================== */
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Black.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Black.woff2") format("woff2");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-ExtraBold.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-ExtraBold.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Bold.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-SemiBold.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Medium.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Regular.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Light.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-ExtraLight.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-ExtraLight.woff2") format("woff2");
-  font-weight: 200;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
-
-@font-face {
-  font-family: "BomstadDisplay";
-  src:
-    url("/fonts/bomstad-display/BomstadDisplay-Thin.woff") format("woff"),
-    url("/fonts/bomstad-display/BomstadDisplay-Thin.woff2") format("woff2");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+000-5FF; /* Latin glyphs */
-}
 
 /* ==========================================================================
    Section 2 -- Reset (from _reset.scss)
