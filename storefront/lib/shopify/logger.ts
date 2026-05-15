@@ -13,7 +13,9 @@ const MAX_LOG_ENTRIES = 1000;
 class ShopifyLogger {
   private static instance: ShopifyLogger;
   private logs: LogEntry[] = [];
-  private isDebugEnabled = process.env.NODE_ENV === 'development';
+  // Opt-in via SHOPIFY_DEBUG=true in .env.local — info/debug/logApiCall
+  // are otherwise silent. warn/error are always emitted.
+  private isDebugEnabled = process.env.SHOPIFY_DEBUG === 'true';
 
   private constructor() {}
 
