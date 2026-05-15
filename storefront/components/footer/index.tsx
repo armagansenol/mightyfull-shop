@@ -1,7 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { Container } from '@/components/container';
-import { IconCloud, socialIcons } from '@/components/icons';
+import { IconArrow, IconCloud, socialIcons } from '@/components/icons';
 import { Parallax } from '@/components/parallax';
 import { Img } from '@/components/utility/img';
 import { Link } from '@/components/utility/link';
@@ -14,9 +15,28 @@ import c5 from '@/public/img/c5.png';
 import type { SocialMedia } from '@/types';
 import s from './footer.module.css';
 
+type FormState = 'idle' | 'loading' | 'success' | 'error';
+
+const QUICK_LINKS = [
+  { href: '/shop', label: 'Shop' },
+  { href: '/our-story', label: 'Our Story' },
+  { href: '/contact', label: 'Contact Us' },
+  { href: '/account/subscriptions', label: 'Manage Subscription' }
+] as const;
+
+const RESOURCES = [
+  { href: '/faq', label: 'FAQ' },
+  { href: '/terms-of-service', label: 'Terms of Service' },
+  { href: '/privacy-policy', label: 'Privacy Policy' }
+] as const;
+
 export function Footer() {
   const { socialLinks } = useLayoutData();
   const currentYear = new Date().getFullYear();
+
+  const [email, setEmail] = useState('');
+  const [formState, setFormState] = useState<FormState>('idle');
+  const [feedback, setFeedback] = useState('');
 
   const cookies = [
     {
@@ -51,6 +71,51 @@ export function Footer() {
     }
   ];
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const value = email.trim();
+
+    if (!value) {
+      setFormState('error');
+      setFeedback('Please enter your email address.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      setFormState('error');
+      setFeedback('Please enter a valid email address.');
+      return;
+    }
+
+    setFormState('loading');
+    setFeedback('');
+
+    try {
+      const res = await fetch('/api/welcome-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: value })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setFormState('error');
+        setFeedback(data.message ?? 'Something went wrong. Please try again.');
+        return;
+      }
+
+      setFormState('success');
+      setFeedback(
+        data.alreadySubscribed
+          ? "You're already subscribed — thanks for staying mighty!"
+          : 'Thanks! Check your inbox for a welcome from Mightyfull.'
+      );
+      setEmail('');
+    } catch {
+      setFormState('error');
+      setFeedback('Something went wrong. Please try again.');
+    }
+  }
+
   return (
     <footer
       className={cn(s.footer, 'flex flex-col items-stretch justify-center')}
@@ -59,44 +124,90 @@ export function Footer() {
         <IconCloud fill="var(--blue-ruin)" />
       </div>
       <Container className="relative">
-        <div className="flex flex-col md:flex-row items-center md:items-end justify-between">
-          <div className={cn(s.actions, 'col-span-6')}>
-            <h6>
+        <div className={s.columns}>
+          <nav className={s.column} aria-label="Quick Links">
+            <h6 className={s.columnTitle}>Quick Links</h6>
+            {QUICK_LINKS.map((item) => (
+              <Link key={item.href} href={item.href} className={s.columnLink}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className={cn(s.column, s.center)}>
+            <h2 className={s.heading}>
               Stay mighty. <br />
               Stay full.
-            </h6>
-            <p>
+            </h2>
+            <span className={s.joinLabel}>Join our email list</span>
+            <p className={s.cta}>
               Be the first to know about new products, brand updates, exclusive
               events, and more!
             </p>
+            <form
+              className={s.form}
+              onSubmit={handleSubmit}
+              noValidate
+              aria-label="Email signup"
+            >
+              <div className={s.formRow}>
+                <input
+                  type="email"
+                  className={s.input}
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (formState !== 'idle') {
+                      setFormState('idle');
+                      setFeedback('');
+                    }
+                  }}
+                  disabled={formState === 'loading'}
+                  aria-label="Email address"
+                  autoComplete="email"
+                  inputMode="email"
+                  spellCheck={false}
+                  required
+                />
+                <button
+                  type="submit"
+                  className={s.submit}
+                  disabled={formState === 'loading'}
+                  aria-label="Subscribe to email list"
+                >
+                  <span>
+                    <IconArrow fill="var(--sugar-milk)" />
+                  </span>
+                </button>
+              </div>
+              {feedback && (
+                <p
+                  className={cn(
+                    s.feedback,
+                    formState === 'error' && s.feedbackError
+                  )}
+                  role={formState === 'error' ? 'alert' : 'status'}
+                >
+                  {feedback}
+                </p>
+              )}
+            </form>
           </div>
-          <nav className={cn(s.nav, 'flex flex-col gap-10 md:gap-5')}>
-            <Link href={`/shop`} className={s.navItem}>
-              Shop
-            </Link>
-            <Link href={`/our-story`} className={s.navItem}>
-              Our Story
-            </Link>
-            <Link href={`/contact`} className={s.navItem}>
-              Contact Us
-            </Link>
-            <Link href={`/faq`} className={s.navItem}>
-              FAQ
-            </Link>
-            <Link href={`/privacy-policy`} className={s.navItem}>
-              Privacy Policy
-            </Link>
-            <Link href={`/refund-policy`} className={s.navItem}>
-              Refund Policy
-            </Link>
-            <Link href={`/terms-of-service`} className={s.navItem}>
-              Terms of Service
-            </Link>
-            <Link href={`/account/subscriptions`} className={s.navItem}>
-              Manage Subscription
-            </Link>
+
+          <nav
+            className={cn(s.column, s.columnRight)}
+            aria-label="Resources"
+          >
+            <h6 className={s.columnTitle}>Resources</h6>
+            {RESOURCES.map((item) => (
+              <Link key={item.href} href={item.href} className={s.columnLink}>
+                {item.label}
+              </Link>
+            ))}
           </nav>
         </div>
+
         <div
           className={cn(
             s.copyright,
