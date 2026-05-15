@@ -13,6 +13,7 @@ import { LayoutDataProvider } from '@/context/layout-data';
 import { sanityFetch } from '@/lib/sanity/client';
 import { LAYOUT_QUERY } from '@/lib/sanity/layout';
 import { cartService } from '@/lib/shopify';
+import { getWelcomeEligibility } from '@/lib/welcome-eligibility';
 import type { LayoutQueryResponse } from '@/types';
 
 const bomstadDisplay = localFont({
@@ -94,7 +95,10 @@ export default async function RootLayout({
   const cartId = (await cookies()).get('cartId')?.value;
   const cartPromise = cartService.get(cartId);
 
-  const layoutData = await getLayoutData();
+  const [layoutData, welcomeEligibility] = await Promise.all([
+    getLayoutData(),
+    getWelcomeEligibility()
+  ]);
 
   return (
     <html
@@ -114,7 +118,15 @@ export default async function RootLayout({
             <LayoutDataProvider value={layoutData}>
               {children}
               <Cart />
-              <WelcomePopup />
+              {welcomeEligibility.kind !== 'has-orders' && (
+                <WelcomePopup
+                  prefilledEmail={
+                    welcomeEligibility.kind === 'eligible'
+                      ? welcomeEligibility.email
+                      : undefined
+                  }
+                />
+              )}
               <GSAP />
             </LayoutDataProvider>
           </CartProvider>

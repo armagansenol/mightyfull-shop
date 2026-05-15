@@ -27,11 +27,19 @@ const BADGE_COOKIES = [
   "/img/c-pb-jelly-choco-chip.png",
 ]
 
-export function WelcomePopup() {
+type WelcomePopupProps = {
+  // When the layout has detected a logged-in customer who hasn't placed
+  // their first order yet, the email field is replaced with a one-click
+  // claim button bound to this address.
+  prefilledEmail?: string
+}
+
+export function WelcomePopup({ prefilledEmail }: WelcomePopupProps = {}) {
   const pathname = usePathname()
   const isSuppressed = SUPPRESSED_PATH_PREFIXES.some((prefix) =>
     pathname?.startsWith(prefix)
   )
+  const isPrefilled = Boolean(prefilledEmail)
 
   const [state, setState] = useState<PopupState>("hidden")
   const [formState, setFormState] = useState<FormState>("idle")
@@ -72,7 +80,7 @@ export function WelcomePopup() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const email = inputRef.current?.value.trim()
+    const email = prefilledEmail ?? inputRef.current?.value.trim()
 
     if (!email) {
       setErrorMsg("Please enter your email address.")
@@ -80,7 +88,7 @@ export function WelcomePopup() {
       return
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!isPrefilled && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setErrorMsg("Please enter a valid email address.")
       setFormState("error")
       return
@@ -199,23 +207,32 @@ export function WelcomePopup() {
                   Unlock 15% Off Your First Order!
                 </h2>
                 <p className="font-poppins text-sm text-nova-pink/80 mb-6 leading-relaxed">
-                  Enter your email and we'll send your exclusive discount code straight to your inbox.
+                  {isPrefilled ? (
+                    <>
+                      We'll send your exclusive discount code to{" "}
+                      <strong className="break-all">{prefilledEmail}</strong>.
+                    </>
+                  ) : (
+                    "Enter your email and we'll send your exclusive discount code straight to your inbox."
+                  )}
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-3" noValidate>
-                  <input
-                    ref={inputRef}
-                    type="email"
-                    placeholder="Email"
-                    onChange={() => formState === "error" && setFormState("idle")}
-                    className={cn(
-                      "w-full px-4 py-3 rounded-xl",
-                      "bg-sugar-milk border-2",
-                      formState === "error" ? "border-red-400" : "border-nova-pink",
-                      "font-poppins text-sm text-nova-pink placeholder:text-nova-pink/50 placeholder:font-semibold",
-                      "outline-none transition-colors",
-                    )}
-                  />
+                  {!isPrefilled && (
+                    <input
+                      ref={inputRef}
+                      type="email"
+                      placeholder="Email"
+                      onChange={() => formState === "error" && setFormState("idle")}
+                      className={cn(
+                        "w-full px-4 py-3 rounded-xl",
+                        "bg-sugar-milk border-2",
+                        formState === "error" ? "border-red-400" : "border-nova-pink",
+                        "font-poppins text-sm text-nova-pink placeholder:text-nova-pink/50 placeholder:font-semibold",
+                        "outline-none transition-colors",
+                      )}
+                    />
+                  )}
 
                   {formState === "error" && <p className="font-poppins text-xs text-red-500">{errorMsg}</p>}
 
@@ -231,7 +248,11 @@ export function WelcomePopup() {
                       "disabled:opacity-50 disabled:cursor-not-allowed",
                     )}
                   >
-                    {formState === "loading" ? "SENDING..." : "SUBMIT"}
+                    {formState === "loading"
+                      ? "SENDING..."
+                      : isPrefilled
+                        ? "SEND MY CODE"
+                        : "SUBMIT"}
                   </button>
 
                   <p className="font-poppins text-[0.65rem] leading-relaxed text-nova-pink/60 mt-1">
