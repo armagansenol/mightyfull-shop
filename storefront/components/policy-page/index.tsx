@@ -101,10 +101,30 @@ const components: PortableTextComponents = {
         {linkify(children, 'h3')}
       </h3>
     ),
+    h4: ({ children }) => (
+      <h4 className="font-poppins text-lg md:text-xl font-semibold text-blue-ruin mt-8 mb-2 text-balance">
+        {linkify(children, 'h4')}
+      </h4>
+    ),
+    h5: ({ children }) => (
+      <h5 className="font-poppins text-base md:text-lg font-semibold text-blue-ruin mt-6 mb-2 text-balance">
+        {linkify(children, 'h5')}
+      </h5>
+    ),
+    h6: ({ children }) => (
+      <h6 className="font-poppins text-base font-semibold text-blue-ruin mt-6 mb-2 text-balance">
+        {linkify(children, 'h6')}
+      </h6>
+    ),
     normal: ({ children }) => (
       <p className="font-poppins text-base text-blue-ruin leading-relaxed mb-4 text-pretty">
         {linkify(children, 'p')}
       </p>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className="font-poppins text-base text-blue-ruin border-l-2 border-blue-ruin pl-4 italic my-6">
+        {linkify(children, 'bq')}
+      </blockquote>
     )
   },
   list: {
@@ -125,10 +145,12 @@ const components: PortableTextComponents = {
   },
   marks: {
     strong: ({ children }) => (
-      <strong className="font-bold">{linkify(children, 'strong')}</strong>
+      <strong className="font-bold text-blue-ruin">
+        {linkify(children, 'strong')}
+      </strong>
     ),
     em: ({ children }) => (
-      <em className="italic">{linkify(children, 'em')}</em>
+      <em className="italic text-blue-ruin">{linkify(children, 'em')}</em>
     ),
     annotationLinkExternal: ({ value, children }) => (
       <a
