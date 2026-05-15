@@ -77,6 +77,7 @@ export default async function HomePage() {
           <IconCloud2 />
         </div>
       </section>
+      {/* Section 2: Marquee */}
       <section className={s.marquee}>
         <Marquee className="[--duration:10s]" repeat={5}>
           <div className="flex items-center">
@@ -103,6 +104,7 @@ export default async function HomePage() {
           </div>
         </Marquee>
       </section>
+      {/* Section 3: Product Highlights */}
       {Array.isArray(productHighlight) && productHighlight.length > 0 && (
         <Container as="section" className={s.highlights}>
           <section className={cn(s.shop, 'flex flex-col items-center')}>
@@ -113,15 +115,15 @@ export default async function HomePage() {
             {Array.isArray(productHighlight) && productHighlight.length > 0 && (
               <>
                 {/* MOBILE */}
-                <div className="block md:hidden">
+                <div className="block md:hidden w-full">
                   <ProductHighlightCarousel
                     items={productHighlight}
                     options={{ loop: true }}
                   />
                 </div>
                 {/* DESKTOP */}
-                <div className="hidden md:block">
-                  <div className="flex flex-col items-center md:grid grid-cols-4 gap-16 md:gap-4 xl:gap-4 mt-10 md:mt-16 px-4 md:px-0">
+                <div className="hidden md:block w-full">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-4 lg:gap-y-8 xl:gap-x-6 xl:gap-y-10 2xl:gap-x-8 2xl:gap-y-12 mt-12 lg:mt-16 xl:mt-20 2xl:mt-24 px-6 md:px-8 lg:px-0 max-w-7xl 2xl:max-w-[1600px] mx-auto">
                     {Array.isArray(productHighlight) &&
                       productHighlight.length > 0 &&
                       productHighlight.map((item) => {
@@ -147,11 +149,13 @@ export default async function HomePage() {
           </section>
         </Container>
       )}
+      {/* Section 4: Feature Highlight */}
       <div className="bg-blue-ruin p-2 md:p-5">
         <Container>
           <FeatureHighlight />
         </Container>
       </div>
+      {/* Section 5: The Mightyfull Story */}
       <div className="relative bg-blue-ruin p-2 md:p-5 overflow-hidden">
         <div className="absolute bottom-0 left-0 right-0 h-2 md:h-5 bg-blue-ruin z-50"></div>
         <Container>

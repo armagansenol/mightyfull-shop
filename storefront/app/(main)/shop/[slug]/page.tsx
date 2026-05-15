@@ -40,10 +40,10 @@ export default async function ProductDetialPage({
       <Container
         as="section"
         className={cn(
-          'flex flex-col items-center gap-5 md:gap-0 md:grid grid-cols-24 md:items-stretch justify-stretch py-6 md:py-12 px-4 md:px-16 mb-20'
+          'flex flex-col items-center gap-6 md:gap-0 md:grid grid-cols-24 md:items-stretch justify-stretch py-12 md:py-20 px-4 md:px-16 mb-24'
         )}
       >
-        <div className="col-span-12 space-y-10">
+        <div className="col-span-12 space-y-12">
           <ProductImages images={sanityProduct.images} />
           <ProductSpecs
             className="hidden md:grid"
@@ -51,14 +51,14 @@ export default async function ProductDetialPage({
           />
         </div>
         <div className="col-span-12 flex flex-col items-stretch px-0 md:pl-20 md:pr-14 text-center md:text-left">
-          <h1 className="text-primary font-bomstad-display text-4xl font-black">
+          <h1 className="text-primary font-bomstad-display text-4xl font-black text-balance">
             {sanityProduct.title}
           </h1>
           <small className="text-primary font-bomstad-display text-lg font-medium mb-8">
             1 BOX ( 6 COOKIES )
           </small>
           {shopifyProduct?.description && (
-            <div className="prose text-cookie-brown font-poppins text-sm font-normal mb-10">
+            <div className="prose text-cookie-brown font-poppins text-sm font-normal mb-12 text-pretty">
               <p>{shopifyProduct.description}</p>
             </div>
           )}
@@ -82,7 +82,7 @@ export default async function ProductDetialPage({
       <ProductFaq faqs={sanityProduct.faqs} />
       {/* related products */}
       {relatedProducts.length > 0 && (
-        <Container as="section" className="pb-10 md:pb-20">
+        <Container as="section" className="pb-12 md:pb-24">
           {/* MOBILE */}
           <div className="block md:hidden">
             <ProductHighlightCarousel
@@ -92,11 +92,11 @@ export default async function ProductDetialPage({
           </div>
           {/* DESKTOP */}
           <div className="hidden md:block">
-            <section className="flex flex-col items-center py-16">
-              <h2 className="text-blue-ruin font-bomstad-display text-6xl font-black max-w-xl text-center mb-4">
+            <section className="flex flex-col items-center py-24">
+              <h2 className="text-blue-ruin font-bomstad-display text-6xl font-black max-w-xl text-center mb-4 text-balance">
                 Impossible to Choose Just One!
               </h2>
-              <p className="text-blue-ruin font-poppins text-lg font-normal max-w-xl text-center mb-16">
+              <p className="text-blue-ruin font-poppins text-lg font-normal max-w-xl text-center mb-16 text-pretty">
                 Can&apos;t decide? Try them all and discover your new favorite!
               </p>
               <div className="flex items-center justify-center gap-10 px-32">

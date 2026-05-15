@@ -87,34 +87,34 @@ function linkify(children: ReactNode, keyPrefix = 'lk'): ReactNode {
 const components: PortableTextComponents = {
   block: {
     h1: ({ children }) => (
-      <h1 className="font-bomstad-display text-3xl md:text-4xl font-black text-blue-ruin mt-10 mb-4">
+      <h1 className="font-bomstad-display text-3xl md:text-4xl font-black text-blue-ruin mt-12 mb-5 text-balance">
         {linkify(children, 'h1')}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="font-bomstad-display text-2xl md:text-3xl font-black text-blue-ruin mt-10 mb-4">
+      <h2 className="font-bomstad-display text-2xl md:text-3xl font-black text-blue-ruin mt-12 mb-4 text-balance">
         {linkify(children, 'h2')}
       </h2>
     ),
     h3: ({ children }) => (
-      <h3 className="font-bomstad-display text-xl md:text-2xl font-bold text-blue-ruin mt-8 mb-3">
+      <h3 className="font-bomstad-display text-xl md:text-2xl font-bold text-blue-ruin mt-10 mb-3 text-balance">
         {linkify(children, 'h3')}
       </h3>
     ),
     normal: ({ children }) => (
-      <p className="font-poppins text-base text-blue-ruin leading-relaxed mb-4">
+      <p className="font-poppins text-base text-blue-ruin leading-relaxed mb-4 text-pretty">
         {linkify(children, 'p')}
       </p>
     )
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc pl-6 space-y-2 mb-4 text-blue-ruin font-poppins">
+      <ul className="list-disc pl-6 space-y-2 mb-6 text-blue-ruin font-poppins">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal pl-6 space-y-2 mb-4 text-blue-ruin font-poppins">
+      <ol className="list-decimal pl-6 space-y-2 mb-6 text-blue-ruin font-poppins">
         {children}
       </ol>
     )
@@ -178,14 +178,14 @@ export function PolicyPage({ policy }: PolicyPageProps) {
     <Wrapper>
       <Container
         as="section"
-        className="px-4 md:px-16 py-12 md:py-20 mb-32 md:mb-48"
+        className="px-4 md:px-16 py-16 md:py-24 mb-32 md:mb-48"
       >
         <div className="max-w-3xl mx-auto">
-          <h1 className="font-bomstad-display text-4xl md:text-5xl font-black text-blue-ruin mb-3">
+          <h1 className="font-bomstad-display text-4xl md:text-5xl font-black text-blue-ruin mb-4 text-balance">
             {policy.title}
           </h1>
           {lastUpdatedLabel && (
-            <p className="font-poppins text-sm text-blue-ruin/70 mb-10">
+            <p className="font-poppins text-sm text-blue-ruin/70 mb-12">
               Last updated {lastUpdatedLabel}
             </p>
           )}
