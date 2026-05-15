@@ -19,11 +19,11 @@ export function FollowUs() {
 
   return (
     <>
-      <div className="md:border-y-[5px] md:border-solid md:border-blue-ruin flex flex-col md:flex-row items-stretch mb-8 md:mb-16">
+      <div className="md:border-y-[5px] md:border-x-0 md:border-solid md:border-blue-ruin flex flex-col md:flex-row items-stretch mb-8 md:mb-16">
         <p
           className={cn(
             s.title,
-            'md:border-r-[5px] md:border-solid md:border-blue-ruin flex items-center justify-center'
+            'md:border-r-[5px] md:border-y-0 md:border-l-0 md:border-solid md:border-blue-ruin flex items-center justify-center'
           )}
         >
           Join Our Family
