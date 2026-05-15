@@ -531,8 +531,10 @@
   background-color: var(--sugar-milk);
   overflow: hidden;
 
+  /* Image bleeds to the left edge on desktop (left half of viewport)
+     and stretches full-width above the slider on mobile. */
   .imgC {
-    width: auto;
+    width: 100%;
     height: 600px;
 
     @media (min-width: 1280px) {
@@ -544,7 +546,6 @@
     }
 
     @media (max-width: 768px) {
-      width: auto;
       height: 520px;
     }
   }

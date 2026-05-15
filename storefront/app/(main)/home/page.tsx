@@ -224,21 +224,17 @@ export default async function HomePage() {
       </div>
       {/* Section 6: Testimonials */}
       <section className={s.testimonials}>
-        <Container
-          className="flex flex-col-reverse md:grid grid-cols-12"
-        >
-          <div className="col-span-5">
-            <div className={s.imgC}>
-              <Img
-                className="object-cover"
-                src="/img/lady.jpg"
-                alt="Lady Eating a Cookie"
-                height={1000}
-                width={1000}
-              />
-            </div>
+        <div className="flex flex-col-reverse md:grid md:grid-cols-2">
+          <div className={s.imgC}>
+            <Img
+              className="object-cover w-full h-full"
+              src="/img/lady.jpg"
+              alt="Lady Eating a Cookie"
+              height={1000}
+              width={1000}
+            />
           </div>
-          <div className="col-span-7 py-20 md:py-0 flex items-center justify-center">
+          <div className="py-20 md:py-0 flex items-center justify-center">
             <div className={s.sliderC}>
               <FadeInOutCarousel options={{ loop: true }}>
                 {Array.isArray(testimonials) &&
@@ -260,7 +256,7 @@ export default async function HomePage() {
               </FadeInOutCarousel>
             </div>
           </div>
-        </Container>
+        </div>
       </section>
     </Wrapper>
   );
